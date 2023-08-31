@@ -1,4 +1,8 @@
+'use client';
+
 import Link from "next/link";
+import {usePathname} from "next/navigation";
+import {useState} from "react";
 
 const menu = [
   {
@@ -7,13 +11,13 @@ const menu = [
     children: [],
   },
   {
-    name: "My Chat",
+    name: "Chat",
     path: "/chat",
     children: [],
   },
   {
-    name: "My Note",
-    path: "/note",
+    name: "Whisper",
+    path: "/whisper",
     children: [],
   },
   {
@@ -34,7 +38,9 @@ const menu = [
 ]
 
 
-export default function Component () {
+export default function Component() {
+  const pathname = usePathname()
+
   return (
     <div className={'flex flex-col h-full w-[260px] bg-gray-100 p-4 text-gray-500 gap-6'}>
       <div className={'flex gap-4 p-2'}>
@@ -49,7 +55,8 @@ export default function Component () {
       <div className={'flex flex-col gap-1'}>
         {
           menu.map((item, index) => (
-            <Link href={item.path} key={index} className={'text-sm px-4 py-2 hover:bg-blue-100 hover:text-blue-400 rounded'}>
+            <Link href={item.path} key={index}
+                  className={`text-sm px-4 py-2 ${pathname.includes(item.path) ? 'bg-blue-100 text-blue-400' : 'hover:bg-blue-100 hover:text-blue-400'} rounded`}>
               {item.name}
             </Link>
           ))
