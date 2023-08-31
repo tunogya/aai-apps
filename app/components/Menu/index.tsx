@@ -37,7 +37,7 @@ const menu = [
 export default function Component () {
   return (
     <div className={'flex flex-col h-full w-[260px] bg-gray-100 p-4 text-gray-500 gap-6'}>
-      <div className={'flex gap-4 pl-2'}>
+      <div className={'flex gap-4 p-2'}>
         <div className={'bg-white h-8 w-8 rounded-full overflow-hidden truncate'}>
           Avatar
         </div>
