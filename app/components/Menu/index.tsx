@@ -11,8 +11,8 @@ const menu = [
     children: [],
   },
   {
-    name: "Chat",
-    path: "/chat",
+    name: "Discuss",
+    path: "/discuss",
     children: [],
   },
   {
