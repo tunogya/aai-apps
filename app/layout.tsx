@@ -23,14 +23,14 @@ export default function RootLayout({children}: { children: React.ReactNode }) {
   return (
     <html lang="en">
     <body className={`${inter.className} h-screen w-screen`}>
-    <Script src={'https://www.googletagmanager.com/gtag/js?id=G-EDPQ3K7EN8'}/>
+    <Script src={'https://www.googletagmanager.com/gtag/js?id=G-HT9Q8GW970'}/>
     <Script id='google-tag-manager' strategy='afterInteractive'>
       {`
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
                 gtag('js', new Date());
                 
-                gtag('config', 'G-EDPQ3K7EN8');
+                gtag('config', 'G-HT9Q8GW970');
               `}
     </Script>
     <Script id={'sw'}>
