@@ -1,7 +1,7 @@
 export default function Page() {
   return (
     <div>
-      <p>Note</p>
+      <p>Thinking</p>
     </div>
   )
 }
