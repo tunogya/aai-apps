@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import MenuList from './MenuList'
+import NavItemList from './NavItemList'
 
 export default function Component() {
 
@@ -13,7 +13,7 @@ export default function Component() {
           <div className={'text-xs'}>Estimated costs: $0.00</div>
         </div>
       </div>
-      <MenuList />
+      <NavItemList />
       <div className={'absolute bottom-0 w-full pl-6 pb-6 pt-6 pr-4'}>
         <div className={'flex items-center w-full gap-0.5'}>
           <Image src={'/favicon.svg'} alt={''} width={'32'} height={'32'}/>
