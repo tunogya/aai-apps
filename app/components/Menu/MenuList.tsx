@@ -43,7 +43,7 @@ export default function Component () {
       {
         menu.map((item, index) => (
           <Link href={item.path} key={index}
-                className={`text-sm mt-0 mx-4 px-4 py-1.5 font-semibold ${pathname.includes(item.path) ? 'bg-blue-100 text-blue-400' : 'hover:bg-blue-100 hover:text-blue-400'} rounded`}>
+                className={`text-sm mt-0 mx-4 px-4 py-1.5 font-semibold ${pathname.includes(item.path) ? 'bg-blue-100 text-blue-400' : 'hover:bg-gray-200 hover:text-gray-500'} rounded`}>
             {item.name}
           </Link>
         ))
