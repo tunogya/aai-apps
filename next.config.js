@@ -5,4 +5,13 @@ module.exports = {
     serverActions: true,
     appDir: true,
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+        pathname: '**'
+      }
+    ]
+  }
 };
