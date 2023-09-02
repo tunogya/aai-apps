@@ -1,11 +1,12 @@
 import './globals.css'
 import type {Metadata} from 'next'
 import "cal-sans";
-import { Inter } from 'next/font/google'
+import {Inter} from 'next/font/google'
 import Script from "next/script";
 import {TailwindIndicator} from "./components/tailwind-indicator";
+import {UserProvider} from '@auth0/nextjs-auth0/client';
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({subsets: ['latin']})
 
 const title = "Abandon AI";
 const description = "Powered by OpenAI"
@@ -33,19 +34,20 @@ export const metadata: Metadata = {
 export default function RootLayout({children}: { children: React.ReactNode }) {
   return (
     <html lang="en">
-    <body className={`${inter.className} h-screen w-screen`}>
-    <Script src={'https://www.googletagmanager.com/gtag/js?id=G-HT9Q8GW970'}/>
-    <Script id='google-tag-manager' strategy='afterInteractive'>
-      {`
+    <UserProvider>
+      <body className={`${inter.className} h-screen w-screen`}>
+      <Script src={'https://www.googletagmanager.com/gtag/js?id=G-HT9Q8GW970'}/>
+      <Script id='google-tag-manager' strategy='afterInteractive'>
+        {`
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
                 gtag('js', new Date());
                 
                 gtag('config', 'G-HT9Q8GW970');
               `}
-    </Script>
-    <Script id={'sw'}>
-      {`
+      </Script>
+      <Script id={'sw'}>
+        {`
                 if ('serviceWorker' in navigator) {
                   window.addEventListener('load', function() {
                     navigator.serviceWorker.register('/sw.js').then(function(registration) {
@@ -56,10 +58,11 @@ export default function RootLayout({children}: { children: React.ReactNode }) {
                   });
                 }
         `}
-    </Script>
-    <TailwindIndicator/>
-    {children}
-    </body>
+      </Script>
+      <TailwindIndicator/>
+      {children}
+      </body>
+    </UserProvider>
     </html>
   )
 }
