@@ -9,13 +9,13 @@ const menu = [
     children: [],
   },
   {
-    name: "Exchange",
-    path: "/exchange",
+    name: "Chat",
+    path: "/chat",
     children: [],
   },
   {
-    name: "Ponder",
-    path: "/ponder",
+    name: "Write",
+    path: "/write",
     children: [],
   },
   {
