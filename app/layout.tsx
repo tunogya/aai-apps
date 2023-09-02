@@ -6,15 +6,25 @@ import Script from "next/script";
 
 const inter = Inter({ subsets: ['latin'] })
 
+const title = "Abandon AI";
+const description = "Powered by OpenAI"
+
 export const metadata: Metadata = {
-  title: 'Abandon AI',
-  description: 'Powered by OpenAI',
+  title,
+  description,
   viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no',
   applicationName: 'Abandon AI',
   themeColor: '#fff',
   openGraph: {
     images: '/apple-touch-icon.png',
-    title: 'Abandon AI',
+    title,
+    description,
+  },
+  twitter: {
+    title,
+    description,
+    card: "summary_large_image",
+    creator: "@abandonai",
   },
   manifest: '/manifest.json',
 }
