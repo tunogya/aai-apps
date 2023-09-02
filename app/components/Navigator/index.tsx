@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import NavItemList from './NavItemList'
 import UserInfo from "@/app/components/Navigator/UserInfo";
+import CompInfo from "@/app/components/Navigator/CompInfo";
 
 export default function Component() {
 
@@ -12,7 +13,7 @@ export default function Component() {
         <div className={'flex items-center w-full gap-0.5'}>
           <Image src={'/favicon.svg'} alt={''} width={'32'} height={'32'}/>
           <div className={'text-xs ml-3'}>|</div>
-          <button className={'text-xs px-3 py-2 hover:bg-gray-200 rounded w-full text-start'}>ABANDON INC.</button>
+          <CompInfo />
         </div>
       </div>
     </div>
