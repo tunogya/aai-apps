@@ -4,12 +4,12 @@ import {usePathname} from "next/navigation";
 
 const menu = [
   {
-    name: "Persona",
-    path: "/persona",
+    name: "Dashboard",
+    path: "/dashboard",
     children: [],
   },
   {
-    name: "Chat",
+    name: "ChatGPT",
     path: "/chat",
     children: [],
   },

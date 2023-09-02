@@ -1,7 +1,7 @@
 import { OpenAIStream, StreamingTextResponse } from 'ai';
 import { Configuration, OpenAIApi } from 'openai-edge';
 
-import { auth } from '../../auth';
+import { auth } from '../../../auth';
 
 export const runtime = 'edge'
 
