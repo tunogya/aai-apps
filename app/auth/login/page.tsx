@@ -1,7 +1,7 @@
 export default function Page() {
   return (
     <div>
-      <p>Login</p>
+      <a href={'/api/auth/login'}>Login</a>
     </div>
   )
 }

@@ -1,19 +1,15 @@
 'use client';
-import { useUser } from '@auth0/nextjs-auth0/client';
+import {useUser} from '@auth0/nextjs-auth0/client';
+import {redirect} from "next/navigation";
 
 export default function Index() {
-  const { user, error, isLoading } = useUser();
+  const {user, error, isLoading} = useUser();
 
   if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>{error.message}</div>;
 
-  if (user) {
-    return (
-      <div>
-        Welcome {user.name}! <a href="/api/auth/logout">Logout</a>
-      </div>
-    );
-  }
+  if (error) return redirect(`/auth/error?message=${error.message}`);
 
-  return <a href="/api/auth/login">Login</a>;
+  if (user) return redirect('/dashboard')
+
+  return redirect('/auth/login');
 }
