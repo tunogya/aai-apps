@@ -1,8 +1,6 @@
 import { OpenAIStream, StreamingTextResponse } from 'ai';
 import { Configuration, OpenAIApi } from 'openai-edge';
-
-import { auth } from '../../../auth';
-
+import { withApiAuthRequired } from '@auth0/nextjs-auth0';
 export const runtime = 'edge'
 
 const configuration = new Configuration({
@@ -11,10 +9,11 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration)
 
-export async function POST(req: Request) {
+// @ts-ignore
+export const POST = withApiAuthRequired(async (req) =>  {
   const json = await req.json()
   const { messages, previewToken } = json
-  const userId = (await auth())?.user.id
+  const userId = "123"
 
   if (!userId) {
     return new Response('Unauthorized', {
@@ -62,4 +61,4 @@ export async function POST(req: Request) {
   })
 
   return new StreamingTextResponse(stream)
-}
+});

@@ -1,9 +1,15 @@
+import React from 'react';
+import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0';
 import NovelEditor from "../components/NovelEditor";
 
-export default function Page() {
-  return (
-    <div className={'w-full h-full'}>
-      <NovelEditor />
-    </div>
-  )
-}
+export default withPageAuthRequired(
+  async function SSRPage() {
+    const session = getSession();
+    return (
+      <div className={'w-full h-full'}>
+        <NovelEditor />
+      </div>
+    );
+  },
+  { returnTo: '/write' }
+);
