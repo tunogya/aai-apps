@@ -3,6 +3,7 @@ import type {Metadata} from 'next'
 import "cal-sans";
 import { Inter } from 'next/font/google'
 import Script from "next/script";
+import {TailwindIndicator} from "./components/tailwind-indicator";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -56,6 +57,7 @@ export default function RootLayout({children}: { children: React.ReactNode }) {
                 }
         `}
     </Script>
+    <TailwindIndicator/>
     {children}
     </body>
     </html>
