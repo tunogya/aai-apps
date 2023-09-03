@@ -5,7 +5,9 @@ import Link from "next/link";
 import { SearchDialog } from "@/app/persona/SearchDialog";
 export default withPageAuthRequired(
   async function SSRPage() {
-    const session = getSession();
+    // @ts-ignore
+    const { user } = await getSession();
+    // @ts-ignore
     return (
       <div className={"flex flex-col gap-2 h-full w-full relative"}>
         <div className={"flex pb-3 border-b items-center justify-between"}>
@@ -63,6 +65,7 @@ export default withPageAuthRequired(
             </Link>
           </div>
         </div>
+        <div>{JSON.stringify(user)}</div>
         <AddDialog />
         <SearchDialog />
       </div>
