@@ -6,7 +6,7 @@ import Script from "next/script";
 import {TailwindIndicator} from "./components/tailwind-indicator";
 import {UserProvider} from '@auth0/nextjs-auth0/client';
 
-const inter = Inter({subsets: ['latin']})
+const inter = Inter({subsets: ['latin'], display: 'swap'})
 
 const title = "Abandon AI";
 const description = "Powered by OpenAI"
@@ -33,9 +33,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({children}: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className={inter.className}>
     <UserProvider>
-      <body className={`${inter.className} h-screen w-screen`}>
+      <body className={`h-screen w-screen`}>
       <Script src={'https://www.googletagmanager.com/gtag/js?id=G-HT9Q8GW970'}/>
       <Script id='google-tag-manager' strategy='afterInteractive'>
         {`

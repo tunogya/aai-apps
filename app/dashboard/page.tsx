@@ -4,8 +4,13 @@ export default withPageAuthRequired(
   async function SSRPage() {
     const session = getSession();
     return (
-      <div>
-        dashboard
+      <div className={'flex flex-col gap-2 h-full w-full'}>
+        <div className={'text-xl font-bold'}>
+          Dashboard
+        </div>
+        <div>
+          dashboard
+        </div>
       </div>
     );
   },
