@@ -2,7 +2,7 @@ import React from "react";
 import { Metadata } from "next";
 export const runtime = "edge";
 
-const title = "Auth - Abandon";
+const title = "Auth - AbandonAI";
 const description = "Powered by OpenAI";
 
 export const metadata: Metadata = {

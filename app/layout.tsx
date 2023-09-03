@@ -8,7 +8,7 @@ import { UserProvider } from "@auth0/nextjs-auth0/client";
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 
-const title = "Abandon AI";
+const title = "AbandonAI";
 const description = "Powered by OpenAI";
 
 export const metadata: Metadata = {
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   description,
   viewport:
     "width=device-width, initial-scale=1, shrink-to-fit=no,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no",
-  applicationName: "Abandon AI",
+  applicationName: "AbandonAI",
   themeColor: "#fff",
   openGraph: {
     images: "/apple-touch-icon.png",
