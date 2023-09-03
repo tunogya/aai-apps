@@ -49,7 +49,7 @@ export default function Component() {
           onClick={() => setCurPath(item.path)}
           className={`text-sm mt-0 mx-4 px-4 py-1.5 font-semibold ${
             curPath.includes(item.path)
-              ? "bg-blue-100 text-blue-400"
+              ? "bg-blue-100 text-blue-600"
               : "hover:bg-gray-200 hover:text-gray-500"
           } rounded`}
         >

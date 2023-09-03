@@ -1,5 +1,14 @@
 import React from "react";
+import { Metadata } from "next";
 export const runtime = "edge";
+
+const title = "Auth - Abandon AI";
+const description = "Powered by OpenAI";
+
+export const metadata: Metadata = {
+  title,
+  description,
+};
 export default function AuthLayout({
   children,
 }: {
