@@ -5,8 +5,11 @@ export default withPageAuthRequired(
     const session = getSession();
     return (
       <div className={"flex flex-col gap-2 h-full w-full"}>
-        <div className={"text-xl font-bold"}>Dashboard</div>
-        <div>dashboard</div>
+        <div className={"pb-3 border-b"}>
+          <div className={"text-xl font-bold text-gray-800 py-2"}>
+            Dashboard
+          </div>
+        </div>
       </div>
     );
   },

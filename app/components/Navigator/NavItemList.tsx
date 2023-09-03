@@ -41,7 +41,7 @@ export default function Component() {
   const [curPath, setCurPath] = useState(pathname);
 
   return (
-    <div className={"flex flex-col gap-1"}>
+    <div className={"flex flex-col gap-2"}>
       {menu.map((item, index) => (
         <Link
           href={item.path}

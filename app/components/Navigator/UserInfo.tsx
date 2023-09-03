@@ -7,7 +7,9 @@ const userInfo = () => {
   const { user } = useUser();
 
   return (
-    <div className={"flex gap-2 mt-5 mx-3 p-2.5 group"}>
+    <div
+      className={"flex gap-2 mt-5 mx-3 p-2.5 group hover:bg-gray-200 rounded"}
+    >
       <div
         className={
           "rounded-full bg-white border border-gray-200 min-w-[32px] min-h-[32px] max-w-[32px] max-h-[32px] overflow-hidden"
