@@ -1,5 +1,9 @@
 import React from "react";
-import { getSession, withPageAuthRequired } from "@auth0/nextjs-auth0/edge";
+import {
+  getSession,
+  withPageAuthRequired,
+  getAccessToken,
+} from "@auth0/nextjs-auth0/edge";
 import { AddDialog } from "@/app/persona/AddDialog";
 import Link from "next/link";
 import { SearchDialog } from "@/app/persona/SearchDialog";
@@ -8,11 +12,17 @@ export default withPageAuthRequired(
   async function SSRPage() {
     // @ts-ignore
     const { user } = await getSession();
+    const { accessToken } = await getAccessToken();
+    const data = await fetch(`${process.env.AUTH0_BASE_URL}/api/persona`, {
+      headers: {
+        Authorization: accessToken!,
+      },
+    }).then((res) => res.json());
 
     return (
       <div className={"flex flex-col gap-2 h-full w-full relative"}>
         <div className={"flex pb-3 border-b items-center justify-between"}>
-          <div className={"text-xl font-semibold text-gray-500 py-2"}>
+          <div className={"text-xl font-semibold text-gray-800 py-2"}>
             Persona
           </div>
           <div className={"flex space-x-3 text-sm py-2"}>
@@ -53,19 +63,17 @@ export default withPageAuthRequired(
             "h-full w-full flex flex-col items-center justify-center gap-3"
           }
         >
-          <div className={"font-medium"}>Welcome to Persona</div>
+          <div className={"font-medium text-gray-800"}>Welcome to Persona</div>
           <div className={"max-w-xs text-sm font-light text-center"}>
             Creating your first persona mask is an exciting journey of
             self-discovery and empowerment.
             <br />
-            <Link
-              href={"/persona?dialog=add"}
-              className={"underline font-medium text-gray-500"}
-            >
+            <Link href={"/persona?dialog=add"} className={"underline"}>
               Create my 1st persona
             </Link>
           </div>
         </div>
+        <div>{JSON.stringify(data)}</div>
         <AddDialog />
         <SearchDialog />
       </div>

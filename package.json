@@ -29,6 +29,7 @@
     "cal-sans": "^1.0.1",
     "eslint": "8.48.0",
     "eslint-config-next": "13.4.19",
+    "jwt-decode": "^3.1.2",
     "next": "^13.4.19",
     "nove": "^2.0.1",
     "novel": "^0.1.17",
