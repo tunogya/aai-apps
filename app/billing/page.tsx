@@ -1,13 +1,9 @@
-import React from 'react';
-import { getSession, withPageAuthRequired } from '@auth0/nextjs-auth0/edge';
+import React from "react";
+import { getSession, withPageAuthRequired } from "@auth0/nextjs-auth0/edge";
 export default withPageAuthRequired(
   async function SSRPage() {
     const session = getSession();
-    return (
-      <div>
-        billing
-      </div>
-    );
+    return <div>billing</div>;
   },
-  { returnTo: '/billing' }
+  { returnTo: "/billing" },
 );

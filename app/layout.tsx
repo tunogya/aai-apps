@@ -1,24 +1,25 @@
-import './globals.css'
-import type {Metadata} from 'next'
+import "./globals.css";
+import type { Metadata } from "next";
 import "cal-sans";
-import {Inter} from 'next/font/google'
+import { Inter } from "next/font/google";
 import Script from "next/script";
-import {TailwindIndicator} from "./components/tailwind-indicator";
-import {UserProvider} from '@auth0/nextjs-auth0/client';
+import { TailwindIndicator } from "./components/tailwind-indicator";
+import { UserProvider } from "@auth0/nextjs-auth0/client";
 
-const inter = Inter({subsets: ['latin'], display: 'swap'})
+const inter = Inter({ subsets: ["latin"], display: "swap" });
 
 const title = "Abandon AI";
-const description = "Powered by OpenAI"
+const description = "Powered by OpenAI";
 
 export const metadata: Metadata = {
   title,
   description,
-  viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no',
-  applicationName: 'Abandon AI',
-  themeColor: '#fff',
+  viewport:
+    "width=device-width, initial-scale=1, shrink-to-fit=no,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no",
+  applicationName: "Abandon AI",
+  themeColor: "#fff",
   openGraph: {
-    images: '/apple-touch-icon.png',
+    images: "/apple-touch-icon.png",
     title,
     description,
   },
@@ -28,28 +29,34 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     creator: "@abandonai",
   },
-  manifest: '/manifest.json',
-}
+  manifest: "/manifest.json",
+};
 
-export default function RootLayout({children}: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en" className={inter.className}>
-    <UserProvider>
-      <body className={`h-screen w-screen`}>
-      <Script src={'https://www.googletagmanager.com/gtag/js?id=G-HT9Q8GW970'}/>
-      <Script id='google-tag-manager' strategy='afterInteractive'>
-        {`
+      <UserProvider>
+        <body className={`h-screen w-screen`}>
+          <Script
+            src={"https://www.googletagmanager.com/gtag/js?id=G-HT9Q8GW970"}
+          />
+          <Script id="google-tag-manager" strategy="afterInteractive">
+            {`
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
                 gtag('js', new Date());
                 
                 gtag('config', 'G-HT9Q8GW970');
               `}
-      </Script>
-      <TailwindIndicator/>
-      {children}
-      </body>
-    </UserProvider>
+          </Script>
+          <TailwindIndicator />
+          {children}
+        </body>
+      </UserProvider>
     </html>
-  )
+  );
 }

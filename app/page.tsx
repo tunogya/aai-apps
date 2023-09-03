@@ -1,15 +1,15 @@
-'use client';
-import {useUser} from '@auth0/nextjs-auth0/client';
-import {redirect} from "next/navigation";
+"use client";
+import { useUser } from "@auth0/nextjs-auth0/client";
+import { redirect } from "next/navigation";
 
 export default function Index() {
-  const {user, error, isLoading} = useUser();
+  const { user, error, isLoading } = useUser();
 
   if (isLoading) return <div>Loading...</div>;
 
   if (error) return redirect(`/auth/error?message=${error.message}`);
 
-  if (user) return redirect('/dashboard')
+  if (user) return redirect("/dashboard");
 
-  return redirect('/auth/login');
+  return redirect("/auth/login");
 }

@@ -27,5 +27,5 @@ export async function POST(req: Request) {
   // });
 
   // return NextResponse.json(blob);
-  return NextResponse.json({})
+  return NextResponse.json({});
 }

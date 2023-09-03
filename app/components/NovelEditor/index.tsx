@@ -1,9 +1,9 @@
-'use client'
+"use client";
 
 import { Editor } from "novel";
-import {useState} from "react";
+import { useState } from "react";
 
-export default function NovelEditor () {
+export default function NovelEditor() {
   const [saveStatus, setSaveStatus] = useState("Saved");
 
   return (
@@ -25,5 +25,5 @@ export default function NovelEditor () {
         }}
       />
     </div>
-  )
+  );
 }
