@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 export default function Page() {
   return (
     <div className="w-full h-full flex justify-center items-center flex-col bg-gray-50">
@@ -8,12 +9,12 @@ export default function Page() {
         </div>
         <div className="mb-2 text-center text-lg">Oops!</div>
         <div className="mb-5 text-center"></div>
-        <a
+        <Link
           href={"/auth/login"}
           className="flex w-full items-center justify-center gap-2"
         >
           Back
-        </a>
+        </Link>
       </div>
     </div>
   );

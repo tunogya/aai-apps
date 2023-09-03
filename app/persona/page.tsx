@@ -1,6 +1,7 @@
 import React from "react";
 import { getSession, withPageAuthRequired } from "@auth0/nextjs-auth0/edge";
 import { AddDialog } from "@/app/persona/AddDialog";
+import Link from "next/link";
 export default withPageAuthRequired(
   async function SSRPage() {
     const session = getSession();
@@ -12,7 +13,7 @@ export default withPageAuthRequired(
           </div>
           <div className={"flex space-x-3 text-sm py-2"}>
             <button className={"px-3 h-8 border rounded"}>Search</button>
-            <a
+            <Link
               href={"/persona?dialog=add"}
               className={
                 "px-3 h-8 border rounded bg-blue-600 text-white flex items-center justify-center cursor-pointer"
@@ -33,7 +34,7 @@ export default withPageAuthRequired(
                 <line x1="12" y1="5" x2="12" y2="19"></line>
                 <line x1="5" y1="12" x2="19" y2="12"></line>
               </svg>
-            </a>
+            </Link>
           </div>
         </div>
         <div
@@ -46,9 +47,12 @@ export default withPageAuthRequired(
             Creating your first persona mask is an exciting journey of
             self-discovery and empowerment.
             <br />
-            <a className={"underline font-medium text-blue-500"}>
+            <Link
+              href={"/persona?dialog=add"}
+              className={"underline font-medium text-blue-500"}
+            >
               Create my 1st persona
-            </a>
+            </Link>
           </div>
         </div>
         <AddDialog />
