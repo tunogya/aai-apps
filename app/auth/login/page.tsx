@@ -2,17 +2,17 @@ import Image from "next/image";
 
 export default function Page() {
   return (
-    <div className="w-full h-full flex justify-center items-center flex-col bg-gray-50">
-      <div className="w-96 flex flex-col justify-center items-center">
+    <div className="w-full h-full flex bg-white">
+      <div className="w-full h-full flex flex-col justify-center items-center py-4">
         <div className="mb-5">
-          <Image src={"/favicon.svg"} alt={""} width={60} height={60} />
+          <Image src={"/favicon.svg"} alt={""} width={40} height={40} />
         </div>
         <div className="mb-5 text-center"></div>
         <a
           href={"/api/auth/login"}
-          className="flex w-full items-center justify-center gap-2"
+          className="flex px-3 py-2 rounded items-center justify-center gap-2 bg-gray-200 font-medium"
         >
-          Login
+          Continue to Abandon AI
         </a>
       </div>
     </div>
