@@ -6,7 +6,9 @@ export default withPageAuthRequired(
     return (
       <div className={"flex flex-col gap-2 h-full w-full"}>
         <div className={"flex pb-3 border-b items-center justify-between"}>
-          <div className={"text-xl font-bold text-gray-800 py-2"}>Persona</div>
+          <div className={"text-xl font-semibold text-gray-800 py-2"}>
+            Persona
+          </div>
           <div className={"flex space-x-3 text-sm py-2"}>
             <button className={"px-3 h-8 border rounded"}>Search</button>
             <button
@@ -28,6 +30,21 @@ export default withPageAuthRequired(
                 <line x1="5" y1="12" x2="19" y2="12"></line>
               </svg>
             </button>
+          </div>
+        </div>
+        <div
+          className={
+            "h-full w-full flex flex-col items-center justify-center gap-3"
+          }
+        >
+          <div className={"font-medium"}>Welcome to Persona</div>
+          <div className={"max-w-xs text-sm font-light text-center"}>
+            Creating your first persona mask is an exciting journey of
+            self-discovery and empowerment.
+            <br />
+            <a className={"underline font-medium text-blue-500"}>
+              Create my 1st persona
+            </a>
           </div>
         </div>
       </div>

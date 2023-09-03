@@ -20,7 +20,7 @@ const userInfo = () => {
         )}
       </div>
       <div className={"w-full relative"}>
-        <div className={"text-sm font-semibold"}>{user?.name ?? "myself"}</div>
+        <div className={"text-sm font-medium"}>{user?.name ?? "myself"}</div>
         <div className={"text-xs"}>Estimated costs: $0.00</div>
         <a
           href={"/api/auth/logout"}
