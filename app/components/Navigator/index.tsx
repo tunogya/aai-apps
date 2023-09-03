@@ -25,8 +25,10 @@ export default async function Component() {
             <Image src={user?.picture!} height={32} width={32} alt={""} />
           )}
         </div>
-        <div className={"w-full relative"}>
-          <div className={"text-sm font-medium"}>{user?.name}</div>
+        <div className={"w-full relative overflow-hidden"}>
+          <div className={"text-sm font-medium mr-5 overflow-hidden truncate"}>
+            {user?.email}
+          </div>
           <div className={"text-xs"}>Estimated costs: $0.00</div>
           <a
             href={"/api/auth/logout"}
