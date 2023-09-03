@@ -7,7 +7,7 @@ export default function Component() {
   return (
     <div
       className={
-        "flex flex-col h-full w-[260px] min-w-[260px] bg-gray-100 text-gray-500 gap-6 relative"
+        "flex flex-col h-full w-[260px] min-w-[260px] bg-gray-100 text-gray-500 gap-6 relative border-r"
       }
     >
       <UserInfo />

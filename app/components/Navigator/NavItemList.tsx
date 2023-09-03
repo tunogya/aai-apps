@@ -5,12 +5,12 @@ import { useState } from "react";
 
 const menu = [
   {
-    name: "Dashboard",
-    path: "/dashboard",
+    name: "Persona",
+    path: "/persona",
     children: [],
   },
   {
-    name: "ChatGPT",
+    name: "Chat",
     path: "/chat",
     children: [],
   },
