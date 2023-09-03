@@ -1,18 +1,22 @@
 import React from "react";
 import { getSession, withPageAuthRequired } from "@auth0/nextjs-auth0/edge";
+import { AddDialog } from "@/app/persona/AddDialog";
 export default withPageAuthRequired(
   async function SSRPage() {
     const session = getSession();
     return (
-      <div className={"flex flex-col gap-2 h-full w-full"}>
+      <div className={"flex flex-col gap-2 h-full w-full relative"}>
         <div className={"flex pb-3 border-b items-center justify-between"}>
           <div className={"text-xl font-semibold text-gray-800 py-2"}>
             Persona
           </div>
           <div className={"flex space-x-3 text-sm py-2"}>
             <button className={"px-3 h-8 border rounded"}>Search</button>
-            <button
-              className={"px-3 h-8 border rounded bg-blue-600 text-white"}
+            <a
+              href={"/persona?dialog=add"}
+              className={
+                "px-3 h-8 border rounded bg-blue-600 text-white flex items-center justify-center cursor-pointer"
+              }
             >
               <svg
                 stroke="currentColor"
@@ -29,7 +33,7 @@ export default withPageAuthRequired(
                 <line x1="12" y1="5" x2="12" y2="19"></line>
                 <line x1="5" y1="12" x2="19" y2="12"></line>
               </svg>
-            </button>
+            </a>
           </div>
         </div>
         <div
@@ -47,6 +51,7 @@ export default withPageAuthRequired(
             </a>
           </div>
         </div>
+        <AddDialog />
       </div>
     );
   },
