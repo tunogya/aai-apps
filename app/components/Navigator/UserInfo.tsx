@@ -8,8 +8,12 @@ const userInfo = () => {
 
   return (
     <div className={'flex gap-2 mt-5 mx-3 p-2.5 group'}>
-      <div className={'rounded-full min-w-[32px] min-h-[32px] max-w-[32px] max-h-[32px] overflow-hidden'}>
-        <Image src={user?.picture!} height={32} width={32} alt={''} />
+      <div className={'rounded-full bg-white border border-gray-200 min-w-[32px] min-h-[32px] max-w-[32px] max-h-[32px] overflow-hidden'}>
+        {
+          user?.picture && (
+            <Image src={user?.picture!} height={32} width={32} alt={''} />
+          )
+        }
       </div>
       <div className={'w-full relative'}>
         <div className={'text-sm font-semibold'}>{user?.name ?? 'myself'}</div>
