@@ -89,7 +89,7 @@ export const AddDialog = () => {
               <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                 <Dialog.Title
                   as="h3"
-                  className="text-lg font-medium leading-6 text-gray-900 mb-5"
+                  className="text-lg font-medium leading-6 text-gray-500 mb-5"
                 >
                   Create Persona
                 </Dialog.Title>
@@ -111,7 +111,7 @@ export const AddDialog = () => {
                           defaultValue={0}
                           className={({ active, checked }) =>
                             `${
-                              checked ? "bg-blue-400 text-white" : "bg-white"
+                              checked ? "bg-gray-500 text-white" : "bg-white"
                             } relative flex cursor-pointer rounded px-5 py-3 border focus:outline-none`
                           }
                         >
@@ -177,14 +177,14 @@ export const AddDialog = () => {
                   <button
                     type="button"
                     onClick={router.back}
-                    className="inline-flex justify-center rounded-md border border-transparent px-4 py-2 text-sm font-medium text-blue-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                    className="inline-flex justify-center rounded-md border border-transparent px-4 py-2 text-sm font-medium text-gray-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                   >
                     Cancel
                   </button>
                   <button
                     type="button"
                     onClick={() => {}}
-                    className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                    className="inline-flex justify-center rounded-md border border-transparent bg-gray-100 px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                   >
                     Create
                   </button>

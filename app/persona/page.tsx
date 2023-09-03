@@ -3,14 +3,16 @@ import { getSession, withPageAuthRequired } from "@auth0/nextjs-auth0/edge";
 import { AddDialog } from "@/app/persona/AddDialog";
 import Link from "next/link";
 import { SearchDialog } from "@/app/persona/SearchDialog";
+
 export default withPageAuthRequired(
   async function SSRPage() {
     // @ts-ignore
     const { user } = await getSession();
+
     return (
       <div className={"flex flex-col gap-2 h-full w-full relative"}>
         <div className={"flex pb-3 border-b items-center justify-between"}>
-          <div className={"text-xl font-semibold text-gray-800 py-2"}>
+          <div className={"text-xl font-semibold text-gray-500 py-2"}>
             Persona
           </div>
           <div className={"flex space-x-3 text-sm py-2"}>
@@ -25,7 +27,7 @@ export default withPageAuthRequired(
             <Link
               href={"/persona?dialog=add"}
               className={
-                "px-3 h-8 border rounded bg-blue-600 text-white flex items-center justify-center cursor-pointer hover:bg-blue-500"
+                "px-3 h-8 border rounded bg-gray-600 text-white flex items-center justify-center cursor-pointer hover:bg-gray-500"
               }
             >
               <svg
@@ -58,7 +60,7 @@ export default withPageAuthRequired(
             <br />
             <Link
               href={"/persona?dialog=add"}
-              className={"underline font-medium text-blue-500"}
+              className={"underline font-medium text-gray-500"}
             >
               Create my 1st persona
             </Link>
