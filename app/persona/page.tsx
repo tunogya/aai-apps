@@ -50,5 +50,5 @@ export default withPageAuthRequired(
       </div>
     );
   },
-  { returnTo: "/dashboard" },
+  { returnTo: "/persona" },
 );
