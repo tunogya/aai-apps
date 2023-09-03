@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 export default function Index() {
   const { user, error, isLoading } = useUser();
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div></div>;
 
   if (error) return redirect(`/auth/error?message=${error.message}`);
 
