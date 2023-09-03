@@ -2,7 +2,7 @@ import NavigatorLayout from "../components/Navigator/NavigatorLayout";
 import { Metadata } from "next";
 export const runtime = "edge";
 
-const title = "Activity - Abandon AI";
+const title = "Activity - Abandon";
 const description = "Powered by OpenAI";
 
 export const metadata: Metadata = {
