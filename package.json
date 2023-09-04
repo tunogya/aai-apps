@@ -27,6 +27,7 @@
     "ai": "^2.2.11",
     "autoprefixer": "10.4.15",
     "cal-sans": "^1.0.1",
+    "dotenv": "^16.3.1",
     "eslint": "8.48.0",
     "eslint-config-next": "13.4.19",
     "jwt-decode": "^3.1.2",
@@ -41,9 +42,11 @@
     "swr": "^2.2.2",
     "tailwindcss": "3.3.3",
     "typescript": "5.2.2",
+    "uuid": "^9.0.0",
     "vercel": "^32.1.0"
   },
   "devDependencies": {
+    "@types/uuid": "^9.0.3",
     "husky": "^8.0.3",
     "lint-staged": "^14.0.1",
     "prettier": "3.0.3"

@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useUser, withPageAuthRequired } from "@auth0/nextjs-auth0/client";
+import { useRouter } from "next/navigation";
 
 const models = [
   {
@@ -56,15 +57,33 @@ const models = [
 
 const Form = () => {
   const { user } = useUser();
-  const [formData, setFormData] = useState<{
-    name: string;
-    model: string;
-    description: string | undefined | null;
-  }>({
+  const router = useRouter();
+  const [formData, setFormData] = useState({
     name: "",
     model: "gpt-3.5-turbo",
     description: "",
   });
+  const [status, setStatus] = useState("idle");
+
+  const add = async () => {
+    setStatus("loading");
+    try {
+      const data = await fetch(`/api/persona`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      }).then((res) => res.json());
+      setStatus("success");
+      router.push("/new/success");
+    } catch (e) {
+      setStatus("error");
+      setTimeout(() => {
+        setStatus("idle");
+      }, 3_000);
+    }
+  };
 
   return (
     <>
@@ -165,8 +184,17 @@ const Form = () => {
         NOTE: SERVICE FEE: +10%
       </div>
       <div className={"flex py-4 justify-end"}>
-        <button className={"bg-gray-500 text-white py-2 px-3 rounded text-sm"}>
-          Create persona
+        <button
+          className={
+            "bg-gray-800 text-white py-2 px-3 rounded text-sm disabled:bg-gray-200 disabled:text-gray-500 hover:opacity-80"
+          }
+          onClick={add}
+          disabled={!formData.name || !formData.model}
+        >
+          {status === "idle" && "Create persona"}
+          {status === "success" && "Success!"}
+          {status === "loading" && "Waiting..."}
+          {status === "error" && "Error!"}
         </button>
       </div>
     </>

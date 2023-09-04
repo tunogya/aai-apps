@@ -2,14 +2,15 @@ import { getSession, withApiAuthRequired } from "@auth0/nextjs-auth0";
 import { NextRequest, NextResponse } from "next/server";
 import ddbDocClient from "@/utils/ddbDocClient";
 import { PutCommand, QueryCommand } from "@aws-sdk/lib-dynamodb";
-import snowflakeClient from "@/utils/snowflakeClient";
+import { v4 as uuidv4 } from "uuid";
+
 const GET = withApiAuthRequired(async (req: NextRequest) => {
   const session = await getSession();
   const sub = session?.user.sub;
   const limit = Number(req?.nextUrl?.searchParams?.get("limit") || 20);
   const { Items, Count } = await ddbDocClient.send(
     new QueryCommand({
-      TableName: "abandonai-prod",
+      TableName: "abandonai-dev",
       KeyConditionExpression: "#pk = :pk AND begins_with(#sk, :sk)",
       ExpressionAttributeNames: {
         "#pk": "PK",
@@ -34,24 +35,31 @@ const GET = withApiAuthRequired(async (req: NextRequest) => {
 const POST = withApiAuthRequired(async (req: NextRequest) => {
   const session = await getSession();
   const sub = session?.user.sub;
-  // await ddbDocClient.send(
-  //   new PutCommand({
-  //     TableName: "abandonai-prod",
-  //     Item: {
-  //       PK: sub,
-  //       SK: `PERSONA#${snowflakeClient.getUniqueID().toString()}`,
-  //       p_name: "Tom",
-  //       model: "gpt-3.5-turbo",
-  //     },
-  //   }),
-  // );
-  // return NextResponse.json({
-  //   success: true,
-  // });
-
-  return NextResponse.json({
-    data: "POST",
-  });
+  const { name, model, description } = await req.json();
+  try {
+    const item = {
+      PK: sub,
+      SK: `PERSONA#${uuidv4()}`,
+      name,
+      model,
+      description,
+      created: Math.floor(Date.now() / 1000),
+    };
+    await ddbDocClient.send(
+      new PutCommand({
+        TableName: "abandonai-dev",
+        Item: item,
+      }),
+    );
+    return NextResponse.json({
+      success: true,
+      item,
+    });
+  } catch (e) {
+    return NextResponse.json({
+      error: "ddbDocClient error",
+    });
+  }
 });
 
 export { GET, POST };
