@@ -26,7 +26,7 @@ const ListPersona = () => {
             Creating your first persona mask is an exciting journey of
             self-discovery and empowerment.
             <br />
-            <Link href={"/persona?action=add"} className={"underline"}>
+            <Link href={"/new"} className={"underline"}>
               Create my 1st persona
             </Link>
           </div>

@@ -1,8 +1,6 @@
 import React from "react";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0/edge";
-import { AddDialog } from "@/app/persona/Dialog/AddDialog";
 import Link from "next/link";
-import { SearchDialog } from "@/app/persona/Dialog/SearchDialog";
 import ListPersona from "@/app/persona/ListPersona";
 
 export default withPageAuthRequired(
@@ -15,15 +13,7 @@ export default withPageAuthRequired(
           </div>
           <div className={"flex space-x-3 text-sm py-2"}>
             <Link
-              href={"/persona?action=search"}
-              className={
-                "px-3 h-8 border rounded flex items-center justify-center cursor-pointer hover:bg-gray-100"
-              }
-            >
-              Search
-            </Link>
-            <Link
-              href={"/persona?action=add"}
+              href={"/new"}
               className={
                 "px-3 h-8 border rounded bg-gray-600 text-white flex items-center justify-center cursor-pointer hover:bg-gray-500"
               }
@@ -47,8 +37,6 @@ export default withPageAuthRequired(
           </div>
         </div>
         <ListPersona />
-        <AddDialog />
-        <SearchDialog />
       </div>
     );
   },
