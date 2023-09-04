@@ -35,7 +35,18 @@ const ListPersona = () => {
     );
   }
 
-  return <div>{JSON.stringify(data)}</div>;
+  return (
+    <div className={"flex flex-col gap-2 text-sm pb-20"}>
+      {data.items.map((p: any, index: number) => (
+        <div key={index} className={"border p-2"}>
+          <div>NAME: {p?.name || "-"}</div>
+          <div>MODEL: {p?.model || "-"}</div>
+          <div>DESCRIPTION: {p?.description || "-"}</div>
+          <div>MODEL: {new Date(p?.created * 1000 || 0).toLocaleString()}</div>
+        </div>
+      ))}
+    </div>
+  );
 };
 
 export default ListPersona;

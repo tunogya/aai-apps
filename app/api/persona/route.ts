@@ -20,8 +20,6 @@ const GET = withApiAuthRequired(async (req: NextRequest) => {
         ":pk": sub,
         ":sk": "PERSONA#",
       },
-      ScanIndexForward: false,
-      ProjectionExpression: "PK, SK, title, created",
       Limit: limit,
     }),
   );

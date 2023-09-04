@@ -6,7 +6,7 @@ import ListPersona from "@/app/persona/ListPersona";
 export default withPageAuthRequired(
   async function SSRPage() {
     return (
-      <div className={"flex flex-col gap-2 h-full w-full relative"}>
+      <div className={"flex flex-col gap-2 h-full w-full"}>
         <div className={"flex pb-3 border-b items-center justify-between"}>
           <div className={"text-xl font-semibold text-gray-800 py-2"}>
             Persona
