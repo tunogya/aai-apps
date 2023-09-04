@@ -1,8 +1,8 @@
 import React from "react";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0/edge";
-import { AddDialog } from "@/app/persona/AddDialog";
+import { AddDialog } from "@/app/persona/Dialog/AddDialog";
 import Link from "next/link";
-import { SearchDialog } from "@/app/persona/SearchDialog";
+import { SearchDialog } from "@/app/persona/Dialog/SearchDialog";
 import ListPersona from "@/app/persona/ListPersona";
 
 export default withPageAuthRequired(
