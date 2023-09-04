@@ -1,5 +1,5 @@
 import React from "react";
-import { getSession, withPageAuthRequired } from "@auth0/nextjs-auth0/edge";
+import { withPageAuthRequired } from "@auth0/nextjs-auth0/edge";
 import { AddDialog } from "@/app/persona/AddDialog";
 import Link from "next/link";
 import { SearchDialog } from "@/app/persona/SearchDialog";
@@ -7,8 +7,6 @@ import ListPersona from "@/app/persona/ListPersona";
 
 export default withPageAuthRequired(
   async function SSRPage() {
-    const session = await getSession();
-
     return (
       <div className={"flex flex-col gap-2 h-full w-full relative"}>
         <div className={"flex pb-3 border-b items-center justify-between"}>
