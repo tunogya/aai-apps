@@ -75,7 +75,6 @@ const Form = () => {
         },
         body: JSON.stringify(formData),
       }).then((res) => res.json());
-      setStatus("success");
       router.push("/new/success");
     } catch (e) {
       setStatus("error");
@@ -192,7 +191,6 @@ const Form = () => {
           disabled={!formData.name || !formData.model}
         >
           {status === "idle" && "Create persona"}
-          {status === "success" && "Success!"}
           {status === "loading" && "Waiting..."}
           {status === "error" && "Error!"}
         </button>
