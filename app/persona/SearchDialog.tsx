@@ -6,7 +6,7 @@ import { Dialog, Transition } from "@headlessui/react";
 export const SearchDialog = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const isOpen = searchParams.get("dialog") === "search";
+  const isOpen = searchParams.get("action") === "search";
 
   return (
     <Transition appear show={isOpen} as={Fragment}>

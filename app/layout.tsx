@@ -5,6 +5,7 @@ import { Inter } from "next/font/google";
 import Script from "next/script";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
+import * as process from "process";
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 
@@ -17,6 +18,7 @@ export const metadata: Metadata = {
   viewport:
     "width=device-width, initial-scale=1, shrink-to-fit=no,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no",
   applicationName: "AbandonAI",
+  metadataBase: new URL(process.env.AUTH0_BASE_URL!),
   themeColor: "#fff",
   openGraph: {
     images: "/apple-touch-icon.png",

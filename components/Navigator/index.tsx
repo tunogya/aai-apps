@@ -4,8 +4,7 @@ import CompInfo from "@/components/Navigator/CompInfo";
 import { getSession } from "@auth0/nextjs-auth0/edge";
 
 export default async function Component() {
-  // @ts-ignore
-  const { user } = await getSession();
+  const session = await getSession();
 
   return (
     <div
@@ -21,13 +20,18 @@ export default async function Component() {
             "rounded-full bg-white border border-gray-200 min-w-[32px] min-h-[32px] max-w-[32px] max-h-[32px] overflow-hidden"
           }
         >
-          {user?.picture && (
-            <Image src={user?.picture!} height={32} width={32} alt={""} />
+          {session?.user?.picture && (
+            <Image
+              src={session?.user?.picture!}
+              height={32}
+              width={32}
+              alt={""}
+            />
           )}
         </div>
         <div className={"w-full relative overflow-hidden"}>
           <div className={"text-sm font-medium mr-5 overflow-hidden truncate"}>
-            {user?.email}
+            {session?.user?.email}
           </div>
           <div className={"text-xs"}>Estimated costs: $0.00</div>
           <a

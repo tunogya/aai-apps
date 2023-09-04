@@ -1,23 +1,13 @@
 import React from "react";
-import {
-  getSession,
-  withPageAuthRequired,
-  getAccessToken,
-} from "@auth0/nextjs-auth0/edge";
+import { getSession, withPageAuthRequired } from "@auth0/nextjs-auth0/edge";
 import { AddDialog } from "@/app/persona/AddDialog";
 import Link from "next/link";
 import { SearchDialog } from "@/app/persona/SearchDialog";
+import ListPersona from "@/app/persona/ListPersona";
 
 export default withPageAuthRequired(
   async function SSRPage() {
-    // @ts-ignore
-    const { user } = await getSession();
-    const { accessToken } = await getAccessToken();
-    const data = await fetch(`${process.env.AUTH0_BASE_URL}/api/persona`, {
-      headers: {
-        Authorization: accessToken!,
-      },
-    }).then((res) => res.json());
+    const session = await getSession();
 
     return (
       <div className={"flex flex-col gap-2 h-full w-full relative"}>
@@ -27,7 +17,7 @@ export default withPageAuthRequired(
           </div>
           <div className={"flex space-x-3 text-sm py-2"}>
             <Link
-              href={"/persona?dialog=search"}
+              href={"/persona?action=search"}
               className={
                 "px-3 h-8 border rounded flex items-center justify-center cursor-pointer hover:bg-gray-100"
               }
@@ -35,7 +25,7 @@ export default withPageAuthRequired(
               Search
             </Link>
             <Link
-              href={"/persona?dialog=add"}
+              href={"/persona?action=add"}
               className={
                 "px-3 h-8 border rounded bg-gray-600 text-white flex items-center justify-center cursor-pointer hover:bg-gray-500"
               }
@@ -58,22 +48,7 @@ export default withPageAuthRequired(
             </Link>
           </div>
         </div>
-        <div
-          className={
-            "h-full w-full flex flex-col items-center justify-center gap-3"
-          }
-        >
-          <div className={"font-medium text-gray-800"}>Welcome to Persona</div>
-          <div className={"max-w-xs text-sm font-light text-center"}>
-            Creating your first persona mask is an exciting journey of
-            self-discovery and empowerment.
-            <br />
-            <Link href={"/persona?dialog=add"} className={"underline"}>
-              Create my 1st persona
-            </Link>
-          </div>
-        </div>
-        <div>{JSON.stringify(data)}</div>
+        <ListPersona />
         <AddDialog />
         <SearchDialog />
       </div>

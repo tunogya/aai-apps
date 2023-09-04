@@ -58,7 +58,7 @@ export const AddDialog = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [model, setModel] = useState(models[0]);
-  const isOpen = searchParams.get("dialog") === "add";
+  const isOpen = searchParams.get("action") === "add";
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
