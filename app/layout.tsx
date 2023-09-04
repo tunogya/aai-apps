@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import "cal-sans";
 import { Inter } from "next/font/google";
 import Script from "next/script";
-import { TailwindIndicator } from "./components/tailwind-indicator";
+import { TailwindIndicator } from "@/components/tailwind-indicator";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });

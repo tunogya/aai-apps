@@ -1,6 +1,6 @@
 import Image from "next/image";
 import NavItemList from "./NavItemList";
-import CompInfo from "@/app/components/Navigator/CompInfo";
+import CompInfo from "@/components/Navigator/CompInfo";
 import { getSession } from "@auth0/nextjs-auth0/edge";
 
 export default async function Component() {

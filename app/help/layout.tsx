@@ -1,4 +1,4 @@
-import NavigatorLayout from "../components/Navigator/NavigatorLayout";
+import NavigatorLayout from "@/components/Navigator/NavigatorLayout";
 import { Metadata } from "next";
 export const runtime = "edge";
 

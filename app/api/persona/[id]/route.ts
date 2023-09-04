@@ -1,11 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
+import { getSession, withApiAuthRequired } from "@auth0/nextjs-auth0";
+import { NextResponse } from "next/server";
 
-export const GET = async (req: NextRequest) => {
-  try {
-    return NextResponse.json({
-      data: "Hello",
-    });
-  } catch (error) {
-    return NextResponse.json({ error: "error" }, { status: 500 });
-  }
-};
+const GET = withApiAuthRequired(async () => {
+  const session = await getSession();
+
+  return NextResponse.json(session?.user);
+});
+
+export { GET };
