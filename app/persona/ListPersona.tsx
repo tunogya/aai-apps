@@ -3,6 +3,7 @@
 import Link from "next/link";
 import React from "react";
 import useSWR from "swr";
+import moment from "moment";
 
 const ListPersona = () => {
   const { data, isLoading } = useSWR("/api/persona", (url) =>
@@ -58,7 +59,7 @@ const ListPersona = () => {
               <div className={"text-sm text-gray-500"}>{p.description}</div>
             )}
             <div className={"text-xs text-gray-500"}>
-              Created {new Date(p?.created * 1000 || 0).toLocaleString()}
+              Created {moment(new Date(p?.created * 1000 || 0)).fromNow()} {}
             </div>
           </div>
         ))}
