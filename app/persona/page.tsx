@@ -36,7 +36,9 @@ export default withPageAuthRequired(
             </Link>
           </div>
         </div>
-        <ListPersona />
+        <div className={"max-w-3xl"}>
+          <ListPersona />
+        </div>
       </div>
     );
   },

@@ -40,12 +40,25 @@ const ListPersona = () => {
       {data.items
         .sort((a: any, b: any) => b.created - a.created)
         .map((p: any, index: number) => (
-          <div key={index} className={"border p-2"}>
-            <div>NAME: {p?.name || "-"}</div>
-            <div>MODEL: {p?.model || "-"}</div>
-            <div>DESCRIPTION: {p?.description || "-"}</div>
-            <div>
-              MODEL: {new Date(p?.created * 1000 || 0).toLocaleString()}
+          <div
+            key={index}
+            className={"border-b px-2 py-4 flex flex-col space-y-3"}
+          >
+            <div className={"flex items-center space-x-2"}>
+              <div className={"text-xl font-semibold"}>{p?.name || "-"}</div>
+              <div
+                className={
+                  "px-1.5 py-0.5 border rounded-full text-xs text-gray-500"
+                }
+              >
+                {p?.model || "-"}
+              </div>
+            </div>
+            {p?.description && (
+              <div className={"text-sm text-gray-500"}>{p.description}</div>
+            )}
+            <div className={"text-xs text-gray-500"}>
+              Created {new Date(p?.created * 1000 || 0).toLocaleString()}
             </div>
           </div>
         ))}
