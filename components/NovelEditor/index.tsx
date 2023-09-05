@@ -12,10 +12,13 @@ export default function NovelEditor() {
         {saveStatus}
       </div>
       <Editor
-        className={""}
+        className={
+          "relative min-h-[500px] w-full border-stone-200 bg-white sm:mb-[calc(20vh)]"
+        }
         onUpdate={() => {
           setSaveStatus("Unsaved");
         }}
+        defaultValue={"Hello!"}
         onDebouncedUpdate={() => {
           setSaveStatus("Saving...");
           // Simulate a delay in saving.
