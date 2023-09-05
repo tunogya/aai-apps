@@ -6,19 +6,29 @@ import { GetCommand } from "@aws-sdk/lib-dynamodb";
 const GET = withApiAuthRequired(async (req: NextRequest, { params }) => {
   const session = await getSession();
   const sub = session?.user.sub;
-  const id = params?.id;
-  // const data = await ddbDocClient.send(new GetCommand({
-  //   TableName: 'abandonai-dev',
-  //   Key: {
-  //     PK: sub,
-  //     SK: `PERSONA#`
-  //   }
-  // }))
-
-  return NextResponse.json({
-    sub: sub,
-    p_id: id,
-  });
+  try {
+    const { Item } = await ddbDocClient.send(
+      new GetCommand({
+        TableName: "abandonai-dev",
+        Key: {
+          PK: sub,
+          SK: `PERSONA#${params?.id}`,
+        },
+      }),
+    );
+    return NextResponse.json({
+      item: Item,
+    });
+  } catch (e) {
+    return NextResponse.json(
+      {
+        error: "something went wrong",
+      },
+      {
+        status: 500,
+      },
+    );
+  }
 });
 
 const PATCH = withApiAuthRequired(async (req: NextRequest) => {
