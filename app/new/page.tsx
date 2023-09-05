@@ -15,7 +15,7 @@ export default withPageAuthRequired(
               How to create persona?
             </div>
           </div>
-          <div className={"py-2 text-sm italic text-gray-500"}>
+          <div className={"py-2 text-xs italic text-gray-500"}>
             Required fields are marked with an asterisk (*).
           </div>
           <Form />
