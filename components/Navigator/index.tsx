@@ -9,7 +9,7 @@ export default async function Component() {
   return (
     <div
       className={
-        "flex flex-col h-full w-[260px] min-w-[260px] bg-[#fafafa] text-gray-500 gap-6 relative border-r"
+        "flex flex-col h-full w-[260px] min-w-[260px] text-gray-500 gap-6 relative border-r"
       }
     >
       <div
