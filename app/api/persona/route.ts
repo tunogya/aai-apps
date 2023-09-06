@@ -8,26 +8,41 @@ const GET = withApiAuthRequired(async (req: NextRequest) => {
   const session = await getSession();
   const sub = session?.user.sub;
   const limit = Number(req?.nextUrl?.searchParams?.get("limit") || 20);
-  const { Items, Count } = await ddbDocClient.send(
-    new QueryCommand({
-      TableName: "abandonai-dev",
-      KeyConditionExpression: "#pk = :pk AND begins_with(#sk, :sk)",
-      ExpressionAttributeNames: {
-        "#pk": "PK",
-        "#sk": "SK",
+  try {
+    const { Items, Count } = await ddbDocClient.send(
+      new QueryCommand({
+        TableName: "abandonai-dev",
+        KeyConditionExpression: "#pk = :pk AND begins_with(#sk, :sk)",
+        ProjectionExpression: "#pk, #sk, #name, #model, #description, #created",
+        ExpressionAttributeNames: {
+          "#pk": "PK",
+          "#sk": "SK",
+          "#name": "name",
+          "#model": "model",
+          "#description": "description",
+          "#created": "created",
+        },
+        ExpressionAttributeValues: {
+          ":pk": sub,
+          ":sk": "PERSONA#",
+        },
+        Limit: limit,
+      }),
+    );
+    return NextResponse.json({
+      items: Items,
+      count: Count,
+    });
+  } catch (e) {
+    return NextResponse.json(
+      {
+        error: "ddbDocClient error",
       },
-      ExpressionAttributeValues: {
-        ":pk": sub,
-        ":sk": "PERSONA#",
+      {
+        status: 500,
       },
-      Limit: limit,
-    }),
-  );
-
-  return NextResponse.json({
-    items: Items,
-    count: Count,
-  });
+    );
+  }
 });
 
 const POST = withApiAuthRequired(async (req: NextRequest) => {
