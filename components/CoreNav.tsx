@@ -10,6 +10,14 @@ const menu = [
     path: "/chat",
     name: "Chat",
   },
+  {
+    path: "/write",
+    name: "Write",
+  },
+  {
+    path: "/billing",
+    name: "Billing",
+  },
 ];
 
 const CoreNav: FC<{

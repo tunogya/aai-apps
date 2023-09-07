@@ -6,7 +6,7 @@ export const runtime = "edge";
 export default withPageAuthRequired(
   async function SSRPage() {
     const session = await getSession();
-    return <div>Chat</div>;
+    return <div>Billing</div>;
   },
   { returnTo: "/dashboard" },
 );

@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { ReactNode } from "react";
-import CoreNav from "@/components/nav/CoreNav";
-import RecentNav from "@/components/nav/RecentNav";
+import CoreNav from "@/components/CoreNav";
+import RecentNav from "@/components/RecentNav";
 import Dock from "@/components/Dock";
 
 export const runtime = "edge";

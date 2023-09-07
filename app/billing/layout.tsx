@@ -6,7 +6,7 @@ import Dock from "@/components/Dock";
 
 export const runtime = "edge";
 
-const title = "Chat - AbandonAI";
+const title = "Billing - AbandonAI";
 const description = "Powered by OpenAI";
 
 export const metadata: Metadata = {
@@ -24,7 +24,7 @@ export default function Layout(props: { children: ReactNode }) {
           }
         >
           <div className={"ml-6"}>account</div>
-          <CoreNav active={"/chat"} />
+          <CoreNav active={"/billing"} />
           <RecentNav />
         </div>
         <div className={"w-full px-8 py-4 mr-10"}>{props.children}</div>
