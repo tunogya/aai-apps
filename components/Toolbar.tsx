@@ -66,7 +66,9 @@ const Toolbar = () => {
             className={`${enabled ? "bg-purple-500" : "bg-gray-200"}
           relative inline-flex h-[14px] w-[24px] shrink-0 cursor-pointer rounded-full border border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
           >
-            <span className="sr-only">GPT-4 Mode</span>
+            <span className="sr-only">
+              {enabled ? "GPT-4 Mode" : "GPT-3.5 Mode"}
+            </span>
             <span
               aria-hidden="true"
               className={`${enabled ? "translate-x-2.5" : "translate-x-0"}
