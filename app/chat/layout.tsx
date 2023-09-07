@@ -1,8 +1,8 @@
 import { Metadata } from "next";
 import { ReactNode } from "react";
-import Link from "next/link";
 import CoreNav from "@/components/nav/CoreNav";
 import RecentNav from "@/components/nav/RecentNav";
+import Dock from "@/components/Dock";
 
 export const runtime = "edge";
 
@@ -29,14 +29,7 @@ export default function Layout(props: { children: ReactNode }) {
         </div>
         <div className={"w-full px-8 py-4 mr-10"}>{props.children}</div>
       </div>
-      <div
-        className={
-          "absolute right-0 top-0 h-full w-10 border-l flex flex-col items-center justify-center space-y-6"
-        }
-      >
-        <div className={"h-6 w-6 bg-red-500 rounded"}>1</div>
-        <div className={"h-6 w-6 bg-red-500 rounded"}>2</div>
-      </div>
+      <Dock />
     </div>
   );
 }
