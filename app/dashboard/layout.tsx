@@ -4,6 +4,7 @@ import CoreNav from "@/components/CoreNav";
 import RecentNav from "@/components/RecentNav";
 import Dock from "@/components/Dock";
 import Account from "@/components/Account";
+import Toolbar from "@/components/Toolbar";
 
 export const runtime = "edge";
 
@@ -28,7 +29,10 @@ export default function Layout(props: { children: ReactNode }) {
           <CoreNav active={"/dashboard"} />
           <RecentNav />
         </div>
-        <div className={"w-full px-8 py-4"}>{props.children}</div>
+        <div className={"w-full px-8 mr-10 space-y-2"}>
+          <Toolbar />
+          {props.children}
+        </div>
       </div>
       <Dock />
     </div>
