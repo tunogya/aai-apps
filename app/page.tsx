@@ -9,7 +9,7 @@ export default function Index() {
 
   if (error) return redirect(`/auth/error?message=${error.message}`);
 
-  if (user) return redirect("/persona");
+  if (user) return redirect("/dashboard");
 
   return redirect("/auth/login");
 }

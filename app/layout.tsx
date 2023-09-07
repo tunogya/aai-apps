@@ -3,9 +3,10 @@ import type { Metadata } from "next";
 import "cal-sans";
 import { Inter } from "next/font/google";
 import Script from "next/script";
-import { TailwindIndicator } from "@/components/tailwind-indicator";
+import { TailwindIndicator } from "@/components/TailwindIndicator";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
 import * as process from "process";
+import { ReactNode } from "react";
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 
@@ -34,11 +35,7 @@ export const metadata: Metadata = {
   manifest: "/manifest.json",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout(props: { children: ReactNode }) {
   return (
     <html lang="en" className={inter.className}>
       <UserProvider>
@@ -56,7 +53,7 @@ export default function RootLayout({
               `}
           </Script>
           <TailwindIndicator />
-          {children}
+          {props.children}
         </body>
       </UserProvider>
     </html>

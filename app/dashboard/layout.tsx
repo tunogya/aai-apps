@@ -6,7 +6,7 @@ import RecentNav from "@/components/nav/RecentNav";
 
 export const runtime = "edge";
 
-const title = "Chat - AbandonAI";
+const title = "Dashboard - AbandonAI";
 const description = "Powered by OpenAI";
 
 export const metadata: Metadata = {
@@ -24,7 +24,7 @@ export default function Layout(props: { children: ReactNode }) {
           }
         >
           <div className={"ml-6"}>account</div>
-          <CoreNav active={"/chat"} />
+          <CoreNav active={"/dashboard"} />
           <RecentNav />
         </div>
         <div className={"w-full px-8 py-4"}>{props.children}</div>
