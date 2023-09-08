@@ -24,9 +24,9 @@ const CoreNav: FC<{
   active: string;
 }> = (props) => {
   return (
-    <div className={"space-y-2"}>
+    <div className={""}>
       {menu.map((item, index) => (
-        <div className={"flex space-x-2 items-center"} key={index}>
+        <div className={"flex items-center"} key={index}>
           <div
             className={`bg-white w-4 h-5 ${
               props.active === item.path ? "border-l-2 border-blue-600" : ""
@@ -34,7 +34,7 @@ const CoreNav: FC<{
           ></div>
           <Link
             href={item.path}
-            className={`text-sm font-semibold ${
+            className={`text-sm font-semibold hover:bg-gray-100 w-full p-2 rounded ${
               props.active === item.path ? "text-blue-600" : "text-gray-800"
             }`}
           >

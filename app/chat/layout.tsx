@@ -14,11 +14,15 @@ export const metadata: Metadata = {
   description,
 };
 
-export default function Layout(props: { children: ReactNode }) {
+export default function Layout(props: {
+  children: ReactNode;
+  secondaryNav: ReactNode;
+}) {
   return (
     <div className={"h-full w-full flex relative justify-center"}>
       <div className={"max-w-[1920px] w-full h-full flex"}>
         <PrimaryNav active={"/chat"} />
+        {props.secondaryNav}
         <div className={"w-full px-8 mr-10 space-y-2"}>
           <Toolbar />
           {props.children}

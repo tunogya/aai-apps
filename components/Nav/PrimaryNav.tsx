@@ -8,7 +8,9 @@ const PrimaryNav: FC<{
 }> = (props) => {
   return (
     <div
-      className={"w-full max-w-[260px] h-full border-r px-8 py-4 space-y-10"}
+      className={
+        "w-full max-w-[260px] shrink-0 h-full border-r px-8 py-4 space-y-10"
+      }
     >
       <Account />
       <CoreNav active={props.active} />
