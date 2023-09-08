@@ -1,9 +1,17 @@
 "use client";
 import { Switch } from "@headlessui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Toolbar = () => {
-  const [enabled, setEnabled] = useState(false);
+  const [gpt4model, setGpt4model] = useState(false);
+
+  useEffect(() => {
+    if (gpt4model) {
+      sessionStorage.setItem("model", "gpt4");
+    } else {
+      sessionStorage.removeItem("model");
+    }
+  }, [gpt4model]);
 
   return (
     <div className={"h-[60px] w-full flex items-center justify-between"}>
@@ -20,14 +28,14 @@ const Toolbar = () => {
           className={
             "flex items-center space-x-2 hover:bg-gray-100 p-2 rounded cursor-pointer select-none"
           }
-          onClick={() => setEnabled(!enabled)}
+          onClick={() => setGpt4model(!gpt4model)}
         >
           <div
             className={`flex space-x-1 text-sm ${
-              enabled ? "text-purple-500" : "text-gray-800"
+              gpt4model ? "text-purple-500" : "text-gray-800"
             }`}
           >
-            {enabled ? (
+            {gpt4model && (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 16 16"
@@ -42,36 +50,21 @@ const Toolbar = () => {
                   fill="currentColor"
                 ></path>
               </svg>
-            ) : (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 16 16"
-                fill="none"
-                className="h-4 w-4 transition-colors text-brand-green group-hover/button:text-brand-green"
-                width="16"
-                height="16"
-                strokeWidth="2"
-              >
-                <path
-                  d="M9.586 1.526A.6.6 0 0 0 8.553 1l-6.8 7.6a.6.6 0 0 0 .447 1h5.258l-1.044 4.874A.6.6 0 0 0 7.447 15l6.8-7.6a.6.6 0 0 0-.447-1H8.542l1.044-4.874Z"
-                  fill="currentColor"
-                ></path>
-              </svg>
             )}
-            <div>{enabled ? "GPT-4 Mode" : "GPT-3.5 Mode"}</div>
+            <div>{gpt4model ? "GPT-4 Model" : "GPT-3.5 Model"}</div>
           </div>
           <Switch
-            checked={enabled}
+            checked={gpt4model}
             // onChange={setEnabled}
-            className={`${enabled ? "bg-purple-500" : "bg-gray-200"}
+            className={`${gpt4model ? "bg-purple-500" : "bg-gray-200"}
           relative inline-flex h-[14px] w-[24px] shrink-0 cursor-pointer rounded-full border border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
           >
             <span className="sr-only">
-              {enabled ? "GPT-4 Mode" : "GPT-3.5 Mode"}
+              {gpt4model ? "GPT-4 Model" : "GPT-3.5 Model"}
             </span>
             <span
               aria-hidden="true"
-              className={`${enabled ? "translate-x-2.5" : "translate-x-0"}
+              className={`${gpt4model ? "translate-x-2.5" : "translate-x-0"}
             pointer-events-none inline-block h-[12px] w-[12px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}
             />
           </Switch>
