@@ -17,16 +17,22 @@ const PrimaryNav: FC<{
       <CoreNav active={props.active} />
       <RecentNav />
 
-      <div
-        className={"absolute bottom-8 left-8 w-full flex items-center gap-3"}
-      >
+      <div className={"absolute bottom-8 left-8 flex items-center gap-3"}>
         <Image src={"/favicon.svg"} alt={""} height={36} width={36} />
         <div>
           <div className={"text-xs text-gray-800"}>
             ©{new Date().getFullYear()} ABANDON INC.,
           </div>
           <div className={"text-xs text-gray-500 font-light"}>
-            Powered by OpenAI.
+            Powered by{" "}
+            <a
+              href={"https://openai.com"}
+              target={"_blank"}
+              className={"underline"}
+            >
+              OpenAI
+            </a>
+            .
           </div>
         </div>
       </div>
