@@ -6,7 +6,11 @@ export const runtime = "edge";
 export default withPageAuthRequired(
   async function SSRPage() {
     const session = await getSession();
-    return <div>Chat</div>;
+    return (
+      <div className={"w-full px-8"}>
+        <div>Chat list</div>
+      </div>
+    );
   },
   { returnTo: "/dashboard" },
 );
