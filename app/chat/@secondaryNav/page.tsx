@@ -1,10 +1,10 @@
 export const runtime = "edge";
 const SecondaryNav = () => {
   return (
-    <div className={"w-full p-4 flex flex-col gap-4"}>
+    <div className={"w-full p-2 flex flex-col gap-3"}>
       <div
         className={
-          "flex gap-2 items-center border hover:bg-gray-100 px-3 py-2 rounded cursor-pointer select-none"
+          "flex items-center border hover:bg-gray-100 p-3 rounded cursor-pointer select-none"
         }
       >
         <div className={"w-6 shrink-0"}>
@@ -24,12 +24,12 @@ const SecondaryNav = () => {
             <line x1="5" y1="12" x2="19" y2="12"></line>
           </svg>
         </div>
-        <div>New Chat</div>
+        <div className={"text-sm"}>New Chat</div>
       </div>
-      <div className={"h-full w-full"}>
+      <div className={"h-full w-full overflow-y-auto"}>
         <div
           className={
-            "flex w-full items-center gap-2 hover:bg-gray-100 px-3 py-2 rounded cursor-pointer select-none"
+            "flex w-full items-center hover:bg-gray-100 px-3 py-2 rounded cursor-pointer select-none"
           }
         >
           <div className={"w-6 shrink-0"}>
@@ -48,11 +48,11 @@ const SecondaryNav = () => {
               <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
             </svg>
           </div>
-          <div className={"truncate"}>Hellodncnvlsnvms;dmlm;mw;fmwvvfm,s</div>
+          <div className={"truncate text-sm"}>A</div>
         </div>
         <div
           className={
-            "flex items-center gap-2 hover:bg-gray-100 px-3 py-2 rounded cursor-pointer select-none"
+            "flex w-full items-center hover:bg-gray-100 px-3 py-2 rounded cursor-pointer select-none"
           }
         >
           <div className={"w-6 shrink-0"}>
@@ -71,7 +71,7 @@ const SecondaryNav = () => {
               <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
             </svg>
           </div>
-          <div>Hello</div>
+          <div className={"truncate text-sm"}>B</div>
         </div>
       </div>
     </div>
