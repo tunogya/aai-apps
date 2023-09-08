@@ -8,11 +8,11 @@ const menu = [
   },
   {
     path: "/chat",
-    name: "Chat",
+    name: "ChatGPT",
   },
   {
-    path: "/write",
-    name: "Write",
+    path: "/notebook",
+    name: "Whisperer",
   },
   {
     path: "/billing",

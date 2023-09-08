@@ -6,7 +6,7 @@ import PrimaryNav from "@/components/Nav/PrimaryNav";
 
 export const runtime = "edge";
 
-const title = "Write - AbandonAI";
+const title = "Whisperer - AbandonAI";
 const description = "Powered by OpenAI";
 
 export const metadata: Metadata = {
@@ -18,7 +18,7 @@ export default function Layout(props: { children: ReactNode }) {
   return (
     <div className={"h-full w-full flex relative justify-center"}>
       <div className={"max-w-[1920px] w-full h-full flex"}>
-        <PrimaryNav active={"/write"} />
+        <PrimaryNav active={"/notebook"} />
         <div className={"w-full px-8 mr-10 space-y-2"}>
           <Toolbar />
           {props.children}
