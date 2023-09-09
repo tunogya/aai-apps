@@ -14,7 +14,9 @@ const Toolbar = () => {
   }, [gpt4model]);
 
   return (
-    <div className={`h-[60px] w-full flex items-center justify-between px-8`}>
+    <div
+      className={`h-[60px] w-full flex items-center justify-between px-8 border-b`}
+    >
       <div className={"lg:w-[240px] xl:w-[300px]"}>
         <input
           placeholder={"Search"}

@@ -8,7 +8,11 @@ export default withPageAuthRequired(
     const session = await getSession();
     return (
       <div className={"w-full flex-1 min-w-[400px]"}>
-        <div className={"absolute h-[calc(100vh-60px)] w-full overflow-y-auto"}>
+        <div
+          className={
+            "absolute h-[calc(100vh-60px)] w-full overflow-y-auto pb-40"
+          }
+        >
           <div
             className={
               "flex border-t px-8 py-4 bg-gray-100 items-center justify-center"
@@ -132,7 +136,7 @@ export default withPageAuthRequired(
         </div>
         <div
           className={
-            "absolute bottom-8 left-0 w-full px-8 xl:px-20 flex justify-center"
+            "absolute bottom-0 pb-8 left-0 w-full px-8 xl:px-20 flex justify-center bg-gradient-to-b from-white/10 to-white"
           }
         >
           <input
