@@ -20,10 +20,10 @@ export default function Layout(props: {
 }) {
   return (
     <div className={"h-full w-full flex relative justify-center"}>
-      <div className={"max-w-[1920px] w-full h-full flex"}>
+      <div className={"max-w-[1920px] w-full h-full flex overflow-hidden"}>
         <PrimaryNav active={"/chat"} />
         {props.secondaryNav}
-        <div className={"w-full mr-10 space-y-2"}>
+        <div className={"w-full h-full mr-10 relative"}>
           <Toolbar />
           {props.children}
         </div>

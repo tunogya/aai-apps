@@ -19,7 +19,7 @@ export default function Layout(props: { children: ReactNode }) {
     <div className={"h-full w-full flex relative justify-center"}>
       <div className={"max-w-[1920px] w-full h-full flex"}>
         <PrimaryNav active={"/notebook"} />
-        <div className={"w-full mr-10 space-y-2"}>
+        <div className={"w-full mr-10"}>
           <Toolbar />
           {props.children}
         </div>
