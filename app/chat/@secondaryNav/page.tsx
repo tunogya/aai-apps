@@ -1,7 +1,11 @@
 export const runtime = "edge";
 const SecondaryNav = () => {
   return (
-    <div className={"w-full p-2 flex flex-col gap-3"}>
+    <div
+      className={
+        "w-[300px] shrink-0 h-full border-r space-y-10 overflow-y-auto p-2 flex flex-col gap-3"
+      }
+    >
       <div
         className={
           "flex items-center border hover:bg-gray-100 p-3 rounded cursor-pointer select-none"
