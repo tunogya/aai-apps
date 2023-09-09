@@ -7,6 +7,7 @@ import { TailwindIndicator } from "@/components/TailwindIndicator";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
 import * as process from "process";
 import { ReactNode } from "react";
+import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 
@@ -54,6 +55,7 @@ export default function RootLayout(props: { children: ReactNode }) {
           </Script>
           <TailwindIndicator />
           {props.children}
+          <Analytics />
         </body>
       </UserProvider>
     </html>
