@@ -11,6 +11,7 @@ export default function Page() {
         <div className="mb-5 text-center"></div>
         <Link
           href={"/auth/login"}
+          prefetch={true}
           className="flex w-full items-center justify-center gap-2"
         >
           Back
