@@ -7,7 +7,7 @@ export default withPageAuthRequired(
   async function SSRPage() {
     const session = await getSession();
     return (
-      <div className={"w-full px-8"}>
+      <div className={"w-full px-8 min-w-[400px]"}>
         <div>Chat list</div>
       </div>
     );

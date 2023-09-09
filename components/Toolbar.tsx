@@ -15,7 +15,7 @@ const Toolbar = () => {
 
   return (
     <div className={`h-[60px] w-full flex items-center justify-between px-8`}>
-      <div className={"max-w-xl w-full"}>
+      <div className={"lg:w-[240px] xl:w-[300px]"}>
         <input
           placeholder={"Search"}
           className={
@@ -51,7 +51,9 @@ const Toolbar = () => {
                 ></path>
               </svg>
             )}
-            <div>{gpt4model ? "GPT-4 Model" : "GPT-3.5 Model"}</div>
+            <div className={"whitespace-nowrap"}>
+              {gpt4model ? "GPT-4 Model" : "GPT-3.5 Model"}
+            </div>
           </div>
           <Switch
             checked={gpt4model}
