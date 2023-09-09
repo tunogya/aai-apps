@@ -1,8 +1,8 @@
 "use client";
 import { Switch } from "@headlessui/react";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 
-const Toolbar = () => {
+const Toolbar: FC<{ border?: boolean }> = (props) => {
   const [gpt4model, setGpt4model] = useState(false);
 
   useEffect(() => {
@@ -15,7 +15,9 @@ const Toolbar = () => {
 
   return (
     <div
-      className={`h-[60px] w-full flex items-center justify-between px-8 border-b`}
+      className={`h-[60px] w-full flex items-center justify-between px-8 ${
+        props.border ? "border-b" : ""
+      }`}
     >
       <div className={"lg:w-[240px] xl:w-[300px]"}>
         <input

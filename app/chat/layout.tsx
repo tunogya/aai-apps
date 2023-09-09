@@ -24,7 +24,7 @@ export default function Layout(props: {
         <PrimaryNav active={"/chat"} />
         {props.secondaryNav}
         <div className={"w-full h-full mr-10 relative"}>
-          <Toolbar />
+          <Toolbar border={true} />
           {props.children}
         </div>
       </div>
