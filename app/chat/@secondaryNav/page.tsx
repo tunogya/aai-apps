@@ -3,12 +3,12 @@ const SecondaryNav = () => {
   return (
     <div
       className={
-        "w-[300px] shrink-0 h-full border-r overflow-y-auto p-2 flex flex-col gap-3"
+        "w-[300px] shrink-0 h-full border-r overflow-y-auto flex flex-col"
       }
     >
       <div
         className={
-          "flex items-center border hover:bg-gray-100 p-3 rounded cursor-pointer select-none"
+          "flex items-center border hover:bg-gray-100 p-3 rounded cursor-pointer select-none m-2"
         }
       >
         <div className={"w-6 shrink-0"}>
@@ -30,7 +30,7 @@ const SecondaryNav = () => {
         </div>
         <div className={"text-sm"}>New Chat</div>
       </div>
-      <div className={"h-full w-full overflow-y-auto"}>
+      <div className={"h-full overflow-y-auto pl-2 pr-4"}>
         <div
           className={
             "flex w-full items-center hover:bg-gray-100 px-3 py-2 rounded cursor-pointer select-none"

@@ -14,7 +14,7 @@ export default withPageAuthRequired(
               "flex border-t px-8 py-4 bg-gray-100 items-center justify-center"
             }
           >
-            <div className={"max-w-3xl w-full bg-red-500"}>Chat list</div>
+            <div className={"max-w-3xl w-full "}>Chat list</div>
           </div>
           <div
             className={"flex border-t px-8 py-4 items-center justify-center"}
@@ -26,7 +26,7 @@ export default withPageAuthRequired(
               "flex border-t px-8 py-4 bg-gray-100 items-center justify-center"
             }
           >
-            <div className={"max-w-3xl w-full bg-red-500"}>Chat list</div>
+            <div className={"max-w-3xl w-full "}>Chat list</div>
           </div>
           <div
             className={"flex border-t px-8 py-4 items-center justify-center"}
@@ -38,7 +38,7 @@ export default withPageAuthRequired(
               "flex border-t px-8 py-4 bg-gray-100 items-center justify-center"
             }
           >
-            <div className={"max-w-3xl w-full bg-red-500"}>Chat list</div>
+            <div className={"max-w-3xl w-full "}>Chat list</div>
           </div>
           <div
             className={"flex border-t px-8 py-4 items-center justify-center"}
@@ -50,7 +50,7 @@ export default withPageAuthRequired(
               "flex border-t px-8 py-4 bg-gray-100 items-center justify-center"
             }
           >
-            <div className={"max-w-3xl w-full bg-red-500"}>Chat list</div>
+            <div className={"max-w-3xl w-full "}>Chat list</div>
           </div>
           <div
             className={"flex border-t px-8 py-4 items-center justify-center"}
@@ -62,7 +62,7 @@ export default withPageAuthRequired(
               "flex border-t px-8 py-4 bg-gray-100 items-center justify-center"
             }
           >
-            <div className={"max-w-3xl w-full bg-red-500"}>Chat list</div>
+            <div className={"max-w-3xl w-full "}>Chat list</div>
           </div>
           <div
             className={"flex border-t px-8 py-4 items-center justify-center"}
@@ -74,7 +74,7 @@ export default withPageAuthRequired(
               "flex border-t px-8 py-4 bg-gray-100 items-center justify-center"
             }
           >
-            <div className={"max-w-3xl w-full bg-red-500"}>Chat list</div>
+            <div className={"max-w-3xl w-full "}>Chat list</div>
           </div>
           <div
             className={"flex border-t px-8 py-4 items-center justify-center"}
@@ -86,7 +86,7 @@ export default withPageAuthRequired(
               "flex border-t px-8 py-4 bg-gray-100 items-center justify-center"
             }
           >
-            <div className={"max-w-3xl w-full bg-red-500"}>Chat list</div>
+            <div className={"max-w-3xl w-full "}>Chat list</div>
           </div>
           <div
             className={"flex border-t px-8 py-4 items-center justify-center"}
@@ -98,7 +98,7 @@ export default withPageAuthRequired(
               "flex border-t px-8 py-4 bg-gray-100 items-center justify-center"
             }
           >
-            <div className={"max-w-3xl w-full bg-red-500"}>Chat list</div>
+            <div className={"max-w-3xl w-full "}>Chat list</div>
           </div>
           <div
             className={"flex border-t px-8 py-4 items-center justify-center"}
@@ -110,7 +110,7 @@ export default withPageAuthRequired(
               "flex border-t px-8 py-4 bg-gray-100 items-center justify-center"
             }
           >
-            <div className={"max-w-3xl w-full bg-red-500"}>Chat list</div>
+            <div className={"max-w-3xl w-full "}>Chat list</div>
           </div>
           <div
             className={"flex border-t px-8 py-4 items-center justify-center"}
@@ -122,7 +122,7 @@ export default withPageAuthRequired(
               "flex border-t px-8 py-4 bg-gray-100 items-center justify-center"
             }
           >
-            <div className={"max-w-3xl w-full bg-red-500"}>Chat list</div>
+            <div className={"max-w-3xl w-full "}>Chat list</div>
           </div>
           <div
             className={"flex border-t px-8 py-4 items-center justify-center"}
