@@ -21,7 +21,7 @@ const PrimaryNav: FC<{
         <Image src={"/favicon.svg"} alt={""} height={36} width={36} />
         <div>
           <div className={"text-xs text-gray-800"}>
-            ©{new Date().getFullYear()} ABANDON INC.,
+            ©{new Date().getFullYear()} Abandon Inc.,
           </div>
           <div className={"text-xs text-gray-500 font-light"}>
             Powered by{" "}
