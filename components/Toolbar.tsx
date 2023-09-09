@@ -23,7 +23,7 @@ const Toolbar: FC<{ border?: boolean }> = (props) => {
         <input
           placeholder={"Search"}
           className={
-            "w-full px-4 py-2 focus:bg-gray-100 focus:outline-0 rounded text-sm"
+            "w-full px-4 py-2 focus:bg-gray-100 hover:bg-gray-100 focus:outline-0 rounded text-sm"
           }
         />
       </div>
