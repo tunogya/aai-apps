@@ -36,8 +36,8 @@ const CoreNav: FC<{
             href={item.path}
             prefetch={true}
             scroll={false}
-            className={`text-sm font-semibold hover:bg-gray-100 w-full p-2 rounded ${
-              props.active === item.path ? "text-blue-600" : "text-gray-800"
+            className={`text-sm font-semibold hover:bg-stone-100 w-full p-2 rounded ${
+              props.active === item.path ? "text-blue-600" : "text-stone-800"
             }`}
           >
             {item.name}

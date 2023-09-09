@@ -20,10 +20,10 @@ const PrimaryNav: FC<{
       <div className={"absolute bottom-8 left-8 flex items-center gap-3"}>
         <Image src={"/favicon.svg"} alt={""} height={36} width={36} />
         <div>
-          <div className={"text-xs text-gray-800"}>
+          <div className={"text-xs text-stone-800"}>
             ©{new Date().getFullYear()} Abandon Inc.,
           </div>
-          <div className={"text-xs text-gray-500 font-light"}>
+          <div className={"text-xs text-stone-500 font-light"}>
             Powered by{" "}
             <a
               href={"https://openai.com"}

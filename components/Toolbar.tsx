@@ -23,20 +23,20 @@ const Toolbar: FC<{ border?: boolean }> = (props) => {
         <input
           placeholder={"Search"}
           className={
-            "w-full px-4 py-2 focus:bg-gray-100 hover:bg-gray-100 focus:outline-0 rounded text-sm"
+            "w-full px-4 py-2 focus:bg-stone-100 hover:bg-stone-100 focus:outline-0 rounded text-sm"
           }
         />
       </div>
       <div className={"text-sm font-semibold"}>
         <div
           className={
-            "flex items-center space-x-2 hover:bg-gray-100 p-2 rounded cursor-pointer select-none"
+            "flex items-center space-x-2 hover:bg-stone-100 p-2 rounded cursor-pointer select-none"
           }
           onClick={() => setGpt4model(!gpt4model)}
         >
           <div
             className={`flex space-x-1 text-sm ${
-              gpt4model ? "text-purple-500" : "text-gray-800"
+              gpt4model ? "text-purple-500" : "text-stone-800"
             }`}
           >
             {gpt4model && (
@@ -62,7 +62,7 @@ const Toolbar: FC<{ border?: boolean }> = (props) => {
           <Switch
             checked={gpt4model}
             // onChange={setEnabled}
-            className={`${gpt4model ? "bg-purple-500" : "bg-gray-200"}
+            className={`${gpt4model ? "bg-purple-500" : "bg-stone-200"}
           relative inline-flex h-[14px] w-[24px] shrink-0 cursor-pointer rounded-full border border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
           >
             <span className="sr-only">

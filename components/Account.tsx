@@ -8,15 +8,15 @@ const Account = async () => {
   return (
     <div
       className={
-        "ml-4 flex items-center space-x-2 hover:bg-gray-100 px-2 py-1 rounded cursor-pointer"
+        "ml-4 flex items-center space-x-2 hover:bg-stone-100 px-2 py-1 rounded cursor-pointer"
       }
     >
       <Image src={session?.user.picture} width={30} height={30} alt={""} />
       <div className={"truncate"}>
-        <div className={"text-sm text-gray-800 truncate"}>
+        <div className={"text-sm text-stone-800 truncate"}>
           {session?.user.email}
         </div>
-        <div className={"text-xs text-gray-500 font-light truncate"}>
+        <div className={"text-xs text-stone-500 font-light truncate"}>
           Estimate cost: $0
         </div>
       </div>
