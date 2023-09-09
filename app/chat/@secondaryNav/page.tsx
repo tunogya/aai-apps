@@ -3,7 +3,7 @@ const SecondaryNav = () => {
   return (
     <div
       className={
-        "w-[300px] shrink-0 h-full border-r space-y-10 overflow-y-auto p-2 flex flex-col gap-3"
+        "w-[300px] shrink-0 h-full border-r overflow-y-auto p-2 flex flex-col gap-3"
       }
     >
       <div
