@@ -4,6 +4,17 @@ import { FC, useEffect, useState } from "react";
 
 const Toolbar: FC<{ border?: boolean }> = (props) => {
   const [gpt4model, setGpt4model] = useState(false);
+  const [init, setInit] = useState(false);
+
+  useEffect(() => {
+    if (!init) {
+      const initStatus = sessionStorage.getItem("model");
+      if (initStatus) {
+        setGpt4model(true);
+      }
+      setInit(true);
+    }
+  }, [init]);
 
   useEffect(() => {
     if (gpt4model) {
@@ -12,6 +23,10 @@ const Toolbar: FC<{ border?: boolean }> = (props) => {
       sessionStorage.removeItem("model");
     }
   }, [gpt4model]);
+
+  if (!init) {
+    return null;
+  }
 
   return (
     <div
@@ -63,7 +78,7 @@ const Toolbar: FC<{ border?: boolean }> = (props) => {
             checked={gpt4model}
             // onChange={setEnabled}
             className={`${gpt4model ? "bg-purple-500" : "bg-stone-200"}
-          relative inline-flex h-[14px] w-[24px] shrink-0 cursor-pointer rounded-full border border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
+          relative inline-flex h-[14px] w-[24px] shrink-0 cursor-pointer rounded-full border border-transparent duration-200 ease-in-out focus:outline-none`}
           >
             <span className="sr-only">
               {gpt4model ? "GPT-4 Model" : "GPT-3.5 Model"}
