@@ -8,7 +8,7 @@ export default function NovelEditor() {
 
   return (
     <div className="relative h-full w-full flex justify-center">
-      <div className="absolute right-4 top-4 z-10 mb-5 rounded-lg bg-stone-100 px-2 py-1 text-sm text-stone-400">
+      <div className="absolute right-10 top-0 z-10 mb-5 rounded-lg bg-stone-100 px-2 py-1 text-sm text-stone-400">
         {saveStatus}
       </div>
       <Editor

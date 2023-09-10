@@ -10,14 +10,55 @@ export default withPageAuthRequired(
     return (
       <div
         className={
-          "px-8 pt-4 absolute h-[calc(100vh-60px)] w-full overflow-y-auto pb-40 grid grid-cols-2 gap-8"
+          "px-10 pt-4 absolute h-[calc(100vh-60px)] w-full overflow-y-auto pb-40 space-y-10"
         }
       >
-        <div className={"space-y-2"}>
-          <div className={"flex items-center space-x-2"}>
-            <div className={"text-xl font-semibold text-stone-800"}>Today</div>
+        <div className={"space-y-8"}>
+          <div
+            className={
+              "text-2xl font-semibold text-stone-800 border-b w-full py-2"
+            }
+          >
+            Today
           </div>
-          <div className={"w-full h-40 border rounded"}></div>
+          <div className={"flex gap-8 h-40"}>
+            <div className={"w-full max-w-3xl h-full text-sm text-stone-600"}>
+              <div className={"flex"}>
+                <div className={"w-64 space-y-1"}>
+                  <div>Cost & usage</div>
+                  <div className={"font-semibold text-stone-800"}>$0</div>
+                </div>
+                <div className={"w-64 space-y-1"}>
+                  <div>Yesterday</div>
+                  <div className={"font-semibold text-stone-800"}>$0</div>
+                </div>
+              </div>
+              <div></div>
+            </div>
+            <div className={"flex-1 h-full text-sm text-stone-600"}>
+              <div className={"h-[50%]"}>
+                <div className={"space-y-1"}>
+                  <div>Estimate cost this month</div>
+                  <div className={"font-semibold text-stone-800"}>$0</div>
+                </div>
+              </div>
+              <div className={"h-[50%]"}>
+                <div className={"space-y-1"}>
+                  <div>Advance pay balance</div>
+                  <div className={"font-semibold text-stone-800"}>$0</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className={"space-y-8"}>
+          <div
+            className={
+              "text-2xl font-semibold text-stone-800 border-b w-full py-2"
+            }
+          >
+            Your overview
+          </div>
         </div>
       </div>
     );

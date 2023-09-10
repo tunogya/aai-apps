@@ -30,7 +30,7 @@ const Toolbar: FC<{ border?: boolean }> = (props) => {
 
   return (
     <div
-      className={`h-[60px] w-full flex items-center justify-between px-8 ${
+      className={`h-[60px] w-full flex items-center justify-between px-10 ${
         props.border ? "border-b" : ""
       }`}
     >
