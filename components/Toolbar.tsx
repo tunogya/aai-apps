@@ -51,7 +51,7 @@ const Toolbar: FC<{ border?: boolean }> = (props) => {
         >
           <div
             className={`flex space-x-1 text-sm ${
-              gpt4model ? "text-purple-500" : "text-stone-700"
+              gpt4model ? "text-purple-500" : "text-stone-800"
             }`}
           >
             {gpt4model && (
@@ -91,7 +91,7 @@ const Toolbar: FC<{ border?: boolean }> = (props) => {
           </Switch>
         </div>
         <button
-          className={"hover:bg-stone-100 p-1.5 rounded-full text-stone-700"}
+          className={"hover:bg-stone-100 p-1.5 rounded-full text-stone-800"}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

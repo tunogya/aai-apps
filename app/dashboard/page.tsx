@@ -16,36 +16,36 @@ export default withPageAuthRequired(
         <div className={"space-y-8"}>
           <div
             className={
-              "text-2xl font-semibold text-stone-700 border-b w-full py-2"
+              "text-2xl font-semibold text-stone-800 border-b w-full py-2"
             }
           >
             Today
           </div>
           <div className={"flex gap-8 h-40"}>
-            <div className={"w-full max-w-3xl h-full text-sm text-stone-600"}>
+            <div className={"w-full max-w-3xl h-full text-sm text-stone-800"}>
               <div className={"flex"}>
                 <div className={"w-64 space-y-1"}>
                   <div>Cost & usage</div>
-                  <div className={"font-semibold text-stone-700"}>$0</div>
+                  <div className={"text-stone-800 text-xl"}>US$0</div>
                 </div>
                 <div className={"w-64 space-y-1"}>
                   <div>Yesterday</div>
-                  <div className={"font-semibold text-stone-700"}>$0</div>
+                  <div className={"text-stone-400 text-md"}>US$0</div>
                 </div>
               </div>
               <div></div>
             </div>
-            <div className={"flex-1 h-full text-sm text-stone-600"}>
+            <div className={"flex-1 h-full text-sm text-stone-800"}>
               <div className={"h-[50%]"}>
                 <div className={"space-y-1"}>
                   <div>Estimate cost this month</div>
-                  <div className={"font-semibold text-stone-700"}>$0</div>
+                  <div className={"text-stone-800 text-xl"}>US$0</div>
                 </div>
               </div>
               <div className={"h-[50%]"}>
                 <div className={"space-y-1"}>
                   <div>Advance pay balance</div>
-                  <div className={"font-semibold text-stone-700"}>$0</div>
+                  <div className={"text-stone-800 text-xl"}>US$0</div>
                 </div>
               </div>
             </div>
@@ -54,7 +54,7 @@ export default withPageAuthRequired(
         <div className={"space-y-8"}>
           <div
             className={
-              "text-2xl font-semibold text-stone-700 border-b w-full py-2"
+              "text-2xl font-semibold text-stone-800 border-b w-full py-2"
             }
           >
             Your overview
