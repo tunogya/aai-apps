@@ -28,7 +28,7 @@ export default withPageAuthRequired(
         >
           <input
             className={
-              "border rounded w-full p-4 shadow focus:outline-0 max-w-3xl text-stone-800"
+              "border rounded w-full p-4 shadow focus:outline-0 max-w-3xl text-stone-700"
             }
             placeholder={"Send a message..."}
           />

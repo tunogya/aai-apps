@@ -16,7 +16,7 @@ const Account = async () => {
         <Image src={session?.user.picture} width={30} height={30} alt={""} />
       </div>
       <div className={"truncate"}>
-        <div className={"text-sm text-stone-800 truncate font-semibold"}>
+        <div className={"text-sm text-stone-700 truncate font-semibold"}>
           {session?.user.email}
         </div>
         {/*<div className={"text-xs text-stone-500 font-light truncate"}>*/}
