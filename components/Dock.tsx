@@ -13,7 +13,7 @@ const Dock = () => {
         }
       >
         <Image
-          src={`https://www.gravatar.com/avatar/1?s=200&d=retro`}
+          src={`https://www.gravatar.com/avatar/1?s=200&d=monsterid`}
           width={32}
           height={32}
           alt={""}
@@ -25,7 +25,7 @@ const Dock = () => {
         }
       >
         <Image
-          src={`https://www.gravatar.com/avatar/2?s=200&d=retro`}
+          src={`https://www.gravatar.com/avatar/2?s=200&d=monsterid`}
           width={32}
           height={32}
           alt={""}
@@ -37,7 +37,7 @@ const Dock = () => {
         }
       >
         <Image
-          src={`https://www.gravatar.com/avatar/3?s=200&d=retro`}
+          src={`https://www.gravatar.com/avatar/3?s=200&d=monsterid`}
           width={32}
           height={32}
           alt={""}

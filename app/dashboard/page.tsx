@@ -21,7 +21,7 @@ export default withPageAuthRequired(
               }
             >
               <Image
-                src={`https://www.gravatar.com/avatar/1?s=200&d=retro`}
+                src={`https://www.gravatar.com/avatar/1?s=200&d=monsterid`}
                 width={32}
                 height={32}
                 alt={""}

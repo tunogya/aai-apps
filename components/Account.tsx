@@ -1,5 +1,6 @@
 import { getSession } from "@auth0/nextjs-auth0/edge";
 import Image from "next/image";
+import md5 from "md5";
 
 export const runtime = "edge";
 
@@ -12,13 +13,7 @@ const Account = async () => {
       }
     >
       <div className={"border-2 border-white shadow overflow-hidden"}>
-        <Image
-          src={session?.user.picture}
-          width={30}
-          height={30}
-          alt={""}
-          className={""}
-        />
+        <Image src={session?.user.picture} width={30} height={30} alt={""} />
       </div>
       <div className={"truncate"}>
         <div className={"text-sm text-stone-800 truncate"}>
