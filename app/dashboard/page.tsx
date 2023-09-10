@@ -1,5 +1,6 @@
 import React from "react";
 import { getSession, withPageAuthRequired } from "@auth0/nextjs-auth0/edge";
+import Image from "next/image";
 
 export const runtime = "edge";
 
@@ -13,8 +14,22 @@ export default withPageAuthRequired(
         }
       >
         <div className={"space-y-2"}>
-          <div className={"text-xl font-semibold text-stone-800"}>Tom</div>
-          <div className={"w-full h-40 border"}></div>
+          <div className={"flex items-center space-x-2"}>
+            <div
+              className={
+                "h-8 w-8 rounded-full overflow-hidden border-2 border-white shadow"
+              }
+            >
+              <Image
+                src={`https://www.gravatar.com/avatar/1?s=200&d=retro`}
+                width={32}
+                height={32}
+                alt={""}
+              />
+            </div>
+            <div className={"text-xl font-semibold text-stone-800"}>Tom</div>
+          </div>
+          <div className={"w-full h-40 border rounded"}></div>
         </div>
       </div>
     );

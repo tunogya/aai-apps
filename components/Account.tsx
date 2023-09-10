@@ -11,7 +11,15 @@ const Account = async () => {
         "ml-4 flex items-center space-x-2 hover:bg-stone-100 px-2 py-1 rounded cursor-pointer"
       }
     >
-      <Image src={session?.user.picture} width={30} height={30} alt={""} />
+      <div className={"border-2 border-white shadow overflow-hidden"}>
+        <Image
+          src={session?.user.picture}
+          width={30}
+          height={30}
+          alt={""}
+          className={""}
+        />
+      </div>
       <div className={"truncate"}>
         <div className={"text-sm text-stone-800 truncate"}>
           {session?.user.email}
