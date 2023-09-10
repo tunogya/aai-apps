@@ -7,13 +7,13 @@ export default function NovelEditor() {
   const [saveStatus, setSaveStatus] = useState("Saved");
 
   return (
-    <div className="relative h-full w-full">
+    <div className="relative h-full w-full flex justify-center">
       <div className="absolute right-4 top-4 z-10 mb-5 rounded-lg bg-stone-100 px-2 py-1 text-sm text-stone-400">
         {saveStatus}
       </div>
       <Editor
         className={
-          "relative h-full w-full overflow-y-auto p-4 sm:mb-[calc(20vh)]"
+          "relative h-full w-full overflow-y-auto p-4 sm:mb-[calc(20vh)] max-w-3xl mt-10"
         }
         onUpdate={() => {
           setSaveStatus("Unsaved");

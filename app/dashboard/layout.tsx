@@ -20,7 +20,7 @@ export default function Layout(props: { children: ReactNode }) {
       <div className={"max-w-[1920px] w-full h-full flex overflow-hidden"}>
         <PrimaryNav active={"/dashboard"} />
         <div className={"w-full mr-10 relative"}>
-          <Toolbar border={true} />
+          <Toolbar border={false} />
           {props.children}
         </div>
       </div>

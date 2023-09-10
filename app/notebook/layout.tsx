@@ -24,7 +24,7 @@ export default function Layout(props: {
         <PrimaryNav active={"/notebook"} />
         {props.secondaryNav}
         <div className={"w-full mr-10 relative"}>
-          <Toolbar border={true} />
+          <Toolbar border={false} />
           {props.children}
         </div>
       </div>
