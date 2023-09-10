@@ -18,7 +18,7 @@ export default withPageAuthRequired(
               "flex border-t px-8 py-4 bg-stone-100 items-center justify-center"
             }
           >
-            <div className={"max-w-3xl w-full "}>Chat list</div>
+            <div className={"max-w-3xl w-full h-20"}>Chat list</div>
           </div>
         </div>
         <div
