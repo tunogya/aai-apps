@@ -12,7 +12,9 @@ export default function NovelEditor() {
         {saveStatus}
       </div>
       <Editor
-        className={"h-full w-full overflow-y-auto p-4"}
+        className={
+          "relative h-full w-full overflow-y-auto p-4 sm:mb-[calc(20vh)]"
+        }
         onUpdate={() => {
           setSaveStatus("Unsaved");
         }}
