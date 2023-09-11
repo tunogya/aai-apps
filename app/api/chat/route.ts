@@ -29,6 +29,7 @@ export async function POST(req: Request): Promise<Response> {
     messages,
     temperature: 0.7,
     stream: true,
+    max_tokens: 500,
   });
 
   const stream = OpenAIStream(res, {
