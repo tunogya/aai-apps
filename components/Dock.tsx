@@ -9,35 +9,11 @@ const Dock = () => {
     >
       <div
         className={
-          "h-8 w-8 rounded-full overflow-hidden border-2 border-white hover:border-red-400 shadow"
+          "h-8 w-8 rounded-full overflow-hidden border-2 border-white shadow"
         }
       >
         <Image
           src={`https://www.gravatar.com/avatar/1?s=200&d=monsterid`}
-          width={32}
-          height={32}
-          alt={""}
-        />
-      </div>
-      <div
-        className={
-          "h-8 w-8 rounded-full overflow-hidden border-2 border-white hover:border-red-400 shadow"
-        }
-      >
-        <Image
-          src={`https://www.gravatar.com/avatar/2?s=200&d=monsterid`}
-          width={32}
-          height={32}
-          alt={""}
-        />
-      </div>
-      <div
-        className={
-          "h-8 w-8 rounded-full overflow-hidden border-2 border-white hover:border-red-400 shadow"
-        }
-      >
-        <Image
-          src={`https://www.gravatar.com/avatar/3?s=200&d=monsterid`}
           width={32}
           height={32}
           alt={""}
