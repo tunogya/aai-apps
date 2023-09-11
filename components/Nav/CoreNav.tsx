@@ -1,5 +1,7 @@
+"use client";
 import Link from "next/link";
 import { FC } from "react";
+import { useSearchParams } from "next/navigation";
 
 const menu = [
   {
@@ -23,6 +25,7 @@ const menu = [
 const CoreNav: FC<{
   active: string;
 }> = (props) => {
+  const searchParams = useSearchParams();
   return (
     <div className={""}>
       {menu.map((item, index) => (
@@ -33,7 +36,9 @@ const CoreNav: FC<{
             }`}
           ></div>
           <Link
-            href={item.path}
+            href={`${item.path}?model=${
+              searchParams.get("model") || "gpt-3.5-turbo"
+            }`}
             prefetch={true}
             scroll={false}
             className={`text-sm font-semibold hover:bg-stone-100 w-full p-2 rounded ${
