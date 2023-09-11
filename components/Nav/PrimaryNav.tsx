@@ -14,7 +14,7 @@ const PrimaryNav: FC<{
       }
     >
       <Account />
-      <CoreNav active={props.active} />
+      <CoreNav />
       <RecentNav />
 
       <div className={"absolute bottom-8 left-8 flex items-center gap-3"}>
