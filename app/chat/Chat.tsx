@@ -2,6 +2,11 @@
 
 import { useChat } from "ai/react";
 import React from "react";
+import CodeFormat from "@/app/chat/CodeFormat";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
 
 export default function Chat() {
   const { messages, input, handleInputChange, handleSubmit, isLoading } =
@@ -18,7 +23,26 @@ export default function Chat() {
               m.role === "user" ? "bg-white" : "bg-stone-50"
             } items-center justify-center`}
           >
-            <div className={`max-w-3xl w-full h-fit`}>{m.content}</div>
+            <div className={`max-w-3xl w-full h-fit`}>
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm, remarkMath]}
+                rehypePlugins={[rehypeKatex]}
+                components={{
+                  code({ ...props }) {
+                    return <CodeFormat {...props} />;
+                  },
+                }}
+                className={`${
+                  m.role === "assistant" &&
+                  isLoading &&
+                  index === messages.length - 1
+                    ? "result-streaming"
+                    : ""
+                } markdown prose w-full break-words dark:prose-invert light`}
+              >
+                {m.content}
+              </ReactMarkdown>
+            </div>
           </div>
         ))}
       </div>
