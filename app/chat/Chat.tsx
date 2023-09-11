@@ -49,7 +49,9 @@ export default function Chat() {
             />
             <button
               type="submit"
-              className={`h-6 w-6 flex items-center text-purple-600 justify-center rounded ${
+              className={`h-6 w-6 flex items-center ${
+                isLoading ? "animate-pulse" : ""
+              } text-stone-800 justify-center rounded ${
                 isLoading ? "cursor-wait" : "cursor-pointer"
               }`}
             >
