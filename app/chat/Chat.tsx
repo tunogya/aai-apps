@@ -9,23 +9,17 @@ import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 
 export default function Chat() {
-  const {
-    messages,
-    input,
-    handleInputChange,
-    handleSubmit,
-    isLoading,
-    metadata,
-  } = useChat({
-    api: "/api/chat",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: {
-      model: "gpt-3.5-turbo",
-      user: "user123",
-    },
-  });
+  const { messages, input, handleInputChange, handleSubmit, isLoading } =
+    useChat({
+      api: "/api/chat",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: {
+        model: "gpt-3.5-turbo",
+        user: "user123",
+      },
+    });
   return (
     <div className={"w-full min-w-[400px]"}>
       <div className={"h-[calc(100vh-60px)] w-full overflow-y-auto pb-40"}>
