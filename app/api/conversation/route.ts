@@ -18,7 +18,7 @@ const GET = withApiAuthRequired(async (req: NextRequest) => {
       },
       ExpressionAttributeValues: {
         ":pk": sub,
-        ":sk": "CONVERSATION#",
+        ":sk": "CHATGPT#",
       },
       Limit: limit,
     }),
@@ -36,7 +36,7 @@ const POST = withApiAuthRequired(async (req: NextRequest) => {
   try {
     const item = {
       PK: sub,
-      SK: `CONVERSATION#${uuidv4()}`,
+      SK: `CHATGPT#${uuidv4()}`,
       created: Math.floor(Date.now() / 1000),
     };
     await ddbDocClient.send(
