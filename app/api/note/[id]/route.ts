@@ -1,4 +1,4 @@
-import { getSession, withApiAuthRequired } from "@auth0/nextjs-auth0";
+import { getSession } from "@auth0/nextjs-auth0";
 import { NextRequest, NextResponse } from "next/server";
 import ddbDocClient from "@/utils/ddbDocClient";
 import {
@@ -7,7 +7,7 @@ import {
   UpdateCommand,
 } from "@aws-sdk/lib-dynamodb";
 
-const GET = withApiAuthRequired(async (req: NextRequest, { params }) => {
+const GET = async (req: NextRequest, { params }: any) => {
   const session = await getSession();
   const sub = session?.user.sub;
   try {
@@ -33,9 +33,9 @@ const GET = withApiAuthRequired(async (req: NextRequest, { params }) => {
       },
     );
   }
-});
+};
 
-const PATCH = withApiAuthRequired(async (req: NextRequest, { params }) => {
+const PATCH = async (req: NextRequest, { params }: any) => {
   const session = await getSession();
   const sub = session?.user.sub;
   const needToUpdateObject = await req.json();
@@ -76,9 +76,9 @@ const PATCH = withApiAuthRequired(async (req: NextRequest, { params }) => {
       },
     );
   }
-});
+};
 
-const DELETE = withApiAuthRequired(async (req: NextRequest, { params }) => {
+const DELETE = async (req: NextRequest, { params }: any) => {
   const session = await getSession();
   const sub = session?.user.sub;
   try {
@@ -104,6 +104,6 @@ const DELETE = withApiAuthRequired(async (req: NextRequest, { params }) => {
       },
     );
   }
-});
+};
 
 export { GET, PATCH, DELETE };

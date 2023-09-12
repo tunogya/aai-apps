@@ -1,10 +1,10 @@
-import { getSession, withApiAuthRequired } from "@auth0/nextjs-auth0";
+import { getSession } from "@auth0/nextjs-auth0";
 import { NextRequest, NextResponse } from "next/server";
 import ddbDocClient from "@/utils/ddbDocClient";
 import { PutCommand, QueryCommand } from "@aws-sdk/lib-dynamodb";
 import { v4 as uuidv4 } from "uuid";
 
-const GET = withApiAuthRequired(async (req: NextRequest) => {
+const GET = async (req: NextRequest) => {
   const session = await getSession();
   const sub = session?.user.sub;
   const limit = Number(req?.nextUrl?.searchParams?.get("limit") || 20);
@@ -43,9 +43,9 @@ const GET = withApiAuthRequired(async (req: NextRequest) => {
       },
     );
   }
-});
+};
 
-const POST = withApiAuthRequired(async (req: NextRequest) => {
+const POST = async (req: NextRequest) => {
   const session = await getSession();
   const sub = session?.user.sub;
   const { name, model, description } = await req.json();
@@ -73,6 +73,6 @@ const POST = withApiAuthRequired(async (req: NextRequest) => {
       error: "ddbDocClient error",
     });
   }
-});
+};
 
 export { GET, POST };
