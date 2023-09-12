@@ -9,7 +9,7 @@ const GET = withApiAuthRequired(async (req: NextRequest, { params }) => {
   try {
     const { Item } = await ddbDocClient.send(
       new GetCommand({
-        TableName: "abandonai-dev",
+        TableName: "abandonai-prod",
         Key: {
           PK: `USER#${sub}`,
           SK: `USAGE#${params?.id}`,

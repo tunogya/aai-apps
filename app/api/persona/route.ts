@@ -11,7 +11,7 @@ const GET = withApiAuthRequired(async (req: NextRequest) => {
   try {
     const { Items, Count } = await ddbDocClient.send(
       new QueryCommand({
-        TableName: "abandonai-dev",
+        TableName: "abandonai-prod",
         KeyConditionExpression: "#pk = :pk AND begins_with(#sk, :sk)",
         ProjectionExpression: "#pk, #sk, #name, #model, #description, #created",
         ExpressionAttributeNames: {
@@ -60,7 +60,7 @@ const POST = withApiAuthRequired(async (req: NextRequest) => {
     };
     await ddbDocClient.send(
       new PutCommand({
-        TableName: "abandonai-dev",
+        TableName: "abandonai-prod",
         Item: item,
       }),
     );

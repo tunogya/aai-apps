@@ -13,7 +13,7 @@ const GET = withApiAuthRequired(async (req: NextRequest, { params }) => {
   try {
     const { Item } = await ddbDocClient.send(
       new GetCommand({
-        TableName: "abandonai-dev",
+        TableName: "abandonai-prod",
         Key: {
           PK: `USER#${sub}`,
           SK: `CHAT#${params?.id}`,
@@ -53,7 +53,7 @@ const PATCH = withApiAuthRequired(async (req: NextRequest, { params }) => {
   try {
     await ddbDocClient.send(
       new UpdateCommand({
-        TableName: "abandonai-dev",
+        TableName: "abandonai-prod",
         Key: {
           PK: `USER#${sub}`,
           SK: `CHAT#${params?.id}`,
@@ -84,7 +84,7 @@ const DELETE = withApiAuthRequired(async (req: NextRequest, { params }) => {
   try {
     await ddbDocClient.send(
       new DeleteCommand({
-        TableName: "abandonai-dev",
+        TableName: "abandonai-prod",
         Key: {
           PK: `USER#${sub}`,
           SK: `CHAT#${params?.id}`,
