@@ -13,7 +13,7 @@ const Account = async () => {
       }
     >
       <div className={"border-2 border-white shadow overflow-hidden"}>
-        <Image src={session?.user.picture} width={30} height={30} alt={""} />
+        <Image src={session?.user.picture} width={32} height={32} alt={""} />
       </div>
       <div className={"truncate"}>
         <div className={"text-sm text-stone-800 truncate font-semibold"}>
