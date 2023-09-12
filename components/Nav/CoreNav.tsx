@@ -12,7 +12,7 @@ const menu = [
     name: "ChatGPT",
   },
   {
-    path: "/notebook",
+    path: "/note",
     name: "Whisperer",
   },
   {

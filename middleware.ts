@@ -13,6 +13,6 @@ export const config = {
     "/billing/:path*",
     "/chat/:path*",
     "/dashboard/:path*",
-    "/notebook/:path*",
+    "/note/:path*",
   ],
 };
