@@ -34,10 +34,14 @@ const POST = async (req: NextRequest) => {
   const sub = session?.user.sub;
   const {} = await req.json();
   try {
+    const note_id = uuidv4();
     const item = {
       PK: `USER#${sub}`,
-      SK: `NOTE#${uuidv4()}`,
+      SK: `NOTE#${note_id}`,
+      user_id: sub,
+      note_id: note_id,
       created: Math.floor(Date.now() / 1000),
+      updated: Math.floor(Date.now() / 1000),
     };
     await ddbDocClient.send(
       new PutCommand({

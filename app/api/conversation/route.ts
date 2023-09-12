@@ -34,11 +34,12 @@ const POST = async (req: NextRequest) => {
   const sub = session?.user.sub;
   const {} = await req.json();
   try {
+    const chat_id = uuidv4();
     const item = {
       PK: `USER#${sub}`,
-      SK: `CHAT#${uuidv4()}`,
-      user_id: `USER#${sub}`,
-      chat_id: `CHAT#${uuidv4()}`,
+      SK: `CHAT#${chat_id}`,
+      user_id: sub,
+      chat_id: chat_id,
       created: Math.floor(Date.now() / 1000),
       updated: Math.floor(Date.now() / 1000),
     };
