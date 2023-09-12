@@ -51,7 +51,7 @@ const POST = withApiAuthRequired(async (req: NextRequest) => {
   const { name, model, description } = await req.json();
   try {
     const item = {
-      PK: sub,
+      PK: `USER#${sub}`,
       SK: `PERSONA#${uuidv4()}`,
       name,
       model,

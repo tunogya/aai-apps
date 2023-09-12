@@ -35,7 +35,7 @@ const POST = withApiAuthRequired(async (req: NextRequest) => {
   const {} = await req.json();
   try {
     const item = {
-      PK: sub,
+      PK: `USER#${sub}`,
       SK: `USAGE#${uuidv4()}`,
       created: Math.floor(Date.now() / 1000),
     };

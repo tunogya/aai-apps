@@ -15,7 +15,7 @@ const GET = withApiAuthRequired(async (req: NextRequest, { params }) => {
       new GetCommand({
         TableName: "abandonai-dev",
         Key: {
-          PK: sub,
+          PK: `USER#${sub}`,
           SK: `PERSONA#${params?.id}`,
         },
       }),
@@ -55,7 +55,7 @@ const PATCH = withApiAuthRequired(async (req: NextRequest, { params }) => {
       new UpdateCommand({
         TableName: "abandonai-dev",
         Key: {
-          PK: sub,
+          PK: `USER#${sub}`,
           SK: `PERSONA#${params?.id}`,
         },
         UpdateExpression: `SET ${UpdateExpression}`,
@@ -86,7 +86,7 @@ const DELETE = withApiAuthRequired(async (req: NextRequest, { params }) => {
       new DeleteCommand({
         TableName: "abandonai-dev",
         Key: {
-          PK: sub,
+          PK: `USER#${sub}`,
           SK: `PERSONA#${params?.id}`,
         },
       }),

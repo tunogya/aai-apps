@@ -11,7 +11,7 @@ const GET = withApiAuthRequired(async (req: NextRequest, { params }) => {
       new GetCommand({
         TableName: "abandonai-dev",
         Key: {
-          PK: sub,
+          PK: `USER#${sub}`,
           SK: `USAGE#${params?.id}`,
         },
       }),

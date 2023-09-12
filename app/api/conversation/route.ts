@@ -17,7 +17,7 @@ const GET = withApiAuthRequired(async (req: NextRequest) => {
         "#sk": "SK",
       },
       ExpressionAttributeValues: {
-        ":pk": sub,
+        ":pk": `USER#${sub}`,
         ":sk": "CHAT#",
       },
       Limit: limit,
@@ -35,7 +35,7 @@ const POST = withApiAuthRequired(async (req: NextRequest) => {
   const {} = await req.json();
   try {
     const item = {
-      PK: sub,
+      PK: `USER#${sub}`,
       SK: `CHAT#${uuidv4()}`,
       created: Math.floor(Date.now() / 1000),
     };
