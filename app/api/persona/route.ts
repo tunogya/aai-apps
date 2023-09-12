@@ -13,17 +13,8 @@ const GET = async (req: NextRequest) => {
       new QueryCommand({
         TableName: "abandonai-prod",
         KeyConditionExpression: "#pk = :pk AND begins_with(#sk, :sk)",
-        ProjectionExpression: "#pk, #sk, #name, #model, #description, #created",
-        ExpressionAttributeNames: {
-          "#pk": "PK",
-          "#sk": "SK",
-          "#name": "name",
-          "#model": "model",
-          "#description": "description",
-          "#created": "created",
-        },
         ExpressionAttributeValues: {
-          ":pk": sub,
+          ":pk": `USER#${sub}`,
           ":sk": "PERSONA#",
         },
         Limit: limit,
@@ -48,15 +39,18 @@ const GET = async (req: NextRequest) => {
 const POST = async (req: NextRequest) => {
   const session = await getSession();
   const sub = session?.user.sub;
-  const { name, model, description } = await req.json();
+  const { name, description } = await req.json();
   try {
+    const persona_id = uuidv4();
     const item = {
       PK: `USER#${sub}`,
-      SK: `PERSONA#${uuidv4()}`,
+      SK: `PERSONA#${persona_id}`,
+      user_id: sub,
+      persona_id: persona_id,
       name,
-      model,
       description,
       created: Math.floor(Date.now() / 1000),
+      updated: Math.floor(Date.now() / 1000),
     };
     await ddbDocClient.send(
       new PutCommand({

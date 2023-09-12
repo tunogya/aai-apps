@@ -17,7 +17,7 @@ const GET = async (req: NextRequest) => {
         "#sk": "SK",
       },
       ExpressionAttributeValues: {
-        ":pk": sub,
+        ":pk": `USER#${sub}`,
         ":sk": "NOTE#",
       },
       Limit: limit,
