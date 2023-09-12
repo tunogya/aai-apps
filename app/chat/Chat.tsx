@@ -15,14 +15,22 @@ export default function Chat() {
   const { messages, input, handleInputChange, handleSubmit, isLoading } =
     useChat({
       api: "/api/chat",
+      id: "",
       headers: {
         "Content-Type": "application/json",
       },
       body: {
         model: "gpt-3.5-turbo",
-        user: "user123",
       },
     });
+  // [
+  //     {
+  //         "content": "Hello",
+  //         "role": "user",
+  //         "createdAt": "2023-09-12T16:26:48.136Z",
+  //         "id": "McZpnf5"
+  //     },
+  // ]
   return (
     <div className={"w-full min-w-[400px]"}>
       <div className={"h-[calc(100vh-60px)] w-full overflow-y-auto pb-40"}>
