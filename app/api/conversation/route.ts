@@ -37,7 +37,10 @@ const POST = async (req: NextRequest) => {
     const item = {
       PK: `USER#${sub}`,
       SK: `CHAT#${uuidv4()}`,
+      user_id: `USER#${sub}`,
+      chat_id: `CHAT#${uuidv4()}`,
       created: Math.floor(Date.now() / 1000),
+      updated: Math.floor(Date.now() / 1000),
     };
     await ddbDocClient.send(
       new PutCommand({
