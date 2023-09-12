@@ -16,7 +16,7 @@ const GET = withApiAuthRequired(async (req: NextRequest, { params }) => {
         TableName: "abandonai-dev",
         Key: {
           PK: sub,
-          SK: `CHATGPT#${params?.id}`,
+          SK: `CHAT#${params?.id}`,
         },
       }),
     );
@@ -56,7 +56,7 @@ const PATCH = withApiAuthRequired(async (req: NextRequest, { params }) => {
         TableName: "abandonai-dev",
         Key: {
           PK: sub,
-          SK: `CHATGPT#${params?.id}`,
+          SK: `CHAT#${params?.id}`,
         },
         UpdateExpression: `SET ${UpdateExpression}`,
         ExpressionAttributeNames,
@@ -87,7 +87,7 @@ const DELETE = withApiAuthRequired(async (req: NextRequest, { params }) => {
         TableName: "abandonai-dev",
         Key: {
           PK: sub,
-          SK: `CHATGPT#${params?.id}`,
+          SK: `CHAT#${params?.id}`,
         },
       }),
     );
