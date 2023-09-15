@@ -1,8 +1,10 @@
 import { getSession } from "@auth0/nextjs-auth0";
 import { NextRequest, NextResponse } from "next/server";
 import ddbDocClient from "@/utils/ddbDocClient";
-import { PutCommand, QueryCommand } from "@aws-sdk/lib-dynamodb";
+import { QueryCommand } from "@aws-sdk/lib-dynamodb";
 import { v4 as uuidv4 } from "uuid";
+import sqsClient from "@/utils/sqsClient";
+import { SendMessageCommand } from "@aws-sdk/client-sqs";
 
 const GET = async (req: NextRequest) => {
   const session = await getSession();
@@ -43,10 +45,13 @@ const POST = async (req: NextRequest) => {
       created: Math.floor(Date.now() / 1000),
       updated: Math.floor(Date.now() / 1000),
     };
-    await ddbDocClient.send(
-      new PutCommand({
-        TableName: "abandonai-prod",
-        Item: item,
+    await sqsClient.send(
+      new SendMessageCommand({
+        QueueUrl: process.env.AI_DB_UPDATE_SQS_URL,
+        MessageBody: JSON.stringify({
+          TableName: "abandonai-prod",
+          Item: item,
+        }),
       }),
     );
     return NextResponse.json({

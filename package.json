@@ -16,8 +16,8 @@
   "dependencies": {
     "@auth0/nextjs-auth0": "^3.1.0",
     "@aws-sdk/client-dynamodb": "^3.405.0",
+    "@aws-sdk/client-sqs": "^3.413.0",
     "@aws-sdk/lib-dynamodb": "^3.405.0",
-    "@aws-sdk/node-http-handler": "^3.374.0",
     "@headlessui/react": "^1.7.17",
     "@tiptap/pm": "^2.1.7",
     "@types/node": "20.5.7",
