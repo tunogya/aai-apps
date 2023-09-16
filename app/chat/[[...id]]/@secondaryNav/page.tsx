@@ -19,7 +19,8 @@ const SecondaryNav = () => {
         "w-[300px] shrink-0 h-full border-r overflow-y-auto flex flex-col"
       }
     >
-      <div
+      <Link
+        href={`/chat?model=${searchParams.get("model") || "gpt-3.5-turbo"}`}
         className={
           "flex items-center border hover:bg-stone-100 p-3 rounded cursor-pointer select-none m-2"
         }
@@ -42,9 +43,9 @@ const SecondaryNav = () => {
           </svg>
         </div>
         <div className={"text-sm"}>New Chat</div>
-      </div>
+      </Link>
       <div className={"h-full overflow-y-auto pl-2 pr-4"}>
-        {!data && isLoading && <div className={"text-xs"}>Loading...</div>}
+        {!data && isLoading && <div className={"text-sm"}>Loading...</div>}
         {data &&
           data.items
             .sort((a: any, b: any) => b.created - a.created) // descending

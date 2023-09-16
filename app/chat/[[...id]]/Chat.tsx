@@ -9,8 +9,11 @@ import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import Image from "next/image";
+import { useParams, useSearchParams } from "next/navigation";
 
 export default function Chat() {
+  const params = useParams();
+  const searchParams = useSearchParams();
   const { user } = useUser();
   const { messages, input, handleInputChange, handleSubmit, isLoading } =
     useChat({
