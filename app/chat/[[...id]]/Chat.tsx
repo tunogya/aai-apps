@@ -2,7 +2,7 @@
 
 import { useChat } from "ai/react";
 import React from "react";
-import CodeFormat from "@/app/chat/CodeFormat";
+import CodeFormat from "@/app/chat/[[...id]]/CodeFormat";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";

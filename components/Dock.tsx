@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 const Dock = () => {
   return (
     <div
@@ -9,15 +7,10 @@ const Dock = () => {
     >
       <div
         className={
-          "h-8 w-8 rounded-full overflow-hidden border-2 border-white shadow"
+          "h-8 w-8 rounded-full border flex items-center justify-center text-sm"
         }
       >
-        <Image
-          src={`https://www.gravatar.com/avatar/1?s=200&d=monsterid`}
-          width={32}
-          height={32}
-          alt={""}
-        />
+        T
       </div>
     </div>
   );

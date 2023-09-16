@@ -1,5 +1,5 @@
 import React from "react";
-import Chat from "@/app/chat/Chat";
+import Chat from "@/app/chat/[[...id]]/Chat";
 
 export const runtime = "edge";
 
