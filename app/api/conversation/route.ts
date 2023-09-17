@@ -50,6 +50,12 @@ const POST = async (req: NextRequest) => {
           TableName: "abandonai-prod",
           Item: item,
         }),
+        MessageAttributes: {
+          Command: {
+            DataType: "String",
+            StringValue: "PutCommand",
+          },
+        },
       }),
     );
     return NextResponse.json({
