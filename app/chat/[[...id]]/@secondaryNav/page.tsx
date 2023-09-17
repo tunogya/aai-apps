@@ -51,12 +51,12 @@ const SecondaryNav = () => {
             .sort((a: any, b: any) => b.created - a.created) // descending
             .map((item: any) => (
               <Link
-                href={`/chat/${item.SK.replace("CHAT#", "")}?model=${
+                href={`/chat/${item.SK.replace("CHAT2#", "")}?model=${
                   searchParams.get("model") || "gpt-3.5-turbo"
                 }`}
                 key={item.SK}
                 className={`flex w-full items-center hover:bg-stone-100 px-3 py-2 rounded cursor-pointer select-none ${
-                  item.SK.replace("CHAT#", "") === currentChatId
+                  item.SK.replace("CHAT2#", "") === currentChatId
                     ? "bg-stone-100"
                     : ""
                 }`}

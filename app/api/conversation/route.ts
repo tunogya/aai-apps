@@ -20,7 +20,7 @@ const GET = async (req: NextRequest) => {
       },
       ExpressionAttributeValues: {
         ":pk": `USER#${sub}`,
-        ":sk": "CHAT#",
+        ":sk": "CHAT2#",
       },
       Limit: limit,
     }),
@@ -39,7 +39,7 @@ const POST = async (req: NextRequest) => {
     const chat_id = uuidv4();
     const item = {
       PK: `USER#${sub}`,
-      SK: `CHAT#${chat_id}`,
+      SK: `CHAT2#${chat_id}`,
       user_id: sub,
       chat_id: chat_id,
       created: Math.floor(Date.now() / 1000),
