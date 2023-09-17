@@ -10,14 +10,18 @@ const PrimaryNav: FC<{
   return (
     <div
       className={
-        "w-full max-w-[260px] shrink-0 h-full border-r px-8 py-4 space-y-10 relative"
+        "w-full max-w-[260px] shrink-0 h-full border-r px-0 lg:px-2 xl:px-4 2xl:px-8 py-4 space-y-10 relative"
       }
     >
       <Account />
       <CoreNav />
       <RecentNav />
 
-      <div className={"absolute bottom-8 left-8 flex items-center gap-3"}>
+      <div
+        className={
+          "absolute bottom-8 left-4 lg:left-6 xl:left-8 flex items-center gap-3"
+        }
+      >
         <Image src={"/favicon.svg"} alt={""} height={36} width={36} />
         <div>
           <div className={"text-xs text-stone-800"}>
