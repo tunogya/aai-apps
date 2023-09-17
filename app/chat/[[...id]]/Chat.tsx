@@ -1,7 +1,7 @@
 "use client";
 
 import { useChat } from "ai/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CodeFormat from "@/app/chat/[[...id]]/CodeFormat";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -10,30 +10,48 @@ import rehypeKatex from "rehype-katex";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import Image from "next/image";
 import { useParams, useSearchParams } from "next/navigation";
+import { v4 as uuidv4 } from "uuid";
+import useSWR from "swr";
 
 export default function Chat() {
   const params = useParams();
   const searchParams = useSearchParams();
   const { user } = useUser();
+  const [currentChatId, setCurrentChatId] = useState(
+    params?.id?.[0] || uuidv4(),
+  );
+  const { data } = useSWR(`/api/conversation/${currentChatId}`, (url) =>
+    fetch(url).then((res) => res.json()),
+  );
   const { messages, input, handleInputChange, handleSubmit, isLoading } =
     useChat({
       api: "/api/chat",
-      id: "",
+      id: currentChatId,
       headers: {
         "Content-Type": "application/json",
       },
       body: {
-        model: "gpt-3.5-turbo",
+        model: searchParams.get("model") || "gpt-3.5-turbo",
       },
+      initialMessages: data ? data.messages : [],
     });
-  // [
-  //     {
-  //         "content": "Hello",
-  //         "role": "user",
-  //         "createdAt": "2023-09-12T16:26:48.136Z",
-  //         "id": "McZpnf5"
-  //     },
-  // ]
+
+  useEffect(() => {
+    if (!isLoading && messages.length > 0) {
+      fetch(`/api/conversation`, {
+        method: "POST",
+        body: JSON.stringify({
+          id: currentChatId,
+          title: "Test",
+          messages: messages,
+          updated: Math.floor(Date.now() / 1000),
+        }),
+      }).then((res) => {
+        console.log(res.json());
+      });
+    }
+  }, [currentChatId, isLoading, messages]);
+
   return (
     <div className={"w-full min-w-[400px]"}>
       <div className={"h-[calc(100vh-60px)] w-full overflow-y-auto pb-40"}>

@@ -34,16 +34,14 @@ const GET = async (req: NextRequest) => {
 const POST = async (req: NextRequest) => {
   const session = await getSession();
   const sub = session?.user.sub;
-  const {} = await req.json();
+  const { id, title, messages, updated } = await req.json();
   try {
-    const chat_id = uuidv4();
     const item = {
       PK: `USER#${sub}`,
-      SK: `CHAT2#${chat_id}`,
-      user_id: sub,
-      chat_id: chat_id,
-      created: Math.floor(Date.now() / 1000),
-      updated: Math.floor(Date.now() / 1000),
+      SK: `CHAT2#${id}`,
+      title,
+      messages,
+      updated,
     };
     await sqsClient.send(
       new SendMessageCommand({
