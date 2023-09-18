@@ -1,5 +1,15 @@
 import { OpenAIStream, StreamingTextResponse } from "ai";
 import { Configuration, OpenAIApi } from "openai-edge";
+import { SendMessageCommand, SQSClient } from "@aws-sdk/client-sqs";
+import { AI_MODELS_MAP } from "@/utils/aiModels";
+
+const sqsClient = new SQSClient({
+  region: "ap-northeast-1",
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
+  },
+});
 
 export const runtime = "edge";
 
@@ -12,13 +22,17 @@ const openai = new OpenAIApi(configuration);
 // @ts-ignore
 export async function POST(req: Request): Promise<Response> {
   const json = await req.json();
-  const { messages, model } = json;
-
-  // if (!userId) {
-  //   return new Response("Unauthorized", {
-  //     status: 401,
-  //   });
-  // }
+  const { messages, model, sub } = json;
+  if (!AI_MODELS_MAP.has(model)) {
+    return new Response(
+      `Invalid model, expected one of ${Array.from(AI_MODELS_MAP.keys()).join(
+        ", ",
+      )}`,
+      {
+        status: 400,
+      },
+    );
+  }
 
   try {
     const res = await openai.createChatCompletion({
@@ -31,7 +45,34 @@ export async function POST(req: Request): Promise<Response> {
 
     const stream = OpenAIStream(res, {
       async onCompletion(completion) {
-        // TODO
+        // record usage log and reduce the balance of user
+        await sqsClient.send(
+          new SendMessageCommand({
+            QueueUrl:
+              "https://sqs.ap-northeast-1.amazonaws.com/913870644571/AI_DB_UPDATE",
+            MessageBody: JSON.stringify({
+              TableName: "abandonai-prod",
+              Item: {
+                PK: `USER#${sub}`,
+                SK: `USAGE#${new Date().toISOString()}`,
+                prompt: messages,
+                completion: completion,
+                created: Math.floor(Date.now() / 1000),
+                TTL: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30, // 1 month
+              },
+              ConditionExpression: "attribute_not_exists(#PK)",
+              ExpressionAttributeNames: {
+                "#PK": "PK",
+              },
+            }),
+            MessageAttributes: {
+              Command: {
+                DataType: "String",
+                StringValue: "PutCommand",
+              },
+            },
+          }),
+        );
       },
     });
 

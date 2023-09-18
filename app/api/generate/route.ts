@@ -12,7 +12,7 @@ export const runtime = "edge";
 
 export async function POST(req: Request): Promise<Response> {
   // Check if the OPENAI_API_KEY is set, if not return 400
-  if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY === "") {
+  if (!process.env.OPENAI_API_KEY) {
     return new Response(
       "Missing OPENAI_API_KEY – make sure to add it to your .env file.",
       {

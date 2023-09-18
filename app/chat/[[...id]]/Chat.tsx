@@ -32,6 +32,7 @@ export default function Chat() {
       },
       body: {
         model: searchParams.get("model") || "gpt-3.5-turbo",
+        sub: user?.sub,
       },
       initialMessages: data ? data.messages : [],
     });
@@ -46,8 +47,6 @@ export default function Chat() {
           messages: messages,
           updated: Math.floor(Date.now() / 1000),
         }),
-      }).then((res) => {
-        console.log(res.json());
       });
     }
   }, [currentChatId, isLoading, messages]);
