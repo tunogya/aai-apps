@@ -56,7 +56,8 @@ export async function POST(req: Request): Promise<Response> {
                 PK: `USER#${sub}`,
                 SK: `USAGE#${new Date().toISOString()}`,
                 prompt: messages,
-                completion: completion,
+                completion,
+                model,
                 created: Math.floor(Date.now() / 1000),
                 TTL: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30, // 1 month
               },
