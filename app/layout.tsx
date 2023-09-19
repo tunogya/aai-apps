@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.AUTH0_BASE_URL!),
   themeColor: "#fff",
   openGraph: {
-    images: "/apple-touch-icon.png",
+    images: "/images/icons/icon-512x512.png",
     title,
     description,
   },
@@ -33,6 +33,9 @@ export const metadata: Metadata = {
     creator: "@abandonai",
   },
   manifest: "/manifest.json",
+  appleWebApp: {
+    title: "AbandonAI",
+  },
 };
 
 export default function RootLayout(props: { children: ReactNode }) {

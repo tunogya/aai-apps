@@ -6,7 +6,7 @@ import PrimaryNav from "@/components/Nav/PrimaryNav";
 
 export const runtime = "edge";
 
-const title = "Whisperer - AbandonAI";
+const title = "Note - AbandonAI";
 const description = "Powered by OpenAI";
 
 export const metadata: Metadata = {

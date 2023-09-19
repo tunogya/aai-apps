@@ -9,11 +9,11 @@ const menu = [
   },
   {
     path: "/chat",
-    name: "ChatGPT",
+    name: "Chat",
   },
   {
     path: "/note",
-    name: "Whisperer",
+    name: "Note",
   },
   {
     path: "/billing",
