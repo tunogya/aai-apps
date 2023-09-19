@@ -1,5 +1,10 @@
 /** @type {import('next').NextConfig} */
-const withPWA = require("next-pwa");
+const withPWA = require("next-pwa")({
+  dest: "public",
+  disable: process.env.NODE_ENV !== "production",
+  register: true,
+  skipWaiting: true,
+});
 
 module.exports = withPWA({
   reactStrictMode: true,
@@ -14,11 +19,5 @@ module.exports = withPWA({
         pathname: "**",
       },
     ],
-  },
-  pwa: {
-    dest: "public",
-    disable: process.env.NODE_ENV !== "production",
-    register: true,
-    skipWaiting: true,
   },
 });
