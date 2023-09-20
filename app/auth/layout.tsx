@@ -14,5 +14,5 @@ export default function AuthLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <div className={"h-screen"}>{children}</div>;
+  return <div className={"h-full"}>{children}</div>;
 }

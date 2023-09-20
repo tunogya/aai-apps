@@ -42,7 +42,7 @@ export default function RootLayout(props: { children: ReactNode }) {
   return (
     <html lang="en" className={inter.className}>
       <UserProvider>
-        <body className={`h-screen w-screen`}>
+        <body className={`h-full w-full`}>
           <Script
             src={"https://www.googletagmanager.com/gtag/js?id=G-HT9Q8GW970"}
           />
