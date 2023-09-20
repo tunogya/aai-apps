@@ -16,10 +16,9 @@ const PrimaryNav: FC<{
       <Account />
       <CoreNav />
       <RecentNav />
-
       <div
         className={
-          "absolute bottom-8 left-4 lg:left-6 xl:left-8 flex items-center gap-3"
+          "absolute bottom-0 left-0 pb-8 pt-4 pl-4 lg:pl-6 xl:pl-8 flex items-center gap-3 bg-white"
         }
       >
         <Image src={"/favicon.svg"} alt={""} height={36} width={36} />

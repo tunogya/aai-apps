@@ -19,6 +19,7 @@
 body,
 html {
   height: 100%;
+  overflow: hidden;
 }
 
 .result-streaming > :not(ol):not(ul):not(pre):last-child:after,

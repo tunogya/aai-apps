@@ -19,9 +19,6 @@ const Account = async () => {
         <div className={"text-sm text-stone-800 truncate font-semibold"}>
           {session?.user.email}
         </div>
-        {/*<div className={"text-xs text-stone-500 font-light truncate"}>*/}
-        {/*  Estimate cost: $0*/}
-        {/*</div>*/}
       </div>
     </div>
   );
