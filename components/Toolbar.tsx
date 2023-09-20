@@ -49,7 +49,7 @@ const Toolbar: FC<{ border?: boolean }> = (props) => {
             <div className="relative mt-1">
               <Listbox.Button
                 className={`relative flex items-center gap-2 whitespace-nowrap ${
-                  selectModel.id > 2 ? "text-purple-600" : ""
+                  selectModel.id > 2 ? "text-[#AB68FF]" : "text-[#19C37D]"
                 }`}
               >
                 {selectModel.id <= 2 ? (
