@@ -6,7 +6,7 @@ const CSR = () => {
   const { data, isLoading } = useSWR("/api/dashboard/today", (url) =>
     fetch(url).then((res) => res.json()),
   );
-  console.log(data);
+
   return (
     <div className={"flex gap-8 h-40"}>
       <div className={"w-full max-w-3xl h-full text-sm text-stone-800"}>
