@@ -1,5 +1,7 @@
 import React from "react";
 import { getSession } from "@auth0/nextjs-auth0/edge";
+import Today from "@/app/dashboard/Today";
+import Overview from "@/app/dashboard/Overview";
 
 export const runtime = "edge";
 
@@ -19,35 +21,7 @@ export default async function SSRPage() {
         >
           Today
         </div>
-        <div className={"flex gap-8 h-40"}>
-          <div className={"w-full max-w-3xl h-full text-sm text-stone-800"}>
-            <div className={"flex"}>
-              <div className={"w-64 space-y-1"}>
-                <div>Cost & usage</div>
-                <div className={"text-stone-800 text-xl"}>US$0</div>
-              </div>
-              <div className={"w-64 space-y-1"}>
-                <div>Yesterday</div>
-                <div className={"text-stone-400 text-md"}>US$0</div>
-              </div>
-            </div>
-            <div></div>
-          </div>
-          <div className={"flex-1 h-full text-sm text-stone-800"}>
-            <div className={"h-[50%]"}>
-              <div className={"space-y-1"}>
-                <div>Estimate cost this month</div>
-                <div className={"text-stone-800 text-xl"}>US$0</div>
-              </div>
-            </div>
-            <div className={"h-[50%]"}>
-              <div className={"space-y-1"}>
-                <div>Advance pay balance</div>
-                <div className={"text-stone-800 text-xl"}>US$0</div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <Today />
       </div>
       <div className={"space-y-8"}>
         <div
@@ -57,6 +31,7 @@ export default async function SSRPage() {
         >
           Your overview
         </div>
+        <Overview />
       </div>
     </div>
   );

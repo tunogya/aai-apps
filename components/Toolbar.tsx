@@ -48,7 +48,7 @@ const Toolbar: FC<{ border?: boolean }> = (props) => {
           <Listbox value={selectModel} onChange={setSelectModel}>
             <div className="relative mt-1">
               <Listbox.Button
-                className={`relative flex items-center gap-2 ${
+                className={`relative flex items-center gap-2 whitespace-nowrap ${
                   selectModel.id > 2 ? "text-purple-600" : ""
                 }`}
               >
