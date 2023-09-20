@@ -12,12 +12,17 @@ import Image from "next/image";
 import { useParams, useSearchParams } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 import useSWR from "swr";
-import ScrollToBottom from "react-scroll-to-bottom";
+import ScrollToBottom, {
+  useScrollToBottom,
+  useSticky,
+} from "react-scroll-to-bottom";
 
 export default function Chat() {
   const params = useParams();
   const searchParams = useSearchParams();
   const { user } = useUser();
+  const [sticky] = useSticky();
+  const scrollToBottom = useScrollToBottom();
   const [currentChatId, setCurrentChatId] = useState(
     params?.id?.[0] || uuidv4(),
   );
@@ -38,13 +43,15 @@ export default function Chat() {
       initialMessages: data ? data?.item?.messages : [],
     });
 
+  console.log(sticky);
+  // TODO, need to fix this
   useEffect(() => {
     if (!isLoading && messages.length > 0) {
       fetch(`/api/conversation`, {
         method: "POST",
         body: JSON.stringify({
           id: currentChatId,
-          title: "Test",
+          title: messages?.[0]?.content?.trim()?.slice(0, 20),
           messages: messages,
           updated: Math.floor(Date.now() / 1000),
         }),
@@ -54,8 +61,14 @@ export default function Chat() {
 
   return (
     <div className={"w-full min-w-[400px]"}>
-      <div className={"h-[calc(100vh-60px)] w-full overflow-y-auto pb-40"}>
-        <ScrollToBottom className={"h-full w-full"}>
+      <div
+        className={"h-[calc(100vh-60px)] w-full overflow-y-auto pb-40 relative"}
+      >
+        <ScrollToBottom
+          className={"h-full w-full"}
+          initialScrollBehavior={"smooth"}
+          mode={"bottom"}
+        >
           {messages.map((m, index) => (
             <div
               key={index}
