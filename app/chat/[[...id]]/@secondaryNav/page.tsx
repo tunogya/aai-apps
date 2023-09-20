@@ -13,6 +13,16 @@ const SecondaryNav = () => {
 
   const currentChatId = params?.id?.[0] || null;
 
+  const deleteChat = async (id: string) => {
+    try {
+      await fetch(`/api/conversation/${id}`, {
+        method: "DELETE",
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <div
       className={
@@ -50,18 +60,47 @@ const SecondaryNav = () => {
           data.items
             .sort((a: any, b: any) => b.created - a.created) // descending
             .map((item: any) => (
-              <Link
-                href={`/chat/${item.SK.replace("CHAT2#", "")}?model=${
-                  searchParams.get("model") || "gpt-3.5-turbo"
-                }`}
+              <div
                 key={item.SK}
-                className={`flex w-full items-center hover:bg-stone-100 px-3 py-2 rounded cursor-pointer select-none ${
+                className={`group flex items-center gap-2 ${
                   item.SK.replace("CHAT2#", "") === currentChatId
                     ? "bg-stone-100"
                     : ""
-                }`}
+                } hover:bg-stone-100 rounded px-3 py-2 cursor-pointer select-none`}
               >
-                <div className={"w-6 shrink-0"}>
+                <Link
+                  href={`/chat/${item.SK.replace("CHAT2#", "")}?model=${
+                    searchParams.get("model") || "gpt-3.5-turbo"
+                  }`}
+                  className={`flex w-full items-center`}
+                >
+                  <div className={"w-6 shrink-0"}>
+                    <svg
+                      stroke="currentColor"
+                      fill="none"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="h-4 w-4"
+                      height="1em"
+                      width="1em"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                  </div>
+                  <div className={"truncate text-sm"}>{item.title}</div>
+                </Link>
+                <button
+                  className={
+                    "hidden group-hover:flex text-stone-800 hover:text-red-500"
+                  }
+                  onClick={async () => {
+                    await deleteChat(item.SK.replace("CHAT2#", ""));
+                    await mutate();
+                  }}
+                >
                   <svg
                     stroke="currentColor"
                     fill="none"
@@ -74,11 +113,13 @@ const SecondaryNav = () => {
                     width="1em"
                     xmlns="http://www.w3.org/2000/svg"
                   >
-                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    <line x1="10" y1="11" x2="10" y2="17"></line>
+                    <line x1="14" y1="11" x2="14" y2="17"></line>
                   </svg>
-                </div>
-                <div className={"truncate text-sm"}>{item.title}</div>
-              </Link>
+                </button>
+              </div>
             ))}
       </div>
     </div>
