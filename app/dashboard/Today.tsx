@@ -21,7 +21,7 @@ const CSR = () => {
 
   return (
     <div className={"flex gap-8 h-40"}>
-      <div className={"w-full max-w-3xl h-full text-sm text-stone-800"}>
+      <div className={"w-full max-w-2xl h-full text-sm text-stone-800"}>
         <div className={"flex"}>
           <div className={"w-64 space-y-1"}>
             <div className={"whitespace-nowrap"}>Cost & usage</div>
@@ -54,7 +54,7 @@ const CSR = () => {
           </ResponsiveContainer>
         </div>
       </div>
-      <div className={"flex-1 h-full text-sm text-stone-800"}>
+      <div className={"flex-1 h-full text-sm text-stone-800 shrink-0"}>
         <div className={"h-[50%]"}>
           <div className={"space-y-1"}>
             <div className={"whitespace-nowrap"}>Estimate cost this month</div>
