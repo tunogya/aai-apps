@@ -2,7 +2,6 @@
 import useSWR from "swr";
 import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
-import { useState } from "react";
 
 const SecondaryNav = () => {
   const params = useParams();
@@ -10,8 +9,10 @@ const SecondaryNav = () => {
   const { data, isLoading, mutate, error } = useSWR(
     "/api/conversation",
     (url) => fetch(url).then((res) => res.json()),
+    {
+      refreshInterval: 10_000,
+    },
   );
-  const [deletedList, setDeletedList] = useState<string[]>([]);
   const currentChatId = params?.id?.[0] || null;
 
   const deleteChat = async (id: string) => {
@@ -59,7 +60,6 @@ const SecondaryNav = () => {
         {!data && isLoading && <div className={"text-sm"}>Loading...</div>}
         {data &&
           data.items
-            .filter((item: any) => !deletedList.includes(item.SK))
             .sort((a: any, b: any) => b.created - a.created) // descending
             .map((item: any) => (
               <div
@@ -99,9 +99,7 @@ const SecondaryNav = () => {
                     "hidden group-hover:flex text-stone-800 hover:text-red-500"
                   }
                   onClick={async () => {
-                    setDeletedList([...deletedList, item.SK]);
                     await deleteChat(item.SK.replace("CHAT2#", ""));
-                    await mutate();
                   }}
                 >
                   <svg

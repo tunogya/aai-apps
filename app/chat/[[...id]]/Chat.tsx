@@ -1,7 +1,7 @@
 "use client";
 
 import { useChat } from "ai/react";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import CodeFormat from "@/app/chat/[[...id]]/CodeFormat";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -11,16 +11,23 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 import Image from "next/image";
 import { useParams, useSearchParams } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
-import useSWR from "swr";
 import ScrollToBottom from "react-scroll-to-bottom";
+import useSWRImmutable from "swr/immutable";
 
 export default function Chat() {
   const params = useParams();
   const searchParams = useSearchParams();
   const { user } = useUser();
-  const currentChatId = params?.id?.[0] || uuidv4();
-  const { data } = useSWR(`/api/conversation/${currentChatId}`, (url) =>
-    fetch(url).then((res) => res.json()),
+  const currentChatId = useMemo(() => {
+    if (params?.id?.[0]) {
+      return params?.id?.[0];
+    } else {
+      return uuidv4();
+    }
+  }, [params?.id]);
+  const { data } = useSWRImmutable(
+    `/api/conversation/${currentChatId}`,
+    (url) => fetch(url).then((res) => res.json()),
   );
   const { messages, input, handleInputChange, handleSubmit, isLoading } =
     useChat({
@@ -59,6 +66,7 @@ export default function Chat() {
           className={"h-full w-full"}
           initialScrollBehavior={"smooth"}
           mode={"bottom"}
+          followButtonClassName={"hidden"}
         >
           {messages.map((m, index) => (
             <div
