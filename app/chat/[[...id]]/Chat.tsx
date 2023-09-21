@@ -1,7 +1,7 @@
 "use client";
 
 import { useChat } from "ai/react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import CodeFormat from "@/app/chat/[[...id]]/CodeFormat";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
