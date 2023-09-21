@@ -13,13 +13,16 @@ const GET = async (req: NextRequest) => {
     new QueryCommand({
       TableName: "abandonai-prod",
       KeyConditionExpression: "#pk = :pk AND begins_with(#sk, :sk)",
+      FilterExpression: "attribute_not_exists(#invisible), #invisible = :false",
       ExpressionAttributeNames: {
         "#pk": "PK",
         "#sk": "SK",
+        "#invisible": "invisible",
       },
       ExpressionAttributeValues: {
         ":pk": `USER#${sub}`,
         ":sk": "CHAT2#",
+        ":false": false,
       },
       Limit: limit,
     }),

@@ -16,7 +16,14 @@ const SecondaryNav = () => {
   const deleteChat = async (id: string) => {
     try {
       await fetch(`/api/conversation/${id}`, {
-        method: "DELETE",
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          invisible: true,
+          TTL: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30,
+        }),
       });
     } catch (e) {
       console.log(e);
