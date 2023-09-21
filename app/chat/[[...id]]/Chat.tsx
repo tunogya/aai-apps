@@ -36,7 +36,6 @@ export default function Chat() {
       initialMessages: data ? data?.item?.messages : [],
     });
 
-  // TODO, need to fix this
   useEffect(() => {
     if (!isLoading && messages.length > 0) {
       fetch(`/api/conversation`, {
