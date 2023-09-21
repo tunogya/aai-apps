@@ -18,9 +18,7 @@ export default function Chat() {
   const params = useParams();
   const searchParams = useSearchParams();
   const { user } = useUser();
-  const [currentChatId, setCurrentChatId] = useState(
-    params?.id?.[0] || uuidv4(),
-  );
+  const currentChatId = params?.id?.[0] || uuidv4();
   const { data } = useSWR(`/api/conversation/${currentChatId}`, (url) =>
     fetch(url).then((res) => res.json()),
   );

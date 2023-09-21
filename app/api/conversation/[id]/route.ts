@@ -37,7 +37,6 @@ const GET = async (req: NextRequest, { params }: any) => {
   }
 };
 
-// 增量更新 chat
 const PATCH = async (req: NextRequest, { params }: any) => {
   const session = await getSession();
   const sub = session?.user.sub;
