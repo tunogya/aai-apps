@@ -6,6 +6,8 @@ import {
   GetCommand,
   UpdateCommand,
 } from "@aws-sdk/lib-dynamodb";
+import sqsClient from "@/utils/sqsClient";
+import { SendMessageCommand } from "@aws-sdk/client-sqs";
 
 const GET = async (req: NextRequest, { params }: any) => {
   const session = await getSession();
@@ -35,6 +37,7 @@ const GET = async (req: NextRequest, { params }: any) => {
   }
 };
 
+// 增量更新 chat
 const PATCH = async (req: NextRequest, { params }: any) => {
   const session = await getSession();
   const sub = session?.user.sub;
@@ -82,12 +85,30 @@ const DELETE = async (req: NextRequest, { params }: any) => {
   const session = await getSession();
   const sub = session?.user.sub;
   try {
-    await ddbDocClient.send(
-      new DeleteCommand({
-        TableName: "abandonai-prod",
-        Key: {
-          PK: `USER#${sub}`,
-          SK: `CHAT2#${params?.id}`,
+    await sqsClient.send(
+      new SendMessageCommand({
+        QueueUrl: process.env.AI_DB_UPDATE_SQS_URL,
+        MessageBody: JSON.stringify({
+          TableName: "abandonai-prod",
+          Key: {
+            PK: `USER#${sub}`,
+            SK: `CHAT2#${params?.id}`,
+          },
+          UpdateExpression: "SET #invisible = :true, #TTL = :ttl",
+          ExpressionAttributeNames: {
+            "#invisible": "invisible",
+            "#TTL": "TTL",
+          },
+          ExpressionAttributeValues: {
+            ":true": true,
+            ":ttl": Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30,
+          },
+        }),
+        MessageAttributes: {
+          Command: {
+            DataType: "String",
+            StringValue: "UpdateCommand",
+          },
         },
       }),
     );
