@@ -12,6 +12,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import { roundUp } from "@/utils/roundUp";
 
 const CSR = () => {
   const { data, isLoading } = useSWR("/api/dashboard/today", (url) =>
@@ -26,20 +27,14 @@ const CSR = () => {
             <div className={"whitespace-nowrap"}>Cost & usage</div>
             <div className={"text-stone-800 text-xl"}>
               US$
-              {data?.cost?.today?.toLocaleString("en-US", {
-                maximumFractionDigits: 6,
-                minimumFractionDigits: 2,
-              }) || 0}
+              {roundUp(data?.cost?.today || 0, 6)}
             </div>
           </div>
           <div className={"w-64 space-y-1"}>
             <div className={"whitespace-nowrap"}>Yesterday</div>
             <div className={"text-stone-400 text-md"}>
               US$
-              {data?.cost?.yesterday?.toLocaleString("en-US", {
-                maximumFractionDigits: 6,
-                minimumFractionDigits: 2,
-              }) || 0}
+              {roundUp(data?.cost?.yesterday || 0, 6)}
             </div>
           </div>
         </div>
@@ -65,10 +60,7 @@ const CSR = () => {
             <div className={"whitespace-nowrap"}>Estimate cost this month</div>
             <div className={"text-stone-800 text-xl"}>
               US$
-              {data?.estimate?.month?.toLocaleString("en-US", {
-                maximumFractionDigits: 6,
-                minimumFractionDigits: 2,
-              }) || 0}
+              {roundUp(data?.estimate?.month || 0, 6)}
             </div>
           </div>
         </div>
@@ -83,10 +75,7 @@ const CSR = () => {
               }  text-xl`}
             >
               US$
-              {data?.advance_pay?.balance?.toLocaleString("en-US", {
-                maximumFractionDigits: 6,
-                minimumFractionDigits: 2,
-              }) || 0}
+              {roundUp(data?.advance_pay?.balance || 0, 6)}
             </div>
           </div>
         </div>
