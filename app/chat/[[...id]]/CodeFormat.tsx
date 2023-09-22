@@ -29,7 +29,6 @@ const CodeFormat: FC<CodeProps> = ({
           <button
             className="flex ml-auto gap-2"
             onClick={() => {
-              // copy children to clipboard
               copy(String(children));
               setCopied(true);
               setTimeout(() => {
@@ -74,7 +73,7 @@ const CodeFormat: FC<CodeProps> = ({
         </div>
         <div className={"p-4 overflow-y-auto"}>
           <code
-            className={`!whitespace-pre hljs ${className}`}
+            className={`!whitespace-pre hljs text-sm ${className}`}
             {...props}
             ref={ref}
           />

@@ -7,6 +7,7 @@ import { TailwindIndicator } from "@/components/TailwindIndicator";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
 import * as process from "process";
 import { ReactNode } from "react";
+import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 
@@ -43,6 +44,10 @@ export default function RootLayout(props: { children: ReactNode }) {
     <html lang="en" className={inter.className}>
       <UserProvider>
         <body className={`h-full w-full`}>
+          <Link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css"
+          />
           <Script
             src={"https://www.googletagmanager.com/gtag/js?id=G-HT9Q8GW970"}
           />
