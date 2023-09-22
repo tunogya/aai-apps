@@ -105,14 +105,16 @@ export default function Chat() {
                       </svg>
                     </div>
                   ) : (
-                    <Image
-                      src={user?.picture!}
-                      alt={""}
-                      width={32}
-                      height={32}
-                      className={""}
-                      priority
-                    />
+                    user?.picture && (
+                      <Image
+                        src={user?.picture!}
+                        alt={""}
+                        width={32}
+                        height={32}
+                        className={""}
+                        priority
+                      />
+                    )
                   )}
                 </div>
                 <ReactMarkdown

@@ -2,6 +2,7 @@
 import useSWR from "swr";
 import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
 
 const SecondaryNav = () => {
   const params = useParams();
@@ -14,6 +15,7 @@ const SecondaryNav = () => {
     },
   );
   const currentChatId = params?.id?.[0] || null;
+  const [deleteItems, setDeleteItems] = useState<string[]>([]);
 
   const deleteChat = async (id: string) => {
     try {
@@ -24,6 +26,13 @@ const SecondaryNav = () => {
       console.log(e);
     }
   };
+
+  useEffect(() => {
+    const items = JSON.parse(sessionStorage.getItem("deleteItems") || "[]");
+    if (items) {
+      setDeleteItems(items);
+    }
+  }, []);
 
   return (
     <div
@@ -60,6 +69,7 @@ const SecondaryNav = () => {
         {!data && isLoading && <div className={"text-sm"}>Loading...</div>}
         {data &&
           data.items
+            .filter((item: any) => !deleteItems.includes(item.SK))
             .sort((a: any, b: any) => b.created - a.created) // descending
             .map((item: any) => (
               <div
@@ -99,6 +109,12 @@ const SecondaryNav = () => {
                     "hidden group-hover:flex text-stone-800 hover:text-red-500"
                   }
                   onClick={async () => {
+                    const _newDeleteItems = [...deleteItems, item.SK];
+                    setDeleteItems(_newDeleteItems);
+                    sessionStorage.setItem(
+                      "deleteItems",
+                      JSON.stringify(_newDeleteItems),
+                    );
                     await deleteChat(item.SK.replace("CHAT2#", ""));
                   }}
                 >
