@@ -3,11 +3,15 @@ import React from "react";
 import useSWR from "swr";
 import { BarChart, Bar, XAxis, Tooltip, ResponsiveContainer } from "recharts";
 import { roundUp } from "@/utils/roundUp";
+import { useSearchParams } from "next/navigation";
 
 const CSR = () => {
   const { data, isLoading } = useSWR("/api/dashboard/today", (url) =>
     fetch(url).then((res) => res.json()),
   );
+  const searchParams = useSearchParams();
+  const model = searchParams.get("model") || "gpt-3.5-turbo";
+  const isPurple = model.startsWith("gpt-4");
 
   return (
     <div className={"flex flex-col xl:flex-row gap-10 xl:gap-20 h-fit w-full"}>
@@ -31,7 +35,19 @@ const CSR = () => {
         <div className={"h-[180px] w-full mt-4"}>
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={data?.charts || []}>
-              <Tooltip />
+              <Tooltip
+                formatter={(value, name) => [value, "Cost"]}
+                itemStyle={{
+                  fontSize: "12px",
+                }}
+                wrapperStyle={{
+                  fontSize: "12px",
+                }}
+                contentStyle={{
+                  borderRadius: "4px",
+                  padding: "4px 8px",
+                }}
+              />
               <XAxis
                 dataKey="date"
                 axisLine={false}
@@ -39,7 +55,11 @@ const CSR = () => {
                 tick={{ fontSize: "10px" }}
                 tickFormatter={(value, index) => value.slice(-4)}
               />
-              <Bar dataKey="total_cost" fill="#8884d8" minPointSize={1} />
+              <Bar
+                dataKey="total_cost"
+                fill={isPurple ? "#AB68FF" : "#19C37D"}
+                minPointSize={1}
+              />
             </BarChart>
           </ResponsiveContainer>
         </div>
