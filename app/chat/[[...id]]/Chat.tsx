@@ -166,8 +166,7 @@ export default function Chat() {
                 if (e.key === "Enter" && !e.shiftKey) {
                   if (e.nativeEvent.isComposing) return;
                   e.preventDefault();
-                  // @ts-ignore
-                  await handleSubmit(e);
+                  handleSubmit(e as any);
                 }
               }}
             />
