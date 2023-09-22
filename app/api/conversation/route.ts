@@ -46,7 +46,7 @@ const POST = async (req: NextRequest) => {
       messages,
       updated,
     };
-    await sqsClient.send(
+    sqsClient.send(
       new SendMessageCommand({
         QueueUrl: process.env.AI_DB_UPDATE_SQS_URL,
         MessageBody: JSON.stringify({

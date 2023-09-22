@@ -84,7 +84,7 @@ const DELETE = async (req: NextRequest, { params }: any) => {
   const session = await getSession();
   const sub = session?.user.sub;
   try {
-    await sqsClient.send(
+    sqsClient.send(
       new SendMessageCommand({
         QueueUrl: process.env.AI_DB_UPDATE_SQS_URL,
         MessageBody: JSON.stringify({
