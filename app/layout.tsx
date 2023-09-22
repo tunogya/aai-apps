@@ -1,4 +1,5 @@
 import "./globals.css";
+import "./katex.min.css";
 import type { Metadata } from "next";
 import "cal-sans";
 import { Inter } from "next/font/google";
