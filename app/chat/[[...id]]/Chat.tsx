@@ -162,6 +162,14 @@ export default function Chat() {
                 handleInputChange(e);
               }}
               placeholder={"Send a message"}
+              onKeyDown={async (e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  if (e.nativeEvent.isComposing) return;
+                  e.preventDefault();
+                  // @ts-ignore
+                  await handleSubmit(e);
+                }
+              }}
             />
             <button
               type="submit"
