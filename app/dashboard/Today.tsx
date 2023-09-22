@@ -1,17 +1,7 @@
 "use client";
 import React from "react";
 import useSWR from "swr";
-import {
-  BarChart,
-  Bar,
-  Cell,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
+import { BarChart, Bar, XAxis, Tooltip, ResponsiveContainer } from "recharts";
 import { roundUp } from "@/utils/roundUp";
 
 const CSR = () => {
@@ -20,17 +10,17 @@ const CSR = () => {
   );
 
   return (
-    <div className={"flex gap-8 h-40"}>
-      <div className={"w-full max-w-2xl h-full text-sm text-stone-800"}>
-        <div className={"flex"}>
-          <div className={"w-64 space-y-1"}>
+    <div className={"flex flex-col xl:flex-row gap-10 xl:gap-20 h-fit w-full"}>
+      <div className={"w-full xl:max-w-2xl h-full text-sm text-stone-800"}>
+        <div className={"flex w-full"}>
+          <div className={"w-[50%] space-y-1"}>
             <div className={"whitespace-nowrap"}>Cost & usage</div>
             <div className={"text-stone-800 text-xl"}>
               US$
               {roundUp(data?.cost?.today || 0, 6)}
             </div>
           </div>
-          <div className={"w-64 space-y-1"}>
+          <div className={"w-[50%] space-y-1"}>
             <div className={"whitespace-nowrap"}>Yesterday</div>
             <div className={"text-stone-400 text-md"}>
               US$
@@ -38,7 +28,7 @@ const CSR = () => {
             </div>
           </div>
         </div>
-        <div className={"h-full w-full mt-4"}>
+        <div className={"h-[180px] w-full mt-4"}>
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={data?.charts || []}>
               <Tooltip />
@@ -46,7 +36,7 @@ const CSR = () => {
                 dataKey="date"
                 axisLine={false}
                 tickLine={false}
-                tick={{ fontSize: "12px" }}
+                tick={{ fontSize: "10px" }}
                 tickFormatter={(value, index) => value.slice(-4)}
               />
               <Bar dataKey="total_cost" fill="#8884d8" minPointSize={1} />
@@ -54,29 +44,27 @@ const CSR = () => {
           </ResponsiveContainer>
         </div>
       </div>
-      <div className={"flex-1 h-full text-sm text-stone-800 shrink-0"}>
-        <div className={"h-[50%]"}>
-          <div className={"space-y-1"}>
-            <div className={"whitespace-nowrap"}>Estimate cost this month</div>
-            <div className={"text-stone-800 text-xl"}>
-              US$
-              {roundUp(data?.estimate?.month || 0, 6)}
-            </div>
+      <div
+        className={
+          "flex flex-row xl:flex-col w-96 h-full text-sm text-stone-800 gap-20 xl:gap-10"
+        }
+      >
+        <div className={"space-y-1"}>
+          <div className={"whitespace-nowrap"}>Estimate cost this month</div>
+          <div className={"text-stone-800 text-xl"}>
+            US$
+            {roundUp(data?.estimate?.month || 0, 6)}
           </div>
         </div>
-        <div className={"h-[50%]"}>
-          <div className={"space-y-1"}>
-            <div className={"whitespace-nowrap"}>Advance pay balance</div>
-            <div
-              className={`${
-                data?.advance_pay?.balance < 0
-                  ? "text-red-500"
-                  : "text-stone-800"
-              }  text-xl`}
-            >
-              US$
-              {roundUp(data?.advance_pay?.balance || 0, 6)}
-            </div>
+        <div className={"space-y-1"}>
+          <div className={"whitespace-nowrap"}>Advance pay balance</div>
+          <div
+            className={`${
+              data?.advance_pay?.balance < 0 ? "text-red-500" : "text-stone-800"
+            }  text-xl`}
+          >
+            US$
+            {roundUp(data?.advance_pay?.balance || 0, 6)}
           </div>
         </div>
       </div>
