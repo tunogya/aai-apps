@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.AUTH0_BASE_URL!),
   themeColor: "#fff",
   openGraph: {
-    images: "/images/icons/icon-512x512.png",
+    images: "/favicon.svg",
     title,
     description,
   },
