@@ -12,7 +12,7 @@ import Image from "next/image";
 import { useParams, useSearchParams } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 import ScrollToBottom from "react-scroll-to-bottom";
-import useSWRImmutable from "swr/immutable";
+import useSWR from "swr";
 
 export default function Chat() {
   const params = useParams();
@@ -25,9 +25,8 @@ export default function Chat() {
       return uuidv4();
     }
   }, [params?.id]);
-  const { data } = useSWRImmutable(
-    `/api/conversation/${currentChatId}`,
-    (url) => fetch(url).then((res) => res.json()),
+  const { data } = useSWR(`/api/conversation/${currentChatId}`, (url) =>
+    fetch(url).then((res) => res.json()),
   );
   const model = searchParams.get("model") || "gpt-3.5-turbo";
   const { messages, input, handleInputChange, handleSubmit, isLoading } =

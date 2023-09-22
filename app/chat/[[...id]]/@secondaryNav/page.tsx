@@ -1,19 +1,20 @@
 "use client";
-import useSWR from "swr";
+import useSWR, { preload } from "swr";
 import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 const SecondaryNav = () => {
   const params = useParams();
   const searchParams = useSearchParams();
-  const { data, isLoading, mutate, error } = useSWR(
+  const { data, isLoading } = useSWR(
     "/api/conversation",
     (url) => fetch(url).then((res) => res.json()),
     {
       refreshInterval: 10_000,
     },
   );
+  console.log(data);
   const currentChatId = params?.id?.[0] || null;
   const [deleteItems, setDeleteItems] = useState<string[]>([]);
 
@@ -33,6 +34,19 @@ const SecondaryNav = () => {
       setDeleteItems(items);
     }
   }, []);
+
+  const handlePreload = useCallback(async () => {
+    if (!data) return;
+    data.items.forEach((item: any) => {
+      preload(`/api/conversation/${item.SK.replace("CHAT2#", "")}`, (url) =>
+        fetch(url).then((data) => data.json()),
+      );
+    });
+  }, [data]);
+
+  useEffect(() => {
+    handlePreload();
+  }, [handlePreload]);
 
   return (
     <div
@@ -70,7 +84,7 @@ const SecondaryNav = () => {
         {data &&
           data.items
             .filter((item: any) => !deleteItems.includes(item.SK))
-            .sort((a: any, b: any) => b.created - a.created) // descending
+            .sort((a: any, b: any) => b.updated - a.updated) // descending
             .map((item: any) => (
               <div
                 key={item.SK}
