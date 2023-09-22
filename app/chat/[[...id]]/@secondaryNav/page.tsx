@@ -7,12 +7,8 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 const SecondaryNav = () => {
   const params = useParams();
   const searchParams = useSearchParams();
-  const { data, isLoading } = useSWR(
-    "/api/conversation",
-    (url) => fetch(url).then((res) => res.json()),
-    {
-      refreshInterval: 10_000,
-    },
+  const { data, isLoading } = useSWR("/api/conversation", (url) =>
+    fetch(url).then((res) => res.json()),
   );
   console.log(data);
   const currentChatId = params?.id?.[0] || null;
