@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 
 export default function Layout(props: { children: ReactNode }) {
   return (
-    <div className={"h-full w-full flex relative  justify-center"}>
+    <div className={"h-full w-full flex relative justify-center"}>
       <div className={"max-w-[1920px] w-full h-full flex overflow-hidden"}>
         <PrimaryNav active={"/dashboard"} />
         <div className={"w-full mr-10 relative"}>
