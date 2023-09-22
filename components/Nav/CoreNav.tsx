@@ -12,10 +12,10 @@ const menu = [
     path: "/chat",
     name: "Chat",
   },
-  {
-    path: "/note",
-    name: "Note",
-  },
+  // {
+  //   path: "/note",
+  //   name: "Note",
+  // },
   {
     path: "/billing",
     name: "Billing",
