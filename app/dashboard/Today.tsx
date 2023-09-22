@@ -47,6 +47,9 @@ const CSR = () => {
                   borderRadius: "4px",
                   padding: "4px 8px",
                 }}
+                cursor={{
+                  fill: "#f5f5f4",
+                }}
               />
               <XAxis
                 dataKey="date"
