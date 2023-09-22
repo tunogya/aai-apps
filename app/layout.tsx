@@ -1,7 +1,4 @@
-import "./globals.css";
-import "./katex.min.css";
 import type { Metadata } from "next";
-import "cal-sans";
 import { Inter } from "next/font/google";
 import Script from "next/script";
 import { TailwindIndicator } from "@/components/TailwindIndicator";
@@ -9,6 +6,9 @@ import { UserProvider } from "@auth0/nextjs-auth0/client";
 import * as process from "process";
 import { ReactNode } from "react";
 import Link from "next/link";
+import "cal-sans";
+import "./styles/globals.css";
+import "./styles/katex.min.css";
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 
