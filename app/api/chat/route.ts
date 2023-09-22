@@ -44,9 +44,9 @@ export async function POST(req: Request): Promise<Response> {
     });
 
     const stream = OpenAIStream(res, {
-      async onCompletion(completion) {
+      onCompletion(completion) {
         // record usage log and reduce the balance of user
-        await sqsClient.send(
+        sqsClient.send(
           new SendMessageCommand({
             QueueUrl:
               "https://sqs.ap-northeast-1.amazonaws.com/913870644571/AI_DB_UPDATE",
