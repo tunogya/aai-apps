@@ -14,8 +14,8 @@ const CSR = () => {
   const isPurple = model.startsWith("gpt-4");
 
   return (
-    <div className={"flex flex-col xl:flex-row gap-10 xl:gap-20 h-fit w-full"}>
-      <div className={"w-full xl:max-w-2xl h-full text-sm text-stone-800"}>
+    <div className={"flex flex-col xl:flex-row gap-10 h-fit w-full"}>
+      <div className={"w-full xl:max-w-3xl h-full text-sm text-stone-800"}>
         <div className={"flex w-full gap-10"}>
           <div className={"w-[200px] space-y-1"}>
             <div className={"whitespace-nowrap"}>Cost & usage</div>
@@ -32,7 +32,7 @@ const CSR = () => {
             </div>
           </div>
         </div>
-        <div className={"h-[180px] w-full mt-4"}>
+        <div className={"h-[128px] w-full mt-4"}>
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={data?.charts || []}>
               <Tooltip

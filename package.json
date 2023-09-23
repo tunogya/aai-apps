@@ -24,7 +24,6 @@
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",
     "@upstash/ratelimit": "^0.4.4",
-    "@vercel/toolbar": "^0.1.4",
     "ai": "^2.2.11",
     "autoprefixer": "10.4.15",
     "cal-sans": "^1.0.1",
