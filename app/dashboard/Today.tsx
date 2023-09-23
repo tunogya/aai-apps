@@ -1,7 +1,13 @@
 "use client";
 import React from "react";
 import useSWR from "swr";
-import { BarChart, Bar, XAxis, Tooltip, ResponsiveContainer } from "recharts";
+import {
+  XAxis,
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  CartesianGrid,
+} from "recharts";
 import { roundUp } from "@/utils/roundUp";
 import { useSearchParams } from "next/navigation";
 
@@ -34,23 +40,8 @@ const CSR = () => {
         </div>
         <div className={"h-[128px] w-full mt-4"}>
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={data?.charts || []}>
-              <Tooltip
-                formatter={(value, name) => [value, "Cost"]}
-                itemStyle={{
-                  fontSize: "12px",
-                }}
-                wrapperStyle={{
-                  fontSize: "12px",
-                }}
-                contentStyle={{
-                  borderRadius: "4px",
-                  padding: "4px 8px",
-                }}
-                cursor={{
-                  fill: "#f5f5f4",
-                }}
-              />
+            <LineChart data={data?.charts || []}>
+              <CartesianGrid strokeOpacity={0.5} horizontal={false} />
               <XAxis
                 dataKey="date"
                 axisLine={false}
@@ -58,12 +49,13 @@ const CSR = () => {
                 tick={{ fontSize: "10px" }}
                 tickFormatter={(value, index) => value.slice(-4)}
               />
-              <Bar
-                dataKey="total_cost"
-                fill={isPurple ? "#AB68FF" : "#19C37D"}
-                minPointSize={1}
+              <Line
+                strokeWidth={2}
+                dataKey={"total_cost"}
+                dot={false}
+                stroke={isPurple ? "#AB68FF" : "#19C37D"}
               />
-            </BarChart>
+            </LineChart>
           </ResponsiveContainer>
         </div>
       </div>
