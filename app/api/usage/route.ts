@@ -31,34 +31,4 @@ const GET = async (req: NextRequest) => {
   });
 };
 
-const POST = async (req: NextRequest) => {
-  const session = await getSession();
-  const sub = session?.user.sub;
-  const {} = await req.json();
-  try {
-    const item = {
-      PK: `USER#${sub}`,
-      SK: `USAGE#${uuidv4()}`,
-      created: Math.floor(Date.now() / 1000),
-    };
-    await sqsClient.send(
-      new SendMessageCommand({
-        QueueUrl: process.env.AI_DB_UPDATE_SQS_URL,
-        MessageBody: JSON.stringify({
-          TableName: "abandonai-prod",
-          Item: item,
-        }),
-      }),
-    );
-    return NextResponse.json({
-      success: true,
-      item,
-    });
-  } catch (e) {
-    return NextResponse.json({
-      error: "ddbDocClient error",
-    });
-  }
-};
-
-export { GET, POST };
+export { GET };

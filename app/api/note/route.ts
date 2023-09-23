@@ -45,7 +45,7 @@ const POST = async (req: NextRequest) => {
       created: Math.floor(Date.now() / 1000),
       updated: Math.floor(Date.now() / 1000),
     };
-    await sqsClient.send(
+    sqsClient.send(
       new SendMessageCommand({
         QueueUrl: process.env.AI_DB_UPDATE_SQS_URL,
         MessageBody: JSON.stringify({

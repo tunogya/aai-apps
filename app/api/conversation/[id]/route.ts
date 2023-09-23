@@ -1,11 +1,7 @@
 import { getSession } from "@auth0/nextjs-auth0";
 import { NextRequest, NextResponse } from "next/server";
 import ddbDocClient from "@/utils/ddbDocClient";
-import {
-  DeleteCommand,
-  GetCommand,
-  UpdateCommand,
-} from "@aws-sdk/lib-dynamodb";
+import { GetCommand, UpdateCommand } from "@aws-sdk/lib-dynamodb";
 import sqsClient from "@/utils/sqsClient";
 import { SendMessageCommand } from "@aws-sdk/client-sqs";
 

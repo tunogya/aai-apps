@@ -2,6 +2,7 @@ import { OpenAIStream, StreamingTextResponse } from "ai";
 import { Configuration, OpenAIApi } from "openai-edge";
 import { SendMessageCommand, SQSClient } from "@aws-sdk/client-sqs";
 import { AI_MODELS_MAP } from "@/utils/aiModels";
+import * as process from "process";
 
 const sqsClient = new SQSClient({
   region: "ap-northeast-1",
@@ -47,8 +48,7 @@ export async function POST(req: Request): Promise<Response> {
         // record usage log and reduce the balance of user
         sqsClient.send(
           new SendMessageCommand({
-            QueueUrl:
-              "https://sqs.ap-northeast-1.amazonaws.com/913870644571/AI_DB_UPDATE",
+            QueueUrl: process.env.AI_DB_UPDATE_SQS_URL,
             MessageBody: JSON.stringify({
               TableName: "abandonai-prod",
               Item: {
