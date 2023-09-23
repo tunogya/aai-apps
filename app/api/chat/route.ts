@@ -21,8 +21,7 @@ const openai = new OpenAIApi(configuration);
 
 // @ts-ignore
 export async function POST(req: Request): Promise<Response> {
-  const json = await req.json();
-  const { messages, model, sub } = json;
+  const { messages, model, sub } = await req.json();
   if (!AI_MODELS_MAP.has(model)) {
     return new Response(
       `Invalid model, expected one of ${Array.from(AI_MODELS_MAP.keys()).join(

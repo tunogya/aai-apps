@@ -84,11 +84,27 @@ const CSR = () => {
           <div
             className={`${
               data?.advance_pay?.balance < 0 ? "text-red-500" : "text-stone-800"
-            }  text-xl`}
+            }  text-xl font-bold`}
           >
             US$
             {roundUp(data?.advance_pay?.balance || 0, 6)}
           </div>
+          <button
+            className={`text-xs px-3 py-1.5 rounded-full text-stone-700 shadow font-bold hover:bg-stone-100`}
+            onClick={async () => {
+              try {
+                const { session } = await fetch(`/api/checkout`, {
+                  method: "POST",
+                }).then((res) => res.json());
+                const url = session.url;
+                window.open(url);
+              } catch (e) {
+                console.log(e);
+              }
+            }}
+          >
+            + Add Credit
+          </button>
         </div>
       </div>
     </div>
