@@ -8,10 +8,11 @@ import redisClient from "@/utils/redisClient";
 const POST = async (req: NextRequest) => {
   const webhookSecret: string = process.env.STRIPE_WEBHOOK_SECRET!;
   const payload = await req.text();
-  const sig = req.headers.get("stripe-signature")!;
+  const sig = req.headers.get("stripe-signature") as string;
   let event: Stripe.Event;
-
+  console.log("sig", sig);
   if (!sig) {
+    console.log("No signature provided");
     return NextResponse.json(
       { error: "No signature provided" },
       { status: 500 },
@@ -20,6 +21,7 @@ const POST = async (req: NextRequest) => {
 
   try {
     event = stripeClient.webhooks.constructEvent(payload, sig, webhookSecret);
+    console.log("event:", event);
     if (event.type === "checkout.session.completed") {
       const checkoutSessionCompleted = event.data
         .object as Stripe.Checkout.Session;
@@ -93,6 +95,7 @@ const POST = async (req: NextRequest) => {
     }
     return NextResponse.json({ ok: true }, { status: 200 });
   } catch (err: any) {
+    console.log("error", err);
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
 };
