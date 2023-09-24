@@ -25,7 +25,7 @@ export async function POST(req: Request): Promise<Response> {
     const ratelimit = new Ratelimit({
       redis: redisClient,
       limiter: Ratelimit.slidingWindow(50, "1 d"),
-      analytics: true,
+      analytics: false,
       timeout: 1000,
       prefix: "ratelimit#generate",
     });
