@@ -79,8 +79,8 @@ const CSR = () => {
               data?.advance_pay?.balance < 0 ? "text-red-500" : "text-stone-800"
             }  text-xl`}
           >
-            US$
-            {roundUp(data?.advance_pay?.balance || 0, 6)}
+            {data?.advance_pay?.balance < 0 ? "-" : ""}US$
+            {roundUp(Math.abs(data?.advance_pay?.balance) || 0, 6)}
           </div>
           <button
             className={`text-sm px-2 py-1 rounded text-white ${
