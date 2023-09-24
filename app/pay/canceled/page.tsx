@@ -1,12 +1,10 @@
-import React from "react";
-import { getSession } from "@auth0/nextjs-auth0/edge";
 import Link from "next/link";
 import { TypedInfo } from "@/app/pay/canceled/TypedInfo";
+import { DepositButton } from "@/app/pay/canceled/DepositButton";
 
 export const runtime = "edge";
 
 export default async function SSRPage() {
-  const session = await getSession();
   return (
     <div
       className={
@@ -24,9 +22,7 @@ export default async function SSRPage() {
       >
         Back
       </Link>
-      <button className={"text-stone-500 hover:text-stone-800 text-sm"}>
-        Deposit again
-      </button>
+      <DepositButton />
     </div>
   );
 }
