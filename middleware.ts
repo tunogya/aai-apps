@@ -10,6 +10,7 @@ export const config = {
     "/api/persona/:path*",
     "/api/upload",
     "/api/dashboard",
+    "/api/checkout",
     "/api/usage/:path*",
     "/billing/:path*",
     "/chat/:path*",
