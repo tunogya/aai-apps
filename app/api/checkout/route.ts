@@ -24,9 +24,7 @@ const POST = async (req: NextRequest) => {
       },
     });
     const id = session.id;
-    await redisClient.set(id, "price_1NtMGxFPpv8QfieYD2d3FSwe", {
-      ex: 60 * 60 * 2,
-    });
+    await redisClient.set(id, "price_1NtMGxFPpv8QfieYD2d3FSwe");
     return NextResponse.json({
       session: session,
     });

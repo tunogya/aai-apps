@@ -93,6 +93,7 @@ const POST = async (req: Request) => {
             ],
           }),
         );
+        await redisClient.del(id);
       }
     }
   } catch (e) {
