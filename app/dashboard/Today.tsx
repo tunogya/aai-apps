@@ -76,7 +76,7 @@ const CSR = () => {
           <div
             className={`${
               data?.advance_pay?.balance < 0 ? "text-red-500" : "text-stone-800"
-            }  text-xl font-bold`}
+            }  text-xl`}
           >
             US$
             {roundUp(data?.advance_pay?.balance || 0, 6)}
