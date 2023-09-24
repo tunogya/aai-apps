@@ -3,6 +3,7 @@ import Stripe from "stripe";
 import stripeClient from "@/utils/stripeClient";
 import sqsClient from "@/utils/sqsClient";
 import { SendMessageBatchCommand } from "@aws-sdk/client-sqs";
+import redisClient from "@/utils/redisClient";
 
 const POST = async (req: NextRequest) => {
   const webhookSecret: string = process.env.STRIPE_WEBHOOK_SECRET!;
@@ -23,6 +24,7 @@ const POST = async (req: NextRequest) => {
       const checkoutSessionCompleted = event.data
         .object as Stripe.Checkout.Session;
       const {
+        id,
         created,
         payment_intent,
         metadata,
@@ -30,13 +32,15 @@ const POST = async (req: NextRequest) => {
         amount_subtotal, // 100 decimal
         currency,
       } = checkoutSessionCompleted;
+      const item = await redisClient.get(id);
       if (
+        item === "price_1NtMGxFPpv8QfieYD2d3FSwe" &&
         payment_status === "paid" &&
         currency === "usd" &&
         metadata?.id &&
         amount_subtotal
       ) {
-        sqsClient.send(
+        await sqsClient.send(
           new SendMessageBatchCommand({
             QueueUrl: process.env.AI_DB_UPDATE_SQS_FIFO_URL,
             Entries: [
@@ -87,7 +91,6 @@ const POST = async (req: NextRequest) => {
         );
       }
     }
-
     return NextResponse.json({ ok: true }, { status: 200 });
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 });

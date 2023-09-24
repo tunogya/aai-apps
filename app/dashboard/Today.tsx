@@ -82,7 +82,7 @@ const CSR = () => {
             {roundUp(data?.advance_pay?.balance || 0, 6)}
           </div>
           <button
-            className={`text-xs px-3 py-1.5 rounded-full text-stone-700 shadow font-bold hover:bg-stone-100`}
+            className={`text-sm px-2 py-1 rounded border text-stone-700 font-semibold hover:border-stone-300 flex items-center gap-1`}
             onClick={async () => {
               try {
                 const { session } = await fetch(`/api/checkout`, {
@@ -95,7 +95,22 @@ const CSR = () => {
               }
             }}
           >
-            + Add Credit
+            <svg
+              stroke="currentColor"
+              fill="none"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="h-4 w-4"
+              height="1em"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            Credit
           </button>
         </div>
       </div>
