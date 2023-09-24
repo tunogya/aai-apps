@@ -1,19 +1,31 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import stripeClient from "@/utils/stripeClient";
 import sqsClient from "@/utils/sqsClient";
 import { SendMessageBatchCommand } from "@aws-sdk/client-sqs";
 import redisClient from "@/utils/redisClient";
 
-const POST = async (req: NextRequest) => {
-  const webhookSecret: string = process.env.STRIPE_WEBHOOK_SECRET!;
-  const payload = await req.text();
-  const sig = req.headers.get("stripe-signature") as string;
+const POST = async (req: Request) => {
   let event: Stripe.Event;
 
   try {
-    event = stripeClient.webhooks.constructEvent(payload, sig, webhookSecret);
-    console.log("event:", event);
+    event = stripeClient.webhooks.constructEvent(
+      await (await req.blob()).text(),
+      req.headers.get("stripe-signature") as string,
+      process.env.STRIPE_WEBHOOK_SECRET as string,
+    );
+  } catch (err: any) {
+    const errorMessage = err instanceof Error ? err.message : "Unknown error";
+    if (err! instanceof Error) console.log(err);
+    console.log(`❌ Error message: ${errorMessage}`);
+    return NextResponse.json(
+      { message: `Webhook Error: ${errorMessage}` },
+      { status: 400 },
+    );
+  }
+  // Successfully constructed event.
+  console.log("✅ Success:", event.id);
+  try {
     if (event.type === "checkout.session.completed") {
       const checkoutSessionCompleted = event.data
         .object as Stripe.Checkout.Session;
@@ -22,14 +34,12 @@ const POST = async (req: NextRequest) => {
         created,
         payment_intent,
         metadata,
-        payment_status,
         amount_subtotal, // 100 decimal
         currency,
       } = checkoutSessionCompleted;
       const item = await redisClient.get(id);
       if (
         item === "price_1NtMGxFPpv8QfieYD2d3FSwe" &&
-        payment_status === "paid" &&
         currency === "usd" &&
         metadata?.id &&
         amount_subtotal
@@ -85,11 +95,14 @@ const POST = async (req: NextRequest) => {
         );
       }
     }
-    return NextResponse.json({ ok: true }, { status: 200 });
-  } catch (err: any) {
-    console.log("error", err);
-    return NextResponse.json({ error: err.message }, { status: 500 });
+  } catch (e) {
+    console.log(e);
+    return NextResponse.json(
+      { message: "Webhook handler failed" },
+      { status: 500 },
+    );
   }
+  return NextResponse.json({ message: "Received" }, { status: 200 });
 };
 
 export { POST };
