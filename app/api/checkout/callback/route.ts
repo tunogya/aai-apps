@@ -32,7 +32,6 @@ const POST = async (req: Request) => {
       const {
         id,
         created,
-        payment_intent,
         metadata,
         amount_subtotal, // 100 decimal
         currency,
@@ -49,7 +48,7 @@ const POST = async (req: Request) => {
             QueueUrl: process.env.AI_DB_UPDATE_SQS_FIFO_URL,
             Entries: [
               {
-                Id: `update-balance#${payment_intent}`,
+                Id: `update-balance-${id}`,
                 MessageBody: JSON.stringify({
                   TableName: "abandonai-prod",
                   Key: {
@@ -73,7 +72,7 @@ const POST = async (req: Request) => {
                 MessageGroupId: "update-balance",
               },
               {
-                Id: `update-payment#${payment_intent}`,
+                Id: `update-payment-${id}`,
                 MessageBody: JSON.stringify({
                   TableName: "abandonai-prod",
                   Item: {
