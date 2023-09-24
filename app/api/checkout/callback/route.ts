@@ -31,6 +31,7 @@ const POST = async (req: Request) => {
         .object as Stripe.Checkout.Session;
       const {
         id,
+        payment_intent,
         created,
         metadata,
         amount_subtotal, // 100 decimal
@@ -48,7 +49,7 @@ const POST = async (req: Request) => {
             QueueUrl: process.env.AI_DB_UPDATE_SQS_FIFO_URL,
             Entries: [
               {
-                Id: `update-balance-${id}`,
+                Id: `update-balance-${payment_intent}`,
                 MessageBody: JSON.stringify({
                   TableName: "abandonai-prod",
                   Key: {
@@ -72,7 +73,7 @@ const POST = async (req: Request) => {
                 MessageGroupId: "update-balance",
               },
               {
-                Id: `update-payment-${id}`,
+                Id: `update-payment-${payment_intent}`,
                 MessageBody: JSON.stringify({
                   TableName: "abandonai-prod",
                   Item: {
