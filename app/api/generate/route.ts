@@ -1,7 +1,7 @@
 import { Configuration, OpenAIApi } from "openai-edge";
 import { OpenAIStream, StreamingTextResponse } from "ai";
-import { Redis } from "@upstash/redis";
 import { Ratelimit } from "@upstash/ratelimit";
+import redisClient from "@/utils/redisClient";
 
 const config = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -20,18 +20,14 @@ export async function POST(req: Request): Promise<Response> {
       },
     );
   }
-  if (
-    process.env.NODE_ENV != "development" &&
-    process.env.KV_REST_API_URL &&
-    process.env.KV_REST_API_TOKEN
-  ) {
+  if (process.env.NODE_ENV != "development") {
     const ip = req.headers.get("x-forwarded-for");
     const ratelimit = new Ratelimit({
-      redis: Redis.fromEnv(),
+      redis: redisClient,
       limiter: Ratelimit.slidingWindow(50, "1 d"),
       analytics: true,
       timeout: 1000,
-      prefix: "@upstash/ratelimit",
+      prefix: "ratelimit#generate",
     });
 
     const { success, limit, reset, remaining } = await ratelimit.limit(`${ip}`);

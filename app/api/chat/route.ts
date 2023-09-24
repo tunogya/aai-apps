@@ -2,7 +2,8 @@ import { OpenAIStream, StreamingTextResponse } from "ai";
 import { Configuration, OpenAIApi } from "openai-edge";
 import { SendMessageCommand, SQSClient } from "@aws-sdk/client-sqs";
 import { AI_MODELS_MAP } from "@/utils/aiModels";
-import * as process from "process";
+import { Ratelimit } from "@upstash/ratelimit";
+import redisClient from "@/utils/redisClient";
 
 const sqsClient = new SQSClient({
   region: "ap-northeast-1",
@@ -32,6 +33,34 @@ export async function POST(req: Request): Promise<Response> {
         status: 400,
       },
     );
+  }
+
+  if (process.env.NODE_ENV != "development") {
+    const ratelimit = new Ratelimit({
+      redis: redisClient,
+      limiter: Ratelimit.slidingWindow(10, "1 m"),
+      analytics: true,
+      timeout: 1000,
+      prefix: "ratelimit#chat",
+    });
+
+    const { success, limit, reset, remaining } = await ratelimit.limit(
+      `${sub}`,
+    );
+
+    if (!success) {
+      return new Response(
+        "You have reached your request limit for the minute.",
+        {
+          status: 429,
+          headers: {
+            "X-RateLimit-Limit": limit.toString(),
+            "X-RateLimit-Remaining": remaining.toString(),
+            "X-RateLimit-Reset": reset.toString(),
+          },
+        },
+      );
+    }
   }
 
   try {
