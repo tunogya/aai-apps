@@ -23,7 +23,7 @@ export default function Layout(props: {
       <div className={"max-w-[1920px] w-full h-full flex overflow-hidden"}>
         <PrimaryNav active={"/chat"} />
         {props.secondaryNav}
-        <div className={"w-full h-full mr-10 relative"}>
+        <div className={"w-full h-full lg:mr-10 relative"}>
           <Toolbar border={false} />
           {props.children}
         </div>

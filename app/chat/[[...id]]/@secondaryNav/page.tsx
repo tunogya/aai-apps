@@ -46,7 +46,7 @@ const SecondaryNav = () => {
   return (
     <div
       className={
-        "w-[300px] shrink-0 h-full border-r overflow-y-auto flex flex-col"
+        "w-[300px] shrink-0 h-full border-r overflow-y-auto flex-col hidden md:flex"
       }
     >
       <Link

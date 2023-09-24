@@ -59,7 +59,7 @@ export default function Chat() {
   }, [currentChatId, isLoading, messages]);
 
   return (
-    <div className={"w-full min-w-[400px]"}>
+    <div className={"w-full md:min-w-[400px]"}>
       <div
         className={"h-[calc(100vh-60px)] w-full overflow-y-auto pb-40 relative"}
       >
@@ -142,7 +142,7 @@ export default function Chat() {
       <form onSubmit={handleSubmit}>
         <div
           className={
-            "absolute bottom-0 pb-8 left-0 w-full px-8 xl:px-20 flex justify-center bg-gradient-to-b from-white/10 to-white"
+            "absolute bottom-0 pb-8 left-0 w-full px-4 md:px-8 xl:px-20 flex justify-center bg-gradient-to-b from-white/10 to-white"
           }
         >
           <div

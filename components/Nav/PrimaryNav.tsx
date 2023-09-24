@@ -10,7 +10,7 @@ const PrimaryNav: FC<{
   return (
     <div
       className={
-        "w-full max-w-[260px] shrink-0 h-full border-r px-0 lg:px-2 xl:px-4 2xl:px-8 py-4 space-y-10 relative"
+        "w-full max-w-[260px] shrink-0 h-full border-r px-0 lg:px-2 2xl:px-8 py-4 space-y-10 relative hidden md:block"
       }
     >
       <Account />

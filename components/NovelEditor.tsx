@@ -13,7 +13,7 @@ export default function NovelEditor() {
       </div>
       <Editor
         className={
-          "relative h-full w-full overflow-y-auto p-4 sm:mb-[calc(20vh)] max-w-3xl mt-10"
+          "relative h-full w-full overflow-y-auto p-4 md:mb-[calc(20vh)] max-w-3xl mt-10"
         }
         onUpdate={() => {
           setSaveStatus("Unsaved");
