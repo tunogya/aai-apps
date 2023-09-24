@@ -10,14 +10,6 @@ const POST = async (req: NextRequest) => {
   const payload = await req.text();
   const sig = req.headers.get("stripe-signature") as string;
   let event: Stripe.Event;
-  console.log("sig", sig);
-  if (!sig) {
-    console.log("No signature provided");
-    return NextResponse.json(
-      { error: "No signature provided" },
-      { status: 500 },
-    );
-  }
 
   try {
     event = stripeClient.webhooks.constructEvent(payload, sig, webhookSecret);
