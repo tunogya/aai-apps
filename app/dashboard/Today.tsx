@@ -41,7 +41,7 @@ const CSR = () => {
         </div>
         <div className={"h-[128px] w-full mt-4"}>
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={data?.charts || []}>
+            <LineChart data={data?.daily || []}>
               <CartesianGrid strokeOpacity={0.5} horizontal={false} />
               <XAxis
                 dataKey="date"
@@ -66,10 +66,10 @@ const CSR = () => {
         }
       >
         <div className={"w-[200px] space-y-1"}>
-          <div className={"whitespace-nowrap"}>Estimate cost this month</div>
+          <div className={"whitespace-nowrap"}>Total cost this month</div>
           <div className={"text-stone-800 text-xl"}>
             US$
-            {roundUp(data?.estimate?.month || 0, 6)}
+            {roundUp(data?.cost?.month || 0, 6)}
           </div>
         </div>
         <div className={"w-[200px] space-y-1"}>

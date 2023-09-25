@@ -52,7 +52,7 @@ const GET = async (req: NextRequest) => {
     }),
   );
 
-  const charts = dates.map((item) => ({
+  const daily = dates.map((item) => ({
     date: item,
     total_cost: UsageItems?.filter(
       (usageItem) =>
@@ -61,16 +61,14 @@ const GET = async (req: NextRequest) => {
   }));
 
   return NextResponse.json({
-    charts: charts.map((item) => ({
+    daily: daily.map((item) => ({
       date: item.date,
       total_cost: roundUp(item?.total_cost || 0, 6),
     })),
     cost: {
-      today: charts[charts.length - 1].total_cost,
-      yesterday: charts[charts.length - 2].total_cost,
-    },
-    estimate: {
-      month: 20,
+      today: daily[daily.length - 1].total_cost,
+      yesterday: daily[daily.length - 2].total_cost,
+      month: daily.reduce((acc, item) => acc + item.total_cost!, 0),
     },
     advance_pay: {
       balance: BalanceItem?.balance || 0,
