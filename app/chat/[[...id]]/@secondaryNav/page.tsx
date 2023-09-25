@@ -2,14 +2,31 @@
 import useSWR, { preload } from "swr";
 import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import useSWRInfinite from "swr/infinite";
 
 const SecondaryNav = () => {
   const params = useParams();
   const searchParams = useSearchParams();
-  const { data, isLoading } = useSWR("/api/conversation", (url) =>
+  const getKey = (pageIndex: number, previousPageData: any) => {
+    if (previousPageData && !previousPageData.nextCursor) return null;
+    if (pageIndex === 0) return `/api/conversation?limit=20`;
+    return `/api/conversation?cursor=${previousPageData.nextCursor}&limit=20`;
+  };
+
+  const { data, size, setSize, isValidating } = useSWRInfinite(getKey, (url) =>
     fetch(url).then((res) => res.json()),
   );
+
+  const reducedData = useMemo(() => {
+    if (!data) return [];
+    return data.reduce((a, b) => a.concat(b?.items || []), []);
+  }, [data]);
+
+  const haveMore = useMemo(() => {
+    return reducedData.length % 20 === 0;
+  }, [reducedData]);
+
   const currentChatId = params?.id?.[0] || null;
   const [deleteItems, setDeleteItems] = useState<string[]>([]);
 
@@ -29,19 +46,6 @@ const SecondaryNav = () => {
       setDeleteItems(items);
     }
   }, []);
-
-  const handlePreload = useCallback(async () => {
-    if (!data) return;
-    data.items.forEach((item: any) => {
-      preload(`/api/conversation/${item.SK.replace("CHAT2#", "")}`, (url) =>
-        fetch(url).then((data) => data.json()),
-      );
-    });
-  }, [data]);
-
-  useEffect(() => {
-    handlePreload();
-  }, [handlePreload]);
 
   return (
     <div
@@ -74,59 +78,25 @@ const SecondaryNav = () => {
         </div>
         <div className={"text-sm"}>New Chat</div>
       </Link>
-      <div className={"h-full overflow-y-auto pl-2 pr-4"}>
-        {!data && isLoading && <div className={"text-sm"}>Loading...</div>}
-        {data &&
-          data.items
-            .filter((item: any) => !deleteItems.includes(item.SK))
-            .sort((a: any, b: any) => b.updated - a.updated) // descending
-            .map((item: any) => (
-              <div
-                key={item.SK}
-                className={`group flex items-center gap-2 ${
-                  item.SK.replace("CHAT2#", "") === currentChatId
-                    ? "bg-gary-100"
-                    : ""
-                } hover:bg-gary-100 rounded px-3 py-2 cursor-pointer select-none`}
+      <div className={"h-full overflow-y-auto px-2"}>
+        {reducedData
+          .filter((item: any) => !deleteItems.includes(item.SK))
+          .map((item: any) => (
+            <div
+              key={item.SK}
+              className={`group flex items-center gap-2 ${
+                item.SK.replace("CHAT2#", "") === currentChatId
+                  ? "bg-gary-100"
+                  : ""
+              } hover:bg-gary-100 rounded px-3 py-2 cursor-pointer select-none`}
+            >
+              <Link
+                href={`/chat/${item.SK.replace("CHAT2#", "")}?model=${
+                  searchParams.get("model") || "gpt-3.5-turbo"
+                }`}
+                className={`flex w-full items-center`}
               >
-                <Link
-                  href={`/chat/${item.SK.replace("CHAT2#", "")}?model=${
-                    searchParams.get("model") || "gpt-3.5-turbo"
-                  }`}
-                  className={`flex w-full items-center`}
-                >
-                  <div className={"w-6 shrink-0"}>
-                    <svg
-                      stroke="currentColor"
-                      fill="none"
-                      strokeWidth="2"
-                      viewBox="0 0 24 24"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="h-4 w-4"
-                      height="1em"
-                      width="1em"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                  </div>
-                  <div className={"truncate text-sm"}>{item.title}</div>
-                </Link>
-                <button
-                  className={
-                    "hidden group-hover:flex text-gary-800 hover:text-red-500"
-                  }
-                  onClick={async () => {
-                    const _newDeleteItems = [...deleteItems, item.SK];
-                    setDeleteItems(_newDeleteItems);
-                    sessionStorage.setItem(
-                      "deleteItems",
-                      JSON.stringify(_newDeleteItems),
-                    );
-                    await deleteChat(item.SK.replace("CHAT2#", ""));
-                  }}
-                >
+                <div className={"w-6 shrink-0"}>
                   <svg
                     stroke="currentColor"
                     fill="none"
@@ -139,14 +109,63 @@ const SecondaryNav = () => {
                     width="1em"
                     xmlns="http://www.w3.org/2000/svg"
                   >
-                    <polyline points="3 6 5 6 21 6"></polyline>
-                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                    <line x1="10" y1="11" x2="10" y2="17"></line>
-                    <line x1="14" y1="11" x2="14" y2="17"></line>
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                   </svg>
-                </button>
-              </div>
-            ))}
+                </div>
+                <div className={"truncate text-sm"}>{item.title}</div>
+              </Link>
+              <button
+                className={
+                  "absolute right-0 hidden group-hover:flex text-gary-800 hover:text-red-500"
+                }
+                onClick={async () => {
+                  const _newDeleteItems = [...deleteItems, item.SK];
+                  setDeleteItems(_newDeleteItems);
+                  sessionStorage.setItem(
+                    "deleteItems",
+                    JSON.stringify(_newDeleteItems),
+                  );
+                  await deleteChat(item.SK.replace("CHAT2#", ""));
+                }}
+              >
+                <svg
+                  stroke="currentColor"
+                  fill="none"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="h-4 w-4"
+                  height="1em"
+                  width="1em"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <polyline points="3 6 5 6 21 6"></polyline>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                  <line x1="10" y1="11" x2="10" y2="17"></line>
+                  <line x1="14" y1="11" x2="14" y2="17"></line>
+                </svg>
+              </button>
+            </div>
+          ))}
+        {haveMore ? (
+          <button
+            className={`w-full border p-2 mt-4 text-xs hover:bg-gray-50 rounded ${
+              isValidating ? "cursor-wait" : ""
+            }`}
+            onClick={() => setSize(size + 1)}
+          >
+            {isValidating ? "Loading..." : "Load More"}
+          </button>
+        ) : (
+          <div
+            className={
+              "w-full border p-2 mt-4 text-xs bg-gray-50 rounded text-center cursor-not-allowed"
+            }
+          >
+            No more data.
+          </div>
+        )}
       </div>
     </div>
   );
