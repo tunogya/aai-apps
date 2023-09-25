@@ -67,11 +67,21 @@ const CSR = () => {
                 dataKey="date"
                 axisLine={false}
                 tickLine={false}
-                tick={{ fontSize: "10px" }}
+                tick={{ fontSize: "12px" }}
                 tickFormatter={(value, index) => value.slice(-4)}
               />
-              <Bar stackId="a" strokeWidth={2} dataKey={"gpt4"} />
-              <Bar stackId="a" strokeWidth={2} dataKey={"gpt3_5"} />
+              <Bar
+                stackId="a"
+                strokeWidth={2}
+                dataKey={"gpt4"}
+                fill={"rgb(16, 163, 127)"}
+              />
+              <Bar
+                stackId="a"
+                strokeWidth={2}
+                dataKey={"gpt3_5"}
+                fill={"rgb(54, 208, 218)"}
+              />
             </BarChart>
           </ResponsiveContainer>
         </div>
