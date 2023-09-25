@@ -84,11 +84,11 @@ const SecondaryNav = () => {
           .map((item: any) => (
             <div
               key={item.SK}
-              className={`group flex items-center gap-2 ${
+              className={`relative flex group items-center gap-2 ${
                 item.SK.replace("CHAT2#", "") === currentChatId
-                  ? "bg-gary-100"
+                  ? "bg-stone-100"
                   : ""
-              } hover:bg-gary-100 rounded px-3 py-2 cursor-pointer select-none`}
+              } hover:bg-stone-100 rounded px-3 py-2 cursor-pointer select-none`}
             >
               <Link
                 href={`/chat/${item.SK.replace("CHAT2#", "")}?model=${
@@ -112,11 +112,11 @@ const SecondaryNav = () => {
                     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                   </svg>
                 </div>
-                <div className={"truncate text-sm"}>{item.title}</div>
+                <div className={"truncate text-sm mr-4"}>{item.title}</div>
               </Link>
               <button
                 className={
-                  "absolute right-0 hidden group-hover:flex text-gary-800 hover:text-red-500"
+                  "absolute right-2 hidden group-hover:flex text-gary-800 hover:text-red-500"
                 }
                 onClick={async () => {
                   const _newDeleteItems = [...deleteItems, item.SK];
