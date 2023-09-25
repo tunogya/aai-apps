@@ -9,7 +9,8 @@ const GET = async (req: NextRequest) => {
   const session = await getSession();
   const sub = session?.user.sub;
   const limit = Number(req?.nextUrl?.searchParams?.get("limit") || 20);
-  const { Items, Count } = await ddbDocClient.send(
+  const cursor = req?.nextUrl?.searchParams?.get("cursor") || undefined;
+  const { Items, Count, LastEvaluatedKey } = await ddbDocClient.send(
     new QueryCommand({
       TableName: "abandonai-prod",
       KeyConditionExpression: "#pk = :pk AND begins_with(#sk, :sk)",
@@ -26,11 +27,19 @@ const GET = async (req: NextRequest) => {
         ":false": false,
       },
       Limit: limit,
+      ScanIndexForward: false,
+      ExclusiveStartKey: cursor
+        ? {
+            PK: `USER#${sub}`,
+            SK: `CHAT2#${cursor}`,
+          }
+        : undefined,
     }),
   );
   return NextResponse.json({
     items: Items,
     count: Count,
+    nextCursor: LastEvaluatedKey?.SK.replace("CHAT2#", "") || undefined,
   });
 };
 
