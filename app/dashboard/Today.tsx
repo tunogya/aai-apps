@@ -74,13 +74,13 @@ const CSR = () => {
                 stackId="a"
                 strokeWidth={2}
                 dataKey={"gpt4"}
-                fill={"rgb(16, 163, 127)"}
+                fill={"#AB68FF"}
               />
               <Bar
                 stackId="a"
                 strokeWidth={2}
                 dataKey={"gpt3_5"}
-                fill={"rgb(54, 208, 218)"}
+                fill={"#19C37D"}
               />
             </BarChart>
           </ResponsiveContainer>
