@@ -1,7 +1,7 @@
 "use client";
 import { roundUp } from "@/utils/roundUp";
 import moment from "moment";
-import React from "react";
+import React, { useMemo } from "react";
 import useSWRInfinite from "swr/infinite";
 
 const Pages = () => {
@@ -11,9 +11,18 @@ const Pages = () => {
     return `/api/usage?cursor=${previousPageData.nextCursor}&limit=20`;
   };
 
-  const { data, isLoading, size, setSize } = useSWRInfinite(getKey, (url) =>
+  const { data, size, setSize, isValidating } = useSWRInfinite(getKey, (url) =>
     fetch(url).then((res) => res.json()),
   );
+
+  const reducedData = useMemo(() => {
+    if (!data) return [];
+    return data.reduce((a, b) => a.concat(b?.items || []), []);
+  }, [data]);
+
+  const haveMore = useMemo(() => {
+    return reducedData.length % 20 === 0;
+  }, [reducedData]);
 
   return (
     <div className={"w-full overflow-hidden"}>
@@ -58,42 +67,51 @@ const Pages = () => {
           </tr>
         </thead>
         <tbody>
-          {data &&
-            data
-              .reduce((a, b) => a.concat(b?.items || []), [])
-              .map((item: any, index: number) => (
-                <tr key={index} className={"text-xs text-gray-600 border-b"}>
-                  <td
-                    className={
-                      "font-semibold pt-2 pr-4 pb-2 overflow-x-hidden text-black"
-                    }
-                  >
-                    {item.model}
-                  </td>
-                  <td className={"pt-2 pr-4 pb-2 overflow-x-hidden "}>
-                    {item.prompt_tokens}
-                  </td>
-                  <td className={"pt-2 pr-4 pb-2 overflow-x-hidden"}>
-                    {item.completion_tokens}
-                  </td>
-                  <td className={"pt-2 pr-4 pb-2 overflow-x-hidden"}>
-                    {roundUp(item.total_cost, 6)}
-                  </td>
-                  <td className={"pt-2 pr-4 pb-2 overflow-x-hidden"}>
-                    {moment(item.created * 1000)
-                      .startOf("hour")
-                      .fromNow()}
-                  </td>
-                </tr>
-              ))}
+          {reducedData.map((item: any, index: number) => (
+            <tr key={index} className={"text-xs text-gray-600 border-b"}>
+              <td
+                className={
+                  "font-semibold pt-2 pr-4 pb-2 overflow-x-hidden text-black"
+                }
+              >
+                {item.model}
+              </td>
+              <td className={"pt-2 pr-4 pb-2 overflow-x-hidden "}>
+                {item.prompt_tokens}
+              </td>
+              <td className={"pt-2 pr-4 pb-2 overflow-x-hidden"}>
+                {item.completion_tokens}
+              </td>
+              <td className={"pt-2 pr-4 pb-2 overflow-x-hidden"}>
+                {roundUp(item.total_cost, 6)}
+              </td>
+              <td className={"pt-2 pr-4 pb-2 overflow-x-hidden"}>
+                {moment(item.created * 1000)
+                  .startOf("hour")
+                  .fromNow()}
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
-      <button
-        className={"w-full border p-2 mt-4 text-xs hover:bg-gray-50 rounded"}
-        onClick={() => setSize(size + 1)}
-      >
-        {isLoading ? "Loading..." : "Load More"}
-      </button>
+      {haveMore ? (
+        <button
+          className={`w-full border p-2 mt-4 text-xs hover:bg-gray-50 rounded ${
+            isValidating ? "cursor-wait" : ""
+          }`}
+          onClick={() => setSize(size + 1)}
+        >
+          {isValidating ? "Loading..." : "Load More"}
+        </button>
+      ) : (
+        <div
+          className={
+            "w-full border p-2 mt-4 text-xs bg-gray-50 rounded text-center cursor-not-allowed"
+          }
+        >
+          No more data.
+        </div>
+      )}
     </div>
   );
 };
