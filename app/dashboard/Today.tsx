@@ -4,8 +4,6 @@ import useSWR from "swr";
 import {
   XAxis,
   ResponsiveContainer,
-  LineChart,
-  Line,
   CartesianGrid,
   BarChart,
   Bar,
@@ -15,7 +13,7 @@ import { roundUp } from "@/utils/roundUp";
 import { useSearchParams } from "next/navigation";
 
 const CSR = () => {
-  const { data, isLoading } = useSWR("/api/dashboard/today", (url) =>
+  const { data } = useSWR("/api/dashboard/today", (url) =>
     fetch(url).then((res) => res.json()),
   );
   const searchParams = useSearchParams();
@@ -47,6 +45,12 @@ const CSR = () => {
             <BarChart data={data?.daily || []}>
               <CartesianGrid strokeOpacity={0.5} horizontal={false} />
               <Tooltip
+                label={"date"}
+                labelFormatter={(value) => new Date(value).toLocaleDateString()}
+                formatter={(value, name) => [
+                  value,
+                  (name as string).toUpperCase().replace("_", "."),
+                ]}
                 itemStyle={{
                   fontSize: "10px",
                   margin: "0px",
@@ -68,7 +72,7 @@ const CSR = () => {
                 axisLine={false}
                 tickLine={false}
                 tick={{ fontSize: "12px" }}
-                tickFormatter={(value, index) => value.slice(-4)}
+                tickFormatter={(value) => new Date(value).toLocaleDateString()}
               />
               <Bar
                 stackId="a"
