@@ -38,7 +38,7 @@ const GET = async (req: NextRequest) => {
         ":sk": "USAGE#",
         ":firstDay": Math.floor(firstDay.getTime() / 1000),
       },
-      ProjectionExpression: "total_cost, created",
+      ProjectionExpression: "total_cost, created, model",
     }),
   );
 
@@ -54,7 +54,23 @@ const GET = async (req: NextRequest) => {
 
   const daily = dates.map((item) => ({
     date: item,
-    total_cost: UsageItems?.filter(
+    gpt4: UsageItems?.filter((usageItem) => usageItem.model.startsWith("gpt-4"))
+      ?.filter(
+        (usageItem) =>
+          new Date(usageItem.created * 1000).toISOString().slice(0, 10) ===
+          item,
+      )
+      .reduce((acc, usageItem) => acc + usageItem.total_cost, 0),
+    gpt3_5: UsageItems?.filter((usageItem) =>
+      usageItem.model.startsWith("gpt-3.5"),
+    )
+      ?.filter(
+        (usageItem) =>
+          new Date(usageItem.created * 1000).toISOString().slice(0, 10) ===
+          item,
+      )
+      .reduce((acc, usageItem) => acc + usageItem.total_cost, 0),
+    total: UsageItems?.filter(
       (usageItem) =>
         new Date(usageItem.created * 1000).toISOString().slice(0, 10) === item,
     ).reduce((acc, usageItem) => acc + usageItem.total_cost, 0),
@@ -62,13 +78,15 @@ const GET = async (req: NextRequest) => {
 
   return NextResponse.json({
     daily: daily.map((item) => ({
-      date: item.date,
-      total_cost: roundUp(item?.total_cost || 0, 6),
+      ...item,
+      total: roundUp(item?.total || 0, 6),
+      gpt4: roundUp(item?.gpt4 || 0, 6),
+      gpt3_5: roundUp(item?.gpt3_5 || 0, 6),
     })),
     cost: {
-      today: daily[daily.length - 1].total_cost,
-      yesterday: daily[daily.length - 2].total_cost,
-      month: daily.reduce((acc, item) => acc + item.total_cost!, 0),
+      today: daily[daily.length - 1].total,
+      yesterday: daily[daily.length - 2].total,
+      month: daily.reduce((acc, item) => acc + item.total!, 0),
     },
     advance_pay: {
       balance: BalanceItem?.balance || 0,

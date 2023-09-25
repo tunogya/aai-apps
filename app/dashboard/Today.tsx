@@ -7,6 +7,9 @@ import {
   LineChart,
   Line,
   CartesianGrid,
+  BarChart,
+  Bar,
+  Tooltip,
 } from "recharts";
 import { roundUp } from "@/utils/roundUp";
 import { useSearchParams } from "next/navigation";
@@ -41,8 +44,25 @@ const CSR = () => {
         </div>
         <div className={"h-[128px] w-full mt-4"}>
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={data?.daily || []}>
+            <BarChart data={data?.daily || []}>
               <CartesianGrid strokeOpacity={0.5} horizontal={false} />
+              <Tooltip
+                itemStyle={{
+                  fontSize: "10px",
+                  margin: "0px",
+                  padding: "0px",
+                }}
+                wrapperStyle={{
+                  fontSize: "10px",
+                }}
+                contentStyle={{
+                  borderRadius: "4px",
+                  padding: "4px 8px",
+                }}
+                cursor={{
+                  fill: "#f5f5f4",
+                }}
+              />
               <XAxis
                 dataKey="date"
                 axisLine={false}
@@ -50,13 +70,9 @@ const CSR = () => {
                 tick={{ fontSize: "10px" }}
                 tickFormatter={(value, index) => value.slice(-4)}
               />
-              <Line
-                strokeWidth={2}
-                dataKey={"total_cost"}
-                dot={false}
-                stroke={isPurple ? "#AB68FF" : "#19C37D"}
-              />
-            </LineChart>
+              <Bar stackId="a" strokeWidth={2} dataKey={"gpt4"} />
+              <Bar stackId="a" strokeWidth={2} dataKey={"gpt3_5"} />
+            </BarChart>
           </ResponsiveContainer>
         </div>
       </div>
