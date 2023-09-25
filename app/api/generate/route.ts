@@ -5,6 +5,7 @@ import redisClient from "@/utils/redisClient";
 
 const config = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
+  organization: process.env.OPENAI_ORG_ID,
 });
 const openai = new OpenAIApi(config);
 
