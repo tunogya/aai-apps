@@ -15,7 +15,7 @@ const PrimaryNav: FC<{
     >
       <Account />
       <CoreNav />
-      <RecentNav />
+      {/*<RecentNav />*/}
       <div
         className={
           "absolute bottom-0 left-0 pb-8 pt-4 pl-4 lg:pl-6 xl:pl-8 flex items-center gap-3 bg-white select-none"

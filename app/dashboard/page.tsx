@@ -23,16 +23,16 @@ export default async function SSRPage() {
         </div>
         <Today />
       </div>
-      <div className={"space-y-8"}>
-        <div
-          className={
-            "text-2xl font-semibold text-stone-800 border-b w-full py-2"
-          }
-        >
-          Your overview
-        </div>
-        <Overview />
-      </div>
+      {/*<div className={"space-y-8"}>*/}
+      {/*  <div*/}
+      {/*    className={*/}
+      {/*      "text-2xl font-semibold text-stone-800 border-b w-full py-2"*/}
+      {/*    }*/}
+      {/*  >*/}
+      {/*    Your overview*/}
+      {/*  </div>*/}
+      {/*  <Overview />*/}
+      {/*</div>*/}
     </div>
   );
 }
