@@ -24,22 +24,6 @@ export default async function SSRPage() {
       >
         Got it
       </Link>
-      <div
-        className={
-          "absolute bottom-0 text-stone-400 text-xs border-t p-4 text-center select-text"
-        }
-      >
-        © {new Date().getFullYear()} ABANDON INC., All rights reserved.
-        <br />
-        E-mail:{" "}
-        <a
-          href={`mailto://support@abandon.ai`}
-          target={"_blank"}
-          className={"underline text-stone-800"}
-        >
-          support@abandon.ai
-        </a>
-      </div>
     </div>
   );
 }
