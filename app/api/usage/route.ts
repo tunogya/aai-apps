@@ -2,9 +2,6 @@ import { getSession } from "@auth0/nextjs-auth0";
 import { NextRequest, NextResponse } from "next/server";
 import ddbDocClient from "@/utils/ddbDocClient";
 import { QueryCommand } from "@aws-sdk/lib-dynamodb";
-import { v4 as uuidv4 } from "uuid";
-import sqsClient from "@/utils/sqsClient";
-import { SendMessageCommand } from "@aws-sdk/client-sqs";
 
 const GET = async (req: NextRequest) => {
   const session = await getSession();
@@ -23,6 +20,9 @@ const GET = async (req: NextRequest) => {
         ":sk": "USAGE#",
       },
       Limit: limit,
+      ScanIndexForward: false,
+      ProjectionExpression:
+        "model, prompt_tokens, completion_tokens, total_cost, created",
     }),
   );
   return NextResponse.json({

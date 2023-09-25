@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 export default function Page() {
   return (
-    <div className="w-full h-full flex justify-center items-center flex-col bg-stone-50">
+    <div className="w-full h-full flex justify-center items-center flex-col bg-gary-50">
       <div className="w-96 flex flex-col justify-center items-center">
         <div className="mb-5">
           <Image src={"/favicon.svg"} alt={""} width={60} height={60} />

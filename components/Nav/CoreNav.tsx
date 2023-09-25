@@ -17,8 +17,8 @@ const menu = [
   //   name: "Note",
   // },
   {
-    path: "/billing",
-    name: "Billing",
+    path: "/usage",
+    name: "Usage",
   },
 ];
 
@@ -48,10 +48,10 @@ const CoreNav = () => {
             }`}
             prefetch={true}
             scroll={false}
-            className={`text-sm font-semibold hover:bg-stone-100 w-full p-2 rounded ${
+            className={`text-sm font-semibold hover:bg-gary-100 w-full p-2 rounded ${
               path.includes(item.path)
                 ? `${isPurple ? "text-[#AB68FF]" : "text-[#19C37D]"}`
-                : "text-stone-800"
+                : "text-gary-800"
             }`}
           >
             {item.name}

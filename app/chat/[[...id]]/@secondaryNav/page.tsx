@@ -52,7 +52,7 @@ const SecondaryNav = () => {
       <Link
         href={`/chat?model=${searchParams.get("model") || "gpt-3.5-turbo"}`}
         className={
-          "flex items-center border hover:bg-stone-100 p-3 rounded cursor-pointer select-none m-2"
+          "flex items-center border hover:bg-gary-100 p-3 rounded cursor-pointer select-none m-2"
         }
       >
         <div className={"w-6 shrink-0"}>
@@ -85,9 +85,9 @@ const SecondaryNav = () => {
                 key={item.SK}
                 className={`group flex items-center gap-2 ${
                   item.SK.replace("CHAT2#", "") === currentChatId
-                    ? "bg-stone-100"
+                    ? "bg-gary-100"
                     : ""
-                } hover:bg-stone-100 rounded px-3 py-2 cursor-pointer select-none`}
+                } hover:bg-gary-100 rounded px-3 py-2 cursor-pointer select-none`}
               >
                 <Link
                   href={`/chat/${item.SK.replace("CHAT2#", "")}?model=${
@@ -115,7 +115,7 @@ const SecondaryNav = () => {
                 </Link>
                 <button
                   className={
-                    "hidden group-hover:flex text-stone-800 hover:text-red-500"
+                    "hidden group-hover:flex text-gary-800 hover:text-red-500"
                   }
                   onClick={async () => {
                     const _newDeleteItems = [...deleteItems, item.SK];

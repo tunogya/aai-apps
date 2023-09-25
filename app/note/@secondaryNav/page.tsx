@@ -8,7 +8,7 @@ const SecondaryNav = () => {
     >
       <div
         className={
-          "flex items-center border hover:bg-stone-100 p-3 rounded cursor-pointer select-none m-2"
+          "flex items-center border hover:bg-gary-100 p-3 rounded cursor-pointer select-none m-2"
         }
       >
         <div className={"w-6 shrink-0"}>
@@ -33,7 +33,7 @@ const SecondaryNav = () => {
       <div className={"h-full overflow-y-auto pl-2 pr-4"}>
         <div
           className={
-            "flex w-full items-center hover:bg-stone-100 px-3 py-2 rounded cursor-pointer select-none"
+            "flex w-full items-center hover:bg-gary-100 px-3 py-2 rounded cursor-pointer select-none"
           }
         >
           <div className={"w-6 shrink-0"}>
@@ -56,7 +56,7 @@ const SecondaryNav = () => {
         </div>
         <div
           className={
-            "flex w-full items-center hover:bg-stone-100 px-3 py-2 rounded cursor-pointer select-none"
+            "flex w-full items-center hover:bg-gary-100 px-3 py-2 rounded cursor-pointer select-none"
           }
         >
           <div className={"w-6 shrink-0"}>

@@ -35,7 +35,7 @@ const Toolbar: FC<{ border?: boolean }> = (props) => {
         <input
           placeholder={"Search"}
           className={
-            "w-full px-4 py-2 focus:bg-stone-100 hover:bg-stone-100 focus:outline-0 rounded text-sm"
+            "w-full px-4 py-2 focus:bg-gary-100 hover:bg-gary-100 focus:outline-0 rounded text-sm"
           }
         />
       </div>
@@ -87,7 +87,7 @@ const Toolbar: FC<{ border?: boolean }> = (props) => {
               </Listbox.Button>
               <Listbox.Options
                 className={
-                  "absolute right-0 mt-2 bg-white rounded px-4 py-2 border shadow z-50 w-44 text-sm space-y-1 text-stone-800"
+                  "absolute right-0 mt-2 bg-white rounded px-4 py-2 border shadow z-50 w-44 text-sm space-y-1 text-gary-800"
                 }
               >
                 {models.map((model) => (
@@ -97,7 +97,7 @@ const Toolbar: FC<{ border?: boolean }> = (props) => {
                     disabled={model.unavailable}
                     className={
                       model.unavailable
-                        ? "text-stone-200 cursor-not-allowed"
+                        ? "text-gary-200 cursor-not-allowed"
                         : "hover:text-purple-600"
                     }
                   >
@@ -109,7 +109,7 @@ const Toolbar: FC<{ border?: boolean }> = (props) => {
           </Listbox>
         </div>
         <button
-          className={"hover:bg-stone-100 p-1.5 rounded-full text-stone-800"}
+          className={"hover:bg-gary-100 p-1.5 rounded-full text-gary-800"}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

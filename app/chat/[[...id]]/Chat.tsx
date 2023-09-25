@@ -73,7 +73,7 @@ export default function Chat() {
             <div
               key={index}
               className={`flex border-b p-8 ${
-                m.role === "user" ? "bg-white" : "bg-stone-50"
+                m.role === "user" ? "bg-white" : "bg-gary-50"
               } items-center justify-center`}
             >
               <div className={`max-w-3xl w-full h-fit flex gap-3 items-start`}>
@@ -147,7 +147,7 @@ export default function Chat() {
         >
           <div
             className={
-              "border flex rounded w-full p-4 shadow  max-w-3xl text-stone-800 bg-white items-end gap-2"
+              "border flex rounded w-full p-4 shadow  max-w-3xl text-gary-800 bg-white items-end gap-2"
             }
           >
             <textarea

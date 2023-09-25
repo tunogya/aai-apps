@@ -19,7 +19,7 @@ export const TypedInfo = () => {
 
   return (
     <div>
-      <span ref={el} className={"text-sm text-stone-800 font-bold"} />
+      <span ref={el} className={"text-sm text-gary-800 font-bold"} />
     </div>
   );
 };
