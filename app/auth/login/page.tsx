@@ -9,7 +9,7 @@ export default function Page() {
       </div>
       <div className="w-full h-full flex flex-col justify-center items-center py-4 gap-20 px-3">
         <div className="text-center text-2xl md:text-3xl font-serif">
-          "Abandon yourself to a life of pleasure!"
+          &quot;Abandon yourself to a life of pleasure!&quot;
         </div>
         <a
           href={"/api/auth/login"}
