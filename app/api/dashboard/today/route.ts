@@ -42,16 +42,6 @@ const GET = async (req: NextRequest) => {
     }),
   );
 
-  const { Item: BalanceItem } = await ddbDocClient.send(
-    new GetCommand({
-      TableName: "abandonai-prod",
-      Key: {
-        PK: `USER#${sub}`,
-        SK: `BALANCE`,
-      },
-    }),
-  );
-
   const daily = dates.map((item) => ({
     date: item,
     gpt4: UsageItems?.filter((usageItem) => usageItem.model.startsWith("gpt-4"))
@@ -87,10 +77,6 @@ const GET = async (req: NextRequest) => {
       today: daily[daily.length - 1].total,
       yesterday: daily[daily.length - 2].total,
       month: daily.reduce((acc, item) => acc + item.total!, 0),
-    },
-    advance_pay: {
-      balance: BalanceItem?.balance || 0,
-      status: BalanceItem?.balance >= 0 ? "NORMAL" : "LOCKED",
     },
   });
 };

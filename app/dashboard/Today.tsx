@@ -16,6 +16,10 @@ const CSR = () => {
   const { data } = useSWR("/api/dashboard/today", (url) =>
     fetch(url).then((res) => res.json()),
   );
+  const { data: balanceData } = useSWR("/api/dashboard/balance", (url) =>
+    fetch(url).then((res) => res.json()),
+  );
+
   const searchParams = useSearchParams();
   const model = searchParams.get("model") || "gpt-3.5-turbo";
   const isPurple = model.startsWith("gpt-4");
@@ -106,11 +110,11 @@ const CSR = () => {
           <div className={"whitespace-nowrap"}>Advance pay balance</div>
           <div
             className={`${
-              data?.advance_pay?.balance < 0 ? "text-red-500" : "text-black"
+              balanceData?.balance < 0 ? "text-red-500" : "text-black"
             }  text-xl`}
           >
-            {data?.advance_pay?.balance < 0 ? "-" : ""}US$
-            {roundUp(Math.abs(data?.advance_pay?.balance) || 0, 6)}
+            {balanceData?.balance < 0 ? "-" : ""}US$
+            {roundUp(Math.abs(balanceData?.balance) || 0, 6)}
           </div>
           <button
             className={`text-sm px-2 py-1 rounded text-white ${
