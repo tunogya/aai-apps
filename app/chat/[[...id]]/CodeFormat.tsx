@@ -23,8 +23,8 @@ const CodeFormat: FC<CodeProps> = ({
 
   if (!inline) {
     return (
-      <div className={"bg-gray-600 rounded-md mb-4"}>
-        <div className="flex items-center relative text-white bg-gray-500 px-4 py-2 text-xs font-sans justify-between rounded-t-md">
+      <div className={"bg-gray-950 rounded-md mb-4"}>
+        <div className="flex items-center relative text-white bg-gray-600 px-4 py-2 text-xs font-sans justify-between rounded-t-md">
           <span>{match?.[1]}</span>
           <button
             className="flex ml-auto gap-2"
