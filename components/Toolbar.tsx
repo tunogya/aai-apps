@@ -89,7 +89,7 @@ const Toolbar: FC<{ border?: boolean }> = (props) => {
               </Listbox.Button>
               <Listbox.Options
                 className={
-                  "absolute right-0 mt-2 bg-white rounded py-2 border shadow z-50 w-60 text-sm text-black font-normal"
+                  "absolute right-0 mt-2 bg-white rounded py-2 border shadow z-50 w-60 text-sm text-black font-medium"
                 }
               >
                 {models.map((model) => (
