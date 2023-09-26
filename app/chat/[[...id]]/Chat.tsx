@@ -29,7 +29,7 @@ export default function Chat() {
     fetch(url).then((res) => res.json()),
   );
   const model = searchParams.get("model") || "gpt-3.5-turbo";
-  const { messages, input, handleInputChange, handleSubmit, isLoading } =
+  const { messages, input, handleInputChange, handleSubmit, isLoading, stop } =
     useChat({
       api: "/api/chat",
       id: currentChatId,
@@ -145,9 +145,19 @@ export default function Chat() {
             "absolute bottom-0 pb-8 left-0 w-full px-4 md:px-8 xl:px-20 flex justify-center bg-gradient-to-b from-white/10 to-white"
           }
         >
+          {isLoading && (
+            <button
+              className={
+                "bg-gray-100 hover:bg-gray-200 p-4 rounded mr-2 shadow"
+              }
+              onClick={stop}
+            >
+              Stop
+            </button>
+          )}
           <div
             className={
-              "border flex rounded w-full p-4 shadow  max-w-3xl text-black bg-white items-end gap-2"
+              "border flex rounded w-full p-4 shadow max-w-3xl text-black bg-white items-end gap-2"
             }
           >
             <textarea
