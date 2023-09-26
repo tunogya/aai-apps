@@ -19,6 +19,7 @@
     "@aws-sdk/client-sqs": "^3.413.0",
     "@aws-sdk/lib-dynamodb": "^3.405.0",
     "@headlessui/react": "^1.7.17",
+    "@heroicons/react": "^2.0.18",
     "@tiptap/pm": "^2.1.7",
     "@types/node": "20.5.7",
     "@types/react": "18.2.21",

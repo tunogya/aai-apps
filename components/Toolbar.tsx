@@ -2,12 +2,13 @@
 import { Listbox } from "@headlessui/react";
 import { FC, useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { CheckIcon } from "@heroicons/react/24/solid";
 
 const models = [
   { id: 1, name: "gpt-3.5-turbo", unavailable: false, description: "" },
   { id: 2, name: "gpt-3.5-16k", unavailable: false, description: "" },
   { id: 3, name: "gpt-4", unavailable: false, description: "" },
-  { id: 4, name: "gpt-4-32k", unavailable: true, description: "" },
+  // { id: 4, name: "gpt-4-32k", unavailable: true, description: "" },
 ];
 
 const Toolbar: FC<{ border?: boolean }> = (props) => {
@@ -46,9 +47,9 @@ const Toolbar: FC<{ border?: boolean }> = (props) => {
           }
         >
           <Listbox value={selectModel} onChange={setSelectModel}>
-            <div className="relative mt-1">
+            <div className="relative mt-1 w-60 hover:bg-gray-50 rounded">
               <Listbox.Button
-                className={`relative flex items-center gap-2 whitespace-nowrap ${
+                className={`relative flex items-center gap-2 py-2 px-3 whitespace-nowrap w-full h-full ${
                   selectModel.id > 2 ? "text-[#AB68FF]" : "text-[#19C37D]"
                 }`}
               >
@@ -87,7 +88,7 @@ const Toolbar: FC<{ border?: boolean }> = (props) => {
               </Listbox.Button>
               <Listbox.Options
                 className={
-                  "absolute right-0 mt-2 bg-white rounded px-4 py-2 border shadow z-50 w-44 text-sm space-y-1 text-black"
+                  "absolute right-0 mt-2 bg-white rounded py-3 border shadow z-50 w-60 text-sm space-y-1 text-black"
                 }
               >
                 {models.map((model) => (
@@ -95,13 +96,22 @@ const Toolbar: FC<{ border?: boolean }> = (props) => {
                     key={model.id}
                     value={model}
                     disabled={model.unavailable}
-                    className={
-                      model.unavailable
-                        ? "text-gray-400 cursor-not-allowed"
-                        : "hover:text-purple-600"
-                    }
+                    className={`relative py-1`}
                   >
-                    {model.name}
+                    {({ selected }) => (
+                      <>
+                        <span
+                          className={`pl-9 ${selected ? "font-semibold" : ""}`}
+                        >
+                          {model.name}
+                        </span>
+                        {selected ? (
+                          <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
+                            <CheckIcon className="h-4 w-4" aria-hidden="true" />
+                          </span>
+                        ) : null}
+                      </>
+                    )}
                   </Listbox.Option>
                 ))}
               </Listbox.Options>
