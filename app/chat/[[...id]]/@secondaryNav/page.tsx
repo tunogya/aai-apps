@@ -1,8 +1,7 @@
 "use client";
-import useSWR, { preload } from "swr";
 import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 
 const SecondaryNav = () => {
@@ -56,7 +55,7 @@ const SecondaryNav = () => {
       <Link
         href={`/chat?model=${searchParams.get("model") || "gpt-3.5-turbo"}`}
         className={
-          "flex items-center border hover:bg-gary-100 p-3 rounded cursor-pointer select-none m-2"
+          "flex items-center border hover:bg-gray-50 p-3 rounded cursor-pointer select-none m-2"
         }
       >
         <div className={"w-6 shrink-0"}>
@@ -81,14 +80,15 @@ const SecondaryNav = () => {
       <div className={"h-full overflow-y-auto px-2"}>
         {reducedData
           .filter((item: any) => !deleteItems.includes(item.SK))
+          .sort((a: any, b: any) => b.updated - a.updated)
           .map((item: any) => (
             <div
               key={item.SK}
               className={`relative flex group items-center gap-2 ${
                 item.SK.replace("CHAT2#", "") === currentChatId
-                  ? "bg-stone-100"
+                  ? "bg-gray-100"
                   : ""
-              } hover:bg-stone-100 rounded px-3 py-2 cursor-pointer select-none`}
+              } hover:bg-gray-100 rounded px-3 py-2 cursor-pointer select-none`}
             >
               <Link
                 href={`/chat/${item.SK.replace("CHAT2#", "")}?model=${
@@ -116,7 +116,7 @@ const SecondaryNav = () => {
               </Link>
               <button
                 className={
-                  "absolute right-2 hidden group-hover:flex text-gary-800 hover:text-red-500"
+                  "absolute right-2 hidden group-hover:flex text-black hover:text-red-500"
                 }
                 onClick={async () => {
                   const _newDeleteItems = [...deleteItems, item.SK];
@@ -160,7 +160,7 @@ const SecondaryNav = () => {
         ) : (
           <div
             className={
-              "w-full border p-2 mt-4 text-xs bg-gray-50 rounded text-center cursor-not-allowed"
+              "w-full border p-2 mt-2 text-xs bg-gray-50 rounded text-center cursor-not-allowed"
             }
           >
             No more data.

@@ -23,18 +23,18 @@ const CSR = () => {
 
   return (
     <div className={"flex flex-col xl:flex-row gap-10 h-fit w-full"}>
-      <div className={"w-full xl:max-w-3xl h-full text-sm text-gary-800"}>
+      <div className={"w-full xl:max-w-3xl h-full text-sm text-black"}>
         <div className={"flex w-full gap-10"}>
           <div className={"w-[200px] space-y-1"}>
             <div className={"whitespace-nowrap"}>Cost & usage</div>
-            <div className={"text-gary-800 text-xl"}>
+            <div className={"text-black text-xl"}>
               US$
               {roundUp(data?.cost?.today || 0, 6)}
             </div>
           </div>
           <div className={"w-[200px] space-y-1"}>
             <div className={"whitespace-nowrap"}>Yesterday</div>
-            <div className={"text-gary-400 text-md"}>
+            <div className={"text-gray-400 text-md"}>
               US$
               {roundUp(data?.cost?.yesterday || 0, 6)}
             </div>
@@ -92,12 +92,12 @@ const CSR = () => {
       </div>
       <div
         className={
-          "flex flex-row xl:flex-col w-96 h-full text-sm text-gary-800 gap-20 xl:gap-10"
+          "flex flex-row xl:flex-col w-96 h-full text-sm text-black gap-20 xl:gap-10"
         }
       >
         <div className={"w-[200px] space-y-1"}>
           <div className={"whitespace-nowrap"}>Total cost this month</div>
-          <div className={"text-gary-800 text-xl"}>
+          <div className={"text-black text-xl"}>
             US$
             {roundUp(data?.cost?.month || 0, 6)}
           </div>
@@ -106,7 +106,7 @@ const CSR = () => {
           <div className={"whitespace-nowrap"}>Advance pay balance</div>
           <div
             className={`${
-              data?.advance_pay?.balance < 0 ? "text-red-500" : "text-gary-800"
+              data?.advance_pay?.balance < 0 ? "text-red-500" : "text-black"
             }  text-xl`}
           >
             {data?.advance_pay?.balance < 0 ? "-" : ""}US$

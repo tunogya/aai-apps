@@ -15,9 +15,7 @@ export default async function SSRPage() {
     >
       <div className={"space-y-8"}>
         <div
-          className={
-            "text-2xl font-semibold text-gary-800 border-b w-full py-2"
-          }
+          className={"text-2xl font-semibold text-black border-b w-full py-2"}
         >
           Today
         </div>
@@ -26,7 +24,7 @@ export default async function SSRPage() {
       {/*<div className={"space-y-8"}>*/}
       {/*  <div*/}
       {/*    className={*/}
-      {/*      "text-2xl font-semibold text-gary-800 border-b w-full py-2"*/}
+      {/*      "text-2xl font-semibold text-black border-b w-full py-2"*/}
       {/*    }*/}
       {/*  >*/}
       {/*    Your overview*/}

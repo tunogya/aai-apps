@@ -6,7 +6,7 @@ export const DepositButton = () => {
 
   return (
     <button
-      className={"text-gary-500 hover:text-gary-800 text-sm underline"}
+      className={"text-gray-500 hover:text-black text-sm underline"}
       onClick={async () => {
         try {
           setStatus("loading");

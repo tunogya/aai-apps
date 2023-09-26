@@ -48,10 +48,10 @@ const CoreNav = () => {
             }`}
             prefetch={true}
             scroll={false}
-            className={`text-sm font-semibold hover:bg-gary-100 w-full p-2 rounded ${
+            className={`text-sm font-semibold hover:bg-gray-50 w-full p-2 rounded ${
               path.includes(item.path)
                 ? `${isPurple ? "text-[#AB68FF]" : "text-[#19C37D]"}`
-                : "text-gary-800"
+                : "text-black"
             }`}
           >
             {item.name}

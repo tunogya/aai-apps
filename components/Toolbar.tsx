@@ -4,10 +4,10 @@ import { FC, useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const models = [
-  { id: 1, name: "gpt-3.5-turbo", unavailable: false },
-  { id: 2, name: "gpt-3.5-16k", unavailable: false },
-  { id: 3, name: "gpt-4", unavailable: false },
-  { id: 4, name: "gpt-4-32k", unavailable: true },
+  { id: 1, name: "gpt-3.5-turbo", unavailable: false, description: "" },
+  { id: 2, name: "gpt-3.5-16k", unavailable: false, description: "" },
+  { id: 3, name: "gpt-4", unavailable: false, description: "" },
+  { id: 4, name: "gpt-4-32k", unavailable: true, description: "" },
 ];
 
 const Toolbar: FC<{ border?: boolean }> = (props) => {
@@ -35,7 +35,7 @@ const Toolbar: FC<{ border?: boolean }> = (props) => {
         <input
           placeholder={"Search"}
           className={
-            "w-full px-4 py-2 focus:bg-gary-100 hover:bg-gary-100 focus:outline-0 rounded text-sm"
+            "w-full px-4 py-2 focus:bg-gray-50 hover:bg-gray-50 focus:outline-0 rounded text-sm"
           }
         />
       </div>
@@ -87,7 +87,7 @@ const Toolbar: FC<{ border?: boolean }> = (props) => {
               </Listbox.Button>
               <Listbox.Options
                 className={
-                  "absolute right-0 mt-2 bg-white rounded px-4 py-2 border shadow z-50 w-44 text-sm space-y-1 text-gary-800"
+                  "absolute right-0 mt-2 bg-white rounded px-4 py-2 border shadow z-50 w-44 text-sm space-y-1 text-black"
                 }
               >
                 {models.map((model) => (
@@ -97,7 +97,7 @@ const Toolbar: FC<{ border?: boolean }> = (props) => {
                     disabled={model.unavailable}
                     className={
                       model.unavailable
-                        ? "text-gary-200 cursor-not-allowed"
+                        ? "text-white cursor-not-allowed"
                         : "hover:text-purple-600"
                     }
                   >
@@ -108,9 +108,7 @@ const Toolbar: FC<{ border?: boolean }> = (props) => {
             </div>
           </Listbox>
         </div>
-        <button
-          className={"hover:bg-gary-100 p-1.5 rounded-full text-gary-800"}
-        >
+        <button className={"hover:bg-gray-50 p-1.5 rounded-full text-black"}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"

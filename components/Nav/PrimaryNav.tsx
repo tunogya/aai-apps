@@ -21,10 +21,10 @@ const PrimaryNav: FC<{
       >
         <Image src={"/favicon.svg"} alt={""} height={36} width={36} />
         <div>
-          <div className={"text-xs text-gary-800"}>
+          <div className={"text-xs text-black"}>
             ©{new Date().getFullYear()} Abandon Inc.,
           </div>
-          <div className={"text-xs text-gary-500 font-light"}>
+          <div className={"text-xs text-gray-500 font-light"}>
             Powered by{" "}
             <a
               href={"https://openai.com"}
