@@ -137,6 +137,13 @@ export default function Chat() {
               </div>
             </div>
           ))}
+          {isLoading && (
+            <div className={"px-8 py-4 flex justify-center"}>
+              <div className={"max-w-3xl w-full h-fit gap-3 text-xs"}>
+                ✨✨ Generating...
+              </div>
+            </div>
+          )}
         </ScrollToBottom>
       </div>
       <form onSubmit={handleSubmit}>
