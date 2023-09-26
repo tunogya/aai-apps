@@ -87,7 +87,7 @@ const Pages = () => {
               </td>
               <td className={"pt-2 pr-4 pb-2 overflow-x-hidden"}>
                 {moment(item.created * 1000)
-                  .startOf("hour")
+                  .startOf("second")
                   .fromNow()}
               </td>
             </tr>
