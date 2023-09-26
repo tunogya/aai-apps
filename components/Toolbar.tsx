@@ -97,7 +97,7 @@ const Toolbar: FC<{ border?: boolean }> = (props) => {
                     disabled={model.unavailable}
                     className={
                       model.unavailable
-                        ? "text-white cursor-not-allowed"
+                        ? "text-gray-400 cursor-not-allowed"
                         : "hover:text-purple-600"
                     }
                   >
