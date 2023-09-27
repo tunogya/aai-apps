@@ -25,6 +25,14 @@ const openai = new OpenAIApi(configuration);
 // @ts-ignore
 export async function POST(req: Request): Promise<Response> {
   let { messages, model, sub } = await req.json();
+
+  const balance = ((await redisClient.get(`${sub}:balance`)) as number) || 0;
+  if (balance < -0.1) {
+    return new Response("Not enough balance", {
+      status: 400,
+    });
+  }
+
   if (!AI_MODELS_MAP.has(model)) {
     return new Response(
       `Invalid model, expected one of ${Array.from(AI_MODELS_MAP.keys()).join(

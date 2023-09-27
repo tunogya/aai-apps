@@ -12,6 +12,13 @@ const openai = new OpenAIApi(config);
 export const runtime = "edge";
 
 export async function POST(req: Request): Promise<Response> {
+  const { sub } = await req.json();
+  const balance = ((await redisClient.get(`${sub}:balance`)) as number) || 0;
+  if (balance < -0.1) {
+    return new Response("Not enough balance", {
+      status: 400,
+    });
+  }
   // Check if the OPENAI_API_KEY is set, if not return 400
   if (!process.env.OPENAI_API_KEY) {
     return new Response(
