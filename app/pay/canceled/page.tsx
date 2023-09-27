@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { TypedInfo } from "@/app/pay/canceled/TypedInfo";
-import { DepositButton } from "@/app/pay/canceled/DepositButton";
+import { DepositButton } from "@/components/DepositButton";
 import React from "react";
 
 export const runtime = "edge";
@@ -24,7 +24,9 @@ export default async function SSRPage() {
       >
         Back
       </Link>
-      <DepositButton />
+      <DepositButton
+        className={"text-gray-500 hover:text-black text-sm underline"}
+      />
     </div>
   );
 }

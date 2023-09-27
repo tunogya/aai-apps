@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import useSWR from "swr";
 import {
   XAxis,
@@ -11,6 +11,7 @@ import {
 } from "recharts";
 import { roundUp } from "@/utils/roundUp";
 import { useSearchParams } from "next/navigation";
+import { DepositButton } from "@/components/DepositButton";
 
 const CSR = () => {
   const { data } = useSWR("/api/dashboard/today", (url) =>
@@ -23,7 +24,6 @@ const CSR = () => {
   const searchParams = useSearchParams();
   const model = searchParams.get("model") || "gpt-3.5-turbo";
   const isPurple = model.startsWith("gpt-4");
-  const [status, setStatus] = useState("idle");
 
   return (
     <div className={"flex flex-col xl:flex-row gap-10 h-fit w-full"}>
@@ -116,47 +116,11 @@ const CSR = () => {
             {balanceData?.balance < 0 ? "-" : ""}US$
             {roundUp(Math.abs(balanceData?.balance) || 0, 6)}
           </div>
-          <button
+          <DepositButton
             className={`text-sm px-2 py-1 rounded text-white ${
               isPurple ? "bg-[#AB68FF]" : "bg-[#19C37D]"
             } font-semibold flex items-center gap-1`}
-            onClick={async () => {
-              try {
-                setStatus("loading");
-                const { session } = await fetch(`/api/checkout`, {
-                  method: "POST",
-                }).then((res) => res.json());
-                const url = session.url;
-                setStatus("idle");
-                window.open(url);
-              } catch (e) {
-                console.log(e);
-                setStatus("error");
-                setTimeout(() => {
-                  setStatus("idle");
-                }, 3_000);
-              }
-            }}
-          >
-            <svg
-              stroke="currentColor"
-              fill="none"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="h-4 w-4"
-              height="1em"
-              width="1em"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <line x1="12" y1="5" x2="12" y2="19"></line>
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-            </svg>
-            {status === "idle" && "Deposit"}
-            {status === "loading" && "Waiting..."}
-            {status === "error" && "Error"}
-          </button>
+          />
         </div>
       </div>
     </div>

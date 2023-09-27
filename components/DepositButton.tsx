@@ -1,12 +1,14 @@
 "use client";
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 
-export const DepositButton = () => {
+export const DepositButton: FC<{
+  className?: string;
+}> = ({ className }) => {
   const [status, setStatus] = useState("idle");
 
   return (
     <button
-      className={"text-gray-500 hover:text-black text-sm underline"}
+      className={className || ""}
       onClick={async () => {
         try {
           setStatus("loading");
