@@ -46,7 +46,7 @@ const CoreNav = () => {
             href={`${item.path}?model=${
               searchParams.get("model") || "gpt-3.5-turbo"
             }`}
-            prefetch={true}
+            prefetch
             scroll={false}
             className={`text-sm font-semibold hover:bg-gray-50 w-full p-2 rounded ${
               path.includes(item.path)

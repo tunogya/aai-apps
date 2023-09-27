@@ -9,6 +9,7 @@ export default function Page() {
       </div>
       <Link
         href={"/dashboard"}
+        prefetch
         className="flex px-3 py-3 w-full sm:w-[240px] text-white rounded items-center justify-center gap-2 bg-gray-950 hover:bg-gray-900 font-medium"
       >
         Continue

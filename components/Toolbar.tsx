@@ -154,7 +154,7 @@ const Toolbar: FC<{ border?: boolean }> = (props) => {
                     "absolute right-0 w-48 rounded border shadow py-2 z-50"
                   }
                 >
-                  <Link href={"/api/auth/logout"}>
+                  <a href={"/api/auth/logout"}>
                     <div
                       className={
                         "hover:bg-gray-100 w-full py-2 px-4 font-semibold text-start text-red-500"
@@ -162,7 +162,7 @@ const Toolbar: FC<{ border?: boolean }> = (props) => {
                     >
                       Logout
                     </div>
-                  </Link>
+                  </a>
                 </Popover.Panel>
               </Transition>
             </>

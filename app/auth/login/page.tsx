@@ -7,12 +7,12 @@ export default function Page() {
       <div className="text-center text-2xl md:text-3xl font-serif">
         &quot;Abandon yourself to a life of pleasure!&quot;
       </div>
-      <Link
+      <a
         href={"/api/auth/login"}
         className="flex px-3 py-3 w-full sm:w-[240px] text-white rounded items-center justify-center gap-2 bg-gray-950 hover:bg-gray-900 font-medium"
       >
         Sign in
-      </Link>
+      </a>
     </div>
   );
 }

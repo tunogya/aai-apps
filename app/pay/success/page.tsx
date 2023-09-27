@@ -18,6 +18,7 @@ export default async function SSRPage() {
       <TypedInfo />
       <Link
         href={"/dashboard"}
+        prefetch
         className={
           "w-64 py-4 border rounded-full text-center bg-green-500 text-white font-bold mt-4"
         }
