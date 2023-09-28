@@ -8,10 +8,12 @@ import {
   BarChart,
   Bar,
   Tooltip,
+  YAxis,
 } from "recharts";
 import { roundUp } from "@/utils/roundUp";
 import { useSearchParams } from "next/navigation";
 import { DepositButton } from "@/components/DepositButton";
+import moment from "moment";
 
 const CSR = () => {
   const { data } = useSWR("/api/dashboard/today", (url) =>
@@ -50,7 +52,9 @@ const CSR = () => {
               <CartesianGrid strokeOpacity={0.5} horizontal={false} />
               <Tooltip
                 label={"date"}
-                labelFormatter={(value) => new Date(value).toLocaleDateString()}
+                labelFormatter={(value) =>
+                  moment(new Date(value)).format("ll").split(",")[0]
+                }
                 formatter={(value, name) => [
                   value,
                   (name as string).toUpperCase().replace("_", "."),
@@ -71,12 +75,27 @@ const CSR = () => {
                   fill: "#f5f5f4",
                 }}
               />
+              <YAxis
+                axisLine={{
+                  stroke: "#c9c9c9",
+                }}
+                tickLine={{
+                  stroke: "#c9c9c9",
+                }}
+                tick={{ fontSize: "10px" }}
+              />
               <XAxis
                 dataKey="date"
-                axisLine={false}
-                tickLine={false}
-                tick={{ fontSize: "12px" }}
-                tickFormatter={(value) => new Date(value).toLocaleDateString()}
+                axisLine={{
+                  stroke: "#c9c9c9",
+                }}
+                tickLine={{
+                  stroke: "#c9c9c9",
+                }}
+                tick={{ fontSize: "10px" }}
+                tickFormatter={(value) =>
+                  moment(new Date(value)).format("ll").split(",")[0]
+                }
               />
               <Bar
                 stackId="a"
