@@ -60,9 +60,7 @@ export default function Chat() {
 
   return (
     <div className={"w-full md:min-w-[400px]"}>
-      <div
-        className={"h-[calc(100vh-60px)] w-full overflow-y-auto pb-40 relative"}
-      >
+      <div className={"h-[calc(100vh-60px)] w-full overflow-y-auto relative"}>
         <ScrollToBottom
           className={"h-full w-full"}
           initialScrollBehavior={"smooth"}
@@ -144,6 +142,7 @@ export default function Chat() {
               </div>
             </div>
           )}
+          <div className={"h-40"} />
         </ScrollToBottom>
       </div>
       <form onSubmit={handleSubmit}>
