@@ -41,14 +41,14 @@ const Pages = () => {
                 "text-start pt-2 pr-4 pb-2 overflow-x-hidden font-semibold"
               }
             >
-              Prompt tokens
+              Prompt
             </th>
             <th
               className={
                 "text-start pt-2 pr-4 pb-2 overflow-x-hidden font-semibold"
               }
             >
-              Completion tokens
+              Completion
             </th>
             <th
               className={
