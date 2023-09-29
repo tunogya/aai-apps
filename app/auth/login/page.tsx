@@ -9,7 +9,7 @@ export default function Page() {
       </div>
       <a
         href={"/api/auth/login"}
-        className="flex px-3 py-3 w-full sm:w-[240px] text-white rounded items-center justify-center gap-2 bg-[#0066FF] font-medium"
+        className="flex px-3 py-3 w-full sm:w-[240px] text-white rounded items-center justify-center gap-2 bg-gray-950 hover:bg-gray-900 font-medium"
       >
         Sign in
       </a>
