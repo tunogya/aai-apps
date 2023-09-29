@@ -41,14 +41,14 @@ const Toolbar: FC<{ border?: boolean }> = (props) => {
           }
         />
       </div>
-      <div className={"text-sm font-semibold flex items-center space-x-3"}>
+      <div className={"text-sm font-semibold flex items-center space-x-1"}>
         <div
           className={
             "flex items-center space-x-2 p-2 rounded cursor-pointer select-none"
           }
         >
           <Listbox value={selectModel} onChange={setSelectModel}>
-            <div className="relative mt-1 w-60 hover:bg-gray-100 rounded">
+            <div className="relative mt-1 w-40 hover:bg-gray-100 rounded">
               <Listbox.Button
                 className={`relative flex items-center gap-2 py-2 px-3 whitespace-nowrap w-full h-full ${
                   selectModel.id > 2 ? "text-[#AB68FF]" : "text-[#19C37D]"
@@ -89,7 +89,7 @@ const Toolbar: FC<{ border?: boolean }> = (props) => {
               </Listbox.Button>
               <Listbox.Options
                 className={
-                  "absolute right-0 mt-2 bg-white rounded py-2 border shadow z-50 w-60 text-sm text-black font-medium"
+                  "absolute right-0 mt-2 bg-white rounded py-2 border shadow z-50 w-40 text-sm text-black font-medium"
                 }
               >
                 {models.map((model) => (
@@ -151,7 +151,7 @@ const Toolbar: FC<{ border?: boolean }> = (props) => {
               >
                 <Popover.Panel
                   className={
-                    "absolute right-0 w-48 rounded border shadow py-2 z-50"
+                    "absolute mt-1 right-0 w-40 rounded border shadow py-2 z-50"
                   }
                 >
                   <a href={"/api/auth/logout"}>

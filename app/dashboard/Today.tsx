@@ -23,10 +23,6 @@ const CSR = () => {
     fetch(url).then((res) => res.json()),
   );
 
-  const searchParams = useSearchParams();
-  const model = searchParams.get("model") || "gpt-3.5-turbo";
-  const isPurple = model.startsWith("gpt-4");
-
   return (
     <div className={"flex flex-col xl:flex-row gap-10 h-fit w-full"}>
       <div className={"w-full xl:max-w-3xl h-full text-sm text-black"}>
@@ -136,9 +132,7 @@ const CSR = () => {
             {roundUp(Math.abs(balanceData?.balance) || 0, 6)}
           </div>
           <DepositButton
-            className={`text-sm px-2 py-1 rounded text-white ${
-              isPurple ? "bg-[#AB68FF]" : "bg-[#19C37D]"
-            } font-semibold flex items-center gap-1`}
+            className={`text-sm px-3 py-1 rounded text-white bg-[#0066FF] font-semibold flex items-center gap-1`}
           />
         </div>
       </div>

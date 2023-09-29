@@ -17,7 +17,7 @@ export default function AuthLayout({
 }) {
   return (
     <div className="w-full h-full flex bg-white gap-5 relative">
-      <div className="absolute top-2 left-2 flex items-center gap-2 text-2xl">
+      <div className="absolute top-2 left-2 flex items-center gap-2 text-2xl text-[#0066FF]">
         <Image src={"/favicon.svg"} alt={""} width={32} height={32} />
         AbandonAI
       </div>
