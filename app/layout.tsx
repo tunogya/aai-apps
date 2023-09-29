@@ -8,6 +8,7 @@ import Link from "next/link";
 import "cal-sans";
 import "./styles/globals.css";
 import "./styles/katex.min.css";
+import CheckBalance from "@/components/CheckBalance";
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 
@@ -62,6 +63,7 @@ export default function RootLayout(props: { children: ReactNode }) {
               `}
           </Script>
           <TailwindIndicator />
+          <CheckBalance />
           {props.children}
         </body>
       </UserProvider>
