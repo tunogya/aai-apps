@@ -16,7 +16,7 @@ const POST = async (req: NextRequest) => {
       ],
       mode: "payment",
       success_url: `${req.nextUrl.origin}/pay/success`,
-      cancel_url: `${req.nextUrl.origin}/pay/canceled`,
+      cancel_url: `${req.nextUrl.origin}/pay/error?error=Canceled`,
       automatic_tax: { enabled: true },
       customer_email: user?.email || undefined,
       metadata: {

@@ -1,11 +1,13 @@
+"use client";
 import Link from "next/link";
-import { TypedInfo } from "@/app/pay/canceled/TypedInfo";
 import { DepositButton } from "@/components/DepositButton";
 import React from "react";
-
-export const runtime = "edge";
+import { useSearchParams } from "next/navigation";
 
 export default async function SSRPage() {
+  const searchParams = useSearchParams();
+  const error = searchParams.get("error") || "Something went wrong";
+
   return (
     <div
       className={
@@ -13,20 +15,21 @@ export default async function SSRPage() {
       }
     >
       <div className={"text-[120px]"}>😫</div>
-      <div className={"text-3xl font-bold text-yellow-500"}>CANCELED</div>
-      <TypedInfo />
-      <Link
-        href={"/dashboard"}
-        prefetch
+      <div className="text-center text-2xl md:text-3xl font-serif">
+        &quot;{error}&quot;
+      </div>
+      <DepositButton
         className={
           "w-64 py-4 border rounded-full text-center bg-yellow-500 text-white font-bold mt-4"
         }
+      />
+      <Link
+        href={"/dashboard"}
+        prefetch
+        className={"text-gray-500 hover:text-black text-sm underline"}
       >
         Back
       </Link>
-      <DepositButton
-        className={"text-gray-500 hover:text-black text-sm underline"}
-      />
     </div>
   );
 }

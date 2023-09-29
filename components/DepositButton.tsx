@@ -27,7 +27,7 @@ export const DepositButton: FC<{
         }
       }}
     >
-      {status === "idle" && "Deposit"}
+      {status === "idle" && "Top up"}
       {status === "loading" && "Waiting..."}
       {status === "error" && "Error"}
     </button>

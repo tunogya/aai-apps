@@ -1,6 +1,6 @@
 import React from "react";
-import Link from "next/link";
 
+export const runtime = "edge";
 export default function Page() {
   return (
     <div className="w-full h-full flex flex-col justify-center items-center py-4 gap-20 px-3">

@@ -1,7 +1,6 @@
 import React from "react";
 import { getSession } from "@auth0/nextjs-auth0/edge";
 import Link from "next/link";
-import { TypedInfo } from "@/app/pay/success/TypedInfo";
 
 export const runtime = "edge";
 
@@ -14,8 +13,9 @@ export default async function SSRPage() {
       }
     >
       <div className={"text-[120px]"}>🎉</div>
-      <div className={"text-4xl font-bold text-green-500"}>ALL DONE</div>
-      <TypedInfo />
+      <div className="text-center text-2xl md:text-3xl font-serif">
+        &quot;All Done!&quot;
+      </div>
       <Link
         href={"/dashboard"}
         prefetch
