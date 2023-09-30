@@ -7,7 +7,7 @@ import Link from "next/link";
 
 const models = [
   { id: 1, name: "gpt-3.5-turbo", unavailable: false, description: "" },
-  { id: 2, name: "gpt-3.5-16k", unavailable: false, description: "" },
+  { id: 2, name: "gpt-3.5-turbo-16k", unavailable: false, description: "" },
   { id: 3, name: "gpt-4", unavailable: false, description: "" },
   // { id: 4, name: "gpt-4-32k", unavailable: true, description: "" },
 ];
@@ -48,7 +48,7 @@ const Toolbar: FC<{ border?: boolean }> = (props) => {
           }
         >
           <Listbox value={selectModel} onChange={setSelectModel}>
-            <div className="relative mt-1 w-40 hover:bg-gray-100 rounded">
+            <div className="relative mt-1 w-48 hover:bg-gray-100 rounded">
               <Listbox.Button
                 className={`relative flex items-center gap-2 py-2 px-3 whitespace-nowrap w-full h-full ${
                   selectModel.id > 2 ? "text-[#AB68FF]" : "text-[#19C37D]"
@@ -89,7 +89,7 @@ const Toolbar: FC<{ border?: boolean }> = (props) => {
               </Listbox.Button>
               <Listbox.Options
                 className={
-                  "absolute right-0 mt-2 bg-white rounded py-2 border shadow z-50 w-40 text-sm text-black font-medium"
+                  "absolute right-0 mt-2 bg-white rounded py-2 border shadow z-50 w-48 text-sm text-black font-medium"
                 }
               >
                 {models.map((model) => (
