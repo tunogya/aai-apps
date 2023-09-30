@@ -9,7 +9,7 @@ export default async function SSRPage() {
   return (
     <div
       className={
-        "px-4 md:px-10 pt-4 absolute h-[calc(100vh-60px)] w-full overflow-y-auto pb-20 space-y-20"
+        "px-4 md:px-10 pt-2 md:pt-4 absolute h-[calc(100vh-60px)] w-full overflow-y-auto pb-20 space-y-20"
       }
     >
       <Pages />

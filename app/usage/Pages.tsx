@@ -26,7 +26,7 @@ const Pages = () => {
 
   return (
     <div className={"w-full overflow-hidden"}>
-      <table className="table-fixed w-full">
+      <table className="table-auto w-full">
         <thead>
           <tr className={"text-xs text-gray-500 border-b"}>
             <th
@@ -55,7 +55,7 @@ const Pages = () => {
                 "text-start pt-2 pr-4 pb-2 overflow-x-hidden font-semibold"
               }
             >
-              Total cost
+              Cost
             </th>
             <th
               className={
