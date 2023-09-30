@@ -209,6 +209,7 @@ export default function Chat() {
                     inputRef.current.style.height = "auto";
                     // @ts-ignore
                     inputRef.current.style.height =
+                      // @ts-ignore
                       e.target.scrollHeight + "px";
                   }
                 }
