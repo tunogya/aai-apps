@@ -11,7 +11,7 @@ import {
   YAxis,
 } from "recharts";
 import { roundUp } from "@/utils/roundUp";
-import { useSearchParams } from "next/navigation";
+import numeral from "numeral";
 import { DepositButton } from "@/components/DepositButton";
 import moment from "moment";
 
@@ -78,6 +78,10 @@ const CSR = () => {
                 tickLine={{
                   stroke: "#c9c9c9",
                 }}
+                tickFormatter={(value, index) => {
+                  return numeral(value).format("$0.0a").toUpperCase();
+                }}
+                width={30}
                 tick={{ fontSize: "10px" }}
               />
               <XAxis
