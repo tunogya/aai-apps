@@ -29,7 +29,7 @@ const CSR = () => {
         <div className={"flex w-full flex-col md:flex-row gap-3"}>
           <div
             className={
-              "w-full md:w-[200px] space-y-1 border p-3 md:border-none md:p-0 rounded"
+              "w-full xl:w-[200px] space-y-1 border p-3 xl:border-none xl:p-0 rounded"
             }
           >
             <div className={"whitespace-nowrap"}>Cost & usage</div>
@@ -40,7 +40,7 @@ const CSR = () => {
           </div>
           <div
             className={
-              "w-full md:w-[200px] space-y-1 border p-3 md:border-none md:p-0 rounded"
+              "w-full xl:w-[200px] space-y-1 border p-3 xl:border-none xl:p-0 rounded"
             }
           >
             <div className={"whitespace-nowrap"}>Yesterday</div>
@@ -123,12 +123,12 @@ const CSR = () => {
       </div>
       <div
         className={
-          "flex flex-col md:flex-row xl:flex-col w-full md:w-96 h-full text-sm text-black gap-3 xl:gap-10"
+          "flex flex-col md:flex-row xl:flex-col w-full xl:w-96 h-full text-sm text-black gap-3 xl:gap-10"
         }
       >
         <div
           className={
-            "w-full md:w-[200px] space-y-1 border p-3 md:border-none md:p-0 rounded"
+            "w-full xl:w-[200px] space-y-1 border p-3 xl:border-none xl:p-0 rounded"
           }
         >
           <div className={"whitespace-nowrap"}>Total cost this month</div>
@@ -139,7 +139,7 @@ const CSR = () => {
         </div>
         <div
           className={
-            "w-full md:w-[200px] space-y-1 border p-3 md:border-none md:p-0 rounded"
+            "w-full xl:w-[200px] space-y-1 border p-3 xl:border-none xl:p-0 rounded"
           }
         >
           <div className={"whitespace-nowrap"}>Advance pay balance</div>
