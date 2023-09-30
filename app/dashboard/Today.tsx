@@ -50,7 +50,7 @@ const CSR = () => {
             </div>
           </div>
         </div>
-        <div className={"h-[256px] md:h-[128px] w-full mt-4"}>
+        <div className={"h-[200px] md:h-[128px] w-full mt-4"}>
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={data?.daily || []}>
               <CartesianGrid strokeOpacity={0.5} horizontal={false} />
