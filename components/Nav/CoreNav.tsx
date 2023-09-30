@@ -1,12 +1,11 @@
 "use client";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useMemo } from "react";
 
 const menu = [
   {
     path: "/dashboard",
-    name: "Dashboard",
+    name: "Home",
   },
   {
     path: "/chat",
