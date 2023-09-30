@@ -149,7 +149,7 @@ export default function Chat() {
       >
         <div
           className={
-            "absolute bottom-0 pb-8 left-0 w-full px-4 md:px-8 xl:px-20 flex justify-center bg-gradient-to-b from-white/10 to-white"
+            "absolute bottom-16 md:bottom-0 pb-8 left-0 w-full px-4 md:px-8 xl:px-20 flex justify-center bg-gradient-to-b from-white/10 to-white"
           }
         >
           {isLoading && (

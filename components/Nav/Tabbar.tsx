@@ -69,23 +69,27 @@ const Tabbar = () => {
   const path = usePathname();
 
   return (
-    <div className={"w-full flex justify-around pt-3 text-xs"}>
-      {menu.map((item, index) => (
-        <Link
-          href={`${item.path}?model=${
-            searchParams.get("model") || "gpt-3.5-turbo"
-          }`}
-          prefetch
-          scroll={false}
-          className={`flex flex-col items-center cursor-pointer gap-0.5 ${
-            path.includes(item.path) ? `text-[#0066FF]` : "text-black"
-          }`}
-          key={index}
-        >
-          {item.icon}
-          {item.name}
-        </Link>
-      ))}
+    <div
+      className={`absolute bottom-0 left-0 w-full md:hidden h-[80px] border-t z-50 bg-white`}
+    >
+      <div className={`w-full flex justify-around pt-3 text-xs`}>
+        {menu.map((item, index) => (
+          <Link
+            href={`${item.path}?model=${
+              searchParams.get("model") || "gpt-3.5-turbo"
+            }`}
+            prefetch
+            scroll={false}
+            className={`flex flex-col items-center cursor-pointer gap-0.5 ${
+              path.includes(item.path) ? `text-[#0066FF]` : "text-black"
+            }`}
+            key={index}
+          >
+            {item.icon}
+            {item.name}
+          </Link>
+        ))}
+      </div>
     </div>
   );
 };

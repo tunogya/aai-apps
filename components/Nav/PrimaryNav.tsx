@@ -42,13 +42,7 @@ const PrimaryNav: FC<{
         </div>
       </div>
       {/*Mobile*/}
-      <div
-        className={
-          "absolute bottom-0 left-0 w-full md:hidden h-[80px] border-t z-50 bg-white"
-        }
-      >
-        <Tabbar />
-      </div>
+      <Tabbar />
     </>
   );
 };
