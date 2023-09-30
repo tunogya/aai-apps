@@ -26,7 +26,7 @@ const menu = [
   },
   {
     path: "/chat",
-    name: "Chat",
+    name: "New Chat",
     icon: (
       <svg
         stroke="currentColor"
