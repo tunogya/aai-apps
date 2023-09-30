@@ -1,7 +1,7 @@
 "use client";
 
 import { useChat } from "ai/react";
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import CodeFormat from "@/app/chat/[[...id]]/CodeFormat";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -27,6 +27,7 @@ export default function Chat() {
   const { data } = useSWR(`/api/conversation/${currentChatId}`, (url) =>
     fetch(url).then((res) => res.json()),
   );
+  const inputRef = useRef(null);
   const model = searchParams.get("model") || "gpt-3.5-turbo";
   const { messages, input, handleInputChange, handleSubmit, isLoading, stop } =
     useChat({
@@ -137,7 +138,15 @@ export default function Chat() {
         )}
         <div className={"h-40"} />
       </div>
-      <form onSubmit={handleSubmit}>
+      <form
+        onSubmit={(e) => {
+          if (inputRef.current) {
+            // @ts-ignore
+            inputRef.current.style.height = "auto";
+          }
+          handleSubmit(e);
+        }}
+      >
         <div
           className={
             "absolute bottom-0 pb-8 left-0 w-full px-4 md:px-8 xl:px-20 flex justify-center bg-gradient-to-b from-white/10 to-white"
@@ -176,6 +185,7 @@ export default function Chat() {
               className={
                 "w-full focus:outline-0 max-h-52 min-h-6 overflow-y-auto resize-none"
               }
+              ref={inputRef}
               maxLength={2000}
               rows={1}
               onChange={(e) => {
@@ -189,6 +199,18 @@ export default function Chat() {
                   if (e.nativeEvent.isComposing) return;
                   e.preventDefault();
                   handleSubmit(e as any);
+                  if (inputRef.current) {
+                    // @ts-ignore
+                    inputRef.current.style.height = "auto";
+                  }
+                } else if (e.key === "Enter" && e.shiftKey) {
+                  if (inputRef.current) {
+                    // @ts-ignore
+                    inputRef.current.style.height = "auto";
+                    // @ts-ignore
+                    inputRef.current.style.height =
+                      e.target.scrollHeight + "px";
+                  }
                 }
               }}
             />
