@@ -140,11 +140,11 @@ export default function Chat() {
       </div>
       <form
         onSubmit={(e) => {
+          handleSubmit(e);
           if (inputRef.current) {
             // @ts-ignore
             inputRef.current.style.height = "auto";
           }
-          handleSubmit(e);
         }}
       >
         <div
