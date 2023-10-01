@@ -25,13 +25,13 @@ const CSR = () => {
 
   return (
     <div className={"flex flex-col xl:flex-row gap-4 md:gap-10 h-fit w-full"}>
-      <div className={"w-full xl:max-w-3xl h-full text-sm text-black"}>
-        <div className={"flex w-full flex-col md:flex-row gap-3"}>
-          <div
-            className={
-              "w-full xl:w-[200px] space-y-1 border p-3 xl:border-none xl:p-0 rounded"
-            }
-          >
+      <div
+        className={
+          "w-full xl:max-w-3xl h-full text-sm text-black border rounded-xl p-3 xl:p-0 xl:border-none"
+        }
+      >
+        <div className={"flex w-full flex-col md:flex-row gap-3 "}>
+          <div className={"w-full xl:w-[200px] space-y-1"}>
             <div className={"whitespace-nowrap"}>Cost & usage</div>
             <div className={"text-black text-xl"}>
               US$
@@ -39,11 +39,7 @@ const CSR = () => {
             </div>
           </div>
           {data?.cost?.yesterday ? (
-            <div
-              className={
-                "w-full xl:w-[200px] space-y-1 border p-3 xl:border-none xl:p-0 rounded"
-              }
-            >
+            <div className={"w-full xl:w-[200px] space-y-1"}>
               <div className={"whitespace-nowrap"}>Yesterday</div>
               <div className={"text-gray-400 text-md"}>
                 US$
@@ -52,7 +48,7 @@ const CSR = () => {
             </div>
           ) : null}
         </div>
-        <div className={"h-[160px] md:h-[128px] w-full mt-4"}>
+        <div className={"h-[180px] md:h-[128px] w-full mt-4"}>
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={data?.daily || []}>
               <CartesianGrid strokeOpacity={0.5} horizontal={false} />
@@ -103,6 +99,7 @@ const CSR = () => {
                   stroke: "#c9c9c9",
                 }}
                 tick={{ fontSize: "10px" }}
+                height={16}
                 tickFormatter={(value) =>
                   moment(new Date(value)).format("ll").split(",")[0]
                 }
@@ -130,7 +127,7 @@ const CSR = () => {
       >
         <div
           className={
-            "w-full xl:w-[200px] space-y-1 border p-3 xl:border-none xl:p-0 rounded"
+            "w-full xl:w-[200px] space-y-1 border p-3 xl:border-none xl:p-0 rounded-xl"
           }
         >
           <div className={"whitespace-nowrap"}>Total cost this month</div>
@@ -141,20 +138,20 @@ const CSR = () => {
         </div>
         <div
           className={
-            "w-full xl:w-[200px] space-y-1 border p-3 xl:border-none xl:p-0 rounded"
+            "w-full xl:w-[200px] space-y-1 border p-3 xl:border-none xl:p-0 rounded-xl"
           }
         >
           <div className={"whitespace-nowrap"}>Advance pay balance</div>
           <div
             className={`${
               balanceData?.balance < 0 ? "text-red-500" : "text-black"
-            }  text-xl`}
+            }  text-xl pb-4 md:pb-0`}
           >
             {balanceData?.balance < 0 ? "-" : ""}US$
             {roundUp(Math.abs(balanceData?.balance) || 0, 6)}
           </div>
           <DepositButton
-            className={`text-sm py-2 px-3 md:py-1 rounded text-white bg-[#0066FF] font-semibold flex items-center gap-1 w-full md:w-fit`}
+            className={`text-sm py-3 px-4 md:py-1 rounded text-white bg-[#0066FF] font-semibold flex items-center gap-1 w-full md:w-fit`}
           />
         </div>
       </div>
