@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSession } from "@auth0/nextjs-auth0";
 import ddbDocClient from "@/utils/ddbDocClient";
-import { GetCommand, QueryCommand } from "@aws-sdk/lib-dynamodb";
+import { QueryCommand } from "@aws-sdk/lib-dynamodb";
 import { roundUp } from "@/utils/roundUp";
 
 const GET = async (req: NextRequest) => {
