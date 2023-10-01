@@ -244,7 +244,7 @@ export default function Chat() {
             >
               {isLoading ? (
                 <button
-                  className={`p-2 bg-[#0066FF] text-white rounded-full`}
+                  className={`p-2 bg-[#0066FF] text-white rounded-full md:hidden`}
                   onClick={stop}
                 >
                   <svg
@@ -274,7 +274,7 @@ export default function Chat() {
                   type="submit"
                   className={`p-2 ${
                     isPurple ? "bg-[#AB68FF]" : "bg-[#19C37D]"
-                  } rounded-full text-white`}
+                  } rounded-full text-white md:hidden`}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
