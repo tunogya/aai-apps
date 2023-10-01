@@ -155,14 +155,14 @@ export default function Chat() {
           {isLoading && (
             <button
               className={
-                "bg-gray-50 hover:bg-gray-100 px-2 py-2 md:py-4 md:px-6 rounded mr-2 shadow"
+                "bg-gray-50 hover:bg-gray-100 py-4 px-6 rounded mr-2 shadow shrink-0 hidden md:block"
               }
               onClick={stop}
             >
               <svg
                 stroke="currentColor"
                 fill="none"
-                strokeWidth="1.5"
+                strokeWidth="2"
                 viewBox="0 0 24 24"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -243,27 +243,56 @@ export default function Chat() {
             <div
               className={"flex w-9 h-9 items-center justify-center shrink-0"}
             >
-              <button
-                type="submit"
-                className={`p-2 ${
-                  isPurple ? "bg-[#AB68FF]" : "bg-[#19C37D]"
-                } rounded-full text-white`}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="2"
-                  stroke="currentColor"
-                  className="w-4 h-4"
+              {isLoading ? (
+                <button
+                  className={`p-2 bg-[#0066FF] text-white rounded-full`}
+                  onClick={stop}
                 >
-                  <path
+                  <svg
+                    stroke="currentColor"
+                    fill="none"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75"
-                  />
-                </svg>
-              </button>
+                    className="h-3 w-3"
+                    height="1em"
+                    width="1em"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <rect
+                      x="3"
+                      y="3"
+                      width="18"
+                      height="18"
+                      rx="2"
+                      ry="2"
+                    ></rect>
+                  </svg>
+                </button>
+              ) : (
+                <button
+                  type="submit"
+                  className={`p-2 ${
+                    isPurple ? "bg-[#AB68FF]" : "bg-[#19C37D]"
+                  } rounded-full text-white`}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="2"
+                    stroke="currentColor"
+                    className="w-4 h-4"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75"
+                    />
+                  </svg>
+                </button>
+              )}
             </div>
           </div>
         </div>
