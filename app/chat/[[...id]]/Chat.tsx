@@ -184,7 +184,7 @@ export default function Chat() {
               <textarea
                 value={input}
                 className={
-                  "w-full focus:outline-0 max-h-52 min-h-6 overflow-y-auto resize-none"
+                  "w-full outline-none focus:outline-none focus:bg-transparent max-h-52 min-h-6 overflow-y-auto resize-none"
                 }
                 ref={inputRef}
                 maxLength={2000}
