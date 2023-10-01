@@ -222,6 +222,13 @@ export default function Chat() {
             </div>
           </div>
         </form>
+        {isLoading && (
+          <div className={"px-4 md:px-8 py-4 flex justify-center border-b"}>
+            <div className={"max-w-3xl w-full h-fit gap-3 text-xs"}>
+              ✨✨ Generating...
+            </div>
+          </div>
+        )}
         {messages
           .map((m, index) => (
             <div
@@ -291,13 +298,6 @@ export default function Chat() {
             </div>
           ))
           .reverse()}
-        {isLoading && (
-          <div className={"px-8 py-4 flex justify-center"}>
-            <div className={"max-w-3xl w-full h-fit gap-3 text-xs"}>
-              ✨✨ Generating...
-            </div>
-          </div>
-        )}
         <div className={"h-40"} />
       </div>
     </div>
