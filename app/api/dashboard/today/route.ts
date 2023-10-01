@@ -63,7 +63,7 @@ const GET = async (req: NextRequest) => {
     total: UsageItems?.filter(
       (usageItem) =>
         new Date(usageItem.created * 1000).toISOString().slice(0, 10) === item,
-    ).reduce((acc, usageItem) => acc + usageItem.total_cost, 0),
+    ).reduce((acc, usageItem) => acc + usageItem?.total_cost, 0),
   }));
 
   return NextResponse.json({
@@ -74,8 +74,8 @@ const GET = async (req: NextRequest) => {
       gpt3_5: roundUp(item?.gpt3_5 || 0, 6),
     })),
     cost: {
-      today: daily[daily.length - 1].total,
-      yesterday: daily[daily.length - 2].total,
+      today: daily?.[daily.length - 1]?.total || 0,
+      yesterday: daily?.[daily.length - 2]?.total || 0,
       month: daily.reduce((acc, item) => acc + item.total!, 0),
     },
   });
