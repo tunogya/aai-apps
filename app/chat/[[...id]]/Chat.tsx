@@ -72,7 +72,7 @@ export default function Chat() {
         >
           <div
             className={
-              "py-4 w-full px-4 md:px-8 xl:px-20 flex justify-center border-t border-b"
+              "py-2 md:py-4 w-full px-4 md:px-8 xl:px-20 flex justify-center border-t border-b"
             }
           >
             <div className={"flex w-full max-w-3xl gap-3"}>
