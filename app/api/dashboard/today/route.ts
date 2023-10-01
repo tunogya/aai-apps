@@ -11,16 +11,13 @@ const GET = async (req: NextRequest) => {
   const today = new Date();
   const year = today.getFullYear();
   const month = today.getMonth();
+  const day = today.getDate();
 
   const firstDay = new Date(year, month, 1);
-  const numDays = new Date(year, month + 1, 0).getDate();
 
   const dates = [];
-  for (let i = 0; i < numDays; i++) {
-    const date = new Date(year, month, i + 1, 8, 0, 0);
-    if (date <= today) {
-      dates.push(date.toISOString().slice(0, 10));
-    }
+  for (let i = 0; i < day; i++) {
+    dates.push(`${year}-${month + 1}-${i + 1 < 9 ? "0" : ""}${i + 1}`);
   }
 
   const { Items: UsageItems } = await ddbDocClient.send(
