@@ -38,17 +38,19 @@ const CSR = () => {
               {roundUp(data?.cost?.today || 0, 6)}
             </div>
           </div>
-          <div
-            className={
-              "w-full xl:w-[200px] space-y-1 border p-3 xl:border-none xl:p-0 rounded"
-            }
-          >
-            <div className={"whitespace-nowrap"}>Yesterday</div>
-            <div className={"text-gray-400 text-md"}>
-              US$
-              {roundUp(data?.cost?.yesterday || 0, 6)}
+          {data?.cost?.yesterday ? (
+            <div
+              className={
+                "w-full xl:w-[200px] space-y-1 border p-3 xl:border-none xl:p-0 rounded"
+              }
+            >
+              <div className={"whitespace-nowrap"}>Yesterday</div>
+              <div className={"text-gray-400 text-md"}>
+                US$
+                {roundUp(data?.cost?.yesterday || 0, 6)}
+              </div>
             </div>
-          </div>
+          ) : null}
         </div>
         <div className={"h-[160px] md:h-[128px] w-full mt-4"}>
           <ResponsiveContainer width="100%" height="100%">
