@@ -64,7 +64,7 @@ export default function Chat() {
         {messages.map((m, index) => (
           <div
             key={index}
-            className={`flex border-b p-8 ${
+            className={`flex border-b p-3 md:p-8 ${
               m.role === "user" ? "bg-white" : "bg-gray-50"
             } items-center justify-center`}
           >
@@ -74,16 +74,15 @@ export default function Chat() {
                   <div
                     className={`w-8 h-8 ${
                       isPurple ? "bg-[#AB68FF]" : "bg-[#19C37D]"
-                    } text-white flex items-center justify-center`}
+                    } text-white flex items-center justify-center rounded-full md:rounded-none`}
                   >
                     <svg
-                      width={24}
-                      height={24}
                       viewBox="0 0 41 41"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
                       strokeWidth="1.5"
                       role="img"
+                      className={"w-5 h-5"}
                     >
                       <title>Chat</title>
                       <text x="-9999" y="-9999">
@@ -102,7 +101,7 @@ export default function Chat() {
                       alt={""}
                       width={32}
                       height={32}
-                      className={""}
+                      className={"rounded-full md:rounded-none"}
                       priority
                     />
                   )
