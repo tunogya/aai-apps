@@ -76,7 +76,7 @@ export default function Chat() {
             }
           >
             <div className={"flex w-full max-w-3xl gap-3"}>
-              <div className={"w-full"}>
+              <div className={"w-full flex gap-2"}>
                 <div
                   className={
                     "border flex rounded-[18px] md:rounded w-full px-3 py-1.5 md:p-4 shadow text-black bg-white items-end gap-2"
@@ -143,7 +143,7 @@ export default function Chat() {
                 </div>
                 <div
                   className={
-                    "flex w-9 h-9 items-center justify-center shrink-0 md:hidden bg-red-500"
+                    "flex w-9 h-9 items-center justify-center shrink-0 md:hidden"
                   }
                 >
                   {isLoading ? (
