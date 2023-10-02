@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   title,
   description,
   viewport:
-    "width=device-width, initial-scale=1, shrink-to-fit=no,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no",
+    "width=device-width, viewport-fit=cover, initial-scale=1, shrink-to-fit=no,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no",
   applicationName: "AbandonAI",
   metadataBase: new URL(process.env.AUTH0_BASE_URL!),
   themeColor: "#fff",
