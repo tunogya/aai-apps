@@ -24,7 +24,6 @@ const openai = new OpenAIApi(configuration);
 // @ts-ignore
 export async function POST(req: Request): Promise<Response> {
   let { messages, model, sub } = await req.json();
-
   const balance = ((await redisClient.get(`${sub}:balance`)) as number) || 0;
   if (balance < -0.1) {
     return new Response("Not enough balance", {
@@ -34,13 +33,14 @@ export async function POST(req: Request): Promise<Response> {
 
   if (model === "GPT-3.5") {
     if (messages.length > 6) {
-      model = "gpt-3.5-turbo";
-    } else {
       model = "gpt-3.5-turbo-16k";
+    } else {
+      model = "gpt-3.5-turbo";
     }
   } else if (model === "GPT-4") {
     model = "gpt-4";
   }
+  console.log(model);
 
   if (process.env.NODE_ENV != "development") {
     const ratelimit = new Ratelimit({
