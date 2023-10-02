@@ -12,7 +12,7 @@ const menu = [
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
-        strokeWidth="2"
+        strokeWidth="1.5"
         stroke="currentColor"
         className="w-6 h-6"
       >
@@ -31,7 +31,7 @@ const menu = [
       <svg
         stroke="currentColor"
         fill="none"
-        strokeWidth="2"
+        strokeWidth="1.5"
         viewBox="0 0 24 24"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -50,7 +50,7 @@ const menu = [
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
-        strokeWidth="2"
+        strokeWidth="1.5"
         stroke="currentColor"
         className="w-6 h-6"
       >
@@ -70,7 +70,7 @@ const Tabbar = () => {
 
   return (
     <div
-      className={`absolute bottom-0 left-0 w-full md:hidden border-t z-50 bg-white`}
+      className={`absolute bottom-0 left-0 w-full md:hidden border-t z-50 bg-white shadow`}
     >
       <div className={`w-full flex justify-around py-3 text-xs`}>
         {menu.map((item, index) => (

@@ -49,7 +49,7 @@ const CSR = () => {
       <div className={"flex flex-col xl:flex-row gap-4 md:gap-10 h-fit w-full"}>
         <div
           className={
-            "w-full xl:max-w-3xl h-full text-sm border rounded-xl p-3 xl:p-0 xl:border-none bg-gray-50 md:bg-white"
+            "w-full xl:max-w-3xl h-full text-sm border rounded-xl p-3 xl:p-0 xl:border-none shadow-sm md:shadow-none"
           }
         >
           <div className={"flex w-full flex-row gap-3"}>
@@ -157,7 +157,7 @@ const CSR = () => {
         >
           <div
             className={
-              "w-full xl:w-[200px] space-y-1 border p-3 xl:border-none xl:p-0 rounded-xl bg-gray-50 md:bg-white"
+              "w-full xl:w-[200px] space-y-1 border p-3 xl:border-none xl:p-0 rounded-xl shadow-sm md:shadow-none"
             }
           >
             <div className={"whitespace-nowrap text-xs md:text-sm"}>
@@ -170,7 +170,7 @@ const CSR = () => {
           </div>
           <div
             className={
-              "w-full xl:w-[200px] space-y-1 border p-3 xl:border-none xl:p-0 rounded-xl bg-gray-50 md:bg-white"
+              "w-full xl:w-[200px] space-y-1 border p-3 xl:border-none xl:p-0 rounded-xl shadow-sm md:shadow-none"
             }
           >
             <div className={"whitespace-nowrap text-xs md:text-sm"}>
