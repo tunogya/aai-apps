@@ -67,167 +67,173 @@ export default function Chat() {
 
   return (
     <div className={"w-full md:min-w-[400px]"}>
-      <div className={"h-[calc(100vh-60px)] w-full overflow-y-auto relative"}>
-        <form
-          onSubmit={(e) => {
-            handleSubmit(e);
-            if (inputRef.current) {
-              // @ts-ignore
-              inputRef.current.style.height = "auto";
-            }
-          }}
+      <form
+        onSubmit={(e) => {
+          handleSubmit(e);
+          if (inputRef.current) {
+            // @ts-ignore
+            inputRef.current.style.height = "auto";
+          }
+        }}
+      >
+        <div
+          className={
+            "py-2 md:py-4 w-full px-4 md:px-8 xl:px-20 flex justify-center"
+          }
         >
-          <div
-            className={
-              "py-2 md:py-4 w-full px-4 md:px-8 xl:px-20 flex justify-center"
-            }
-          >
-            <div className={"flex w-full max-w-3xl gap-3"}>
-              <div className={"w-full flex gap-2"}>
-                <div
+          <div className={"flex w-full max-w-3xl gap-3"}>
+            <div className={"w-full flex gap-2"}>
+              <div
+                className={
+                  "border flex rounded-[18px] md:rounded-[29px] w-full px-3 py-1.5 md:py-4 md:px-5 shadow text-gray-800 bg-white items-end gap-2"
+                }
+              >
+                <textarea
+                  value={input}
                   className={
-                    "border flex rounded-[18px] md:rounded-[29px] w-full px-3 py-1.5 md:py-4 md:px-5 shadow text-gray-800 bg-white items-end gap-2"
+                    "w-full outline-none text-sm md:text-base focus:outline-none focus:bg-transparent max-h-52 min-h-6 overflow-y-auto resize-none"
                   }
-                >
-                  <textarea
-                    value={input}
-                    className={
-                      "w-full outline-none text-sm md:text-base focus:outline-none focus:bg-transparent max-h-52 min-h-6 overflow-y-auto resize-none"
-                    }
-                    ref={inputRef}
-                    maxLength={2000}
-                    rows={1}
-                    onChange={(e) => {
-                      e.target.style.height = "auto";
-                      e.target.style.height = e.target.scrollHeight + "px";
-                      handleInputChange(e);
-                    }}
-                    placeholder={"Message"}
-                    onKeyDown={async (e) => {
-                      if (e.key === "Enter" && !e.shiftKey) {
-                        if (e.nativeEvent.isComposing) return;
-                        e.preventDefault();
-                        handleSubmit(e as any);
-                        if (inputRef.current) {
-                          // @ts-ignore
-                          inputRef.current.style.height = "auto";
-                        }
-                      } else if (e.key === "Enter" && e.shiftKey) {
-                        if (inputRef.current) {
-                          // @ts-ignore
-                          inputRef.current.style.height = "auto";
-                          // @ts-ignore
-                          inputRef.current.style.height =
-                            // @ts-ignore
-                            e.target.scrollHeight + "px";
-                        }
+                  ref={inputRef}
+                  maxLength={2000}
+                  rows={1}
+                  onChange={(e) => {
+                    e.target.style.height = "auto";
+                    e.target.style.height = e.target.scrollHeight + "px";
+                    handleInputChange(e);
+                  }}
+                  placeholder={"Message"}
+                  onKeyDown={async (e) => {
+                    if (e.key === "Enter" && !e.shiftKey) {
+                      if (e.nativeEvent.isComposing) return;
+                      e.preventDefault();
+                      handleSubmit(e as any);
+                      if (inputRef.current) {
+                        // @ts-ignore
+                        inputRef.current.style.height = "auto";
                       }
-                    }}
-                  />
-                  <button
-                    type={isLoading ? "button" : "submit"}
-                    onClick={isLoading ? stop : undefined}
-                    className={`h-6 w-6 items-center hidden md:flex ${
-                      isPurple ? "text-[#AB68FF]" : "text-[#19C37D]"
-                    } justify-center rounded`}
-                  >
-                    {isLoading ? (
-                      <svg
-                        stroke="currentColor"
-                        fill="none"
-                        strokeWidth="2"
-                        viewBox="0 0 24 24"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="h-5 w-5"
-                      >
-                        <rect
-                          x="3"
-                          y="3"
-                          width="18"
-                          height="18"
-                          rx="2"
-                          ry="2"
-                        ></rect>
-                      </svg>
-                    ) : (
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 16 16"
-                        fill="none"
-                        className="h-5 w-5"
-                        strokeWidth="2"
-                      >
-                        <path
-                          d="M.5 1.163A1 1 0 0 1 1.97.28l12.868 6.837a1 1 0 0 1 0 1.766L1.969 15.72A1 1 0 0 1 .5 14.836V10.33a1 1 0 0 1 .816-.983L8.5 8 1.316 6.653A1 1 0 0 1 .5 5.67V1.163Z"
-                          fill="currentColor"
-                        ></path>
-                      </svg>
-                    )}
-                  </button>
-                </div>
-                <div
-                  className={
-                    "flex w-9 h-9 items-center justify-center shrink-0 md:hidden"
-                  }
+                    } else if (e.key === "Enter" && e.shiftKey) {
+                      if (inputRef.current) {
+                        // @ts-ignore
+                        inputRef.current.style.height = "auto";
+                        // @ts-ignore
+                        inputRef.current.style.height =
+                          // @ts-ignore
+                          e.target.scrollHeight + "px";
+                      }
+                    }
+                  }}
+                />
+                <button
+                  type={isLoading ? "button" : "submit"}
+                  onClick={isLoading ? stop : undefined}
+                  className={`h-6 w-6 items-center hidden md:flex ${
+                    isPurple ? "text-[#AB68FF]" : "text-[#19C37D]"
+                  } justify-center rounded`}
                 >
                   {isLoading ? (
-                    <button
-                      className={`p-2 bg-[#0066FF] text-white rounded-full`}
-                      onClick={stop}
+                    <svg
+                      stroke="currentColor"
+                      fill="none"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="h-5 w-5"
                     >
-                      <svg
-                        stroke="currentColor"
-                        fill="none"
-                        strokeWidth="2"
-                        viewBox="0 0 24 24"
+                      <rect
+                        x="3"
+                        y="3"
+                        width="18"
+                        height="18"
+                        rx="2"
+                        ry="2"
+                      ></rect>
+                    </svg>
+                  ) : (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      className="h-5 w-5"
+                      strokeWidth="2"
+                    >
+                      <path
+                        d="M.5 1.163A1 1 0 0 1 1.97.28l12.868 6.837a1 1 0 0 1 0 1.766L1.969 15.72A1 1 0 0 1 .5 14.836V10.33a1 1 0 0 1 .816-.983L8.5 8 1.316 6.653A1 1 0 0 1 .5 5.67V1.163Z"
+                        fill="currentColor"
+                      ></path>
+                    </svg>
+                  )}
+                </button>
+              </div>
+              <div
+                className={
+                  "flex w-9 h-9 items-center justify-center shrink-0 md:hidden"
+                }
+              >
+                {isLoading ? (
+                  <button
+                    className={`p-2 bg-[#0066FF] text-white rounded-full`}
+                    onClick={stop}
+                  >
+                    <svg
+                      stroke="currentColor"
+                      fill="none"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="h-3 w-3"
+                      height="1em"
+                      width="1em"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <rect
+                        x="3"
+                        y="3"
+                        width="18"
+                        height="18"
+                        rx="2"
+                        ry="2"
+                      ></rect>
+                    </svg>
+                  </button>
+                ) : (
+                  <button
+                    type="submit"
+                    className={`p-2 ${
+                      isPurple ? "bg-[#AB68FF]" : "bg-[#19C37D]"
+                    } rounded-full text-white`}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="2"
+                      stroke="currentColor"
+                      className="w-4 h-4"
+                    >
+                      <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        className="h-3 w-3"
-                        height="1em"
-                        width="1em"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <rect
-                          x="3"
-                          y="3"
-                          width="18"
-                          height="18"
-                          rx="2"
-                          ry="2"
-                        ></rect>
-                      </svg>
-                    </button>
-                  ) : (
-                    <button
-                      type="submit"
-                      className={`p-2 ${
-                        isPurple ? "bg-[#AB68FF]" : "bg-[#19C37D]"
-                      } rounded-full text-white`}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth="2"
-                        stroke="currentColor"
-                        className="w-4 h-4"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75"
-                        />
-                      </svg>
-                    </button>
-                  )}
-                </div>
+                        d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75"
+                      />
+                    </svg>
+                  </button>
+                )}
               </div>
             </div>
           </div>
-        </form>
+        </div>
+      </form>
+      <div
+        className={
+          "h-[calc(100vh-100px)] md:h-[calc(100vh-150px)] w-full overflow-y-auto relative"
+        }
+      >
         {isLoading && (
-          <div className={"px-4 md:px-8 py-4 flex justify-center border-b"}>
+          <div
+            className={"px-4 md:px-8 py-2 md:py-4 flex justify-center border-b"}
+          >
             <div className={"max-w-3xl w-full h-fit gap-3 text-xs"}>
               ✨✨ Generating...
             </div>
@@ -304,7 +310,6 @@ export default function Chat() {
             </div>
           ))
           .reverse()}
-        <div className={"h-40"} />
       </div>
     </div>
   );
