@@ -31,7 +31,7 @@ export default function Chat() {
   const model = searchParams.get("model") || "GPT-3.5";
   const { messages, input, handleInputChange, handleSubmit, isLoading, stop } =
     useChat({
-      api: "/api/chat/langchain",
+      api: "/api/chat",
       id: currentChatId,
       headers: {
         "Content-Type": "application/json",
