@@ -41,7 +41,7 @@ const GET = async (req: NextRequest) => {
 
   const daily = dates.map((item) => ({
     date: item,
-    gpt4: UsageItems?.filter((usageItem) => usageItem.model.startsWith("gpt-4"))
+    gpt4: UsageItems?.filter((usageItem) => usageItem.model.startsWith("GPT-4"))
       ?.filter(
         (usageItem) =>
           new Date(usageItem.created * 1000).toISOString().slice(0, 10) ===
@@ -49,7 +49,7 @@ const GET = async (req: NextRequest) => {
       )
       .reduce((acc, usageItem) => acc + usageItem.total_cost, 0),
     gpt3_5: UsageItems?.filter((usageItem) =>
-      usageItem.model.startsWith("gpt-3.5"),
+      usageItem.model.startsWith("GPT-3.5"),
     )
       ?.filter(
         (usageItem) =>

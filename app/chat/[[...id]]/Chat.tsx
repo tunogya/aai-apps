@@ -42,7 +42,7 @@ export default function Chat() {
       },
       initialMessages: data ? data?.item?.messages : [],
     });
-  const isPurple = model.startsWith("gpt-4");
+  const isPurple = model.startsWith("GPT-4");
 
   useEffect(() => {
     if (!isLoading && messages.length > 0) {
@@ -79,7 +79,7 @@ export default function Chat() {
               <div className={"w-full flex gap-2"}>
                 <div
                   className={
-                    "border flex rounded-[18px] md:rounded w-full px-3 py-1.5 md:p-4 shadow text-black bg-white items-end gap-2"
+                    "border flex rounded-[18px] md:rounded-[29px] w-full px-3 py-1.5 md:py-4 md:px-5 shadow text-black bg-white items-end gap-2"
                   }
                 >
                   <textarea
@@ -118,27 +118,45 @@ export default function Chat() {
                     }}
                   />
                   <button
-                    type="submit"
+                    type={isLoading ? "button" : "submit"}
+                    onClick={isLoading ? stop : undefined}
                     className={`h-6 w-6 items-center hidden md:flex ${
-                      isLoading ? "animate-pulse" : ""
-                    } ${
                       isPurple ? "text-[#AB68FF]" : "text-[#19C37D]"
-                    } justify-center rounded ${
-                      isLoading ? "cursor-wait" : "cursor-pointer"
-                    }`}
+                    } justify-center rounded`}
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 16 16"
-                      fill="none"
-                      className="h-5 w-5"
-                      strokeWidth="2"
-                    >
-                      <path
-                        d="M.5 1.163A1 1 0 0 1 1.97.28l12.868 6.837a1 1 0 0 1 0 1.766L1.969 15.72A1 1 0 0 1 .5 14.836V10.33a1 1 0 0 1 .816-.983L8.5 8 1.316 6.653A1 1 0 0 1 .5 5.67V1.163Z"
-                        fill="currentColor"
-                      ></path>
-                    </svg>
+                    {isLoading ? (
+                      <svg
+                        stroke="currentColor"
+                        fill="none"
+                        strokeWidth="2"
+                        viewBox="0 0 24 24"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="h-5 w-5"
+                      >
+                        <rect
+                          x="3"
+                          y="3"
+                          width="18"
+                          height="18"
+                          rx="2"
+                          ry="2"
+                        ></rect>
+                      </svg>
+                    ) : (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        className="h-5 w-5"
+                        strokeWidth="2"
+                      >
+                        <path
+                          d="M.5 1.163A1 1 0 0 1 1.97.28l12.868 6.837a1 1 0 0 1 0 1.766L1.969 15.72A1 1 0 0 1 .5 14.836V10.33a1 1 0 0 1 .816-.983L8.5 8 1.316 6.653A1 1 0 0 1 .5 5.67V1.163Z"
+                          fill="currentColor"
+                        ></path>
+                      </svg>
+                    )}
                   </button>
                 </div>
                 <div
@@ -198,36 +216,6 @@ export default function Chat() {
                   )}
                 </div>
               </div>
-              {isLoading && (
-                <button
-                  className={
-                    "bg-gray-50 hover:bg-gray-100 py-4 px-6 rounded mr-2 shadow hidden md:block"
-                  }
-                  onClick={stop}
-                >
-                  <svg
-                    stroke="currentColor"
-                    fill="none"
-                    strokeWidth="2"
-                    viewBox="0 0 24 24"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="h-3 w-3"
-                    height="1em"
-                    width="1em"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <rect
-                      x="3"
-                      y="3"
-                      width="18"
-                      height="18"
-                      rx="2"
-                      ry="2"
-                    ></rect>
-                  </svg>
-                </button>
-              )}
             </div>
           </div>
         </form>
