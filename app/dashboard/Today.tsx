@@ -109,14 +109,12 @@ const CSR = () => {
                 strokeWidth={2}
                 dataKey={"gpt4"}
                 fill={"#AB68FF"}
-                maxBarSize={20}
               />
               <Bar
                 stackId="a"
                 strokeWidth={2}
                 dataKey={"gpt3_5"}
                 fill={"#19C37D"}
-                maxBarSize={20}
               />
             </BarChart>
           </ResponsiveContainer>
