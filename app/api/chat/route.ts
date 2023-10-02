@@ -1,7 +1,6 @@
 import { OpenAIStream, StreamingTextResponse } from "ai";
 import { Configuration, OpenAIApi } from "openai-edge";
 import { SendMessageCommand, SQSClient } from "@aws-sdk/client-sqs";
-import { AI_MODELS_MAP } from "@/utils/aiModels";
 import { Ratelimit } from "@upstash/ratelimit";
 import redisClient from "@/utils/redisClient";
 
@@ -33,15 +32,14 @@ export async function POST(req: Request): Promise<Response> {
     });
   }
 
-  if (!AI_MODELS_MAP.has(model)) {
-    return new Response(
-      `Invalid model, expected one of ${Array.from(AI_MODELS_MAP.keys()).join(
-        ", ",
-      )}`,
-      {
-        status: 400,
-      },
-    );
+  if (model === "GPT-3.5") {
+    if (messages.length > 6) {
+      model = "gpt-3.5-turbo";
+    } else {
+      model = "gpt-3.5-turbo-16k";
+    }
+  } else if (model === "GPT-4") {
+    model = "gpt-4";
   }
 
   if (process.env.NODE_ENV != "development") {

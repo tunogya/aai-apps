@@ -53,7 +53,7 @@ const SecondaryNav = () => {
       }
     >
       <Link
-        href={`/chat?model=${searchParams.get("model") || "gpt-3.5-turbo"}`}
+        href={`/chat?model=${searchParams.get("model") || "GPT-3.5"}`}
         prefetch
         className={
           "flex items-center border hover:bg-gray-50 p-3 rounded cursor-pointer select-none m-2"
@@ -93,7 +93,7 @@ const SecondaryNav = () => {
             >
               <Link
                 href={`/chat/${item.SK.replace("CHAT2#", "")}?model=${
-                  searchParams.get("model") || "gpt-3.5-turbo"
+                  searchParams.get("model") || "GPT-3.5"
                 }`}
                 prefetch
                 className={`flex w-full items-center`}

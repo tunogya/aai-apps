@@ -28,7 +28,7 @@ export default function Chat() {
     fetch(url).then((res) => res.json()),
   );
   const inputRef = useRef(null);
-  const model = searchParams.get("model") || "gpt-3.5-turbo";
+  const model = searchParams.get("model") || "GPT-3.5";
   const { messages, input, handleInputChange, handleSubmit, isLoading, stop } =
     useChat({
       api: "/api/chat",

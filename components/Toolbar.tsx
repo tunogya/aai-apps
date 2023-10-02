@@ -1,31 +1,24 @@
 "use client";
-import { Listbox, Popover, Transition } from "@headlessui/react";
+import { Popover, Switch, Transition } from "@headlessui/react";
 import { FC, Fragment, useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { CheckIcon } from "@heroicons/react/24/solid";
-import Link from "next/link";
-
-const models = [
-  { id: 1, name: "gpt-3.5-turbo", unavailable: false, description: "" },
-  { id: 2, name: "gpt-3.5-turbo-16k", unavailable: false, description: "" },
-  { id: 3, name: "gpt-4", unavailable: false, description: "" },
-  // { id: 4, name: "gpt-4-32k", unavailable: true, description: "" },
-];
 
 const Toolbar: FC<{ border?: boolean }> = (props) => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
-  const [selectModel, setSelectModel] = useState(
-    models.find((model) => model.name === searchParams.get("model")) ||
-      models[0],
-  );
+  const [useGPT4, setUseGPT4] = useState(searchParams.get("model") === "GPT-4");
 
   useEffect(() => {
     const params = new URLSearchParams(searchParams);
-    params.set("model", selectModel.name);
-    router.replace(`${pathname}?${params.toString()}`);
-  }, [selectModel.name]);
+    if (useGPT4) {
+      params.set("model", "GPT-4");
+      router.replace(`${pathname}?${params.toString()}`);
+    } else {
+      params.set("model", "GPT-3.5");
+      router.replace(`${pathname}?${params.toString()}`);
+    }
+  }, [useGPT4]);
 
   return (
     <div
@@ -42,82 +35,33 @@ const Toolbar: FC<{ border?: boolean }> = (props) => {
         />
       </div>
       <div className={"text-sm font-semibold flex items-center space-x-1"}>
-        <div
-          className={
-            "flex items-center space-x-2 p-2 rounded cursor-pointer select-none"
-          }
-        >
-          <Listbox value={selectModel} onChange={setSelectModel}>
-            <div className="relative mt-1 w-48 hover:bg-gray-100 rounded">
-              <Listbox.Button
-                className={`relative flex items-center gap-2 py-2 px-3 whitespace-nowrap w-full h-full ${
-                  selectModel.id > 2 ? "text-[#AB68FF]" : "text-[#19C37D]"
-                }`}
-              >
-                {selectModel.id <= 2 ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 16 16"
-                    fill="none"
-                    className="h-4 w-4 transition-colors"
-                    width="16"
-                    height="16"
-                    strokeWidth="2"
-                  >
-                    <path
-                      d="M9.586 1.526A.6.6 0 0 0 8.553 1l-6.8 7.6a.6.6 0 0 0 .447 1h5.258l-1.044 4.874A.6.6 0 0 0 7.447 15l6.8-7.6a.6.6 0 0 0-.447-1H8.542l1.044-4.874Z"
-                      fill="currentColor"
-                    ></path>
-                  </svg>
-                ) : (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 16 16"
-                    fill="none"
-                    className="h-4 w-4 transition-colors"
-                    width="16"
-                    height="16"
-                    strokeWidth="2"
-                  >
-                    <path
-                      d="M12.784 1.442a.8.8 0 0 0-1.569 0l-.191.953a.8.8 0 0 1-.628.628l-.953.19a.8.8 0 0 0 0 1.57l.953.19a.8.8 0 0 1 .628.629l.19.953a.8.8 0 0 0 1.57 0l.19-.953a.8.8 0 0 1 .629-.628l.953-.19a.8.8 0 0 0 0-1.57l-.953-.19a.8.8 0 0 1-.628-.629l-.19-.953h-.002ZM5.559 4.546a.8.8 0 0 0-1.519 0l-.546 1.64a.8.8 0 0 1-.507.507l-1.64.546a.8.8 0 0 0 0 1.519l1.64.547a.8.8 0 0 1 .507.505l.546 1.641a.8.8 0 0 0 1.519 0l.546-1.64a.8.8 0 0 1 .506-.507l1.641-.546a.8.8 0 0 0 0-1.519l-1.64-.546a.8.8 0 0 1-.507-.506L5.56 4.546Zm5.6 6.4a.8.8 0 0 0-1.519 0l-.147.44a.8.8 0 0 1-.505.507l-.441.146a.8.8 0 0 0 0 1.519l.44.146a.8.8 0 0 1 .507.506l.146.441a.8.8 0 0 0 1.519 0l.147-.44a.8.8 0 0 1 .506-.507l.44-.146a.8.8 0 0 0 0-1.519l-.44-.147a.8.8 0 0 1-.507-.505l-.146-.441Z"
-                      fill="currentColor"
-                    ></path>
-                  </svg>
-                )}
-                {selectModel.name}
-              </Listbox.Button>
-              <Listbox.Options
-                className={
-                  "absolute right-0 mt-2 bg-white rounded py-2 border shadow z-50 w-48 text-sm text-black font-medium"
-                }
-              >
-                {models.map((model) => (
-                  <Listbox.Option
-                    key={model.id}
-                    value={model}
-                    disabled={model.unavailable}
-                    className={`relative hover:bg-gray-100 py-2`}
-                  >
-                    {({ selected }) => (
-                      <>
-                        <span
-                          className={`pl-9 ${selected ? "font-semibold" : ""}`}
-                        >
-                          {model.name}
-                        </span>
-                        {selected ? (
-                          <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
-                            <CheckIcon className="h-4 w-4" aria-hidden="true" />
-                          </span>
-                        ) : null}
-                      </>
-                    )}
-                  </Listbox.Option>
-                ))}
-              </Listbox.Options>
+        <div className={"text-sm font-semibold"}>
+          <div
+            className={
+              "flex items-center space-x-2 hover:bg-gray-100 p-2 rounded cursor-pointer select-none"
+            }
+            onClick={() => setUseGPT4(!useGPT4)}
+          >
+            <div
+              className={`flex space-x-1 text-sm ${
+                useGPT4 ? "text-[#AB68FF]" : "text-gray-800"
+              }`}
+            >
+              <div className={"whitespace-nowrap"}>GPT-4 Model</div>
             </div>
-          </Listbox>
+            <Switch
+              checked={useGPT4}
+              className={`${useGPT4 ? "bg-[#AB68FF]" : "bg-gray-200"}
+          relative inline-flex h-[14px] w-[24px] shrink-0 cursor-pointer rounded-full border border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
+            >
+              <span className="sr-only">GPT-4 Model</span>
+              <span
+                aria-hidden="true"
+                className={`${useGPT4 ? "translate-x-2.5" : "translate-x-0"}
+            pointer-events-none inline-block h-[12px] w-[12px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}
+              />
+            </Switch>
+          </div>
         </div>
         <Popover className="relative">
           {({ open }) => (

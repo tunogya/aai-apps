@@ -36,7 +36,7 @@ const CoreNav = () => {
           ></div>
           <Link
             href={`${item.path}?model=${
-              searchParams.get("model") || "gpt-3.5-turbo"
+              searchParams.get("model") || "GPT-3.5"
             }`}
             prefetch
             scroll={false}
