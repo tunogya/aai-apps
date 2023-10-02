@@ -9,7 +9,7 @@ import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import Image from "next/image";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 import useSWR from "swr";
 
@@ -43,6 +43,13 @@ export default function Chat() {
       initialMessages: data ? data?.item?.messages : [],
     });
   const isPurple = model.startsWith("GPT-4");
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!params?.id?.[0] && currentChatId && model) {
+      router.replace(`/chat/${currentChatId}?model=${model}`);
+    }
+  }, [params, currentChatId, model]);
 
   useEffect(() => {
     if (!isLoading && messages.length > 0) {
