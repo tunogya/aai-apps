@@ -40,7 +40,6 @@ export async function POST(req: Request): Promise<Response> {
   } else if (model === "GPT-4") {
     model = "gpt-4";
   }
-  console.log(model);
 
   if (process.env.NODE_ENV != "development") {
     const ratelimit = new Ratelimit({
