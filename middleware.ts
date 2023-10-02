@@ -4,7 +4,7 @@ export default withMiddlewareAuthRequired();
 export const config = {
   matcher: [
     // start a chat conversation api
-    "/api/chat",
+    "/api/chat/:path*",
     // CRUD conversation api
     "/api/conversation/:path*",
     // generate note api
