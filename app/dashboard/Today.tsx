@@ -27,21 +27,27 @@ const CSR = () => {
     <div className={"flex flex-col xl:flex-row gap-4 md:gap-10 h-fit w-full"}>
       <div
         className={
-          "w-full xl:max-w-3xl h-full text-sm text-black border rounded-xl p-3 xl:p-0 xl:border-none"
+          "w-full xl:max-w-3xl h-full text-sm text-black border rounded-xl p-3 xl:p-0 xl:border-none bg-gray-50"
         }
       >
         <div className={"flex w-full flex-col md:flex-row gap-3 "}>
           <div className={"w-full xl:w-[200px] space-y-1"}>
-            <div className={"whitespace-nowrap"}>Cost & usage</div>
-            <div className={"text-black text-xl"}>
+            <div className={"whitespace-nowrap font-semibold md:font-normal"}>
+              Cost & usage
+            </div>
+            <div className={"text-black text-xl font-semibold md:font-normal"}>
               US$
               {roundUp(data?.cost?.today || 0, 6)}
             </div>
           </div>
           {data?.cost?.yesterday ? (
             <div className={"w-full xl:w-[200px] space-y-1"}>
-              <div className={"whitespace-nowrap"}>Yesterday</div>
-              <div className={"text-gray-400 text-md"}>
+              <div className={"whitespace-nowrap font-semibold md:font-normal"}>
+                Yesterday
+              </div>
+              <div
+                className={"text-gray-400 text-md font-semibold md:font-normal"}
+              >
                 US$
                 {roundUp(data?.cost?.yesterday || 0, 6)}
               </div>
@@ -127,31 +133,35 @@ const CSR = () => {
       >
         <div
           className={
-            "w-full xl:w-[200px] space-y-1 border p-3 xl:border-none xl:p-0 rounded-xl"
+            "w-full xl:w-[200px] space-y-1 border p-3 xl:border-none xl:p-0 rounded-xl bg-gray-50"
           }
         >
-          <div className={"whitespace-nowrap"}>Total cost this month</div>
-          <div className={"text-black text-xl"}>
+          <div className={"whitespace-nowrap font-semibold md:font-normal"}>
+            Total cost this month
+          </div>
+          <div className={"text-black text-xl font-semibold md:font-normal"}>
             US$
             {roundUp(data?.cost?.month || 0, 6)}
           </div>
         </div>
         <div
           className={
-            "w-full xl:w-[200px] space-y-1 border p-3 xl:border-none xl:p-0 rounded-xl"
+            "w-full xl:w-[200px] space-y-1 border p-3 xl:border-none xl:p-0 rounded-xl bg-gray-50"
           }
         >
-          <div className={"whitespace-nowrap"}>Advance pay balance</div>
+          <div className={"whitespace-nowrap font-semibold md:font-normal"}>
+            Advance pay balance
+          </div>
           <div
             className={`${
               balanceData?.balance < 0 ? "text-red-500" : "text-black"
-            }  text-xl pb-4 md:pb-0`}
+            }  text-xl pb-4 md:pb-0 font-semibold md:font-normal`}
           >
             {balanceData?.balance < 0 ? "-" : ""}US$
             {roundUp(Math.abs(balanceData?.balance) || 0, 6)}
           </div>
           <DepositButton
-            className={`text-sm py-3 px-4 md:py-1 rounded text-white bg-[#0066FF] font-semibold flex items-center gap-1 w-full md:w-fit`}
+            className={`text-sm py-3 px-4 md:py-1 rounded-lg text-white bg-[#0066FF] font-semibold flex items-center gap-1 w-[50%] md:w-fit`}
           />
         </div>
       </div>
