@@ -26,7 +26,7 @@ const Pages = () => {
 
   return (
     <div className={"w-full overflow-hidden"}>
-      <table className="table-auto w-full hidden md:block">
+      <table className="table-auto w-full hidden md:table">
         <thead>
           <tr className={"text-xs text-gray-500 border-b"}>
             <th
