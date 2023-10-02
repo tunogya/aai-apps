@@ -70,7 +70,7 @@ const Tabbar = () => {
 
   return (
     <div
-      className={`absolute bottom-0 left-0 w-full md:hidden border-t z-50 bg-white shadow`}
+      className={`absolute bottom-0 left-0 w-full md:hidden border-t z-50 bg-white`}
     >
       <div className={`w-full flex justify-around py-3 text-xs`}>
         {menu.map((item, index) => (
