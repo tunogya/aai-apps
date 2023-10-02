@@ -78,7 +78,7 @@ export default function Chat() {
       >
         <div
           className={
-            "py-2 md:py-4 w-full px-4 md:px-8 xl:px-20 flex justify-center"
+            "py-2 md:pb-4 w-full px-4 md:px-8 xl:px-20 flex justify-center"
           }
         >
           <div className={"flex w-full max-w-3xl gap-3"}>
@@ -227,7 +227,7 @@ export default function Chat() {
       </form>
       <div
         className={
-          "h-[calc(100vh-100px)] md:h-[calc(100vh-150px)] w-full overflow-y-auto relative"
+          "h-[calc(100vh-100px)] md:h-[calc(100vh-142px)] w-full overflow-y-auto relative"
         }
       >
         {isLoading && (
