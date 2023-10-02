@@ -92,7 +92,7 @@ export default function Chat() {
                   <textarea
                     value={input}
                     className={
-                      "w-full outline-none focus:outline-none focus:bg-transparent max-h-52 min-h-6 overflow-y-auto resize-none"
+                      "w-full outline-none text-sm md:text-base focus:outline-none focus:bg-transparent max-h-52 min-h-6 overflow-y-auto resize-none"
                     }
                     ref={inputRef}
                     maxLength={2000}
@@ -245,7 +245,7 @@ export default function Chat() {
                 <div className={"shrink-0"}>
                   {m.role === "assistant" ? (
                     <div
-                      className={`w-8 h-8 ${
+                      className={`w-6 h-6 my-1 md:my-0 md:w-8 md:h-8 ${
                         isPurple ? "bg-[#AB68FF]" : "bg-[#19C37D]"
                       } text-white flex items-center justify-center rounded-full md:rounded-none`}
                     >
@@ -255,7 +255,7 @@ export default function Chat() {
                         xmlns="http://www.w3.org/2000/svg"
                         strokeWidth="1.5"
                         role="img"
-                        className={"w-5 h-5"}
+                        className={"w-4 h-4 md:w-5 md:h-5"}
                       >
                         <title>Chat</title>
                         <text x="-9999" y="-9999">
@@ -274,7 +274,9 @@ export default function Chat() {
                         alt={""}
                         width={32}
                         height={32}
-                        className={"rounded-full md:rounded-none"}
+                        className={
+                          "rounded-full md:rounded-none w-6 h-6 md:w-8 md:h-8 my-1 md:my-0"
+                        }
                         priority
                       />
                     )
@@ -294,7 +296,7 @@ export default function Chat() {
                     index === messages.length - 1
                       ? "result-streaming"
                       : ""
-                  } markdown prose w-full break-words dark:prose-invert light leading-8`}
+                  } markdown prose text-sm md:text-base w-full break-words dark:prose-invert light leading-8`}
                 >
                   {m.content}
                 </ReactMarkdown>
