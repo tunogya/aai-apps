@@ -23,7 +23,7 @@ const Account = async () => {
       </div>
       <div className={"truncate"}>
         <div
-          className={"text-sm text-black truncate font-semibold select-none"}
+          className={"text-sm text-gray-800 truncate font-semibold select-none"}
         >
           {session?.user.email}
         </div>

@@ -81,7 +81,7 @@ const Tabbar = () => {
             prefetch
             scroll={false}
             className={`flex flex-col items-center cursor-pointer gap-0.5 ${
-              path.includes(item.path) ? `text-[#0066FF]` : "text-black"
+              path.includes(item.path) ? `text-[#0066FF]` : "text-gray-400"
             }`}
             key={index}
           >

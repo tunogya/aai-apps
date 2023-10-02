@@ -71,7 +71,7 @@ const Pages = () => {
             <tr key={index} className={"text-xs text-gray-600 border-b"}>
               <td
                 className={
-                  "font-semibold pt-2 pr-4 pb-2 overflow-x-hidden text-black"
+                  "font-semibold pt-2 pr-4 pb-2 overflow-x-hidden text-gray-800"
                 }
               >
                 {item.model}

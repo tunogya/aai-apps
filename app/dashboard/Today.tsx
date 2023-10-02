@@ -27,34 +27,34 @@ const CSR = () => {
     <div className={"flex flex-col xl:flex-row gap-4 md:gap-10 h-fit w-full"}>
       <div
         className={
-          "w-full xl:max-w-3xl h-full text-sm text-black border rounded-xl p-3 xl:p-0 xl:border-none bg-gray-50 md:bg-white"
+          "w-full xl:max-w-3xl h-full text-sm border rounded-xl p-3 xl:p-0 xl:border-none bg-gray-50 md:bg-white"
         }
       >
-        <div className={"flex w-full flex-col md:flex-row gap-3 "}>
+        <div className={"flex w-full flex-row gap-3"}>
           <div className={"w-full xl:w-[200px] space-y-1"}>
-            <div className={"whitespace-nowrap font-semibold md:font-normal"}>
+            <div className={"whitespace-nowrap text-xs md:text-sm"}>
               Cost & usage
             </div>
-            <div className={"text-black text-xl font-semibold md:font-normal"}>
+            <div className={"text-xl text-[#0066FF] md:text-gray-800"}>
               US$
               {roundUp(data?.cost?.today || 0, 6)}
             </div>
           </div>
           {data?.cost?.yesterday ? (
-            <div className={"w-full xl:w-[200px] space-y-1"}>
-              <div className={"whitespace-nowrap font-semibold md:font-normal"}>
+            <div
+              className={"w-full xl:w-[200px] space-y-1 text-end md:text-start"}
+            >
+              <div className={"whitespace-nowrap text-xs md:text-sm"}>
                 Yesterday
               </div>
-              <div
-                className={"text-gray-400 text-md font-semibold md:font-normal"}
-              >
+              <div className={"text-gray-400 text-md"}>
                 US$
                 {roundUp(data?.cost?.yesterday || 0, 6)}
               </div>
             </div>
           ) : null}
         </div>
-        <div className={"h-[180px] md:h-[128px] w-full mt-4"}>
+        <div className={"h-[128px] w-full mt-4"}>
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={data?.daily || []}>
               <CartesianGrid strokeOpacity={0.5} horizontal={false} />
@@ -128,7 +128,7 @@ const CSR = () => {
       </div>
       <div
         className={
-          "flex flex-col md:flex-row xl:flex-col w-full xl:w-96 h-full text-sm text-black gap-3 xl:gap-10"
+          "flex flex-col md:flex-row xl:flex-col w-full xl:w-96 h-full text-sm text-gray-800 gap-3 xl:gap-10"
         }
       >
         <div
@@ -136,10 +136,10 @@ const CSR = () => {
             "w-full xl:w-[200px] space-y-1 border p-3 xl:border-none xl:p-0 rounded-xl bg-gray-50 md:bg-white"
           }
         >
-          <div className={"whitespace-nowrap font-semibold md:font-normal"}>
+          <div className={"whitespace-nowrap text-xs md:text-sm"}>
             Total cost this month
           </div>
-          <div className={"text-black text-xl font-semibold md:font-normal"}>
+          <div className={"text-xl text-[#0066FF] md:text-gray-800"}>
             US$
             {roundUp(data?.cost?.month || 0, 6)}
           </div>
@@ -149,20 +149,28 @@ const CSR = () => {
             "w-full xl:w-[200px] space-y-1 border p-3 xl:border-none xl:p-0 rounded-xl bg-gray-50 md:bg-white"
           }
         >
-          <div className={"whitespace-nowrap font-semibold md:font-normal"}>
+          <div className={"whitespace-nowrap text-xs md:text-sm"}>
             Advance pay balance
           </div>
           <div
-            className={`${
-              balanceData?.balance < 0 ? "text-red-500" : "text-black"
-            }  text-xl pb-4 md:pb-0 font-semibold md:font-normal`}
+            className={
+              "flex w-full gap-2 flex-row md:flex-col justify-between md:justify-start"
+            }
           >
-            {balanceData?.balance < 0 ? "-" : ""}US$
-            {roundUp(Math.abs(balanceData?.balance) || 0, 6)}
+            <div
+              className={`${
+                balanceData?.balance < 0
+                  ? "text-red-500"
+                  : "text-[#0066FF] md:text-gray-800"
+              }  text-xl md:pb-0`}
+            >
+              {balanceData?.balance < 0 ? "-" : ""}US$
+              {roundUp(Math.abs(balanceData?.balance) || 0, 6)}
+            </div>
+            <DepositButton
+              className={`text-sm px-2 py-1 rounded-lg text-white bg-[#0066FF] font-semibold flex items-center gap-1 w-fit`}
+            />
           </div>
-          <DepositButton
-            className={`text-sm py-3 px-4 md:py-1 rounded-lg text-white bg-[#0066FF] font-semibold flex items-center gap-1 w-[50%] md:w-fit`}
-          />
         </div>
       </div>
     </div>

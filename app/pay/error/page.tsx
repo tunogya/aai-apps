@@ -26,7 +26,7 @@ export default async function SSRPage() {
       <Link
         href={"/dashboard"}
         prefetch
-        className={"text-gray-500 hover:text-black text-sm underline"}
+        className={"text-gray-500 hover:text-gray-800 text-sm underline"}
       >
         Back
       </Link>

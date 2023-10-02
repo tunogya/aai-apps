@@ -68,7 +68,7 @@ const Toolbar: FC<{ border?: boolean }> = (props) => {
             <>
               <Popover.Button
                 className={
-                  "hover:bg-gray-100 p-2 rounded-full text-black focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+                  "hover:bg-gray-100 p-2 rounded-full text-gray-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
                 }
               >
                 <svg

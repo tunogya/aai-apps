@@ -86,7 +86,7 @@ export default function Chat() {
               <div className={"w-full flex gap-2"}>
                 <div
                   className={
-                    "border flex rounded-[18px] md:rounded-[29px] w-full px-3 py-1.5 md:py-4 md:px-5 shadow text-black bg-white items-end gap-2"
+                    "border flex rounded-[18px] md:rounded-[29px] w-full px-3 py-1.5 md:py-4 md:px-5 shadow text-gray-800 bg-white items-end gap-2"
                   }
                 >
                   <textarea

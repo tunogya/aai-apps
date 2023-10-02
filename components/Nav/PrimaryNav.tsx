@@ -12,7 +12,7 @@ const PrimaryNav: FC<{
       {/*Desktop*/}
       <div
         className={
-          "w-full max-w-[260px] shrink-0 h-full border-r px-0 lg:px-2 2xl:px-8 py-4 space-y-10 relative hidden md:block"
+          "shrink-0 h-full border-r px-0 md:px-2 lg:px-4 xl:px-6 2xl:px-8 py-4 space-y-10 relative hidden md:block"
         }
       >
         <Account />
@@ -24,7 +24,7 @@ const PrimaryNav: FC<{
         >
           <Image src={"/favicon.svg"} alt={""} height={36} width={36} />
           <div>
-            <div className={"text-xs text-black"}>
+            <div className={"text-xs text-gray-800"}>
               ©{new Date().getFullYear()} Abandon Inc.,
             </div>
             <div className={"text-xs text-gray-500 font-light"}>

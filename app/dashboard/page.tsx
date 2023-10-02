@@ -13,7 +13,7 @@ export default async function SSRPage() {
       <div className={"space-y-3 md:space-y-8"}>
         <div
           className={
-            "text-2xl font-semibold text-black md:border-b w-full py-2"
+            "text-2xl font-semibold text-gray-800 md:border-b w-full py-2"
           }
         >
           Today

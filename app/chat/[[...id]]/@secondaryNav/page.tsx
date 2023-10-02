@@ -121,7 +121,7 @@ const SecondaryNav = () => {
                   </Link>
                   <button
                     className={
-                      "absolute right-2 hidden group-hover:flex text-black hover:text-red-500"
+                      "absolute right-2 hidden group-hover:flex text-gray-800 hover:text-red-500"
                     }
                     onClick={async () => {
                       const _newDeleteItems = [...deleteItems, item.SK];
