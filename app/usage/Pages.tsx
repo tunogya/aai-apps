@@ -27,14 +27,9 @@ const Pages = () => {
   return (
     <div className={"w-full overflow-hidden"}>
       <div className={"md:hidden flex flex-col gap-2"}>
-        <div className={"px-4 text-2xl font-semibold mt-2 text-gray-800"}>
-          Usage
-        </div>
+        <div className={"text-2xl font-semibold mt-2 text-gray-800"}>Usage</div>
         {reducedData.map((item: any, index: number) => (
-          <div
-            key={index}
-            className={"text-gray-600 px-4 py-2 flex flex-col gap-2"}
-          >
+          <div key={index} className={"text-gray-600 py-2 flex flex-col gap-2"}>
             <div className={"flex justify-between"}>
               <div
                 className={
