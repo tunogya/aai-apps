@@ -26,6 +26,40 @@ const Pages = () => {
 
   return (
     <div className={"w-full overflow-hidden"}>
+      <div className={"md:hidden flex flex-col gap-2"}>
+        <div className={"px-4 text-2xl font-semibold mt-2 text-gray-800"}>
+          Usage
+        </div>
+        {reducedData.map((item: any, index: number) => (
+          <div
+            key={index}
+            className={"text-gray-600 px-4 py-2 flex flex-col gap-2"}
+          >
+            <div className={"flex justify-between"}>
+              <div
+                className={
+                  "font-semibold overflow-x-hidden text-gray-800 text-sm"
+                }
+              >
+                {item.model}
+              </div>
+              <div className={"overflow-x-hidden font-semibold text-sm"}>
+                US${roundUp(item.total_cost, 6)}
+              </div>
+            </div>
+            <div className={"flex justify-between"}>
+              <div className={"overflow-x-hidden text-xs"}>
+                {moment(item.created * 1000)
+                  .startOf("second")
+                  .fromNow()}
+              </div>
+              <div className={"overflow-x-hidden text-xs"}>
+                P:{item.prompt_tokens} tokens, C:{item.completion_tokens} tokens
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
       <table className="table-auto w-full hidden md:table">
         <thead>
           <tr className={"text-xs text-gray-500 border-b"}>
@@ -94,40 +128,6 @@ const Pages = () => {
           ))}
         </tbody>
       </table>
-      <div className={"md:hidden flex flex-col gap-2"}>
-        <div className={"px-4 text-2xl font-semibold mt-4 text-gray-800"}>
-          Usage
-        </div>
-        {reducedData.map((item: any, index: number) => (
-          <div
-            key={index}
-            className={"text-gray-600 px-4 py-2 flex flex-col gap-2"}
-          >
-            <div className={"flex justify-between"}>
-              <div
-                className={
-                  "font-semibold overflow-x-hidden text-gray-800 text-sm"
-                }
-              >
-                {item.model}
-              </div>
-              <div className={"overflow-x-hidden font-semibold text-sm"}>
-                US${roundUp(item.total_cost, 6)}
-              </div>
-            </div>
-            <div className={"flex justify-between"}>
-              <div className={"overflow-x-hidden text-xs"}>
-                {moment(item.created * 1000)
-                  .startOf("second")
-                  .fromNow()}
-              </div>
-              <div className={"overflow-x-hidden text-xs"}>
-                P:{item.prompt_tokens} tokens, C:{item.completion_tokens} tokens
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
       {haveMore ? (
         <button
           className={`w-full border p-2 mt-4 text-xs hover:bg-gray-50 rounded ${
