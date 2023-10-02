@@ -89,20 +89,11 @@ const DELETE = async (req: NextRequest, { params }: any) => {
             PK: `USER#${sub}`,
             SK: `CHAT2#${params?.id}`,
           },
-          UpdateExpression: "SET #invisible = :true, #TTL = :ttl",
-          ExpressionAttributeNames: {
-            "#invisible": "invisible",
-            "#TTL": "TTL",
-          },
-          ExpressionAttributeValues: {
-            ":true": true,
-            ":ttl": Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30,
-          },
         }),
         MessageAttributes: {
           Command: {
             DataType: "String",
-            StringValue: "UpdateCommand",
+            StringValue: "DeleteCommand",
           },
         },
       }),
