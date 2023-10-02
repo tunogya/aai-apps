@@ -79,7 +79,7 @@ export default function Chat() {
         >
           <div
             className={
-              "py-2 md:py-4 w-full px-4 md:px-8 xl:px-20 flex justify-center border-t border-b"
+              "py-2 md:py-4 w-full px-4 md:px-8 xl:px-20 flex justify-center"
             }
           >
             <div className={"flex w-full max-w-3xl gap-3"}>
@@ -237,7 +237,7 @@ export default function Chat() {
           .map((m, index) => (
             <div
               key={index}
-              className={`flex border-b p-3 md:p-8 ${
+              className={`flex border-t p-3 md:p-8 ${
                 m.role === "user" ? "bg-white" : "bg-gray-50"
               } items-center justify-center`}
             >
