@@ -324,7 +324,7 @@ export default function Chat() {
           </div>
         )}
       </div>
-      <div className={"md:hidden"}>
+      <div className={"absolute bottom-[48px] w-full md:hidden"}>
         <ModelSwitch />
       </div>
     </div>
