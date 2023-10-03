@@ -29,7 +29,7 @@ const ModelSwitch = () => {
   }, [searchParams]);
 
   return (
-    <div className={"text-sm font-semibold bg-gray-100 md:bg-white"}>
+    <div className={"text-sm md:font-semibold border-t"}>
       <div
         className={
           "flex items-center space-x-2 p-2 rounded cursor-pointer select-none w-full justify-center"

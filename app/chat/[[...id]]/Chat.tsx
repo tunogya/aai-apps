@@ -68,9 +68,6 @@ export default function Chat() {
 
   return (
     <div className={"w-full md:min-w-[400px]"}>
-      <div className={"md:hidden"}>
-        <ModelSwitch />
-      </div>
       <form
         onSubmit={(e) => {
           handleSubmit(e);
@@ -231,7 +228,7 @@ export default function Chat() {
       </form>
       <div
         className={
-          "h-[calc(100vh-100px)] md:h-[calc(100vh-142px)] w-full overflow-y-auto relative"
+          "h-[calc(100vh-136px)] md:h-[calc(100vh-142px)] w-full overflow-y-auto relative"
         }
       >
         {isLoading && (
@@ -314,6 +311,9 @@ export default function Chat() {
             </div>
           ))
           .reverse()}
+      </div>
+      <div className={"md:hidden"}>
+        <ModelSwitch />
       </div>
     </div>
   );
