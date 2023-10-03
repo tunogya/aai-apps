@@ -320,7 +320,7 @@ export default function Chat() {
         ) : (
           <div
             className={
-              "w-full h-full flex items-center justify-center text-3xl md:text-4xl font-semibold text-gray-800"
+              "w-full h-full flex items-center justify-center text-3xl md:text-4xl font-semibold text-gray-800 pb-52"
             }
           >
             ChatGPT
