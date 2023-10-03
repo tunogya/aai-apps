@@ -57,7 +57,7 @@
     "typed.js": "^2.0.16",
     "typescript": "5.2.2",
     "uuid": "^9.0.0",
-    "vercel": "^32.1.0"
+    "vercel": "^32.3.1"
   },
   "devDependencies": {
     "@types/md5": "^2.3.2",
