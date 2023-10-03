@@ -20,6 +20,14 @@ const ModelSwitch = () => {
     }
   }, [useGPT4]);
 
+  useEffect(() => {
+    if (searchParams.get("model") === "GPT-4") {
+      setUseGPT4(true);
+    } else {
+      setUseGPT4(false);
+    }
+  }, [searchParams]);
+
   return (
     <div className={"text-sm font-semibold bg-gray-100 md:bg-white"}>
       <div
