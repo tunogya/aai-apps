@@ -30,6 +30,8 @@ export async function POST(req: Request): Promise<Response> {
     });
   }
 
+  messages.slice(-10);
+
   if (model === "GPT-3.5") {
     if (messages.length > 6) {
       model = "gpt-3.5-turbo-16k";
