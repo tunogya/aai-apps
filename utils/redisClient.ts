@@ -1,8 +1,5 @@
 import { Redis } from "@upstash/redis";
-import https from "https";
 
-const redisClient = Redis.fromEnv({
-  agent: new https.Agent({ keepAlive: true }),
-});
+const redisClient = Redis.fromEnv();
 
 export default redisClient;
