@@ -12,6 +12,7 @@ import Image from "next/image";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 import useSWR from "swr";
+import ModelSwitch from "@/components/ModelSwitch";
 
 export default function Chat() {
   const params = useParams();
@@ -67,6 +68,9 @@ export default function Chat() {
 
   return (
     <div className={"w-full md:min-w-[400px]"}>
+      <div className={"md:hidden"}>
+        <ModelSwitch />
+      </div>
       <form
         onSubmit={(e) => {
           handleSubmit(e);
