@@ -1,4 +1,6 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This is an AI Web app, built with [NextJS](https://nextjs.org/) and [Tailwindcss](https://tailwindcss.com/).
+
+![Chat](https://nftstorage.link/ipfs/bafybeigo543gmpnxcoiu2ozh5vukvrj6pbiw5rcltlycubl3tqfef4dq4i)
 
 ## Getting Started
 
@@ -20,12 +22,11 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 
 ## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+- Dashboard page
+  ![Dashboard](https://nftstorage.link/ipfs/bafybeihkujragbdaocpzneunzwcv372xbtgsnhvcijx4wpkspqa6umpiie)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- Usage page
+  ![Usage](https://nftstorage.link/ipfs/bafybeiftebllec7shlwcrtnoohipmwqf2jmflde4zlr5geuyahvoorfpiu)
 
 ## Deploy on Vercel
 
