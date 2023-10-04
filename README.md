@@ -1,5 +1,7 @@
 This is an AI Web app, built with [NextJS](https://nextjs.org/) and [Tailwindcss](https://tailwindcss.com/).
 
+Other service providers: [OpenAI](https://openai.com/), [Auth0](https://auth0.com/), [Stripe](https://stripe.com/), [Upstash Redis](https://upstash.com/)
+
 We may adopt the [LangChain](https://js.langchain.com/docs/get_started) framework in the future.
 
 ![Chat](https://nftstorage.link/ipfs/bafybeigo543gmpnxcoiu2ozh5vukvrj6pbiw5rcltlycubl3tqfef4dq4i)
@@ -35,3 +37,7 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+## Other Framework
+
+- [AWS Lambda Workers](https://github.com/abandon-ai/abandonai-lambda)
