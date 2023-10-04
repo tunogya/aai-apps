@@ -27,10 +27,10 @@ const CSR = () => {
   );
 
   return (
-    <div className={"flex flex-col gap-2 md:gap-8"}>
+    <div className={"flex flex-col gap-2 xl:gap-8"}>
       <div
         className={
-          "flex gap-2 w-full py-2 md:border-b text-gray-800 justify-between"
+          "flex gap-2 w-full py-2 xl:border-b text-gray-800 justify-between"
         }
       >
         <div className={"text-2xl font-semibold"}>Today</div>
@@ -46,7 +46,7 @@ const CSR = () => {
         )}
       </div>
 
-      <div className={"flex flex-col xl:flex-row gap-4 md:gap-10 h-fit w-full"}>
+      <div className={"flex flex-col xl:flex-row gap-4 xl:gap-10 h-fit w-full"}>
         <div
           className={
             "w-full xl:max-w-3xl h-full text-sm border rounded-xl p-3 xl:p-0 xl:border-none shadow-sm md:shadow-none"
