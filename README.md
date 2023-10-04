@@ -1,5 +1,7 @@
 This is an AI Web app, built with [NextJS](https://nextjs.org/) and [Tailwindcss](https://tailwindcss.com/).
 
+We may adopt the [LangChain](https://js.langchain.com/docs/get_started) framework in the future.
+
 ![Chat](https://nftstorage.link/ipfs/bafybeigo543gmpnxcoiu2ozh5vukvrj6pbiw5rcltlycubl3tqfef4dq4i)
 
 ## Getting Started
