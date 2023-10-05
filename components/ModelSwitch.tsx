@@ -32,7 +32,7 @@ const ModelSwitch = () => {
     <div className={"text-sm md:font-semibold border-t md:border-none"}>
       <div
         className={
-          "flex items-center space-x-2 p-2 rounded cursor-pointer select-none w-full justify-center"
+          "flex items-center space-x-2 p-4 rounded cursor-pointer select-none w-full justify-center"
         }
         onClick={() => setUseGPT4(!useGPT4)}
       >

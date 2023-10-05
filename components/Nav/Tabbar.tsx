@@ -12,7 +12,7 @@ const menu = [
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
-        strokeWidth="1.5"
+        strokeWidth="2"
         stroke="currentColor"
         className="w-6 h-6"
       >
@@ -31,7 +31,7 @@ const menu = [
       <svg
         stroke="currentColor"
         fill="none"
-        strokeWidth="1.5"
+        strokeWidth="2"
         viewBox="0 0 24 24"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -50,7 +50,7 @@ const menu = [
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
-        strokeWidth="1.5"
+        strokeWidth="2"
         stroke="currentColor"
         className="w-6 h-6"
       >
@@ -72,7 +72,7 @@ const Tabbar = () => {
     <div
       className={`absolute bottom-0 left-0 w-full md:hidden border-t z-50 bg-white`}
     >
-      <div className={`w-full flex justify-around py-3 text-xs`}>
+      <div className={`w-full flex justify-around text-xs`}>
         {menu.map((item, index) => (
           <Link
             href={`${item.path}?model=${
@@ -80,7 +80,7 @@ const Tabbar = () => {
             }`}
             prefetch
             scroll={false}
-            className={`flex flex-col items-center cursor-pointer gap-0.5 ${
+            className={`flex flex-col items-center cursor-pointer gap-0.5 p-3 ${
               path.includes(item.path) ? `text-[#0066FF]` : "text-gray-400"
             }`}
             key={index}

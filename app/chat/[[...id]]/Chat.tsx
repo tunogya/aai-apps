@@ -13,6 +13,7 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 import useSWR from "swr";
 import ModelSwitch from "@/components/ModelSwitch";
+import moment from "moment/moment";
 
 export default function Chat() {
   const params = useParams();
@@ -293,24 +294,37 @@ export default function Chat() {
                         )
                       )}
                     </div>
-                    <ReactMarkdown
-                      remarkPlugins={[remarkGfm, remarkMath]}
-                      rehypePlugins={[rehypeKatex]}
-                      components={{
-                        code({ ...props }) {
-                          return <CodeFormat {...props} />;
-                        },
-                      }}
-                      className={`${
-                        m.role === "assistant" &&
-                        isLoading &&
-                        index === messages.length - 1
-                          ? "result-streaming"
-                          : ""
-                      } markdown prose text-sm md:text-base w-full break-words dark:prose-invert light leading-8`}
+                    <div
+                      className={
+                        "flex flex-col md:gap-1 w-full overflow-x-hidden"
+                      }
                     >
-                      {m.content}
-                    </ReactMarkdown>
+                      <div
+                        className={"flex items-center text-xs text-gray-500"}
+                      >
+                        {moment(m?.createdAt)
+                          .startOf("second")
+                          .fromNow()}
+                      </div>
+                      <ReactMarkdown
+                        remarkPlugins={[remarkGfm, remarkMath]}
+                        rehypePlugins={[rehypeKatex]}
+                        components={{
+                          code({ ...props }) {
+                            return <CodeFormat {...props} />;
+                          },
+                        }}
+                        className={`${
+                          m.role === "assistant" &&
+                          isLoading &&
+                          index === messages.length - 1
+                            ? "result-streaming"
+                            : ""
+                        } markdown prose text-sm md:text-base w-full overflow-x-hidden break-words dark:prose-invert light leading-8`}
+                      >
+                        {m.content}
+                      </ReactMarkdown>
+                    </div>
                   </div>
                 </div>
               ))
