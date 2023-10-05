@@ -4,7 +4,7 @@ import { DepositButton } from "@/components/DepositButton";
 import React from "react";
 import { useSearchParams } from "next/navigation";
 
-export default async function SSRPage() {
+export default function CSRPage() {
   const searchParams = useSearchParams();
   const error = searchParams.get("error") || "Something went wrong";
 
