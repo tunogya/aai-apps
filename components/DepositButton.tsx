@@ -1,9 +1,11 @@
 "use client";
 import React, { FC, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export const DepositButton: FC<{
   className?: string;
 }> = ({ className }) => {
+  const router = useRouter();
   const [status, setStatus] = useState("idle");
 
   return (
@@ -17,7 +19,7 @@ export const DepositButton: FC<{
           }).then((res) => res.json());
           const url = session.url;
           setStatus("idle");
-          window.open(url);
+          router.push(url);
         } catch (e) {
           console.log(e);
           setStatus("error");
