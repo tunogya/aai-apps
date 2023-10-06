@@ -1,6 +1,10 @@
 import { OpenAIStream, StreamingTextResponse } from "ai";
 import { Configuration, OpenAIApi } from "openai-edge";
-import { SendMessageCommand, SQSClient } from "@aws-sdk/client-sqs";
+import {
+  SendMessageBatchCommand,
+  SendMessageCommand,
+  SQSClient,
+} from "@aws-sdk/client-sqs";
 import redisClient from "@/utils/redisClient";
 
 const sqsClient = new SQSClient({
@@ -22,7 +26,7 @@ const openai = new OpenAIApi(configuration);
 
 // @ts-ignore
 export async function POST(req: Request): Promise<Response> {
-  let { messages, model, sub } = await req.json();
+  let { messages, model, sub, id } = await req.json();
   const balance = ((await redisClient.get(`${sub}:balance`)) as number) || 0;
   if (balance < -0.1) {
     return new Response("Not enough balance", {
@@ -55,30 +59,72 @@ export async function POST(req: Request): Promise<Response> {
       onCompletion(completion) {
         // record usage log and reduce the balance of user
         sqsClient.send(
-          new SendMessageCommand({
-            QueueUrl: process.env.AI_DB_UPDATE_SQS_URL,
-            MessageBody: JSON.stringify({
-              TableName: "abandonai-prod",
-              Item: {
-                PK: `USER#${sub}`,
-                SK: `USAGE#${new Date().toISOString()}`,
-                prompt: messages,
-                completion,
-                model,
-                created: Math.floor(Date.now() / 1000),
-                TTL: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 12, // 12 month
+          new SendMessageBatchCommand({
+            QueueUrl: process.env.AI_DB_UPDATE_SQS_FIFO_URL,
+            Entries: [
+              {
+                Id: `update-usage-${id}-${new Date().getTime()}`,
+                MessageBody: JSON.stringify({
+                  TableName: "abandonai-prod",
+                  Item: {
+                    PK: `USER#${sub}`,
+                    SK: `USAGE#${new Date().toISOString()}`,
+                    prompt: messages,
+                    completion,
+                    model,
+                    created: Math.floor(Date.now() / 1000),
+                    TTL: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 12, // 12 month
+                  },
+                  ConditionExpression: "attribute_not_exists(#PK)",
+                  ExpressionAttributeNames: {
+                    "#PK": "PK",
+                  },
+                }),
+                MessageAttributes: {
+                  Command: {
+                    DataType: "String",
+                    StringValue: "PutCommand",
+                  },
+                },
+                MessageGroupId: "update-usage",
               },
-              ConditionExpression: "attribute_not_exists(#PK)",
-              ExpressionAttributeNames: {
-                "#PK": "PK",
+              {
+                Id: `update-chat-${id}-${new Date().getTime()}`,
+                MessageBody: JSON.stringify({
+                  TableName: "abandonai-prod",
+                  Key: {
+                    PK: `USER#${sub}`,
+                    SK: `CHAT2#${id}`,
+                  },
+                  ExpressionAttributeNames: {
+                    "#messages": "messages",
+                    "#updated": "updated",
+                    "#title": "title",
+                  },
+                  ExpressionAttributeValues: {
+                    ":empty_list": [],
+                    ":messages": [
+                      messages.slice(-1),
+                      {
+                        role: "assistant",
+                        content: completion,
+                      },
+                    ],
+                    ":updated": Math.floor(Date.now() / 1000),
+                    ":title": messages[0]?.text?.slice(0, 20) || "Title",
+                  },
+                  UpdateExpression:
+                    "SET #messages = list_append(if_not_exists(#messages, :empty_list), :messages), #updated = :updated, #title = :title",
+                }),
+                MessageAttributes: {
+                  Command: {
+                    DataType: "String",
+                    StringValue: "UpdateCommand",
+                  },
+                },
+                MessageGroupId: "update-chat",
               },
-            }),
-            MessageAttributes: {
-              Command: {
-                DataType: "String",
-                StringValue: "PutCommand",
-              },
-            },
+            ],
           }),
         );
       },

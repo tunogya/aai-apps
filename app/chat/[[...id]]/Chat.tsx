@@ -39,6 +39,7 @@ export default function Chat() {
         "Content-Type": "application/json",
       },
       body: {
+        id: currentChatId,
         model: model,
         sub: user?.sub,
       },
@@ -52,20 +53,6 @@ export default function Chat() {
       router.replace(`/chat/${currentChatId}?model=${model}`);
     }
   }, [params, currentChatId, model]);
-
-  useEffect(() => {
-    if (!isLoading && messages.length > 0) {
-      fetch(`/api/conversation`, {
-        method: "POST",
-        body: JSON.stringify({
-          id: currentChatId,
-          title: messages?.[0]?.content?.trim()?.slice(0, 20),
-          messages: messages,
-          updated: Math.floor(Date.now() / 1000),
-        }),
-      });
-    }
-  }, [currentChatId, isLoading, messages]);
 
   return (
     <div className={"w-full md:min-w-[400px]"}>
