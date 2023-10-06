@@ -104,7 +104,7 @@ export async function POST(req: Request): Promise<Response> {
                   ExpressionAttributeValues: {
                     ":empty_list": [],
                     ":messages": [
-                      messages.slice(-1),
+                      messages[messages.length - 1],
                       {
                         role: "assistant",
                         content: completion,
