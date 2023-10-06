@@ -1,11 +1,8 @@
 import { OpenAIStream, StreamingTextResponse } from "ai";
 import { Configuration, OpenAIApi } from "openai-edge";
-import {
-  SendMessageBatchCommand,
-  SendMessageCommand,
-  SQSClient,
-} from "@aws-sdk/client-sqs";
+import { SendMessageBatchCommand, SQSClient } from "@aws-sdk/client-sqs";
 import redisClient from "@/utils/redisClient";
+import { v4 as uuidv4 } from "uuid";
 
 const sqsClient = new SQSClient({
   region: "ap-northeast-1",
@@ -104,8 +101,14 @@ export async function POST(req: Request): Promise<Response> {
                   ExpressionAttributeValues: {
                     ":empty_list": [],
                     ":messages": [
-                      messages[messages.length - 1],
                       {
+                        ...messages[messages.length - 1],
+                        id: uuidv4(),
+                        createdAt: new Date(),
+                      },
+                      {
+                        id: uuidv4(),
+                        createdAt: new Date(),
                         role: "assistant",
                         content: completion,
                       },
