@@ -37,7 +37,7 @@ body {
 .result-streaming > ul:last-child li:last-child:after {
   -webkit-animation: blink 1s steps(5, start) infinite;
   animation: blink 1s steps(5, start) infinite;
-  content: "▋";
+  content: "●";
   margin-left: 0.25rem;
   vertical-align: baseline;
 }
