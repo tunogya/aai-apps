@@ -114,7 +114,7 @@ export async function POST(req: Request): Promise<Response> {
                       },
                     ],
                     ":updated": Math.floor(Date.now() / 1000),
-                    ":title": messages[0]?.text?.slice(0, 20) || "Title",
+                    ":title": messages[0]?.content?.slice(0, 20) || "Title",
                   },
                   UpdateExpression:
                     "SET #messages = list_append(if_not_exists(#messages, :empty_list), :messages), #updated = :updated, #title = :title",
