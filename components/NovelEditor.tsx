@@ -18,7 +18,7 @@ export default function NovelEditor() {
         onUpdate={() => {
           setSaveStatus("Unsaved");
         }}
-        defaultValue={"Hello!"}
+        defaultValue={"Write something"}
         onDebouncedUpdate={() => {
           setSaveStatus("Saving...");
           // Simulate a delay in saving.
