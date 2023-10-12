@@ -26,7 +26,7 @@ const Pages = () => {
 
   return (
     <div
-      className={"w-full overflow-hidden md:pt-4 overflow-y-auto h-full pb-20"}
+      className={"w-full overflow-hidden md:pt-4 overflow-y-auto h-full pb-40"}
     >
       <div className={"md:hidden flex flex-col gap-2"}>
         <div
