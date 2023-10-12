@@ -41,7 +41,6 @@ export default function Chat() {
       body: {
         id: currentChatId,
         model: model,
-        sub: user?.sub,
       },
       initialMessages: data ? data?.item?.messages : [],
     });

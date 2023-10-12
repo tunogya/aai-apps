@@ -3,6 +3,7 @@ import { Configuration, OpenAIApi } from "openai-edge";
 import { SendMessageBatchCommand, SQSClient } from "@aws-sdk/client-sqs";
 import redisClient from "@/utils/redisClient";
 import { v4 as uuidv4 } from "uuid";
+import { getSession } from "@auth0/nextjs-auth0/edge";
 
 const sqsClient = new SQSClient({
   region: "ap-northeast-1",
@@ -23,7 +24,10 @@ const openai = new OpenAIApi(configuration);
 
 // @ts-ignore
 export async function POST(req: Request): Promise<Response> {
-  let { messages, model, sub, id } = await req.json();
+  // @ts-ignore
+  const { user } = await getSession();
+  const sub = user.sub;
+  let { messages, model, id } = await req.json();
   const balance = ((await redisClient.get(`${sub}:balance`)) as number) || 0;
   if (balance < -0.1) {
     return new Response("Not enough balance", {

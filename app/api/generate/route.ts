@@ -1,7 +1,9 @@
 import { Configuration, OpenAIApi } from "openai-edge";
 import { OpenAIStream, StreamingTextResponse } from "ai";
-import { Ratelimit } from "@upstash/ratelimit";
 import redisClient from "@/utils/redisClient";
+import { getSession } from "@auth0/nextjs-auth0/edge";
+import { SendMessageBatchCommand, SQSClient } from "@aws-sdk/client-sqs";
+import { ChatCompletionRequestMessage } from "openai-edge/types/api";
 
 const config = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -11,8 +13,18 @@ const openai = new OpenAIApi(config);
 
 export const runtime = "edge";
 
+const sqsClient = new SQSClient({
+  region: "ap-northeast-1",
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
+  },
+});
+
 export async function POST(req: Request): Promise<Response> {
-  const { sub } = await req.json();
+  // @ts-ignore
+  const { user } = await getSession();
+  const sub = user.sub;
   const balance = ((await redisClient.get(`${sub}:balance`)) as number) || 0;
   if (balance < -0.1) {
     return new Response("Not enough balance", {
@@ -28,49 +40,28 @@ export async function POST(req: Request): Promise<Response> {
       },
     );
   }
-  if (process.env.NODE_ENV != "development") {
-    const ip = req.headers.get("x-forwarded-for");
-    const ratelimit = new Ratelimit({
-      redis: redisClient,
-      limiter: Ratelimit.slidingWindow(50, "1 d"),
-      analytics: false,
-      timeout: 1000,
-      prefix: "ratelimit#generate",
-    });
-
-    const { success, limit, reset, remaining } = await ratelimit.limit(`${ip}`);
-
-    if (!success) {
-      return new Response("You have reached your request limit for the day.", {
-        status: 429,
-        headers: {
-          "X-RateLimit-Limit": limit.toString(),
-          "X-RateLimit-Remaining": remaining.toString(),
-          "X-RateLimit-Reset": reset.toString(),
-        },
-      });
-    }
-  }
 
   let { prompt } = await req.json();
 
+  const messages: Array<ChatCompletionRequestMessage> = [
+    {
+      role: "system",
+      content:
+        "You are an AI writing assistant that continues existing text based on context from prior text. " +
+        "Give more weight/priority to the later characters than the beginning ones. " +
+        "Limit your response to no more than 200 characters, but make sure to construct complete sentences.",
+      // we're disabling markdown for now until we can figure out a way to stream markdown text with proper formatting: https://github.com/steven-tey/novel/discussions/7
+      // "Use Markdown formatting when appropriate.",
+    },
+    {
+      role: "user",
+      content: prompt,
+    },
+  ];
+  const model = "gpt-3.5-turbo";
   const response = await openai.createChatCompletion({
-    model: "gpt-3.5-turbo",
-    messages: [
-      {
-        role: "system",
-        content:
-          "You are an AI writing assistant that continues existing text based on context from prior text. " +
-          "Give more weight/priority to the later characters than the beginning ones. " +
-          "Limit your response to no more than 200 characters, but make sure to construct complete sentences.",
-        // we're disabling markdown for now until we can figure out a way to stream markdown text with proper formatting: https://github.com/steven-tey/novel/discussions/7
-        // "Use Markdown formatting when appropriate.",
-      },
-      {
-        role: "user",
-        content: prompt,
-      },
-    ],
+    model,
+    messages,
     temperature: 0.7,
     top_p: 1,
     frequency_penalty: 0,
@@ -86,7 +77,44 @@ export async function POST(req: Request): Promise<Response> {
     });
   }
   // Convert the response into a friendly text-stream
-  const stream = OpenAIStream(response);
+  const stream = OpenAIStream(response, {
+    onCompletion(completion) {
+      // record usage log and reduce the balance of user
+      sqsClient.send(
+        new SendMessageBatchCommand({
+          QueueUrl: process.env.AI_DB_UPDATE_SQS_FIFO_URL,
+          Entries: [
+            {
+              Id: `update-usage-${new Date().getTime()}`,
+              MessageBody: JSON.stringify({
+                TableName: "abandonai-prod",
+                Item: {
+                  PK: `USER#${sub}`,
+                  SK: `USAGE#${new Date().toISOString()}`,
+                  prompt: messages,
+                  completion,
+                  model,
+                  created: Math.floor(Date.now() / 1000),
+                  TTL: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 12, // 12 month
+                },
+                ConditionExpression: "attribute_not_exists(#PK)",
+                ExpressionAttributeNames: {
+                  "#PK": "PK",
+                },
+              }),
+              MessageAttributes: {
+                Command: {
+                  DataType: "String",
+                  StringValue: "PutCommand",
+                },
+              },
+              MessageGroupId: "update-usage",
+            },
+          ],
+        }),
+      );
+    },
+  });
 
   // Respond with the stream
   return new StreamingTextResponse(stream);
