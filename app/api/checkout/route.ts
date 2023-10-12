@@ -8,10 +8,6 @@ const POST = async (req: NextRequest) => {
   const { user } = await getSession();
   try {
     const session = await stripeClient.checkout.sessions.create({
-      allow_promotion_codes: true,
-      automatic_tax: { enabled: true },
-      cancel_url: `${req.nextUrl.origin}/pay/error?error=Canceled`,
-      customer_email: user?.email || undefined,
       line_items: [
         {
           price: "price_1NtMGxFPpv8QfieYD2d3FSwe",
@@ -19,10 +15,13 @@ const POST = async (req: NextRequest) => {
         },
       ],
       mode: "payment",
+      success_url: `${req.nextUrl.origin}/pay/success`,
+      cancel_url: `${req.nextUrl.origin}/pay/error?error=Canceled`,
+      automatic_tax: { enabled: true },
+      customer_email: user?.email || undefined,
       metadata: {
         id: user.sub,
       },
-      success_url: `${req.nextUrl.origin}/pay/success`,
     });
     const id = session.id;
     await redisClient.set(id, "price_1NtMGxFPpv8QfieYD2d3FSwe", {
