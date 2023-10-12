@@ -1,20 +1,25 @@
 "use client";
 import Link from "next/link";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useMemo, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 
 const SecondaryNav = () => {
   const params = useParams();
   const searchParams = useSearchParams();
+  const router = useRouter();
   const getKey = (pageIndex: number, previousPageData: any) => {
     if (previousPageData && !previousPageData.nextCursor) return null;
     if (pageIndex === 0) return `/api/conversation?limit=20`;
     return `/api/conversation?cursor=${previousPageData.nextCursor}&limit=20`;
   };
 
-  const { data, size, setSize, isValidating } = useSWRInfinite(getKey, (url) =>
-    fetch(url).then((res) => res.json()),
+  const { data, size, setSize, isValidating } = useSWRInfinite(
+    getKey,
+    (url) => fetch(url).then((res) => res.json()),
+    {
+      refreshInterval: 5_000,
+    },
   );
 
   const reducedData = useMemo(() => {
@@ -23,13 +28,16 @@ const SecondaryNav = () => {
   }, [data]);
 
   const haveMore = useMemo(() => {
-    return reducedData.length % 20 === 0;
+    return reducedData.length % 20 === 0 && reducedData.length > 0;
   }, [reducedData]);
 
   const currentChatId = params?.id?.[0] || null;
   const [deleteItems, setDeleteItems] = useState<string[]>([]);
 
   const deleteChat = async (id: string) => {
+    if (id === currentChatId) {
+      router.replace("/chat");
+    }
     try {
       await fetch(`/api/conversation/${id}`, {
         method: "DELETE",
@@ -79,11 +87,9 @@ const SecondaryNav = () => {
         <div className={"text-sm"}>New Chat</div>
       </Link>
       <div className={"h-full overflow-y-auto px-2"}>
-        {reducedData.filter((item: any) => !deleteItems.includes(item.SK))
-          .length > 0 && (
+        {reducedData.length > 0 && (
           <div className={"mb-2"}>
             {reducedData
-              .filter((item: any) => !deleteItems.includes(item.SK))
               .sort((a: any, b: any) => b.updated - a.updated)
               .map((item: any) => (
                 <div
@@ -117,12 +123,19 @@ const SecondaryNav = () => {
                         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                       </svg>
                     </div>
-                    <div className={"truncate text-sm mr-4"}>{item.title}</div>
+                    <div
+                      className={`truncate text-sm mr-4 ${
+                        deleteItems.includes(item.SK) ? "line-through" : ""
+                      }`}
+                    >
+                      {item.title}
+                    </div>
                   </Link>
                   <button
                     className={
-                      "absolute right-2 hidden group-hover:flex text-gray-800 hover:text-red-500"
+                      "absolute right-2 hidden group-hover:flex text-gray-800 hover:text-red-500 disabled:cursor-wait"
                     }
+                    disabled={deleteItems.includes(item.SK)}
                     onClick={async () => {
                       const _newDeleteItems = [...deleteItems, item.SK];
                       setDeleteItems(_newDeleteItems);
@@ -164,15 +177,7 @@ const SecondaryNav = () => {
           >
             {isValidating ? "Loading..." : "Load More"}
           </button>
-        ) : (
-          <div
-            className={
-              "w-full border p-2 text-xs bg-gray-50 rounded text-center cursor-not-allowed"
-            }
-          >
-            No more data.
-          </div>
-        )}
+        ) : null}
       </div>
     </div>
   );
