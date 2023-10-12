@@ -68,6 +68,7 @@ export async function POST(req: Request): Promise<Response> {
     presence_penalty: 0,
     stream: true,
     n: 1,
+    max_tokens: 200,
   });
 
   // If the response is unauthorized, return a 401 error
