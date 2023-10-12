@@ -105,7 +105,11 @@ const SecondaryNav = () => {
                       searchParams.get("model") || "GPT-3.5"
                     }`}
                     prefetch
-                    className={`flex w-full items-center`}
+                    className={`flex w-full items-center ${
+                      deleteItems.includes(item.SK)
+                        ? "line-through text-red-500"
+                        : ""
+                    }`}
                   >
                     <div className={"w-6 shrink-0"}>
                       <svg
@@ -123,18 +127,12 @@ const SecondaryNav = () => {
                         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                       </svg>
                     </div>
-                    <div
-                      className={`truncate text-sm mr-4 ${
-                        deleteItems.includes(item.SK) ? "line-through" : ""
-                      }`}
-                    >
-                      {item.title}
-                    </div>
+                    <div className={`truncate text-sm mr-4`}>{item.title}</div>
                   </Link>
                   <button
-                    className={
-                      "absolute right-2 hidden group-hover:flex text-gray-800 hover:text-red-500 disabled:cursor-wait"
-                    }
+                    className={`absolute right-2 hidden group-hover:flex text-gray-800 hover:text-red-500 disabled:cursor-wait ${
+                      deleteItems.includes(item.SK) ? "text-red-500" : ""
+                    }`}
                     disabled={deleteItems.includes(item.SK)}
                     onClick={async () => {
                       const _newDeleteItems = [...deleteItems, item.SK];
