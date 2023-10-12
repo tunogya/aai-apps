@@ -11,10 +11,6 @@ const menu = [
     path: "/chat",
     name: "Chat",
   },
-  // {
-  //   path: "/note",
-  //   name: "Note",
-  // },
   {
     path: "/usage",
     name: "Usage",
