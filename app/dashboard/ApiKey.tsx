@@ -20,10 +20,7 @@ const ApiKey = () => {
         },
       });
       await mutate();
-      setStatus("success");
-      setTimeout(() => {
-        setStatus("idle");
-      }, 2000);
+      setStatus("idle");
     } catch (e) {
       setStatus("error");
       setTimeout(() => {
@@ -42,10 +39,7 @@ const ApiKey = () => {
         },
       });
       await mutate();
-      setStatus("success");
-      setTimeout(() => {
-        setStatus("idle");
-      }, 2000);
+      setStatus("idle");
     } catch (e) {
       setStatus("error");
       setTimeout(() => {
@@ -57,11 +51,17 @@ const ApiKey = () => {
   return (
     <div className={"text-gray-800 flex flex-col gap-2"}>
       <div className={"text-2xl font-semibold border-b py-2"}>API Key</div>
-      <div className={"flex gap-4 items-center"}>
+      <div className={"flex flex-col gap-4 justify-center"}>
         {isLoading || status === "loading" ? (
-          <div className={"p-2 bg-gray-100 w-fit rounded-lg"}>Loading...</div>
+          <div className={"p-2 bg-gray-100 w-fit rounded-lg min-w-[360px]"}>
+            ...
+          </div>
         ) : (
-          <div className={"px-4 py-2 bg-gray-100 w-fit rounded-lg select-text"}>
+          <div
+            className={
+              "px-4 py-2 bg-gray-100 w-fit rounded-lg select-text min-w-[360px]"
+            }
+          >
             {data?.token || "-"}
           </div>
         )}
