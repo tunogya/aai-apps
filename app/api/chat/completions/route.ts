@@ -49,6 +49,17 @@ export async function POST(req: Request): Promise<Response> {
 
   const config = await req.json();
 
+  const hash = await calculateHash(JSON.stringify(config.messages));
+  const cache = await redisClient.get(hash);
+  if (cache) {
+    return new Response(JSON.stringify(cache), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
+
   try {
     if (config?.stream) {
       const res = await openai.createChatCompletion(config);
@@ -175,7 +186,9 @@ export async function POST(req: Request): Promise<Response> {
           ],
         }),
       );
-
+      await redisClient.set(hash, JSON.stringify(res), {
+        ex: 60 * 60 * 24 * 30,
+      });
       return new Response(JSON.stringify(res), {
         status: 200,
         headers: {
@@ -194,4 +207,13 @@ export async function POST(req: Request): Promise<Response> {
 function roundUp(num: number, decimals: number): number {
   const pow = Math.pow(10, decimals);
   return Math.ceil(num * pow) / pow;
+}
+
+async function calculateHash(text: string) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(text);
+
+  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map((byte) => byte.toString(16).padStart(2, "0")).join("");
 }
