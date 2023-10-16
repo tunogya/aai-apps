@@ -2,6 +2,7 @@
 
 import useSWR from "swr";
 import { useState } from "react";
+import { ArrowPathIcon, TrashIcon } from "@heroicons/react/24/solid";
 
 const ApiKey = () => {
   const { data, mutate, isLoading } = useSWR("/api/token", (url) =>
@@ -67,20 +68,22 @@ const ApiKey = () => {
         <div className={"flex gap-2 text-sm h-fit"}>
           <button
             className={
-              "px-2 py-1 rounded-lg border hover:bg-red-500 hover:text-white hover:border-white font-semibold disabled:cursor-wait"
+              "px-2 py-1 rounded-lg border hover:bg-red-500 hover:text-white hover:border-white font-semibold disabled:cursor-wait flex gap-1 items-center"
             }
             onClick={deleteApiKey}
             disabled={status !== "idle"}
           >
+            <TrashIcon className={"w-4 h-4"} />
             Delete
           </button>
           <button
             className={
-              "px-2 py-1 rounded-lg border hover:bg-yellow-500 hover:text-white hover:border-white font-semibold disabled:cursor-wait"
+              "px-2 py-1 rounded-lg border hover:bg-yellow-500 hover:text-white hover:border-white font-semibold disabled:cursor-wait flex gap-1 items-center"
             }
             onClick={refreshApiKey}
             disabled={status !== "idle"}
           >
+            <ArrowPathIcon className={"w-4 h-4"} />
             Refresh
           </button>
         </div>
