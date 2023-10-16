@@ -4,24 +4,22 @@ export default withMiddlewareAuthRequired();
 export const config = {
   matcher: [
     // start a chat conversation api
-    "/api/chat/:path*",
+    "/api/chat",
     // CRUD conversation api
     "/api/conversation/:path*",
     // generate note api
     "/api/generate",
-    // CRUD note api
-    "/api/note/:path*",
     // CRUD persona api
     "/api/persona/:path*",
     // query dashboard api
     "/api/dashboard/:path*",
-    // upload files
-    "/api/upload",
     // start a payment;
     // note: /api/checkout/callback is stripe callback url
     "/api/checkout",
     // query usage
     "/api/usage/:path*",
+    // token
+    "/api/token",
     // chat page
     "/chat/:path*",
     // dashboard page
