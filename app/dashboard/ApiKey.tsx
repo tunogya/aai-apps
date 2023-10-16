@@ -55,15 +55,15 @@ const ApiKey = () => {
   };
 
   return (
-    <div className={"text-gray-800 flex flex-col"}>
+    <div className={"text-gray-800 flex flex-col gap-4"}>
       <div className={"text-2xl font-semibold border-b py-2"}>API Key</div>
-      <div className={"text-sm text-gray-500 max-w-3xl mt-2"}>
+      <div className={"text-sm text-gray-500 max-w-3xl"}>
         Do not share your API key with others, or expose it in the browser or
         other client-side code. In order to protect the security of your
         account, AbandonAI may also automatically disable any API key that we
         have found has leaked publicly.
       </div>
-      <div className={"flex flex-col gap-4 justify-center mt-4"}>
+      <div className={"flex flex-col gap-4 justify-center"}>
         {isLoading || status === "loading" ? (
           <div className={"p-2 bg-gray-100 w-fit rounded-lg min-w-[360px]"}>
             ...
@@ -120,6 +120,9 @@ const ApiKey = () => {
             Refresh
           </button>
         </div>
+      </div>
+      <div className={"text-sm text-gray-500 select-text"}>
+        API Endpoint: https://app.abandon.ai/api/chat/completions
       </div>
     </div>
   );
