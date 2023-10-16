@@ -76,41 +76,51 @@ export default function Chat() {
                   "border flex rounded-[18px] md:rounded-[29px] w-full px-3 py-1.5 md:py-4 md:px-5 shadow text-gray-800 bg-white items-end gap-2"
                 }
               >
-                <textarea
-                  value={input}
-                  className={
-                    "w-full outline-none text-sm md:text-base focus:outline-none focus:bg-transparent max-h-52 min-h-6 overflow-y-auto resize-none"
-                  }
-                  ref={inputRef}
-                  maxLength={2000}
-                  rows={1}
-                  onChange={(e) => {
-                    e.target.style.height = "auto";
-                    e.target.style.height = e.target.scrollHeight + "px";
-                    handleInputChange(e);
-                  }}
-                  placeholder={"Message"}
-                  onKeyDown={async (e) => {
-                    if (e.key === "Enter" && !e.shiftKey) {
-                      if (e.nativeEvent.isComposing) return;
-                      e.preventDefault();
-                      handleSubmit(e as any);
-                      if (inputRef.current) {
-                        // @ts-ignore
-                        inputRef.current.style.height = "auto";
-                      }
-                    } else if (e.key === "Enter" && e.shiftKey) {
-                      if (inputRef.current) {
-                        // @ts-ignore
-                        inputRef.current.style.height = "auto";
-                        // @ts-ignore
-                        inputRef.current.style.height =
-                          // @ts-ignore
-                          e.target.scrollHeight + "px";
-                      }
+                {isLoading ? (
+                  <div
+                    className={
+                      "w-full text-gray-500 outline-none text-sm md:text-base focus:outline-none focus:bg-transparent max-h-52 min-h-6 overflow-y-auto resize-none"
                     }
-                  }}
-                />
+                  >
+                    Generating ✨✨
+                  </div>
+                ) : (
+                  <textarea
+                    value={input}
+                    className={
+                      "w-full outline-none text-sm md:text-base focus:outline-none focus:bg-transparent max-h-52 min-h-6 overflow-y-auto resize-none"
+                    }
+                    ref={inputRef}
+                    maxLength={2000}
+                    rows={1}
+                    onChange={(e) => {
+                      e.target.style.height = "auto";
+                      e.target.style.height = e.target.scrollHeight + "px";
+                      handleInputChange(e);
+                    }}
+                    placeholder={"Message"}
+                    onKeyDown={async (e) => {
+                      if (e.key === "Enter" && !e.shiftKey) {
+                        if (e.nativeEvent.isComposing) return;
+                        e.preventDefault();
+                        handleSubmit(e as any);
+                        if (inputRef.current) {
+                          // @ts-ignore
+                          inputRef.current.style.height = "auto";
+                        }
+                      } else if (e.key === "Enter" && e.shiftKey) {
+                        if (inputRef.current) {
+                          // @ts-ignore
+                          inputRef.current.style.height = "auto";
+                          // @ts-ignore
+                          inputRef.current.style.height =
+                            // @ts-ignore
+                            e.target.scrollHeight + "px";
+                        }
+                      }
+                    }}
+                  />
+                )}
                 <button
                   type={isLoading ? "button" : "submit"}
                   onClick={isLoading ? stop : undefined}
@@ -218,15 +228,6 @@ export default function Chat() {
           "h-[calc(100vh-136px)] md:h-[calc(100vh-142px)] w-full overflow-y-auto relative"
         }
       >
-        {isLoading && (
-          <div
-            className={"px-4 md:px-8 py-2 md:py-4 flex justify-center border-b"}
-          >
-            <div className={"max-w-3xl w-full h-fit gap-3 text-xs"}>
-              ✨✨ Generating...
-            </div>
-          </div>
-        )}
         {messages.length > 0 ? (
           <>
             {messages
