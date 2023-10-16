@@ -75,8 +75,10 @@ const ApiKey = () => {
             }
           >
             {show
-              ? data?.token || "-"
-              : data?.token?.slice(0, 7) + "..." + data?.token?.slice(-4)}
+              ? data?.token || "No token yet."
+              : data?.token
+              ? data?.token?.slice(0, 7) + "..." + data?.token?.slice(-4)
+              : "No token yet."}
           </div>
         )}
         <div className={"flex gap-2 text-sm h-fit"}>
