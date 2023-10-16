@@ -27,13 +27,13 @@ export async function POST(req: Request): Promise<Response> {
   // @ts-ignore
   const { user } = await getSession();
   const sub = user.sub;
-  let { messages, model, id } = await req.json();
   const balance = ((await redisClient.get(`${sub}:balance`)) as number) || 0;
   if (balance < -0.1) {
     return new Response("Not enough balance", {
       status: 401,
     });
   }
+  let { messages, model, id } = await req.json();
 
   messages.slice(-8);
 
@@ -53,7 +53,7 @@ export async function POST(req: Request): Promise<Response> {
       messages,
       temperature: 0.7,
       stream: true,
-      max_tokens: 500,
+      max_tokens: 1024,
     });
 
     const stream = OpenAIStream(res, {
