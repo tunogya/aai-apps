@@ -46,14 +46,12 @@ export async function POST(req: Request): Promise<Response> {
     });
   }
 
-  let { messages, model } = await req.json();
+  const config = await req.json();
 
   try {
     const res = await openai
       .createChatCompletion({
-        model,
-        messages,
-        temperature: 0.7,
+        ...config,
         stream: false,
       })
       .then((res) => res.json());
@@ -62,11 +60,12 @@ export async function POST(req: Request): Promise<Response> {
     const { prompt_tokens, completion_tokens, total_tokens } = res.usage;
 
     const prompt_cost = roundUp(
-      (prompt_tokens / 1000) * AI_MODELS_MAP.get(model)!.input_price,
+      (prompt_tokens / 1000) * AI_MODELS_MAP.get(config.model)!.input_price,
       6,
     );
     const completion_cost = roundUp(
-      (completion_tokens / 1000) * AI_MODELS_MAP.get(model)!.output_price,
+      (completion_tokens / 1000) *
+        AI_MODELS_MAP.get(config.model)!.output_price,
       6,
     );
     const fee_cost = roundUp((prompt_cost + completion_cost) * FEE_RATE, 6);
@@ -83,7 +82,7 @@ export async function POST(req: Request): Promise<Response> {
               Item: {
                 PK: `USER#${sub}`,
                 SK: `USAGE#${new Date().toISOString()}`,
-                model,
+                model: config.model,
                 prompt_tokens,
                 completion_tokens,
                 total_tokens,
