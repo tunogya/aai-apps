@@ -177,9 +177,13 @@ export async function POST(req: Request): Promise<Response> {
 
       return new Response(JSON.stringify(res), {
         status: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
     }
   } catch (e) {
+    console.log(e);
     return new Response("Internal Server Error", {
       status: 500,
     });
