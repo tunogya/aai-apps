@@ -25,7 +25,7 @@ const POST = async (req: NextRequest) => {
   if (oldToken) {
     await redisClient.del(`${oldToken}:sub`);
   }
-  const token = "ab-" + uuidv4();
+  const token = "sk-" + uuidv4().replaceAll("-", "");
   await redisClient
     .multi()
     .set(`${sub}:token`, token)
