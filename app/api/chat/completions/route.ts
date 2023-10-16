@@ -51,9 +51,7 @@ export async function POST(req: Request): Promise<Response> {
 
   try {
     const res = await openai
-      .createChatCompletion({
-        ...config,
-      })
+      .createChatCompletion(config)
       .then((res) => res.json());
 
     if (config?.stream) {
