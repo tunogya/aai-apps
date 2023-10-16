@@ -53,14 +53,16 @@ export async function POST(req: Request): Promise<Response> {
     });
   }
 
-  const configuration = new Configuration({
-    apiKey: process.env.OPENAI_API_KEY,
-    organization: process.env.OPENAI_ORG_ID2,
-  });
+  let organization = process.env.OPENAI_ORG_ID2;
 
   if (config.model === "gpt-4") {
-    configuration.organization = process.env.OPENAI_ORG_ID;
+    organization = process.env.OPENAI_ORG_ID;
   }
+
+  const configuration = new Configuration({
+    apiKey: process.env.OPENAI_API_KEY,
+    organization,
+  });
 
   const openai = new OpenAIApi(configuration);
 

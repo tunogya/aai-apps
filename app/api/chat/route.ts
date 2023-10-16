@@ -30,10 +30,7 @@ export async function POST(req: Request): Promise<Response> {
 
   messages.slice(-8);
 
-  const configuration = new Configuration({
-    apiKey: process.env.OPENAI_API_KEY,
-    organization: process.env.OPENAI_ORG_ID2,
-  });
+  let organization = process.env.OPENAI_ORG_ID2;
 
   if (model === "GPT-3.5") {
     if (messages.length > 4) {
@@ -43,8 +40,14 @@ export async function POST(req: Request): Promise<Response> {
     }
   } else if (model === "GPT-4") {
     model = "gpt-4";
-    configuration.organization = process.env.OPENAI_ORG_ID;
+    organization = process.env.OPENAI_ORG_ID;
   }
+
+  const configuration = new Configuration({
+    apiKey: process.env.OPENAI_API_KEY,
+    organization,
+  });
+
   const openai = new OpenAIApi(configuration);
 
   try {
