@@ -70,9 +70,21 @@ const ApiKey = () => {
           </div>
         ) : (
           <div
+            id={"apiKey"}
             className={
-              "px-4 py-2 bg-gray-100 w-fit rounded-lg select-text min-w-[360px]"
+              "px-4 py-2 bg-gray-100 w-fit text-sm font-semibold rounded-lg select-text min-w-[360px] cursor-pointer"
             }
+            onClick={async () => {
+              await navigator.clipboard.writeText(data?.token);
+              document.getElementById("apiKey")!.innerText = "Copied Success!";
+              setTimeout(() => {
+                document.getElementById("apiKey")!.innerText = show
+                  ? data?.token || "No token yet."
+                  : data?.token
+                  ? data?.token?.slice(0, 7) + "..." + data?.token?.slice(-4)
+                  : "No token yet.";
+              }, 2000);
+            }}
           >
             {show
               ? data?.token || "No token yet."
@@ -123,7 +135,21 @@ const ApiKey = () => {
           </button>
         </div>
       </div>
-      <div className={"text-sm text-gray-500 select-text"}>
+      <div
+        id={"apiKey-endpoint"}
+        className={"text-sm text-gray-500 select-text cursor-pointer"}
+        onClick={async () => {
+          await navigator.clipboard.writeText(
+            "https://app.abandon.ai/api/chat/completions",
+          );
+          document.getElementById("apiKey-endpoint")!.innerText =
+            "API Endpoint: Copied Success!";
+          setTimeout(() => {
+            document.getElementById("apiKey-endpoint")!.innerText =
+              "API Endpoint: https://app.abandon.ai/api/chat/completions";
+          }, 2000);
+        }}
+      >
         API Endpoint: https://app.abandon.ai/api/chat/completions
       </div>
     </div>
