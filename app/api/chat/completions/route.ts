@@ -50,11 +50,8 @@ export async function POST(req: Request): Promise<Response> {
   const config = await req.json();
 
   try {
-    const res = await openai
-      .createChatCompletion(config)
-      .then((res) => res.json());
-
     if (config?.stream) {
+      const res = await openai.createChatCompletion(config);
       const stream = OpenAIStream(res, {
         onCompletion(completion) {
           // record usage log and reduce the balance of user
@@ -96,6 +93,10 @@ export async function POST(req: Request): Promise<Response> {
 
       return new StreamingTextResponse(stream);
     } else {
+      const res = await openai
+        .createChatCompletion(config)
+        .then((res) => res.json());
+
       const id = res.id;
       const { prompt_tokens, completion_tokens, total_tokens } = res.usage;
 
