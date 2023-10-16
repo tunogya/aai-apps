@@ -16,13 +16,6 @@ export const runtime = "edge";
 
 const FEE_RATE = 0.3;
 
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
-  organization: process.env.OPENAI_ORG_ID,
-});
-
-const openai = new OpenAIApi(configuration);
-
 // @ts-ignore
 export async function POST(req: Request): Promise<Response> {
   const bearerToken = req.headers.get("Authorization");
@@ -59,6 +52,17 @@ export async function POST(req: Request): Promise<Response> {
       },
     });
   }
+
+  const configuration = new Configuration({
+    apiKey: process.env.OPENAI_API_KEY,
+    organization: process.env.OPENAI_ORG_ID2,
+  });
+
+  if (config.model === "gpt-4") {
+    configuration.organization = process.env.OPENAI_ORG_ID;
+  }
+
+  const openai = new OpenAIApi(configuration);
 
   try {
     if (config?.stream) {
