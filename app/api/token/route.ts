@@ -7,11 +7,6 @@ const GET = async (req: NextRequest) => {
   const session = await getSession();
   const sub = session?.user.sub;
   const token = await redisClient.get(`${sub}:token`);
-  if (!token) {
-    return new Response("No tokens", {
-      status: 404,
-    });
-  }
   return NextResponse.json({
     token,
   });

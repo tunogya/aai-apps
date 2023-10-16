@@ -1,5 +1,6 @@
 import React from "react";
 import Today from "@/app/dashboard/Today";
+import ApiKey from "@/app/dashboard/ApiKey";
 
 export const runtime = "edge";
 
@@ -11,6 +12,7 @@ export default async function SSRPage() {
       }
     >
       <Today />
+      <ApiKey />
     </div>
   );
 }
