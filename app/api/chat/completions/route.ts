@@ -45,6 +45,8 @@ export async function POST(req: Request): Promise<Response> {
   const hash = await calculateHash(JSON.stringify(config.messages));
   const cache = await redisClient.get(hash);
   if (cache) {
+    await redisClient.expire(hash, 60 * 60 * 24 * 7);
+
     return new Response(JSON.stringify(cache), {
       status: 200,
       headers: {
@@ -193,7 +195,7 @@ export async function POST(req: Request): Promise<Response> {
         }),
       );
       await redisClient.set(hash, JSON.stringify(res), {
-        ex: 60 * 60 * 24 * 30,
+        ex: 60 * 60 * 24 * 7,
       });
       return new Response(JSON.stringify(res), {
         status: 200,
