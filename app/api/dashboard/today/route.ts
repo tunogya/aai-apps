@@ -3,10 +3,16 @@ import { getSession } from "@auth0/nextjs-auth0";
 import ddbDocClient from "@/utils/ddbDocClient";
 import { QueryCommand } from "@aws-sdk/lib-dynamodb";
 import { roundUp } from "@/utils/roundUp";
+import redisClient from "@/utils/redisClient";
 
 const GET = async (req: NextRequest) => {
   const session = await getSession();
   const sub = session?.user.sub;
+
+  const cache = await redisClient.get(`today:${sub}`);
+  if (cache) {
+    return NextResponse.json(cache);
+  }
 
   const today = new Date();
   const year = today.getFullYear();
@@ -81,7 +87,7 @@ const GET = async (req: NextRequest) => {
     ).reduce((acc, usageItem) => acc + usageItem?.total_cost, 0),
   }));
 
-  return NextResponse.json({
+  const data = {
     daily: daily.map((item) => ({
       ...item,
       total: roundUp(item?.total || 0, 6),
@@ -93,7 +99,13 @@ const GET = async (req: NextRequest) => {
       yesterday: daily?.[daily.length - 2]?.total || 0,
       month: daily.reduce((acc, item) => acc + item.total!, 0),
     },
+  };
+
+  await redisClient.set(`today:${sub}`, JSON.stringify(data), {
+    ex: 60 * 5,
   });
+
+  return NextResponse.json(data);
 };
 
 export { GET };
