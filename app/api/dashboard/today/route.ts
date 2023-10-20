@@ -61,6 +61,8 @@ const GET = async (req: NextRequest) => {
     } else {
       break;
     }
+
+    await new Promise((resolve) => setTimeout(resolve, 200));
   }
 
   const daily = dates.map((item) => ({
