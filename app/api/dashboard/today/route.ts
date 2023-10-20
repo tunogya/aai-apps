@@ -55,14 +55,13 @@ const GET = async (req: NextRequest) => {
       UsageItems = UsageItems.concat(Items);
       if (LastEvaluatedKey) {
         startKey = LastEvaluatedKey;
+        await new Promise((resolve) => setTimeout(resolve, 200));
       } else {
         break;
       }
     } else {
       break;
     }
-
-    await new Promise((resolve) => setTimeout(resolve, 200));
   }
 
   const daily = dates.map((item) => ({
