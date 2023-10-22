@@ -12,10 +12,6 @@ const menu = [
     name: "Chat",
   },
   {
-    path: "/speak",
-    name: "Speak",
-  },
-  {
     path: "/usage",
     name: "Usage",
   },
