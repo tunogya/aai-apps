@@ -19,7 +19,7 @@ const config: Config = {
           "0%, 100%": {
             transform: "scaleX(0.2) scaleY(2)",
           },
-          "80%": {
+          "90%": {
             transform: "scale(1)",
           },
         },
@@ -27,7 +27,7 @@ const config: Config = {
           "0%, 100%": {
             transform: "scaleX(0.4) scaleY(1)",
           },
-          "85%": {
+          "94%": {
             transform: "scale(1)",
           },
         },
