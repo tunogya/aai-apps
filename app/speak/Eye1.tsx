@@ -2,8 +2,8 @@
 
 const Eye1 = () => {
   return (
-    <div className="w-[300px] h-[300px] relative">
-      <div className="w-[300px] h-[300px] left-0 top-0 absolute">
+    <div className="w-[300px] h-[300px] relative group cursor-pointer">
+      <div className="w-[300px] h-[300px] left-0 top-0 absolute animate-zoomInOut4">
         <svg
           width="300"
           height="300"
@@ -17,7 +17,7 @@ const Eye1 = () => {
           />
         </svg>
       </div>
-      <div className="w-[180px] h-[180px] left-[60px] top-[70px] absolute">
+      <div className="w-[180px] h-[180px] left-[60px] top-[70px] absolute animate-zoomInOut3">
         <svg
           width="180"
           height="180"
@@ -31,7 +31,7 @@ const Eye1 = () => {
           />
         </svg>
       </div>
-      <div className="w-[120px] h-[120px] left-[90px] top-[100px] absolute">
+      <div className="w-[120px] h-[120px] left-[90px] top-[100px] absolute animate-zoomInOut2">
         <svg
           width="120"
           height="120"
@@ -45,7 +45,7 @@ const Eye1 = () => {
           />
         </svg>
       </div>
-      <div className="w-[50px] h-[50px] left-[125px] top-[135px] absolute">
+      <div className="w-[50px] h-[50px] left-[125px] top-[135px] absolute animate-zoomInOut1">
         <svg
           width="50"
           height="50"
