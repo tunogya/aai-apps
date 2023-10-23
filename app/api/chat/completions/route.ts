@@ -35,7 +35,7 @@ export async function POST(req: Request): Promise<Response> {
 
   const balance = ((await redisClient.get(`${sub}:balance`)) as number) || 0;
   const bonus = ((await redisClient.get(`${sub}:bonus`)) as number) || 0;
-  if (balance + bonus < -0.1) {
+  if (balance + bonus < -1) {
     return new Response("Not enough balance", {
       status: 401,
     });
