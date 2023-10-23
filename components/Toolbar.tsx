@@ -53,7 +53,7 @@ const Toolbar: FC<{ border?: boolean }> = (props) => {
               >
                 <Popover.Panel
                   className={
-                    "absolute mt-1 right-0 w-40 rounded border shadow py-2 z-50"
+                    "absolute mt-1 right-0 w-40 rounded border shadow py-2 z-50 bg-white"
                   }
                 >
                   <a href={"/api/auth/logout"}>
