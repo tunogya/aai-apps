@@ -1,7 +1,6 @@
 "use client";
-import { Popover, Switch, Transition } from "@headlessui/react";
-import { FC, Fragment, useEffect, useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Popover, Transition } from "@headlessui/react";
+import { FC, Fragment } from "react";
 import ModelSwitch from "@/components/ModelSwitch";
 
 const Toolbar: FC<{ border?: boolean }> = (props) => {
