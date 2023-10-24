@@ -41,17 +41,8 @@ export async function POST(req: Request): Promise<Response> {
     model = "gpt-4";
   }
 
-  // default is OPENAI_ORG_ID2 organization
-  let organization = process.env.OPENAI_ORG_ID2;
-  const random = Math.floor(Math.random() * 2);
-  // if model is gpt-4, or if random is 1, use OPENAI_ORG_ID
-  if (random === 1 || model === "gpt-4") {
-    organization = process.env.OPENAI_ORG_ID;
-  }
-
   const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY,
-    organization,
   });
 
   const openai = new OpenAIApi(configuration);
