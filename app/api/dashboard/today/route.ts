@@ -49,6 +49,7 @@ const GET = async (req: NextRequest) => {
           },
           ProjectionExpression: "total_cost, created, model",
           ExclusiveStartKey: startKey,
+          Limit: 1000,
         }),
       );
 
@@ -56,7 +57,7 @@ const GET = async (req: NextRequest) => {
         UsageItems = UsageItems.concat(Items);
         if (LastEvaluatedKey) {
           startKey = LastEvaluatedKey;
-          await new Promise((resolve) => setTimeout(resolve, 1000));
+          await new Promise((resolve) => setTimeout(resolve, 200));
         } else {
           break;
         }
