@@ -65,6 +65,9 @@ export async function POST(req: Request): Promise<Response> {
             prompt: messages,
             completion: completion,
           }),
+          {
+            ex: 60 * 60 * 24,
+          },
         );
         // record usage log and reduce the balance of user
         await sqsClient.send(
