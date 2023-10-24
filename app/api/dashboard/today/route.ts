@@ -55,7 +55,7 @@ const GET = async (req: NextRequest) => {
       UsageItems = UsageItems.concat(Items);
       if (LastEvaluatedKey) {
         startKey = LastEvaluatedKey;
-        await new Promise((resolve) => setTimeout(resolve, 200));
+        await new Promise((resolve) => setTimeout(resolve, 1000));
       } else {
         break;
       }
