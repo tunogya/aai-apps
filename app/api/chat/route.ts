@@ -57,9 +57,17 @@ export async function POST(req: Request): Promise<Response> {
     });
 
     const stream = OpenAIStream(res, {
-      onCompletion(completion) {
+      async onCompletion(completion) {
+        const SK = `USAGE#${new Date().toISOString()}`;
+        await redisClient.set(
+          `USER#${sub}:${SK}`,
+          JSON.stringify({
+            prompt: messages,
+            completion: completion,
+          }),
+        );
         // record usage log and reduce the balance of user
-        sqsClient.send(
+        await sqsClient.send(
           new SendMessageBatchCommand({
             QueueUrl: process.env.AI_DB_UPDATE_SQS_FIFO_URL,
             Entries: [
@@ -69,9 +77,7 @@ export async function POST(req: Request): Promise<Response> {
                   TableName: "abandonai-prod",
                   Item: {
                     PK: `USER#${sub}`,
-                    SK: `USAGE#${new Date().toISOString()}`,
-                    prompt: messages,
-                    completion,
+                    SK,
                     model,
                     created: Math.floor(Date.now() / 1000),
                     TTL: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 12, // 12 month
