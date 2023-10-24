@@ -30,36 +30,40 @@ const GET = async (req: NextRequest) => {
     startKey = undefined;
 
   while (true) {
-    // @ts-ignore
-    const { Items, LastEvaluatedKey, Count } = await ddbDocClient.send(
-      new QueryCommand({
-        TableName: "abandonai-prod",
-        KeyConditionExpression: "#pk = :pk AND begins_with(#sk, :sk)",
-        FilterExpression: `#created >= :firstDay`,
-        ExpressionAttributeNames: {
-          "#pk": "PK",
-          "#sk": "SK",
-          "#created": "created",
-        },
-        ExpressionAttributeValues: {
-          ":pk": `USER#${sub}`,
-          ":sk": "USAGE#",
-          ":firstDay": Math.floor(firstDay.getTime() / 1000),
-        },
-        ProjectionExpression: "total_cost, created, model",
-        ExclusiveStartKey: startKey,
-      }),
-    );
+    try {
+      // @ts-ignore
+      const { Items, LastEvaluatedKey, Count } = await ddbDocClient.send(
+        new QueryCommand({
+          TableName: "abandonai-prod",
+          KeyConditionExpression: "#pk = :pk AND begins_with(#sk, :sk)",
+          FilterExpression: `#created >= :firstDay`,
+          ExpressionAttributeNames: {
+            "#pk": "PK",
+            "#sk": "SK",
+            "#created": "created",
+          },
+          ExpressionAttributeValues: {
+            ":pk": `USER#${sub}`,
+            ":sk": "USAGE#",
+            ":firstDay": Math.floor(firstDay.getTime() / 1000),
+          },
+          ProjectionExpression: "total_cost, created, model",
+          ExclusiveStartKey: startKey,
+        }),
+      );
 
-    if (Count && Count > 0) {
-      UsageItems = UsageItems.concat(Items);
-      if (LastEvaluatedKey) {
-        startKey = LastEvaluatedKey;
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+      if (Count && Count > 0) {
+        UsageItems = UsageItems.concat(Items);
+        if (LastEvaluatedKey) {
+          startKey = LastEvaluatedKey;
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+        } else {
+          break;
+        }
       } else {
         break;
       }
-    } else {
+    } catch (e) {
       break;
     }
   }
