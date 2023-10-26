@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { AsciiEffect } from "three/examples/jsm/effects/AsciiEffect";
-import { OrbitControls } from "@react-three/drei";
+// import { OrbitControls } from "@react-three/drei";
 
 export default function CSRPage() {
   const router = useRouter();
@@ -24,9 +24,8 @@ export default function CSRPage() {
       <Canvas>
         <ambientLight />
         <color attach="background" args={["black"]} />
-        <pointLight position={[10, 10, 10]} />
         <Torus />
-        <OrbitControls />
+        {/*<OrbitControls />*/}
         <AsciiRenderer fgColor="white" bgColor="black" />
       </Canvas>
     </>
@@ -51,7 +50,7 @@ function Torus() {
 
 function AsciiRenderer({
   renderIndex = 1,
-  characters = " A",
+  characters = " .:-+*=%@#",
   invert = true,
   color = false,
   resolution = 0.15,
