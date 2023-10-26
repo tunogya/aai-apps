@@ -83,7 +83,7 @@ export async function POST(req: Request): Promise<Response> {
                     SK,
                     model,
                     created: Math.floor(Date.now() / 1000),
-                    TTL: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 12, // 12 month
+                    TTL: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 31, // 31 days
                   },
                   ConditionExpression: "attribute_not_exists(#PK)",
                   ExpressionAttributeNames: {
