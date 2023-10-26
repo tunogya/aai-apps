@@ -72,24 +72,6 @@ const POST = async (req: Request) => {
                 },
                 MessageGroupId: "update-balance",
               },
-              {
-                Id: `update-payment-${payment_intent}`,
-                MessageBody: JSON.stringify({
-                  TableName: "abandonai-prod",
-                  Item: {
-                    PK: `USER#${metadata.id}`,
-                    SK: `PAYMENT#${created}`,
-                    ...checkoutSessionCompleted,
-                  },
-                }),
-                MessageAttributes: {
-                  Command: {
-                    DataType: "String",
-                    StringValue: "PutCommand",
-                  },
-                },
-                MessageGroupId: "update-payment",
-              },
             ],
           }),
         );
