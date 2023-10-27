@@ -184,6 +184,31 @@ export async function POST(req: Request): Promise<Response> {
               MessageDeduplicationId: `${id}-update-balance`,
               MessageGroupId: "update-balance",
             },
+            {
+              Id: `${id}-update-credit`,
+              MessageBody: JSON.stringify({
+                TableName: "abandonai-prod",
+                Key: {
+                  PK: `USER#${sub}`,
+                  SK: "CREDIT",
+                },
+                UpdateExpression: "ADD #balance :total_cost",
+                ExpressionAttributeNames: {
+                  "#balance": "balance",
+                },
+                ExpressionAttributeValues: {
+                  ":total_cost": total_cost * 20,
+                },
+              }),
+              MessageAttributes: {
+                Command: {
+                  DataType: "String",
+                  StringValue: "UpdateCommand",
+                },
+              },
+              MessageDeduplicationId: `${id}-update-credit`,
+              MessageGroupId: "update-credit",
+            },
           ],
         }),
       );
