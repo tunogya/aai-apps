@@ -8,18 +8,21 @@ import {
   BarChart,
   Bar,
   Tooltip,
-  YAxis,
 } from "recharts";
 import { roundUp } from "@/utils/roundUp";
 import numeral from "numeral";
 import { DepositButton } from "@/components/DepositButton";
 import moment from "moment";
-import Image from "next/image";
 
 const CSR = () => {
   const { data: balanceData } = useSWR("/api/dashboard/balance", (url) =>
     fetch(url).then((res) => res.json()),
   );
+  const { data: todayData } = useSWR("/api/dashboard/today", (url) =>
+    fetch(url).then((res) => res.json()),
+  );
+
+  console.log(todayData);
 
   return (
     <div className={"flex flex-col gap-2 xl:gap-8"}>
@@ -30,7 +33,7 @@ const CSR = () => {
       >
         <div className={"text-[28px] font-semibold"}>Today</div>
       </div>
-      <div className={"flex h-[230px] w-full"}>
+      <div className={"flex h-[230px] w-full gap-5"}>
         <div className={"flex flex-col max-w-[760px] h-[230px] w-full gap-1"}>
           <div className={"flex gap-20 h-[70px]"}>
             <div className={"flex flex-col gap-1"}>
@@ -46,11 +49,43 @@ const CSR = () => {
               <div className={"text-gray-400 select-text"}>$0</div>
             </div>
           </div>
-          <div className={"flex-1"}></div>
+          <div className={"h-[128px] w-full mt-4"}>
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={todayData || []}>
+                <CartesianGrid strokeOpacity={0.5} horizontal={false} />
+                <XAxis
+                  dataKey="hour"
+                  axisLine={{
+                    stroke: "#c9c9c9",
+                  }}
+                  type={"number"}
+                  tickLine={{
+                    stroke: "#c9c9c9",
+                  }}
+                  tick={{ fontSize: "10px" }}
+                  height={16}
+                />
+                <Bar
+                  stackId="a"
+                  strokeWidth={2}
+                  dataKey={"gpt4"}
+                  fill={"#AB68FF"}
+                />
+                <Bar
+                  stackId="a"
+                  strokeWidth={2}
+                  dataKey={"gpt3_5"}
+                  fill={"#19C37D"}
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </div>
         <div className={"flex flex-col flex-1"}>
           <div
-            className={"h-[95px] pl-5 pb-5 w-full border-b flex flex-col gap-1"}
+            className={
+              "h-[105px] pl-5 pb-5 w-full border-b flex flex-col gap-1"
+            }
           >
             <div className={"flex justify-between items-center text-sm"}>
               <div className={"text-gray-700"}>USD Balance</div>
@@ -62,7 +97,7 @@ const CSR = () => {
             </div>
             <div className={"text-xs text-gray-400"}>Your balance</div>
           </div>
-          <div className={"h-[95px] pl-5 pt-5 w-full flex flex-col gap-1"}>
+          <div className={"h-[105px] pl-5 pt-5 w-full flex flex-col gap-1"}>
             <div className={"flex justify-between items-center text-sm"}>
               <div className={"text-gray-700"}>Credit Points</div>
               <div className={"text-[#0066FF]"}>View</div>
