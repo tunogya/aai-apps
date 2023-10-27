@@ -9,11 +9,6 @@ const GET = async (req: NextRequest) => {
   const session = await getSession();
   const sub = session?.user.sub;
 
-  const cache = await redisClient.get(`today:${sub}`);
-  if (cache) {
-    return NextResponse.json(cache);
-  }
-
   const today = new Date();
   let rawData: any[] = [],
     startKey = undefined;
@@ -81,10 +76,6 @@ const GET = async (req: NextRequest) => {
       gpt4: roundUp(sumOfGPT4, 6),
     });
   }
-
-  await redisClient.set(`today:${sub}`, JSON.stringify(data), {
-    ex: 60 * 5,
-  });
 
   return NextResponse.json(data);
 };
