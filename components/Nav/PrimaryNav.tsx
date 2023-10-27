@@ -12,14 +12,14 @@ const PrimaryNav: FC<{
       {/*Desktop*/}
       <div
         className={
-          "shrink-0 h-full border-r px-0 pr-4 2xl:pl-8 2xl:w-[260px] py-4 space-y-10 relative hidden md:block"
+          "shrink-0 h-full border-r px-0 pr-4 2xl:pl-8 2xl:w-[260px] min-w-[220px] py-4 space-y-10 relative hidden md:block"
         }
       >
         <Account />
         <CoreNav />
         <div
           className={
-            "absolute bottom-0 left-0 pb-8 pt-4 pl-4 2xl:pl-8 flex items-center gap-1 bg-white select-none"
+            "absolute bottom-0 left-0 pb-8 pt-4 pl-4 2xl:pl-8 flex items-center gap-3 bg-white select-none"
           }
         >
           <Image src={"/favicon.svg"} alt={""} height={36} width={36} />
@@ -41,8 +41,6 @@ const PrimaryNav: FC<{
           </div>
         </div>
       </div>
-      {/*Mobile*/}
-      <Tabbar />
     </>
   );
 };
