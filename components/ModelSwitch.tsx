@@ -42,7 +42,7 @@ const ModelSwitch = () => {
           }`}
         >
           <div className={"whitespace-nowrap w-[110px] text-end"}>
-            {useGPT4 ? "GPT-4 Model" : "GPT-3.5 Model"}
+            GPT-4 Model
           </div>
         </div>
         <Switch
