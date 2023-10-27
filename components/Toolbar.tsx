@@ -11,12 +11,12 @@ const Toolbar: FC<{ border?: boolean }> = (props) => {
       }`}
     >
       <div className={"lg:w-[240px] xl:w-[300px]"}>
-        <input
-          placeholder={"Search"}
-          className={
-            "w-full px-4 py-2 focus:bg-gray-50 hover:bg-gray-50 focus:outline-0 rounded text-sm"
-          }
-        />
+        {/*<input*/}
+        {/*  placeholder={"Search"}*/}
+        {/*  className={*/}
+        {/*    "w-full px-4 py-2 focus:bg-gray-50 hover:bg-gray-50 focus:outline-0 rounded text-sm"*/}
+        {/*  }*/}
+        {/*/>*/}
       </div>
       <div className={"text-sm font-semibold flex items-center space-x-1"}>
         <ModelSwitch />

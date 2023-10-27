@@ -56,7 +56,7 @@ const ApiKey = () => {
 
   return (
     <div className={"text-gray-800 flex flex-col gap-4"}>
-      <div className={"text-2xl font-semibold border-b py-2"}>API Key</div>
+      <div className={"text-[28px] font-semibold border-b py-2"}>API Key</div>
       <div className={"text-sm text-gray-500 max-w-3xl"}>
         Do not share your API key with others, or expose it in the browser or
         other client-side code. In order to protect the security of your
