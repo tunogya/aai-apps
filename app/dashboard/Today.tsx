@@ -7,12 +7,9 @@ import {
   CartesianGrid,
   BarChart,
   Bar,
-  Tooltip,
 } from "recharts";
 import { roundUp } from "@/utils/roundUp";
-import numeral from "numeral";
 import { DepositButton } from "@/components/DepositButton";
-import moment from "moment";
 
 const CSR = () => {
   const { data: balanceData } = useSWR("/api/dashboard/balance", (url) =>
@@ -21,8 +18,6 @@ const CSR = () => {
   const { data: todayData } = useSWR("/api/dashboard/today", (url) =>
     fetch(url).then((res) => res.json()),
   );
-
-  console.log(todayData);
 
   return (
     <div className={"flex flex-col gap-2 xl:gap-8"}>
@@ -95,19 +90,17 @@ const CSR = () => {
               {balanceData?.balance < 0 ? "-" : ""}$
               {roundUp(Math.abs(balanceData?.balance) || 0, 6)}
             </div>
-            <div className={"text-xs text-gray-400"}>Your balance</div>
+            <div className={"text-xs text-gray-400"}>Advanced pay balance</div>
           </div>
           <div className={"h-[105px] pl-5 pt-5 w-full flex flex-col gap-1"}>
             <div className={"flex justify-between items-center text-sm"}>
               <div className={"text-gray-700"}>Credit Points</div>
-              <div className={"text-[#0066FF]"}>View</div>
+              {/*<div className={"text-[#0066FF]"}>View</div>*/}
             </div>
             <div className={"text-xl text-gray-800 select-text"}>
               {roundUp(Math.abs(balanceData?.credit) || 0, 6)} ABD
             </div>
-            <div className={"text-xs text-gray-400"}>
-              Abandon credit points.
-            </div>
+            <div className={"text-xs text-gray-400"}>Abandon credit points</div>
           </div>
         </div>
       </div>
