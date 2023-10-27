@@ -18,6 +18,9 @@ const CSR = () => {
   const { data: todayData } = useSWR("/api/dashboard/today", (url) =>
     fetch(url).then((res) => res.json()),
   );
+  const { data: costData } = useSWR("/api/dashboard/cost", (url) =>
+    fetch(url).then((res) => res.json()),
+  );
 
   return (
     <div className={"flex flex-col gap-2 xl:gap-8"}>
@@ -35,13 +38,17 @@ const CSR = () => {
               <div className={"flex justify-between items-center text-sm"}>
                 <div className={"text-gray-600"}>Gross costs</div>
               </div>
-              <div className={"text-xl text-gray-800 select-text"}>$0</div>
+              <div className={"text-xl text-gray-800 select-text"}>
+                ${costData?.today || "0"}
+              </div>
             </div>
             <div className={"flex flex-col gap-1"}>
               <div className={"flex justify-between items-center text-sm"}>
                 <div className={"text-gray-600"}>Yesterday</div>
               </div>
-              <div className={"text-gray-400 select-text"}>$0</div>
+              <div className={"text-gray-400 select-text"}>
+                ${costData?.yesterday || "0"}
+              </div>
             </div>
           </div>
           <div className={"h-[128px] w-full mt-4"}>

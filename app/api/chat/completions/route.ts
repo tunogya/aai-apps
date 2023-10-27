@@ -215,6 +215,18 @@ export async function POST(req: Request): Promise<Response> {
           ],
         }),
       );
+
+      const newTotalCost = await redisClient.incrbyfloat(
+        `${sub}:total_cost:${new Date().toISOString().slice(0, 10)}`,
+        total_cost,
+      );
+      if (newTotalCost === total_cost) {
+        await redisClient.expire(
+          `${sub}:total_cost:${new Date().toISOString().slice(0, 10)}`,
+          86400 * 7,
+        );
+      }
+
       await redisClient.set(hash, JSON.stringify(res), {
         ex: 60 * 60 * 24 * 7,
       });
