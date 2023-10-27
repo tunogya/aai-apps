@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { getSession } from "@auth0/nextjs-auth0";
 import ddbDocClient from "@/utils/ddbDocClient";
 import { QueryCommand } from "@aws-sdk/lib-dynamodb";
-import redisClient from "@/utils/redisClient";
 import { roundUp } from "@/utils/roundUp";
 
 const GET = async (req: NextRequest) => {
