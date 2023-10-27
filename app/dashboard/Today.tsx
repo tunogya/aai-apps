@@ -30,7 +30,7 @@ const CSR = () => {
           "flex gap-2 w-full py-2 xl:border-b text-gray-800 justify-between"
         }
       >
-        <div className={"text-2xl font-semibold"}>Wallet</div>
+        <div className={"text-2xl font-semibold"}>Today</div>
         {user?.picture && (
           <Image
             src={user.picture}

@@ -7,23 +7,19 @@ export const runtime = "edge";
 const Account = async () => {
   const session = await getSession();
   return (
-    <div
-      className={
-        "ml-4 flex items-center space-x-2 hover:bg-gray-50 px-2 py-1 rounded cursor-pointer"
-      }
-    >
-      <div className={"border-2 border-white shadow overflow-hidden"}>
+    <div className={"ml-4 flex items-center space-x-2 px-2 rounded"}>
+      <div className={"border-2 border-white shadow overflow-hidden p-0.5"}>
         <Image
           src={session?.user.picture}
-          width={32}
-          height={32}
+          width={20}
+          height={20}
           alt={""}
           priority={true}
         />
       </div>
       <div className={"truncate"}>
         <div
-          className={"text-sm text-gray-800 truncate font-semibold select-none"}
+          className={"text-sm text-gray-800 truncate font-medium select-text"}
         >
           {session?.user.email}
         </div>
