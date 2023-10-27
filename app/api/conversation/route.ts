@@ -15,7 +15,6 @@ const GET = async (req: NextRequest) => {
       ExpressionAttributeNames: {
         "#pk": "PK",
         "#sk": "SK",
-        "#messages": "messages",
         "#updated": "updated",
         "#title": "title",
       },
@@ -31,7 +30,7 @@ const GET = async (req: NextRequest) => {
             SK: `CHAT2#${cursor}`,
           }
         : undefined,
-      ProjectionExpression: "#messages, #updated, #title, #pk, #sk",
+      ProjectionExpression: "#updated, #title, #pk, #sk",
     }),
   );
   return NextResponse.json({
