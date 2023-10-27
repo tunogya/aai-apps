@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSession } from "@auth0/nextjs-auth0";
 import redisClient from "@/utils/redisClient";
+import { roundUp } from "@/utils/roundUp";
 
 const GET = async (req: NextRequest) => {
   const session = await getSession();
@@ -17,8 +18,8 @@ const GET = async (req: NextRequest) => {
   );
 
   return NextResponse.json({
-    today: today || 0,
-    yesterday: yesterday || 0,
+    today: roundUp(Number(today), 6) || 0,
+    yesterday: roundUp(Number(yesterday), 6) || 0,
   });
 };
 
