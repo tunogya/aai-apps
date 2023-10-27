@@ -83,13 +83,13 @@ const CSR = () => {
             </ResponsiveContainer>
           </div>
         </div>
-        <div className={"flex flex-col flex-1"}>
+        <div className={"flex flex-col flex-1 min-w-fit"}>
           <div
             className={
               "h-[105px] pl-5 pb-5 w-full border-b flex flex-col gap-1"
             }
           >
-            <div className={"flex justify-between items-center text-sm"}>
+            <div className={"flex justify-between items-center text-sm gap-5"}>
               <div className={"text-gray-700"}>USD Balance</div>
               <DepositButton className={"text-[#0066FF]"} />
             </div>
