@@ -1,13 +1,20 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Script from "next/script";
-import { TailwindIndicator } from "@/components/TailwindIndicator";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
 import { ReactNode } from "react";
 import Link from "next/link";
 import "./styles/globals.css";
 import "./styles/katex.min.css";
-import CheckBalance from "@/components/CheckBalance";
+import dynamic from "next/dynamic";
+
+const CheckBalance = dynamic(() => import("@/components/CheckBalance"), {
+  ssr: false,
+});
+const TailwindIndicator = dynamic(
+  () => import("@/components/TailwindIndicator"),
+  { ssr: false },
+);
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 

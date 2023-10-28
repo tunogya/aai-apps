@@ -1,5 +1,6 @@
 import Link from "next/link";
 import React from "react";
+
 export default function Page() {
   return (
     <div className="w-full h-full flex flex-col justify-center items-center py-4 gap-20 px-3">

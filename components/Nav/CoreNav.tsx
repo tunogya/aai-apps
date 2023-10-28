@@ -24,7 +24,10 @@ const CoreNav = () => {
   return (
     <div className={""}>
       {menu.map((item, index) => (
-        <div className={"flex items-center select-none"} key={index}>
+        <div
+          className={"flex items-center select-none cursor-pointer"}
+          key={index}
+        >
           <div
             className={`bg-white w-4 h-5 ${
               path.includes(item.path) ? `border-l-2 border-[#0066FF]` : ""

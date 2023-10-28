@@ -2,7 +2,6 @@
 
 import { useChat } from "ai/react";
 import React, { useEffect, useMemo, useRef } from "react";
-import CodeFormat from "@/app/chat/[[...id]]/CodeFormat";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
@@ -17,6 +16,9 @@ import { BoltIcon, SparklesIcon } from "@heroicons/react/24/solid";
 import dynamic from "next/dynamic";
 
 const MobileDrawer = dynamic(() => import("./MobileDrawer"), { ssr: false });
+const CodeFormat = dynamic(() => import("@/app/chat/[[...id]]/CodeFormat"), {
+  ssr: false,
+});
 
 export default function Chat() {
   const params = useParams();

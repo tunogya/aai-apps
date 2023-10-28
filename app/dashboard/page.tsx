@@ -1,5 +1,7 @@
 import React from "react";
-import Today from "@/app/dashboard/Today";
+import dynamic from "next/dynamic";
+
+const Today = dynamic(() => import("@/app/dashboard/Today"), { ssr: false });
 
 export const runtime = "edge";
 

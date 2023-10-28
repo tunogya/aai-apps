@@ -1,14 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import ModelSwitch from "@/components/ModelSwitch";
 import { ChevronUpIcon } from "@heroicons/react/20/solid";
 import { roundUp } from "@/utils/roundUp";
-import { DepositButton } from "@/components/DepositButton";
 import React, { useState } from "react";
 import useSWR from "swr";
 import { useSearchParams } from "next/navigation";
 import { useUser } from "@auth0/nextjs-auth0/client";
+import dynamic from "next/dynamic";
+
+const DepositButton = dynamic(() => import("@/components/DepositButton"), {
+  ssr: false,
+});
+const ModelSwitch = dynamic(() => import("@/components/ModelSwitch"), {
+  ssr: false,
+});
 
 const CSR = () => {
   const searchParams = useSearchParams();
@@ -25,7 +31,7 @@ const CSR = () => {
           href={`/chat?model=${searchParams.get("model") || "GPT-3.5"}`}
           prefetch
           className={
-            "flex items-center hover:bg-gray-50 rounded cursor-pointer select-none md:hidden"
+            "flex items-center rounded cursor-pointer select-none md:hidden"
           }
         >
           <div className={"w-5 shrink-0"}>

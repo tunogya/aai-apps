@@ -35,3 +35,5 @@ export const DepositButton: FC<{
     </button>
   );
 };
+
+export default DepositButton;

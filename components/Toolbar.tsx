@@ -1,10 +1,14 @@
 "use client";
 import { Popover, Transition } from "@headlessui/react";
 import { FC, Fragment } from "react";
-import ModelSwitch from "@/components/ModelSwitch";
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import dynamic from "next/dynamic";
+
+const ModelSwitch = dynamic(() => import("@/components/ModelSwitch"), {
+  ssr: false,
+});
 
 const Toolbar: FC<{ border?: boolean }> = (props) => {
   const pathname = usePathname();

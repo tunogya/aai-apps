@@ -1,6 +1,5 @@
 import { getSession } from "@auth0/nextjs-auth0/edge";
 import Image from "next/image";
-import md5 from "md5";
 
 export const runtime = "edge";
 
