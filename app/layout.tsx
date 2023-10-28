@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import Script from "next/script";
 import { TailwindIndicator } from "@/components/TailwindIndicator";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
 import { ReactNode } from "react";
@@ -9,6 +8,7 @@ import "cal-sans";
 import "./styles/globals.css";
 import "./styles/katex.min.css";
 import CheckBalance from "@/components/CheckBalance";
+import { GoogleTagManager } from "@next/third-parties/google";
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 
@@ -50,18 +50,7 @@ export default function RootLayout(props: { children: ReactNode }) {
             prefetch
             href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css"
           />
-          <Script
-            src={"https://www.googletagmanager.com/gtag/js?id=G-HT9Q8GW970"}
-          />
-          <Script id="google-tag-manager" strategy="afterInteractive">
-            {`
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                
-                gtag('config', 'G-HT9Q8GW970');
-              `}
-          </Script>
+          <GoogleTagManager gtmId="G-HT9Q8GW970" />
           <TailwindIndicator />
           <CheckBalance />
           {props.children}
