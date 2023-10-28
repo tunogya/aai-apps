@@ -336,11 +336,7 @@ export default function Chat() {
           </div>
         )}
       </div>
-      <div
-        className={
-          "absolute z-50 bottom-0 bg-white w-full md:hidden flex items-center justify-between px-4 border-t"
-        }
-      >
+      <div className={"absolute z-50 bottom-0 bg-white w-full md:hidden"}>
         <MobileDrawer />
       </div>
     </div>
