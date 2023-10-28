@@ -15,7 +15,7 @@
     }
   ],
   "scope": "/",
-  "start_url": "/chat",
+  "start_url": "/",
   "theme_color": "#ffffff",
   "background_color": "#ffffff",
   "orientation": "portrait",
