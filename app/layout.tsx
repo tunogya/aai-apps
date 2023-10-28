@@ -4,7 +4,6 @@ import { TailwindIndicator } from "@/components/TailwindIndicator";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
 import { ReactNode } from "react";
 import Link from "next/link";
-import "cal-sans";
 import "./styles/globals.css";
 import "./styles/katex.min.css";
 import CheckBalance from "@/components/CheckBalance";
