@@ -4,7 +4,7 @@ import { FC, Fragment } from "react";
 import ModelSwitch from "@/components/ModelSwitch";
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 const Toolbar: FC<{ border?: boolean }> = (props) => {
   const pathname = usePathname();
