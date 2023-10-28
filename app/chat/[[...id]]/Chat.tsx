@@ -18,7 +18,7 @@ import Link from "next/link";
 import { ChevronUpIcon } from "@heroicons/react/20/solid";
 import { roundUp } from "@/utils/roundUp";
 import { DepositButton } from "@/components/DepositButton";
-import { BoltIcon } from "@heroicons/react/24/solid";
+import { BoltIcon, SparklesIcon } from "@heroicons/react/24/solid";
 
 export default function Chat() {
   const params = useParams();
@@ -333,7 +333,11 @@ export default function Chat() {
               isPurple ? "text-[#AB68FF]" : "text-gray-800"
             } w-full h-full flex items-center justify-center text-3xl md:text-4xl font-semibold pb-52`}
           >
-            {isPurple && <BoltIcon className={"w-10 h-10"} />}
+            {!isPurple ? (
+              <BoltIcon className={"w-10 h-10"} />
+            ) : (
+              <SparklesIcon className={"w-10 h-10"} />
+            )}
             ChatGPT
           </div>
         )}
