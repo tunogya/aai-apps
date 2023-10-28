@@ -90,7 +90,7 @@ const CSR = () => {
             }
           >
             <div className={"flex justify-between items-center text-sm gap-5"}>
-              <div className={"text-gray-700"}>USD Balance</div>
+              <div className={"text-gray-600"}>USD Balance</div>
               <DepositButton className={"text-[#0066FF]"} />
             </div>
             <div className={"text-xl text-gray-800 select-text"}>
@@ -101,7 +101,7 @@ const CSR = () => {
           </div>
           <div className={"h-[105px] pl-5 pt-5 w-full flex flex-col gap-1"}>
             <div className={"flex justify-between items-center text-sm"}>
-              <div className={"text-gray-700"}>Credit Points</div>
+              <div className={"text-gray-600"}>Credit Points</div>
               {/*<div className={"text-[#0066FF]"}>View</div>*/}
             </div>
             <div className={"text-xl text-gray-800 select-text"}>

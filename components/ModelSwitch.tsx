@@ -37,7 +37,7 @@ const ModelSwitch = () => {
         onClick={() => setUseGPT4(!useGPT4)}
       >
         <div
-          className={`whitespace-nowrap text-end text-sm ${
+          className={`whitespace-nowrap text-end text-xs ${
             useGPT4 ? "text-[#AB68FF]" : "text-gray-800"
           }`}
         >
