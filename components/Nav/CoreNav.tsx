@@ -4,16 +4,16 @@ import { usePathname, useSearchParams } from "next/navigation";
 
 const menu = [
   {
-    path: "/dashboard",
-    name: "Home",
-  },
-  {
     path: "/chat",
-    name: "Chat",
+    name: "ChatGPT",
   },
   {
-    path: "/usage",
-    name: "Usage",
+    path: "/dashboard",
+    name: "Dashboard",
+  },
+  {
+    path: "/billing",
+    name: "Billing",
   },
 ];
 

@@ -36,7 +36,7 @@ const CSR = () => {
           <div className={"flex gap-20 h-[70px]"}>
             <div className={"flex flex-col gap-1"}>
               <div className={"flex justify-between items-center text-sm"}>
-                <div className={"text-gray-600"}>Gross costs</div>
+                <div className={"text-gray-600"}>Gross costs (UTC)</div>
               </div>
               <div className={"text-xl text-gray-800 select-text"}>
                 ${costData?.today || "0"}

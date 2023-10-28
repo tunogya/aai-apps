@@ -5,28 +5,26 @@ export const config = {
   matcher: [
     // start a chat conversation api
     "/api/chat",
-    // CRUD conversation api
-    "/api/conversation/:path*",
-    // generate note api
-    "/api/generate",
-    // CRUD persona api
-    "/api/persona/:path*",
-    // query dashboard api
-    "/api/dashboard/:path*",
     // start a payment;
     // note: /api/checkout/callback is stripe callback url
     "/api/checkout",
+    // CRUD conversation api
+    "/api/conversation/:path*",
+    // query dashboard api
+    "/api/dashboard/:path*",
+    // CRUD persona api
+    "/api/persona/:path*",
+    // Status api
+    "/api/status/:path*",
+    // generate note api
+    "/api/token/:path*",
     // query usage
     "/api/usage/:path*",
-    // token
-    "/api/token",
+    // billing page
+    "/billing/:path*",
     // chat page
     "/chat/:path*",
     // dashboard page
     "/dashboard/:path*",
-    // note page
-    "/note/:path*",
-    // usage page
-    "/usage/:path*",
   ],
 };

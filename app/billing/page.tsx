@@ -1,6 +1,6 @@
 import React from "react";
 import { getSession } from "@auth0/nextjs-auth0/edge";
-import Pages from "@/app/usage/Pages";
+import Pages from "@/app/billing/Pages";
 
 export const runtime = "edge";
 
