@@ -50,7 +50,7 @@ const ModelSwitch = () => {
           href={`/chat?model=${searchParams.get("model") || "GPT-3.5"}`}
           prefetch
           className={
-            "flex items-center hover:bg-gray-50 rounded cursor-pointer select-none m-2"
+            "flex items-center hover:bg-gray-50 rounded cursor-pointer select-none m-2 md:hidden"
           }
         >
           <div className={"w-5 shrink-0"}>
@@ -97,14 +97,14 @@ const ModelSwitch = () => {
             />
           </Switch>
         </div>
-        <button onClick={() => setShowMore(!showMore)}>
+        <button onClick={() => setShowMore(!showMore)} className={"md:hidden"}>
           <ChevronUpIcon
             className={`w-5 h-5 ${showMore ? "rotate-180" : ""}`}
           />
         </button>
       </div>
       {showMore && (
-        <div className={"px-4 pb-2 text-xs text-gray-800"}>
+        <div className={"px-4 pb-2 text-xs text-gray-800 md:hidden"}>
           <div className={"flex justify-between"}>
             <div>USD Balance: ${roundUp(balanceData?.balance || 0, 6)}</div>
             <DepositButton className={"text-[#0066FF]"} />
