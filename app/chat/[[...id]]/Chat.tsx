@@ -225,7 +225,7 @@ export default function Chat() {
       </form>
       <div
         className={
-          "h-[calc(100vh-136px)] md:h-[calc(100vh-142px)] w-full overflow-y-auto relative"
+          "h-[calc(100vh-88px)] md:h-[calc(100vh-142px)] w-full overflow-y-auto relative"
         }
       >
         {messages.length > 0 ? (
@@ -328,7 +328,7 @@ export default function Chat() {
           </div>
         )}
       </div>
-      <div className={"absolute z-50 bottom-[48px] bg-white w-full md:hidden"}>
+      <div className={"absolute z-50 bottom-0 bg-white w-full md:hidden"}>
         <ModelSwitch />
       </div>
     </div>
