@@ -3,7 +3,7 @@
 import { useChat } from "ai/react";
 import React, { useEffect, useMemo, useRef } from "react";
 import CodeFormat from "@/app/chat/[[...id]]/CodeFormat";
-import ReactMarkdown from "react-markdown";
+import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
@@ -296,7 +296,7 @@ export default function Chat() {
                           .startOf("second")
                           .fromNow()}
                       </div>
-                      <ReactMarkdown
+                      <Markdown
                         remarkPlugins={[remarkGfm, remarkMath]}
                         rehypePlugins={[rehypeKatex]}
                         components={{
@@ -313,7 +313,7 @@ export default function Chat() {
                         } markdown prose text-sm md:text-base w-full overflow-x-hidden break-words dark:prose-invert light leading-8`}
                       >
                         {m.content}
-                      </ReactMarkdown>
+                      </Markdown>
                     </div>
                   </div>
                 </div>

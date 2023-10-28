@@ -1,15 +1,9 @@
 "use client";
 import { FC, useEffect, useRef, useState } from "react";
-import { CodeProps } from "react-markdown/lib/ast-to-react";
 import copy from "copy-to-clipboard";
 import hljs from "highlight.js";
 
-const CodeFormat: FC<CodeProps> = ({
-  className,
-  inline,
-  children,
-  ...props
-}) => {
+const CodeFormat: FC<any> = ({ className, inline, children, ...props }) => {
   const match = /language-(\w+)/.exec(className || "");
   const [copied, setCopied] = useState(false);
   const ref = useRef(null);
