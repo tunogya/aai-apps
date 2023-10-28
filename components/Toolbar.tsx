@@ -2,6 +2,8 @@
 import { Popover, Transition } from "@headlessui/react";
 import { FC, Fragment } from "react";
 import ModelSwitch from "@/components/ModelSwitch";
+import { QuestionMarkCircleIcon } from "@heroicons/react/24/solid";
+import Link from "next/link";
 
 const Toolbar: FC<{ border?: boolean }> = (props) => {
   return (
@@ -20,6 +22,17 @@ const Toolbar: FC<{ border?: boolean }> = (props) => {
       </div>
       <div className={"text-sm font-semibold flex items-center space-x-1"}>
         <ModelSwitch />
+        <Link
+          href={
+            "https://www.abandon.ai/docs/resource/Introduction/introduction"
+          }
+          target={"_blank"}
+          className={
+            "hover:bg-gray-100 p-2 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+          }
+        >
+          <QuestionMarkCircleIcon className={"w-5 h-5 text-gray-800"} />
+        </Link>
         <Popover className="relative">
           {({ open }) => (
             <>
