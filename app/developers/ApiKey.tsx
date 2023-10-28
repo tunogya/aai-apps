@@ -8,6 +8,7 @@ import {
   EyeIcon,
   EyeSlashIcon,
 } from "@heroicons/react/24/solid";
+import Link from "next/link";
 
 const ApiKey = () => {
   const { data, mutate, isLoading } = useSWR("/api/token", (url) =>
@@ -57,11 +58,18 @@ const ApiKey = () => {
   return (
     <div className={"text-gray-800 flex flex-col gap-4 pb-4"}>
       <div className={"text-[28px] font-semibold border-b py-2"}>API Key</div>
-      <div className={"text-sm text-gray-500 max-w-3xl"}>
+      <div className={"text-sm text-gray-500 max-w-[760px]"}>
         Do not share your API key with others, or expose it in the browser or
         other client-side code. In order to protect the security of your
         account, AbandonAI may also automatically disable any API key that we
-        have found has leaked publicly.
+        have found has leaked publicly.{" "}
+        <Link
+          href={"https://www.abandon.ai/docs/resource/GetStarted/apikey"}
+          target={"_blank"}
+          className={"underline text-[#0066FF]"}
+        >
+          Learn more about API Key.
+        </Link>
       </div>
       <div className={"flex flex-col gap-4 justify-center"}>
         {isLoading || status === "loading" ? (

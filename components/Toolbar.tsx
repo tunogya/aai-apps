@@ -4,8 +4,11 @@ import { FC, Fragment } from "react";
 import ModelSwitch from "@/components/ModelSwitch";
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 
 const Toolbar: FC<{ border?: boolean }> = (props) => {
+  const pathname = usePathname();
+
   return (
     <div
       className={`hidden h-[60px] w-full md:flex items-center justify-between px-4 md:px-10 ${
@@ -22,11 +25,13 @@ const Toolbar: FC<{ border?: boolean }> = (props) => {
       </div>
       <div className={"text-sm font-semibold flex items-center space-x-1"}>
         <Link
-          href={"developers"}
+          href={"/developers"}
           prefetch
-          className={
-            "px-2 py-1.5 hover:bg-gray-100 text-gray-800 rounded-lg text-sm font-medium"
-          }
+          className={`px-2 py-1.5 hover:bg-gray-100 rounded-lg text-sm font-medium ${
+            pathname.startsWith("/developers")
+              ? "text-[#0066FF]"
+              : "text-gray-800"
+          }`}
         >
           Developers
         </Link>
