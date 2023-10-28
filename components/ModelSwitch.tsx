@@ -50,7 +50,7 @@ const ModelSwitch = () => {
           href={`/chat?model=${searchParams.get("model") || "GPT-3.5"}`}
           prefetch
           className={
-            "flex items-center hover:bg-gray-50 rounded cursor-pointer select-none m-2 md:hidden"
+            "flex items-center hover:bg-gray-50 rounded cursor-pointer select-none md:hidden"
           }
         >
           <div className={"w-5 shrink-0"}>
