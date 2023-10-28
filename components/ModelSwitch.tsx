@@ -2,7 +2,6 @@
 import { Switch } from "@headlessui/react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { BoltSlashIcon } from "@heroicons/react/24/solid";
 
 const ModelSwitch = () => {
   const searchParams = useSearchParams();

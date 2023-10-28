@@ -18,6 +18,7 @@ import Link from "next/link";
 import { ChevronUpIcon } from "@heroicons/react/20/solid";
 import { roundUp } from "@/utils/roundUp";
 import { DepositButton } from "@/components/DepositButton";
+import { BoltIcon } from "@heroicons/react/24/solid";
 
 export default function Chat() {
   const params = useParams();
@@ -80,9 +81,9 @@ export default function Chat() {
           <div className={"flex w-full max-w-3xl gap-3"}>
             <div className={"w-full flex gap-2"}>
               <div
-                className={
-                  "border flex rounded-[18px] md:rounded-[29px] w-full px-3 py-1.5 md:py-4 md:px-5 shadow text-gray-800 bg-white items-end gap-2"
-                }
+                className={`border ${
+                  isPurple ? "border-[#AB68FF]" : "shadow"
+                } flex rounded-[18px] md:rounded-[29px] w-full px-3 py-1.5 md:py-4 md:px-5 text-gray-800 bg-white items-end gap-2`}
               >
                 {isLoading ? (
                   <div
@@ -328,10 +329,11 @@ export default function Chat() {
           </>
         ) : (
           <div
-            className={
-              "w-full h-full flex items-center justify-center text-3xl md:text-4xl font-semibold text-gray-800 pb-52"
-            }
+            className={`${
+              isPurple ? "text-[#AB68FF]" : "text-gray-800"
+            } w-full h-full flex items-center justify-center text-3xl md:text-4xl font-semibold pb-52`}
           >
+            {isPurple && <BoltIcon className={"w-10 h-10"} />}
             ChatGPT
           </div>
         )}
