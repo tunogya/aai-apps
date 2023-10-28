@@ -316,7 +316,7 @@ export default function Chat() {
                 </div>
               ))
               .reverse()}
-            <div className={"h-40"}></div>
+            <div className={"h-40 xl:hidden"}></div>
           </>
         ) : (
           <div
