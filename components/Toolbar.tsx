@@ -21,6 +21,15 @@ const Toolbar: FC<{ border?: boolean }> = (props) => {
         {/*/>*/}
       </div>
       <div className={"text-sm font-semibold flex items-center space-x-1"}>
+        <Link
+          href={"developers"}
+          prefetch
+          className={
+            "px-2 py-1.5 hover:bg-gray-100 text-gray-800 rounded-lg text-sm font-medium"
+          }
+        >
+          Developers
+        </Link>
         <ModelSwitch />
         <Link
           href={

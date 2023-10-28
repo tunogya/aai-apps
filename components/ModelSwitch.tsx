@@ -29,15 +29,15 @@ const ModelSwitch = () => {
   }, [searchParams]);
 
   return (
-    <div className={"text-sm md:font-semibold"}>
+    <div className={"text-sm md:font-semibold hover:bg-gray-100 rounded-lg"}>
       <div
         className={
-          "flex items-center gap-2 py-2 px-4 rounded select-none w-full justify-between cursor-pointer"
+          "flex items-center gap-2 px-2 py-1.5 rounded select-none w-full justify-between cursor-pointer"
         }
         onClick={() => setUseGPT4(!useGPT4)}
       >
         <div
-          className={`whitespace-nowrap text-end text-xs ${
+          className={`whitespace-nowrap text-sm font-medium ${
             useGPT4 ? "text-[#AB68FF]" : "text-gray-800"
           }`}
         >

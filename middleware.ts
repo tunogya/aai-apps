@@ -26,5 +26,7 @@ export const config = {
     "/chat/:path*",
     // dashboard page
     "/dashboard/:path*",
+    // developers page
+    "/developers/:path*",
   ],
 };
