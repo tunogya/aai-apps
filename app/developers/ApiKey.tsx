@@ -7,6 +7,7 @@ import {
   TrashIcon,
   EyeIcon,
   EyeSlashIcon,
+  DocumentDuplicateIcon,
 } from "@heroicons/react/24/solid";
 import Link from "next/link";
 
@@ -78,20 +79,11 @@ const ApiKey = () => {
           </div>
         ) : (
           <div
-            id={"apiKey"}
             className={
-              "px-4 py-2 bg-gray-100 w-fit text-sm font-semibold rounded-lg select-text min-w-[360px] cursor-pointer"
+              "px-4 py-2 bg-gray-100 w-fit text-sm font-semibold rounded-lg select-text min-w-[360px] cursor-pointer flex items-center justify-between"
             }
             onClick={async () => {
               await navigator.clipboard.writeText(data?.token);
-              document.getElementById("apiKey")!.innerText = "Copied Success!";
-              setTimeout(() => {
-                document.getElementById("apiKey")!.innerText = show
-                  ? data?.token || "No token yet."
-                  : data?.token
-                  ? data?.token?.slice(0, 7) + "..." + data?.token?.slice(-4)
-                  : "No token yet.";
-              }, 2000);
             }}
           >
             {show
@@ -99,6 +91,7 @@ const ApiKey = () => {
               : data?.token
               ? data?.token?.slice(0, 7) + "..." + data?.token?.slice(-4)
               : "No token yet."}
+            <DocumentDuplicateIcon className={"w-4 h-4 ml-1"} />
           </div>
         )}
         <div className={"flex gap-2 text-sm h-fit"}>
@@ -144,21 +137,17 @@ const ApiKey = () => {
         </div>
       </div>
       <div
-        id={"apiKey-endpoint"}
-        className={"text-sm text-gray-500 select-text cursor-pointer"}
+        className={
+          "text-sm text-gray-500 select-text cursor-pointer flex items-center"
+        }
         onClick={async () => {
           await navigator.clipboard.writeText(
             "https://app.abandon.ai/api/chat/completions",
           );
-          document.getElementById("apiKey-endpoint")!.innerText =
-            "API Endpoint: Copied Success!";
-          setTimeout(() => {
-            document.getElementById("apiKey-endpoint")!.innerText =
-              "API Endpoint: https://app.abandon.ai/api/chat/completions";
-          }, 2000);
         }}
       >
         API Endpoint: https://app.abandon.ai/api/chat/completions
+        <DocumentDuplicateIcon className={"w-4 h-4 ml-1"} />
       </div>
     </div>
   );
