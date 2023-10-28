@@ -1,7 +1,7 @@
 "use client";
 
 import { useChat } from "ai/react";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import CodeFormat from "@/app/chat/[[...id]]/CodeFormat";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -12,13 +12,11 @@ import Image from "next/image";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 import useSWR from "swr";
-import ModelSwitch from "@/components/ModelSwitch";
 import moment from "moment/moment";
-import Link from "next/link";
-import { ChevronUpIcon } from "@heroicons/react/20/solid";
-import { roundUp } from "@/utils/roundUp";
-import { DepositButton } from "@/components/DepositButton";
 import { BoltIcon, SparklesIcon } from "@heroicons/react/24/solid";
+import dynamic from "next/dynamic";
+
+const MobileDrawer = dynamic(() => import("./MobileDrawer"), { ssr: false });
 
 export default function Chat() {
   const params = useParams();
@@ -51,10 +49,6 @@ export default function Chat() {
     });
   const isPurple = model.startsWith("GPT-4");
   const router = useRouter();
-  const [showMore, setShowMore] = useState(false);
-  const { data: balanceData } = useSWR("/api/dashboard/balance", (url) =>
-    fetch(url).then((res) => res.json()),
-  );
 
   useEffect(() => {
     if (!params?.id?.[0] && currentChatId && model) {
@@ -234,7 +228,7 @@ export default function Chat() {
       </form>
       <div
         className={
-          "h-[calc(100vh-88px)] md:h-[calc(100vh-142px)] w-full overflow-y-auto relative"
+          "h-[calc(100vh-85px)] md:h-[calc(100vh-142px)] w-full overflow-y-auto relative"
         }
       >
         {messages.length > 0 ? (
@@ -347,52 +341,7 @@ export default function Chat() {
           "absolute z-50 bottom-0 bg-white w-full md:hidden flex items-center justify-between px-4 border-t"
         }
       >
-        <Link
-          href={`/chat?model=${searchParams.get("model") || "GPT-3.5"}`}
-          prefetch
-          className={
-            "flex items-center hover:bg-gray-50 rounded cursor-pointer select-none md:hidden"
-          }
-        >
-          <div className={"w-5 shrink-0"}>
-            <svg
-              stroke="currentColor"
-              fill="none"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="h-4 w-4"
-              height="1em"
-              width="1em"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <line x1="12" y1="5" x2="12" y2="19"></line>
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-            </svg>
-          </div>
-        </Link>
-        <ModelSwitch />
-        <button onClick={() => setShowMore(!showMore)} className={"md:hidden"}>
-          <ChevronUpIcon
-            className={`w-5 h-5 ${showMore ? "rotate-180" : ""}`}
-          />
-        </button>
-        {showMore && (
-          <div className={"px-4 pb-2 text-xs text-gray-800 md:hidden"}>
-            <div className={"flex justify-between"}>
-              <div>USD Balance: ${roundUp(balanceData?.balance || 0, 6)}</div>
-              <DepositButton className={"text-[#0066FF]"} />
-            </div>
-            <div>Credit Points: {roundUp(balanceData?.credit || 0, 6)} ABD</div>
-            <div className={"mt-1 flex items-center justify-between"}>
-              <div>{user?.email}</div>
-              <a href={"/api/auth/logout"} className={"text-red-500"}>
-                Logout
-              </a>
-            </div>
-          </div>
-        )}
+        <MobileDrawer />
       </div>
     </div>
   );
