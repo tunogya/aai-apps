@@ -16,9 +16,7 @@ export const TodayCost = () => {
   );
 
   return (
-    <div className={"text-gray-400 select-text"}>
-      ${costData?.yesterday || "0"}
-    </div>
+    <div className={"text-gray-400 select-text"}>${costData?.today || "0"}</div>
   );
 };
 
