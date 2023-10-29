@@ -312,7 +312,7 @@ export default function Chat() {
                           index === messages.length - 1
                             ? "result-streaming"
                             : ""
-                        } markdown prose text-sm md:text-base w-full overflow-x-hidden break-words dark:prose-invert light leading-8`}
+                        } markdown prose w-full overflow-x-hidden break-words leading-8`}
                       >
                         {m.content}
                       </Markdown>

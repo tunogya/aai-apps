@@ -18,7 +18,7 @@ const CodeFormat: FC<any> = ({ className, inline, children, ...props }) => {
   if (!inline) {
     return (
       <div className={"bg-gray-950 rounded-md mb-4"}>
-        <div className="flex items-center relative text-white bg-gray-600 px-4 py-2 text-xs font-sans justify-between rounded-t-md">
+        <div className="flex items-center relative text-white bg-gray-800 px-4 py-2 text-xs font-sans justify-between rounded-t-md">
           <span>{match?.[1]}</span>
           <button
             className="flex ml-auto gap-2"
