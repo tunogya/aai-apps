@@ -5,6 +5,7 @@ import {
   Bar,
   BarChart,
   CartesianGrid,
+  ReferenceLine,
   ResponsiveContainer,
   XAxis,
 } from "recharts";
@@ -36,6 +37,7 @@ export const Chart = () => {
   const { data: todayData } = useSWR("/api/dashboard/today", (url) =>
     fetch(url).then((res) => res.json()),
   );
+  const timestamp = new Date().getUTCHours();
 
   return (
     <div className={"h-[128px] w-full mt-4"}>
@@ -55,6 +57,12 @@ export const Chart = () => {
             height={16}
           />
           <Bar stackId="a" strokeWidth={2} dataKey={"gpt4"} fill={"#AB68FF"} />
+          <ReferenceLine
+            x={timestamp}
+            stroke="#0066FF"
+            strokeDasharray={"4 4"}
+            opacity={0.5}
+          />
           <Bar
             stackId="a"
             strokeWidth={2}
