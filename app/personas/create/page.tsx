@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import Link from "next/link";
 
 export default function CSRPage() {
   return (
@@ -10,7 +11,11 @@ export default function CSRPage() {
         }
       >
         <div className={"flex items-center divide-x divide-gray-200"}>
-          <div className={"px-3 pr-4 cursor-pointer"}>
+          <Link
+            href={"/personas"}
+            prefetch
+            className={"px-3 pr-4 cursor-pointer"}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -25,7 +30,7 @@ export default function CSRPage() {
                 d="M6 18L18 6M6 6l12 12"
               />
             </svg>
-          </div>
+          </Link>
           <div className={"pl-5"}>Create new persona</div>
         </div>
         <div className={"flex items-center"}>
