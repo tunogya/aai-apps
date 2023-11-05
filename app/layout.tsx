@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import Script from "next/script";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
 import { ReactNode } from "react";
@@ -15,8 +14,6 @@ const TailwindIndicator = dynamic(
   () => import("@/components/TailwindIndicator"),
   { ssr: false },
 );
-
-const inter = Inter({ subsets: ["latin"], display: "swap" });
 
 const title = "AbandonAI";
 const description = "Powered by OpenAI";
@@ -48,7 +45,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout(props: { children: ReactNode }) {
   return (
-    <html lang="en" className={inter.className}>
+    <html lang="en">
       <UserProvider>
         <body className={`h-full w-full`}>
           <Link
