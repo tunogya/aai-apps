@@ -12,6 +12,10 @@ const menu = [
     name: "Dashboard",
   },
   {
+    path: "/personas",
+    name: "Personas",
+  },
+  {
     path: "/billing",
     name: "Billing",
   },

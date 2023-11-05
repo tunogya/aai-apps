@@ -3,7 +3,6 @@ import { ReactNode } from "react";
 import Dock from "@/components/Dock";
 import Toolbar from "@/components/Toolbar";
 import PrimaryNav from "@/components/Nav/PrimaryNav";
-import SecondaryNav from "@/app/chat/[[...id]]/SecondaryNav";
 
 export const runtime = "edge";
 
@@ -20,7 +19,6 @@ export default function Layout(props: { children: ReactNode }) {
     <div className={"h-full w-full flex relative justify-center"}>
       <div className={"max-w-[1920px] w-full h-full flex overflow-hidden"}>
         <PrimaryNav />
-        <SecondaryNav />
         <div className={"w-full h-full lg:mr-10 relative"}>
           <Toolbar border={false} />
           {props.children}
