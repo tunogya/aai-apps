@@ -79,7 +79,7 @@ export default function Chat() {
               <div
                 className={`border ${
                   isPurple ? "border-[#AB68FF] ring-[#AB68FF] ring-1" : "shadow"
-                } flex rounded-[18px] md:rounded-[29px] w-full px-3 py-1.5 md:py-4 md:px-5 text-gray-800 bg-white items-end gap-2`}
+                } flex rounded-[18px] md:rounded w-full px-3 py-1.5 md:py-4 md:px-5 text-gray-800 bg-white items-end gap-2`}
               >
                 {isLoading ? (
                   <div
