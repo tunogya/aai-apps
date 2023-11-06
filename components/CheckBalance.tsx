@@ -11,7 +11,7 @@ const CheckBalance = () => {
   );
 
   useEffect(() => {
-    if (!pathname.startsWith("/pay") && balanceData?.balance < -0.1) {
+    if (!pathname.startsWith("/pay") && balanceData?.balance < -1) {
       router.replace("/pay/error?error=Insufficient balance");
     }
   }, [balanceData?.balance, pathname, router]);
