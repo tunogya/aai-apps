@@ -26,50 +26,16 @@ export default function CSRPage() {
 
   return (
     <div className={"absolute h-[calc(100vh-48px)] w-full"}>
-      <div
-        className={"w-full overflow-hidden md:pt-4 overflow-y-auto h-full pb-4"}
-      >
-        <div className={"md:hidden flex flex-col gap-2"}>
+      <div className={"w-full overflow-hidden overflow-y-auto h-full pb-4"}>
+        <div className={"w-full px-4 md:px-10"}>
           <div
             className={
-              "px-4 text-2xl font-semibold py-2 text-gray-800 sticky top-0 bg-white"
+              "flex gap-2 w-full py-1 xl:border-b text-gray-800 justify-between"
             }
           >
-            Usage
+            <div className={"text-[28px] font-semibold"}>Billing</div>
           </div>
-          {reducedData.map((item: any, index: number) => (
-            <div
-              key={index}
-              className={"px-4 md:px-10 text-gray-600 py-2 flex flex-col gap-2"}
-            >
-              <div className={"flex justify-between"}>
-                <div
-                  className={
-                    "font-semibold overflow-x-hidden text-gray-800 text-sm"
-                  }
-                >
-                  {item.model}
-                </div>
-                <div className={"overflow-x-hidden font-semibold text-sm"}>
-                  US${roundUp(item.total_cost, 6)}
-                </div>
-              </div>
-              <div className={"flex justify-between"}>
-                <div className={"overflow-x-hidden text-xs"}>
-                  {moment(item.created * 1000)
-                    .startOf("second")
-                    .fromNow()}
-                </div>
-                <div className={"overflow-x-hidden text-xs"}>
-                  P:{item.prompt_tokens} tokens, C:{item.completion_tokens}{" "}
-                  tokens
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className={"w-full px-4 md:px-10"}>
-          <table className="table-auto w-full hidden md:table">
+          <table className="table-auto w-full">
             <thead>
               <tr className={"text-xs text-gray-500 border-b"}>
                 <th
