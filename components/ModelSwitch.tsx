@@ -7,21 +7,23 @@ const ModelSwitch = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
-  const [useGPT4, setUseGPT4] = useState(searchParams.get("model") === "GPT-4");
+  const [useGPT4, setUseGPT4] = useState(
+    searchParams.get("model")?.startsWith("gpt-4"),
+  );
 
   useEffect(() => {
     const params = new URLSearchParams(searchParams);
     if (useGPT4) {
-      params.set("model", "GPT-4");
+      params.set("model", "gpt-4-1106-preview");
       router.replace(`${pathname}?${params.toString()}`);
     } else {
-      params.set("model", "GPT-3.5");
+      params.set("model", "gpt-3.5-turbo");
       router.replace(`${pathname}?${params.toString()}`);
     }
   }, [useGPT4]);
 
   useEffect(() => {
-    if (searchParams.get("model") === "GPT-4") {
+    if (searchParams.get("model")?.startsWith("gpt-4")) {
       setUseGPT4(true);
     } else {
       setUseGPT4(false);

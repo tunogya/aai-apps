@@ -76,7 +76,7 @@ const Tabbar = () => {
         {menu.map((item, index) => (
           <Link
             href={`${item.path}?model=${
-              searchParams.get("model") || "GPT-3.5"
+              searchParams.get("model") || "gpt-3.5-turbo"
             }`}
             prefetch
             scroll={false}

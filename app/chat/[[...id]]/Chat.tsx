@@ -33,7 +33,7 @@ export default function Chat() {
     fetch(url).then((res) => res.json()),
   );
   const inputRef = useRef(null);
-  const model = searchParams.get("model") || "GPT-3.5";
+  const model = searchParams.get("model") || "gpt-3.5-turbo";
   const { messages, input, handleInputChange, handleSubmit, isLoading, stop } =
     useChat({
       api: "/api/chat",
@@ -47,7 +47,7 @@ export default function Chat() {
       },
       initialMessages: data ? data?.item?.messages : [],
     });
-  const isPurple = model.startsWith("GPT-4");
+  const isPurple = model.startsWith("gpt-4");
   const router = useRouter();
 
   useEffect(() => {

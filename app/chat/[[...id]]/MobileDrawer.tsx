@@ -28,7 +28,7 @@ const CSR = () => {
     <div className={"space-y-2"}>
       <div className={"flex items-center justify-between px-4 border-t"}>
         <Link
-          href={`/chat?model=${searchParams.get("model") || "GPT-3.5"}`}
+          href={`/chat?model=${searchParams.get("model") || "gpt-3.5-turbo"}`}
           prefetch
           className={
             "flex items-center rounded cursor-pointer select-none md:hidden"
