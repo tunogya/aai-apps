@@ -129,39 +129,40 @@ const SecondaryNav = () => {
                     </div>
                     <div className={`truncate text-sm mr-4`}>{item.title}</div>
                   </Link>
-                  <button
-                    className={`absolute right-2 hidden group-hover:flex text-gray-800 hover:text-red-500 disabled:cursor-not-allowed ${
-                      deleteItems.includes(item.SK) ? "text-red-500" : ""
-                    }`}
-                    disabled={deleteItems.includes(item.SK)}
-                    onClick={async () => {
-                      const _newDeleteItems = [...deleteItems, item.SK];
-                      setDeleteItems(_newDeleteItems);
-                      sessionStorage.setItem(
-                        "deleteItems",
-                        JSON.stringify(_newDeleteItems),
-                      );
-                      await deleteChat(item.SK.replace("CHAT2#", ""));
-                    }}
-                  >
-                    <svg
-                      stroke="currentColor"
-                      fill="none"
-                      strokeWidth="2"
-                      viewBox="0 0 24 24"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="h-4 w-4"
-                      height="1em"
-                      width="1em"
-                      xmlns="http://www.w3.org/2000/svg"
+                  {!deleteItems.includes(item.SK) && (
+                    <button
+                      className={`absolute right-2 hidden group-hover:flex text-gray-800 hover:text-red-500 ${
+                        deleteItems.includes(item.SK) ? "text-red-500" : ""
+                      }`}
+                      onClick={async () => {
+                        const _newDeleteItems = [...deleteItems, item.SK];
+                        setDeleteItems(_newDeleteItems);
+                        sessionStorage.setItem(
+                          "deleteItems",
+                          JSON.stringify(_newDeleteItems),
+                        );
+                        await deleteChat(item.SK.replace("CHAT2#", ""));
+                      }}
                     >
-                      <polyline points="3 6 5 6 21 6"></polyline>
-                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                      <line x1="10" y1="11" x2="10" y2="17"></line>
-                      <line x1="14" y1="11" x2="14" y2="17"></line>
-                    </svg>
-                  </button>
+                      <svg
+                        stroke="currentColor"
+                        fill="none"
+                        strokeWidth="2"
+                        viewBox="0 0 24 24"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="h-4 w-4"
+                        height="1em"
+                        width="1em"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        <line x1="10" y1="11" x2="10" y2="17"></line>
+                        <line x1="14" y1="11" x2="14" y2="17"></line>
+                      </svg>
+                    </button>
+                  )}
                 </div>
               ))}
           </div>
