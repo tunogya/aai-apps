@@ -130,7 +130,7 @@ const SecondaryNav = () => {
                     <div className={`truncate text-sm mr-4`}>{item.title}</div>
                   </Link>
                   <button
-                    className={`absolute right-2 hidden group-hover:flex text-gray-800 hover:text-red-500 disabled:cursor-wait ${
+                    className={`absolute right-2 hidden group-hover:flex text-gray-800 hover:text-red-500 disabled:cursor-not-allowed ${
                       deleteItems.includes(item.SK) ? "text-red-500" : ""
                     }`}
                     disabled={deleteItems.includes(item.SK)}
