@@ -31,7 +31,7 @@ export default function CSRPage() {
               />
             </svg>
           </Link>
-          <div className={"pl-5"}>Create new persona</div>
+          <div className={"pl-5"}>Create new Persona</div>
         </div>
         <div className={"flex items-center"}>
           <button

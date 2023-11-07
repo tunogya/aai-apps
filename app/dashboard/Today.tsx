@@ -44,7 +44,7 @@ const CSR = () => {
               <div className={"flex justify-between items-center text-sm"}>
                 <div className={"text-gray-600"}>Gross costs (UTC+0)</div>
               </div>
-              <div className={"text-gray-800 select-text"}>
+              <div className={"text-gray-800 select-text text-xl"}>
                 ${costData?.today || "0"}
               </div>
             </div>
