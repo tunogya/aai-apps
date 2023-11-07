@@ -21,6 +21,17 @@ export async function POST(req: Request): Promise<Response> {
   const { user } = await getSession();
   const sub = user.sub;
 
+  const [balance, bonus] = await redisClient.mget(
+    `${sub}:balance`,
+    `${sub}:bonus`,
+  );
+
+  if (Number(balance || 0) + Number(bonus || 0) < -0.3) {
+    return new Response("Not enough balance", {
+      status: 401,
+    });
+  }
+
   let { messages, model, id } = await req.json();
 
   messages.slice(-16);
