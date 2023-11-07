@@ -10,7 +10,9 @@ export default function CSRPage() {
           "py-5 pl-2 pr-5 text-sm flex items-center justify-between border-b h-[68px] w-full"
         }
       >
-        <div className={"flex items-center divide-x divide-gray-200"}>
+        <div
+          className={"flex items-center divide-x divide-gray-300 text-gray-800"}
+        >
           <Link
             href={"/personas"}
             prefetch
@@ -31,7 +33,9 @@ export default function CSRPage() {
               />
             </svg>
           </Link>
-          <div className={"pl-5"}>Create new Persona</div>
+          <div className={"pl-5 text-gray-800 font-medium"}>
+            Create new Persona
+          </div>
         </div>
         <div className={"flex items-center"}>
           <button

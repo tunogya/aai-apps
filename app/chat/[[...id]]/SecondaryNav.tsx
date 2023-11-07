@@ -64,7 +64,7 @@ const SecondaryNav = () => {
         href={`/chat?model=${searchParams.get("model") || "gpt-3.5-turbo"}`}
         prefetch
         className={
-          "flex items-center border hover:bg-gray-50 p-3 rounded cursor-pointer select-none m-2"
+          "flex items-center border hover:bg-gray-50 p-3 rounded cursor-pointer select-none m-2 text-gray-800"
         }
       >
         <div className={"w-6 shrink-0"}>
