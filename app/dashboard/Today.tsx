@@ -55,7 +55,7 @@ const CSR = () => {
               <div className={"flex justify-between items-center text-sm"}>
                 <div className={"text-gray-600"}>Yesterday</div>
               </div>
-              <div className={"text-gray-400 select-text"}>
+              <div className={"text-gray-500 select-text"}>
                 ${costData?.yesterday || "0"}
               </div>
             </div>
