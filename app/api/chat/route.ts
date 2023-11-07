@@ -23,7 +23,7 @@ export async function POST(req: Request): Promise<Response> {
 
   let { messages, model, id } = await req.json();
 
-  messages.slice(-8);
+  messages.slice(-16);
 
   if (model === "GPT-3.5") {
     model = "gpt-3.5-turbo";
