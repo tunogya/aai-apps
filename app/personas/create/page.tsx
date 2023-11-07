@@ -13,7 +13,7 @@ export default function CSRPage() {
   const [selectModel, setSelectModel] = useState(models[0]);
 
   return (
-    <div className={"h-full w-full"}>
+    <div className={"h-full w-full select-none"}>
       <div
         className={
           "py-5 pl-2 pr-5 text-sm flex items-center justify-between border-b h-[68px] w-full"
@@ -71,6 +71,7 @@ export default function CSRPage() {
             <div className={"flex flex-col gap-4 text-gray-800"}>
               <div className={"text-xl font-medium"}>Name</div>
               <input
+                placeholder={"Enter your Persona name"}
                 className={
                   "border text-sm overflow-x-scroll max-w-[360px] w-full h-7 px-2 py-1 rounded focus:outline-[#0066FF]"
                 }
@@ -79,6 +80,7 @@ export default function CSRPage() {
             <div className={"flex flex-col gap-4 text-gray-800"}>
               <div className={"text-xl font-medium"}>Instructions</div>
               <textarea
+                placeholder={"What are your Persona's preferences?"}
                 className={
                   "border text-sm overflow-x-scroll max-w-[360px] w-full h-7 px-2 py-1 rounded focus:outline-[#0066FF] min-h-[80px] max-h-[240px]"
                 }
@@ -121,23 +123,44 @@ export default function CSRPage() {
             <div className={"flex flex-col gap-4 text-gray-800"}>
               <div className={"text-xs font-medium text-gray-500"}>Tools</div>
               <div>
-                <div className={"text-sm font-medium border-t py-2"}>
-                  Function
+                {/*<div className={"text-sm font-medium border-t py-2"}>*/}
+                {/*  <div>*/}
+                {/*    Function*/}
+                {/*  </div>*/}
+                {/*</div>*/}
+                <div className={"text-sm font-medium border-t py-2 flex gap-2"}>
+                  <input
+                    type={"checkbox"}
+                    id={"code-interpreter"}
+                    className={"cursor-pointer accent-[#0066FF]"}
+                  />
+                  <label
+                    htmlFor={"code-interpreter"}
+                    className={"cursor-pointer"}
+                  >
+                    Code interpreter
+                  </label>
                 </div>
-                <div className={"text-sm font-medium border-t py-2"}>
-                  Code interpreter
+                <div className={"text-sm font-medium border-y py-2 flex gap-2"}>
+                  <input
+                    type={"checkbox"}
+                    id={"retrieval"}
+                    className={"cursor-pointer accent-[#0066FF]"}
+                  />
+                  <label htmlFor={"retrieval"} className={"cursor-pointer"}>
+                    Retrieval
+                  </label>
                 </div>
-                <div className={"text-sm font-medium border-t py-2"}>
-                  Retrieval
-                </div>
-                <div
-                  className={"text-xs font-medium border-y py-4 text-gray-400"}
-                >
-                  FILES
-                </div>
-                <div className={"text-gray-400 text-sm py-2"}>
-                  Add files to use with code interpreter or retrieval.
-                </div>
+                {/*<div>*/}
+                {/*  <div*/}
+                {/*    className={"text-xs font-medium border-y py-4 text-gray-400"}*/}
+                {/*  >*/}
+                {/*    FILES*/}
+                {/*  </div>*/}
+                {/*  <div className={"text-gray-400 text-sm py-2"}>*/}
+                {/*    Add files to use with code interpreter or retrieval.*/}
+                {/*  </div>*/}
+                {/*</div>*/}
               </div>
             </div>
           </div>
