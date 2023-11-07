@@ -26,11 +26,7 @@ export async function POST(req: Request): Promise<Response> {
   messages.slice(-8);
 
   if (model === "GPT-3.5") {
-    if (messages.length > 6) {
-      model = "gpt-3.5-turbo-16k";
-    } else {
-      model = "gpt-3.5-turbo";
-    }
+    model = "gpt-3.5-turbo";
   } else if (model === "GPT-4") {
     model = "gpt-4";
   }
