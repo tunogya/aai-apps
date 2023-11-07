@@ -312,6 +312,10 @@ export default function Chat() {
                                 {...rest}
                                 PreTag="div"
                                 language={match[1]}
+                                customStyle={{
+                                  borderRadius: "8px",
+                                  backgroundColor: "#f3f4f6",
+                                }}
                               >
                                 {String(children).replace(/\n$/, "")}
                               </SyntaxHighlighter>
