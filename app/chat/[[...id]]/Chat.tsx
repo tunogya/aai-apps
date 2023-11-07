@@ -14,11 +14,10 @@ import useSWR from "swr";
 import moment from "moment/moment";
 import { BoltIcon, SparklesIcon } from "@heroicons/react/24/solid";
 import dynamic from "next/dynamic";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+// import {dark} from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 const MobileDrawer = dynamic(() => import("./MobileDrawer"), { ssr: false });
-const CodeFormat = dynamic(() => import("@/app/chat/[[...id]]/CodeFormat"), {
-  ssr: false,
-});
 
 export default function Chat() {
   const params = useParams();
@@ -302,8 +301,26 @@ export default function Chat() {
                         remarkPlugins={[remarkGfm, remarkMath]}
                         rehypePlugins={[rehypeKatex]}
                         components={{
-                          code({ ...props }) {
-                            return <CodeFormat {...props} />;
+                          code(props) {
+                            const { children, className, node, ...rest } =
+                              props;
+                            const match = /language-(\w+)/.exec(
+                              className || "",
+                            );
+                            return match ? (
+                              // @ts-ignore
+                              <SyntaxHighlighter
+                                {...rest}
+                                PreTag="div"
+                                language={match[1]}
+                              >
+                                {String(children).replace(/\n$/, "")}
+                              </SyntaxHighlighter>
+                            ) : (
+                              <code {...rest} className={className}>
+                                {children}
+                              </code>
+                            );
                           },
                         }}
                         className={`${
