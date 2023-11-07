@@ -28,7 +28,7 @@ export async function POST(req: Request): Promise<Response> {
   if (model === "GPT-3.5") {
     model = "gpt-3.5-turbo";
   } else if (model === "GPT-4") {
-    model = "gpt-4";
+    model = "gpt-4-1106-preview";
   }
 
   const configuration = new Configuration({
