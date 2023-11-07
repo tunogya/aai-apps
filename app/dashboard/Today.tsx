@@ -47,6 +47,9 @@ const CSR = () => {
               <div className={"text-gray-800 select-text text-xl"}>
                 ${costData?.today || "0"}
               </div>
+              <div className={"text-xs text-gray-400"}>
+                {new Date().getUTCHours()}:{new Date().getUTCMinutes()}
+              </div>
             </div>
             <div className={"flex flex-col gap-1"}>
               <div className={"flex justify-between items-center text-sm"}>
