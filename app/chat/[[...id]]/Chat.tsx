@@ -15,7 +15,6 @@ import moment from "moment/moment";
 import { BoltIcon, SparklesIcon } from "@heroicons/react/24/solid";
 import dynamic from "next/dynamic";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-// import {dark} from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 const MobileDrawer = dynamic(() => import("./MobileDrawer"), { ssr: false });
 
