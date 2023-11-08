@@ -1,8 +1,7 @@
 import { Configuration, OpenAIApi } from "openai-edge";
-import { SendMessageBatchCommand, SQSClient } from "@aws-sdk/client-sqs";
+import { SQSClient } from "@aws-sdk/client-sqs";
 import redisClient from "@/utils/redisClient";
 import { AI_MODELS_MAP } from "@/utils/aiModels";
-import { OpenAIStream, StreamingTextResponse } from "ai";
 
 const sqsClient = new SQSClient({
   region: "ap-northeast-1",
@@ -72,62 +71,6 @@ export async function POST(req: Request): Promise<Response> {
     );
     const fee_cost = roundUp((prompt_cost + completion_cost) * FEE_RATE, 6);
     const total_cost = roundUp(prompt_cost + completion_cost + fee_cost, 6);
-
-    sqsClient.send(
-      new SendMessageBatchCommand({
-        QueueUrl: process.env.AI_DB_UPDATE_SQS_FIFO_URL,
-        Entries: [
-          {
-            Id: `update-usage-${new Date().getTime()}`,
-            MessageBody: JSON.stringify({
-              TableName: "abandonai-prod",
-              Item: {
-                PK: `USER#${sub}`,
-                SK: `USAGE#${new Date().toISOString()}`,
-                model: config.model,
-                prompt_tokens,
-                completion_tokens,
-                total_tokens,
-                fee_cost,
-                prompt_cost,
-                completion_cost,
-                total_cost,
-                created: Math.floor(Date.now() / 1000),
-                TTL: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 31, // 31 days
-              },
-              ConditionExpression: "attribute_not_exists(#PK)",
-              ExpressionAttributeNames: {
-                "#PK": "PK",
-              },
-            }),
-            MessageAttributes: {
-              Command: {
-                DataType: "String",
-                StringValue: "PutCommand",
-              },
-            },
-            MessageGroupId: "update-usage",
-          },
-        ],
-      }),
-    );
-
-    const newTotalCost = await redisClient.incrbyfloat(
-      `${sub}:total_cost:${new Date().toISOString().slice(0, 10)}`,
-      total_cost,
-    );
-    if (newTotalCost === total_cost) {
-      redisClient
-        .pipeline()
-        .expire(
-          `${sub}:total_cost:${new Date().toISOString().slice(0, 10)}`,
-          86400 * 7,
-        );
-    }
-
-    redisClient.pipeline().set(hash, JSON.stringify(res), {
-      ex: 60 * 60 * 24 * 7,
-    });
 
     return new Response(JSON.stringify(res), {
       status: 200,
