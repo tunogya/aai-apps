@@ -65,7 +65,7 @@ export async function POST(req: Request): Promise<Response> {
           },
         );
         // record usage log and reduce the balance of user
-        await sqsClient.send(
+        sqsClient.send(
           new SendMessageBatchCommand({
             QueueUrl: process.env.AI_DB_UPDATE_SQS_FIFO_URL,
             Entries: [
