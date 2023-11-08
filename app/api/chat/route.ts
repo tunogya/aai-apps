@@ -59,30 +59,6 @@ export async function POST(req: Request): Promise<Response> {
             QueueUrl: process.env.AI_DB_UPDATE_SQS_FIFO_URL,
             Entries: [
               {
-                Id: `update-usage-${id}-${new Date().getTime()}`,
-                MessageBody: JSON.stringify({
-                  TableName: "abandonai-prod",
-                  Item: {
-                    PK: `USER#${sub}`,
-                    SK,
-                    model,
-                    created: Math.floor(Date.now() / 1000),
-                    TTL: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 31, // 31 days
-                  },
-                  ConditionExpression: "attribute_not_exists(#PK)",
-                  ExpressionAttributeNames: {
-                    "#PK": "PK",
-                  },
-                }),
-                MessageAttributes: {
-                  Command: {
-                    DataType: "String",
-                    StringValue: "PutCommand",
-                  },
-                },
-                MessageGroupId: "update-usage",
-              },
-              {
                 Id: `update-chat-${id}-${new Date().getTime()}`,
                 MessageBody: JSON.stringify({
                   TableName: "abandonai-prod",
