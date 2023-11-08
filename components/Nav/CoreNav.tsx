@@ -7,18 +7,18 @@ const menu = [
     path: "/chat",
     name: "ChatGPT",
   },
-  {
-    path: "/dashboard",
-    name: "Dashboard",
-  },
-  {
-    path: "/personas",
-    name: "Personas",
-  },
-  {
-    path: "/billing",
-    name: "Billing",
-  },
+  // {
+  //   path: "/dashboard",
+  //   name: "Dashboard",
+  // },
+  // {
+  //   path: "/personas",
+  //   name: "Personas",
+  // },
+  // {
+  //   path: "/billing",
+  //   name: "Billing",
+  // },
 ];
 
 const CoreNav = () => {
