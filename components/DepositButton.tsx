@@ -10,6 +10,7 @@ export const DepositButton: FC<{
 
   return (
     <button
+      disabled
       className={className || ""}
       onClick={async () => {
         try {
@@ -29,7 +30,7 @@ export const DepositButton: FC<{
         }
       }}
     >
-      {status === "idle" && "Top up"}
+      {status === "idle" && "Top-up"}
       {status === "loading" && "Waiting..."}
       {status === "error" && "Error"}
     </button>
