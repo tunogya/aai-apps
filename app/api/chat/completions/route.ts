@@ -33,17 +33,6 @@ export async function POST(req: Request): Promise<Response> {
     });
   }
 
-  const [balance, bonus] = await redisClient.mget(
-    `${sub}:balance`,
-    `${sub}:bonus`,
-  );
-
-  if (Number(balance || 0) + Number(bonus || 0) < -0.3) {
-    return new Response("Not enough balance", {
-      status: 401,
-    });
-  }
-
   const config = await req.json();
 
   const hash = await calculateHash(JSON.stringify(config.messages));
@@ -118,56 +107,6 @@ export async function POST(req: Request): Promise<Response> {
               },
             },
             MessageGroupId: "update-usage",
-          },
-          {
-            Id: `${id}-update-balance`,
-            MessageBody: JSON.stringify({
-              TableName: "abandonai-prod",
-              Key: {
-                PK: `USER#${sub}`,
-                SK: "BALANCE",
-              },
-              UpdateExpression: "ADD #balance :total_cost",
-              ExpressionAttributeNames: {
-                "#balance": "balance",
-              },
-              ExpressionAttributeValues: {
-                ":total_cost": -1 * total_cost,
-              },
-            }),
-            MessageAttributes: {
-              Command: {
-                DataType: "String",
-                StringValue: "UpdateCommand",
-              },
-            },
-            MessageDeduplicationId: `${id}-update-balance`,
-            MessageGroupId: "update-balance",
-          },
-          {
-            Id: `${id}-update-credit`,
-            MessageBody: JSON.stringify({
-              TableName: "abandonai-prod",
-              Key: {
-                PK: `USER#${sub}`,
-                SK: "CREDIT",
-              },
-              UpdateExpression: "ADD #balance :total_cost",
-              ExpressionAttributeNames: {
-                "#balance": "balance",
-              },
-              ExpressionAttributeValues: {
-                ":total_cost": total_cost * 20,
-              },
-            }),
-            MessageAttributes: {
-              Command: {
-                DataType: "String",
-                StringValue: "UpdateCommand",
-              },
-            },
-            MessageDeduplicationId: `${id}-update-credit`,
-            MessageGroupId: "update-credit",
           },
         ],
       }),
