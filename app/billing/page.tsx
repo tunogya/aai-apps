@@ -1,8 +1,5 @@
 "use client";
-import React, { useEffect, useMemo } from "react";
-import { roundUp } from "@/utils/roundUp";
-import moment from "moment/moment";
-import useSWRInfinite from "swr/infinite";
+import React from "react";
 import useSWR from "swr";
 
 export default function CSRPage() {
