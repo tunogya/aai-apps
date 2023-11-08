@@ -54,7 +54,7 @@ export async function POST(req: Request): Promise<Response> {
     const stream = OpenAIStream(res, {
       async onCompletion(completion) {
         const SK = `USAGE#${new Date().toISOString()}`;
-        await redisClient.set(
+        redisClient.pipeline().set(
           `USER#${sub}:${SK}`,
           JSON.stringify({
             prompt: messages,
