@@ -15,10 +15,10 @@ const menu = [
   //   path: "/personas",
   //   name: "Personas",
   // },
-  // {
-  //   path: "/billing",
-  //   name: "Billing",
-  // },
+  {
+    path: "/billing",
+    name: "Billing",
+  },
 ];
 
 const CoreNav = () => {
