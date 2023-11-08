@@ -6,6 +6,22 @@ import redisClient from "@/utils/redisClient";
 const POST = async (req: NextRequest) => {
   // @ts-ignore
   const { user } = await getSession();
+  const customers = await stripeClient.customers.list({
+    email: user.email,
+  });
+  let customer;
+  if (customers.data.length === 0) {
+    const { id } = await stripeClient.customers.create({
+      email: user.email,
+      name: user.nickname,
+      metadata: {
+        id: user.sub,
+      },
+    });
+    customer = id;
+  } else {
+    customer = customers.data[0].id;
+  }
   try {
     const session = await stripeClient.checkout.sessions.create({
       line_items: [
@@ -18,7 +34,7 @@ const POST = async (req: NextRequest) => {
       success_url: `${req.nextUrl.origin}/pay/success`,
       cancel_url: `${req.nextUrl.origin}/pay/error?error=Canceled`,
       automatic_tax: { enabled: true },
-      customer_email: user?.email || undefined,
+      customer: customer,
       metadata: {
         id: user.sub,
       },
