@@ -7,9 +7,6 @@ import "./styles/globals.css";
 import "./styles/katex.min.css";
 import dynamic from "next/dynamic";
 
-const CheckBalance = dynamic(() => import("@/components/CheckBalance"), {
-  ssr: false,
-});
 const TailwindIndicator = dynamic(
   () => import("@/components/TailwindIndicator"),
   { ssr: false },
@@ -66,7 +63,6 @@ export default function RootLayout(props: { children: ReactNode }) {
               `}
           </Script>
           <TailwindIndicator />
-          <CheckBalance />
           {props.children}
         </body>
       </UserProvider>
