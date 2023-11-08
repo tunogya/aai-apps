@@ -1,7 +1,6 @@
 import { OpenAIStream, StreamingTextResponse } from "ai";
 import { Configuration, OpenAIApi } from "openai-edge";
 import { SendMessageBatchCommand, SQSClient } from "@aws-sdk/client-sqs";
-import redisClient from "@/utils/redisClient";
 import { v4 as uuidv4 } from "uuid";
 import { getSession } from "@auth0/nextjs-auth0/edge";
 
@@ -42,19 +41,7 @@ export async function POST(req: Request): Promise<Response> {
 
     const stream = OpenAIStream(res, {
       async onCompletion(completion) {
-        const SK = `USAGE#${new Date().toISOString()}`;
-        redisClient.pipeline().set(
-          `USER#${sub}:${SK}`,
-          JSON.stringify({
-            prompt: messages,
-            completion: completion,
-          }),
-          {
-            ex: 60 * 60 * 24,
-          },
-        );
-        // record usage log and reduce the balance of user
-        sqsClient.send(
+        await sqsClient.send(
           new SendMessageBatchCommand({
             QueueUrl: process.env.AI_DB_UPDATE_SQS_FIFO_URL,
             Entries: [
