@@ -9,7 +9,7 @@ const SubscribeButton: FC<{
 
   return (
     <button
-      className={className || ""}
+      className={`${className || ""}`}
       onClick={async () => {
         try {
           setStatus("loading");

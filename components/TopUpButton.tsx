@@ -1,6 +1,7 @@
 "use client";
 import React, { FC, useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export const TopUpButton: FC<{
   className?: string;
@@ -10,7 +11,9 @@ export const TopUpButton: FC<{
 
   return (
     <button
-      className={className || ""}
+      className={`${
+        className || ""
+      } flex items-center gap-2 bg-gray-100 text-gray-800 px-4 py-2 rounded-md text-sm font-semibold cursor-pointer`}
       onClick={async () => {
         try {
           setStatus("loading");
@@ -37,7 +40,14 @@ export const TopUpButton: FC<{
         }
       }}
     >
-      {status === "idle" && "Top-up"}
+      <Image
+        alt={""}
+        src={"/stripe-logos.jpeg"}
+        width={20}
+        height={20}
+        fetchPriority={"low"}
+      />
+      {status === "idle" && "Buy credits"}
       {status === "loading" && "Loading..."}
       {status === "success" && "Waiting..."}
       {status === "error" && "Error"}
