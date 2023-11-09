@@ -35,9 +35,6 @@ const POST = async (req: NextRequest) => {
       cancel_url: `${req.nextUrl.origin}/pay/error?error=Canceled`,
       automatic_tax: { enabled: true },
       customer: customer,
-      metadata: {
-        id: user.sub,
-      },
     });
     const id = session.id;
     await redisClient.set(id, "price_1NtMGxFPpv8QfieYD2d3FSwe", {
