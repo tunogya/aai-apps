@@ -1,8 +1,7 @@
-"use client";
 import React, { FC, useState } from "react";
 import { useRouter } from "next/navigation";
 
-export const TopUpButton: FC<{
+const SubscribeButton: FC<{
   className?: string;
 }> = ({ className }) => {
   const router = useRouter();
@@ -14,9 +13,9 @@ export const TopUpButton: FC<{
       onClick={async () => {
         try {
           setStatus("loading");
-          const { session } = await fetch(`/api/checkout`, {
-            method: "POST",
-          }).then((res) => res.json());
+          const { session } = await fetch("/api/billing").then((res) =>
+            res.json(),
+          );
           if (session?.url) {
             setStatus("success");
             router.push(session.url);
@@ -37,7 +36,7 @@ export const TopUpButton: FC<{
         }
       }}
     >
-      {status === "idle" && "Top-up"}
+      {status === "idle" && "Manage billing"}
       {status === "loading" && "Loading..."}
       {status === "success" && "Waiting..."}
       {status === "error" && "Error"}
@@ -45,4 +44,4 @@ export const TopUpButton: FC<{
   );
 };
 
-export default TopUpButton;
+export default SubscribeButton;

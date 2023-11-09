@@ -1,10 +1,9 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import TopUpButton from "@/components/TopUpButton";
+import SubscribeButton from "@/components/SubscribeButton";
 
 export default function CSRPage() {
-  const [status, setStatus] = useState("idle");
-
   return (
     <div
       className={
@@ -25,11 +24,10 @@ export default function CSRPage() {
         </div>
         <TopUpButton
           className={
-            "bg-gray-100 text-gray-800 px-4 py-2 rounded-md text-sm font-semibold"
+            "bg-gray-100 text-gray-800 px-4 py-2 rounded-md text-sm font-semibold cursor-pointer"
           }
         />
       </div>
-
       <div className={"space-y-4"}>
         <div className={"text-3xl text-gray-800 font-semibold"}>AbandonAI+</div>
         <div className={"text-xl text-gray-800 font-semibold"}>
@@ -38,36 +36,11 @@ export default function CSRPage() {
         <div className={"text-gray-600 text-sm"}>
           Enjoy all our features for free.
         </div>
-        <button
+        <SubscribeButton
           className={
             "bg-gray-100 text-gray-800 px-4 py-2 rounded-md text-sm font-semibold"
           }
-          onClick={async () => {
-            try {
-              setStatus("loading");
-              const data = await fetch("/api/billing").then((res) =>
-                res.json(),
-              );
-              if (data?.session?.url) {
-                window.location.href = data.session.url;
-              }
-              setStatus("success");
-              setTimeout(() => {
-                setStatus("idle");
-              }, 3_000);
-            } catch (e) {
-              setStatus("error");
-              setTimeout(() => {
-                setStatus("idle");
-              }, 3_000);
-            }
-          }}
-        >
-          {status === "idle" && "Manage billing"}
-          {status === "loading" && "Loading..."}
-          {status === "success" && "Waiting..."}
-          {status === "error" && "Error"}
-        </button>
+        />
       </div>
     </div>
   );
