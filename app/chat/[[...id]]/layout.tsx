@@ -7,7 +7,7 @@ import SecondaryNav from "@/app/chat/[[...id]]/SecondaryNav";
 
 export const runtime = "edge";
 
-const title = "ChatGPT - AbandonAI";
+const title = "ChatGPT";
 const description = "Powered by OpenAI";
 
 export const metadata: Metadata = {

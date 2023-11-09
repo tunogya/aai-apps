@@ -35,7 +35,7 @@ const CSR = () => {
           "flex gap-2 w-full py-1 xl:border-b text-gray-800 justify-between"
         }
       >
-        <div className={"text-[28px] font-semibold"}>Today</div>
+        <div className={"text-3xl font-semibold"}>Today</div>
       </div>
       <div className={"flex h-[230px] w-full gap-5"}>
         <div className={"flex flex-col max-w-[760px] h-[230px] w-full gap-1"}>

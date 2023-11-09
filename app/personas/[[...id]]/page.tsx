@@ -15,7 +15,7 @@ export default async function SSRPage() {
             "flex gap-2 w-full py-1 xl:border-b text-gray-800 justify-between"
           }
         >
-          <div className={"text-[28px] font-semibold"}>Personas</div>
+          <div className={"text-3xl font-semibold"}>Personas</div>
         </div>
       </div>
     </div>

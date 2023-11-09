@@ -6,7 +6,7 @@ import PrimaryNav from "@/components/Nav/PrimaryNav";
 
 export const runtime = "edge";
 
-const title = "Personas";
+const title = "Create new Persona";
 const description = "Powered by OpenAI";
 
 export const metadata: Metadata = {
@@ -15,16 +15,5 @@ export const metadata: Metadata = {
 };
 
 export default function Layout(props: { children: ReactNode }) {
-  return (
-    <div className={"h-full w-full flex relative justify-center"}>
-      <div className={"max-w-[1920px] w-full h-full flex overflow-hidden"}>
-        <PrimaryNav />
-        <div className={"w-full h-full lg:mr-10 relative"}>
-          <Toolbar border={false} />
-          {props.children}
-        </div>
-      </div>
-      <Dock />
-    </div>
-  );
+  return <>{props.children}</>;
 }
