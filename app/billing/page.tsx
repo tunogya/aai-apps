@@ -3,6 +3,7 @@ import React from "react";
 import TopUpButton from "@/components/TopUpButton";
 import SubscribeButton from "@/components/SubscribeButton";
 import Image from "next/image";
+import WldButton from "@/components/WldButton";
 
 export default function CSRPage() {
   return (
@@ -25,20 +26,7 @@ export default function CSRPage() {
         </div>
         <div className={"flex gap-4"}>
           <TopUpButton />
-          <button
-            className={
-              "flex items-center gap-2 bg-gray-100 text-gray-800 px-4 py-2 rounded-md text-sm font-semibold cursor-pointer"
-            }
-          >
-            <Image
-              alt={""}
-              src={"/worldcoin-logos.svg"}
-              width={20}
-              height={20}
-              fetchPriority={"low"}
-            />
-            Worldcoin
-          </button>
+          <WldButton />
         </div>
       </div>
       <div className={"space-y-4"}>
