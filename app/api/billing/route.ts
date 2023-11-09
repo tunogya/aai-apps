@@ -34,7 +34,9 @@ const GET = async (req: NextRequest) => {
     return_url: "https://app.abandon.ai",
   });
 
-  await redisClient.set(`${user.sub}:/api/billing`, JSON.stringify(session));
+  await redisClient.set(`${user.sub}:/api/billing`, JSON.stringify(session), {
+    ex: 60 * 60 * 24,
+  });
 
   return NextResponse.json({
     session: session,
