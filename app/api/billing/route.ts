@@ -6,13 +6,6 @@ import redisClient from "@/utils/redisClient";
 const GET = async (req: NextRequest) => {
   // @ts-ignore
   const { user } = await getSession();
-  const cache = await redisClient.get(`${user.sub}:/api/billing`);
-  if (cache) {
-    return NextResponse.json({
-      session: cache,
-    });
-  }
-
   const customers = await stripeClient.customers.list({
     email: user.email,
   });
@@ -33,11 +26,6 @@ const GET = async (req: NextRequest) => {
     customer: customer,
     return_url: "https://app.abandon.ai",
   });
-
-  await redisClient.set(`${user.sub}:/api/billing`, JSON.stringify(session), {
-    ex: 60 * 60 * 24,
-  });
-
   return NextResponse.json({
     session: session,
   });
