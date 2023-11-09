@@ -6,9 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import dynamic from "next/dynamic";
 
-const ModelSwitch = dynamic(() => import("@/components/ModelSwitch"), {
-  ssr: false,
-});
+const ModelSwitch = dynamic(() => import("@/components/ModelSwitch"));
 
 const Toolbar: FC<{ border?: boolean }> = (props) => {
   const pathname = usePathname();
