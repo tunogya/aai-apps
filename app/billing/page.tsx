@@ -15,7 +15,7 @@ export default function CSRPage() {
     >
       {data ? (
         <a href={data.session.url} className={"underline"}>
-          Click here to view your billing
+          Manage billing
         </a>
       ) : (
         <div>loading...</div>
