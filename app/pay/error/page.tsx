@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { DepositButton } from "@/components/DepositButton";
+import { TopUpButton } from "@/components/TopUpButton";
 import React from "react";
 import { useSearchParams } from "next/navigation";
 
@@ -18,7 +18,7 @@ export default function CSRPage() {
       <div className="text-center text-2xl md:text-3xl font-serif">
         &quot;{error}&quot;
       </div>
-      <DepositButton
+      <TopUpButton
         className={
           "w-64 py-4 border rounded-full text-center bg-yellow-500 text-white font-bold mt-4"
         }

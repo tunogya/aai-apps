@@ -2,7 +2,7 @@
 import React, { FC, useState } from "react";
 import { useRouter } from "next/navigation";
 
-export const DepositButton: FC<{
+export const TopUpButton: FC<{
   className?: string;
 }> = ({ className }) => {
   const router = useRouter();
@@ -37,4 +37,4 @@ export const DepositButton: FC<{
   );
 };
 
-export default DepositButton;
+export default TopUpButton;

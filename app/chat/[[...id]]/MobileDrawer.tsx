@@ -9,7 +9,7 @@ import { useSearchParams } from "next/navigation";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import dynamic from "next/dynamic";
 
-const DepositButton = dynamic(() => import("@/components/DepositButton"), {
+const TopUpButton = dynamic(() => import("@/components/TopUpButton"), {
   ssr: false,
 });
 const ModelSwitch = dynamic(() => import("@/components/ModelSwitch"), {
@@ -63,7 +63,7 @@ const CSR = () => {
         <div className={"px-4 pb-2 text-xs text-gray-800 md:hidden"}>
           <div className={"flex justify-between"}>
             <div>USD Balance: ${roundUp(balanceData?.balance || 0, 6)}</div>
-            <DepositButton className={"text-[#0066FF]"} />
+            <TopUpButton className={"text-[#0066FF]"} />
           </div>
           <div>Credit Points: {roundUp(balanceData?.credit || 0, 6)} ABD</div>
           <div className={"flex items-center justify-between"}>

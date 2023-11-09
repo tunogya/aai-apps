@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import TopUpButton from "@/components/TopUpButton";
 
 export default function CSRPage() {
   const [status, setStatus] = useState("idle");
@@ -22,19 +23,11 @@ export default function CSRPage() {
           Credits can be used to offset expenses within the Abandon platform,
           including the Abandon+ subscription.
         </div>
-        <button
+        <TopUpButton
           className={
             "bg-gray-100 text-gray-800 px-4 py-2 rounded-md text-sm font-semibold"
           }
-          onClick={async () => {
-            const data = await fetch("/api/billing").then((res) => res.json());
-            if (data?.session?.url) {
-              window.location.href = data.session.url;
-            }
-          }}
-        >
-          Buy credits
-        </button>
+        />
       </div>
 
       <div className={"space-y-4"}>

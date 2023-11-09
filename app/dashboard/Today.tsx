@@ -12,7 +12,7 @@ import {
 } from "recharts";
 import { roundUp } from "@/utils/roundUp";
 
-const DepositButton = dynamic(() => import("@/components/DepositButton"), {
+const TopUpButton = dynamic(() => import("@/components/TopUpButton"), {
   ssr: false,
 });
 
@@ -106,7 +106,7 @@ const CSR = () => {
           >
             <div className={"flex justify-between items-center text-sm gap-5"}>
               <div className={"text-gray-600"}>USD Balance</div>
-              <DepositButton className={"text-[#0066FF]"} />
+              <TopUpButton className={"text-[#0066FF]"} />
             </div>
             <div className={"text-xl text-gray-800 select-text"}>
               {balanceData?.balance < 0 ? "-" : ""}$
