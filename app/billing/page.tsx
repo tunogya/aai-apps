@@ -1,7 +1,9 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 
 export default function CSRPage() {
+  const [status, setStatus] = useState("idle");
+
   return (
     <div
       className={
@@ -48,13 +50,30 @@ export default function CSRPage() {
             "bg-gray-100 text-gray-800 px-4 py-2 rounded-md text-sm font-semibold"
           }
           onClick={async () => {
-            const data = await fetch("/api/billing").then((res) => res.json());
-            if (data?.session?.url) {
-              window.location.href = data.session.url;
+            try {
+              setStatus("loading");
+              const data = await fetch("/api/billing").then((res) =>
+                res.json(),
+              );
+              if (data?.session?.url) {
+                window.location.href = data.session.url;
+              }
+              setStatus("success");
+              setTimeout(() => {
+                setStatus("idle");
+              }, 3_000);
+            } catch (e) {
+              setStatus("error");
+              setTimeout(() => {
+                setStatus("idle");
+              }, 3_000);
             }
           }}
         >
-          Manage billing
+          {status === "idle" && "Manage billing"}
+          {status === "loading" && "Loading..."}
+          {status === "success" && "Waiting..."}
+          {status === "error" && "Error"}
         </button>
       </div>
     </div>

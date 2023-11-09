@@ -23,7 +23,7 @@ const GET = async (req: NextRequest) => {
   }
   const session = await stripeClient.billingPortal.sessions.create({
     customer: customer,
-    return_url: "https://app.abandon.ai",
+    return_url: req.nextUrl.origin + "/billing",
   });
   return NextResponse.json({
     session: session,
