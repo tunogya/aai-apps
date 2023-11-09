@@ -10,8 +10,6 @@ export const config = {
     "/api/checkout",
     // CRUD conversation api
     "/api/conversation/:path*",
-    // query dashboard api
-    "/api/dashboard/:path*",
     // CRUD persona api
     "/api/persona/:path*",
     // Status api
