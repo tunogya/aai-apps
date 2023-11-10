@@ -19,10 +19,6 @@ const ModelSwitch = dynamic(() => import("@/components/ModelSwitch"), {
 const CSR = () => {
   const searchParams = useSearchParams();
   const [showMore, setShowMore] = useState(false);
-  const { data: balanceData } = useSWR("/api/dashboard/balance", (url) =>
-    fetch(url).then((res) => res.json()),
-  );
-  const { user } = useUser();
 
   return (
     <div className={"space-y-2"}>
@@ -59,21 +55,6 @@ const CSR = () => {
           />
         </button>
       </div>
-      {showMore && (
-        <div className={"px-4 pb-2 text-xs text-gray-800 md:hidden"}>
-          <div className={"flex justify-between"}>
-            <div>USD Balance: ${roundUp(balanceData?.balance || 0, 6)}</div>
-            <TopUpButton className={"text-[#0066FF]"} />
-          </div>
-          <div>Credit Points: {roundUp(balanceData?.credit || 0, 6)} ABD</div>
-          <div className={"flex items-center justify-between"}>
-            <div className={"text-gray-500"}>Account: {user?.email}</div>
-            <a href={"/api/auth/logout"} className={"text-red-500"}>
-              Logout
-            </a>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
