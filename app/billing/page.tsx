@@ -2,7 +2,6 @@
 import React from "react";
 import TopUpButton from "@/components/TopUpButton";
 import SubscribeButton from "@/components/SubscribeButton";
-import WldButton from "@/components/WldButton";
 
 export default function CSRPage() {
   return (
