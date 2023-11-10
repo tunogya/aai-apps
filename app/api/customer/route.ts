@@ -17,11 +17,13 @@ const GET = async (req: NextRequest) => {
       },
     });
     return NextResponse.json({
-      customer: customer,
+      data: customer,
+      count: 1,
     });
   }
   return NextResponse.json({
-    customer: customers.data[0],
+    data: customers.data[0],
+    count: customers.data.length,
   });
 };
 

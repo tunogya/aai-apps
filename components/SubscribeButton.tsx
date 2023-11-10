@@ -1,7 +1,6 @@
 "use client";
 import React, { FC, useState } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 
 export const SubscribeButton: FC<{
   className?: string;

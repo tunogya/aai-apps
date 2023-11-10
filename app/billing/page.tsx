@@ -1,10 +1,12 @@
-"use client";
 import React from "react";
 import TopUpButton from "@/components/TopUpButton";
 import ManageBillingButton from "@/components/ManageBillingButton";
 import SubscribeButton from "@/components/SubscribeButton";
+import Balance from "@/app/billing/Balance";
 
-export default function CSRPage() {
+export const runtime = "edge";
+
+export default async function SSRPage() {
   return (
     <div
       className={
@@ -18,7 +20,7 @@ export default function CSRPage() {
         <div className={"text-xl text-gray-800 font-semibold"}>
           Available balance
         </div>
-        <div className={"text-4xl text-gray-800"}>$0.00</div>
+        <Balance />
         <div className={"text-gray-600 text-sm max-w-screen-md"}>
           Credits can be used to offset expenses within the Abandon platform,
           including the Abandon+ subscription.
