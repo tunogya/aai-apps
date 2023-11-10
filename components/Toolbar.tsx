@@ -4,9 +4,23 @@ import { FC, Fragment } from "react";
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import dynamic from "next/dynamic";
+import ModelSwitch from "@/components/ModelSwitch";
+import { Highlight, Hits, InstantSearch, SearchBox } from "react-instantsearch";
+import searchClient from "@/utils/searchClient";
+import CustomSearchBox from "@/components/CustomSearchBox";
 
-const ModelSwitch = dynamic(() => import("@/components/ModelSwitch"));
+function Hit({ hit }: any) {
+  return (
+    <article>
+      <img src={hit.image} alt={hit.name} />
+      <p>{hit.categories[0]}</p>
+      <h1>
+        <Highlight attribute="name" hit={hit} />
+      </h1>
+      <p>${hit.price}</p>
+    </article>
+  );
+}
 
 const Toolbar: FC<{ border?: boolean }> = (props) => {
   const pathname = usePathname();
@@ -17,13 +31,11 @@ const Toolbar: FC<{ border?: boolean }> = (props) => {
         props.border ? "border-b" : ""
       }`}
     >
-      <div className={"lg:w-[240px] xl:w-[300px]"}>
-        {/*<input*/}
-        {/*  placeholder={"Search"}*/}
-        {/*  className={*/}
-        {/*    "w-full px-4 py-2 focus:bg-gray-50 hover:bg-gray-50 focus:outline-0 rounded text-sm"*/}
-        {/*  }*/}
-        {/*/>*/}
+      <div>
+        <InstantSearch searchClient={searchClient} indexName="instant_search">
+          <CustomSearchBox />
+          <Hits hitComponent={Hit} />
+        </InstantSearch>
       </div>
       <div className={"text-sm font-semibold flex items-center space-x-1"}>
         <Link
