@@ -23,7 +23,7 @@ const CodePreview: FC<{
               setState(false);
             }, 2_000);
           }}
-          className={"bg-gray-100 rounded p-2 hover:bg-gray-200 cursor-pointer"}
+          className={"bg-gray-100 rounded p-1 hover:bg-gray-200 cursor-pointer"}
         >
           {state ? (
             <CheckIcon className={"w-4 h-4 stroke-2"} />
