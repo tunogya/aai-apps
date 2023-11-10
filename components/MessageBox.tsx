@@ -24,7 +24,7 @@ const MessageBox: FC<{
     <div
       className={`flex border-t p-3 md:p-8 ${
         message.role === "user" ? "bg-white" : "bg-gray-50"
-      } items-center justify-center`}
+      } items-center justify-center group`}
     >
       <div className={`max-w-3xl w-full h-fit flex gap-3 items-start`}>
         <div className={"shrink-0"}>
@@ -78,7 +78,7 @@ const MessageBox: FC<{
                 .startOf("second")
                 .fromNow()}
             </div>
-            <div>
+            <div className={"group-hover:opacity-100 opacity-0"}>
               <button
                 onClick={() => {
                   copy(message.content);
