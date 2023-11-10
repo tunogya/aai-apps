@@ -27,16 +27,18 @@ const POST = async (req: Request) => {
       const checkoutSessionCompleted = event.data
         .object as Stripe.Checkout.Session;
       const { id, customer, livemode } = checkoutSessionCompleted;
-      if (!livemode || !customer) return;
-      const c = customer as Stripe.Customer;
-      const lineItems = await stripeClient.checkout.sessions.listLineItems(id);
-      for (const lineItem of lineItems.data) {
-        const { price, amount_subtotal } = lineItem;
-        if (price?.id === "price_1NtMGxFPpv8QfieYD2d3FSwe") {
-          await stripeClient.customers.createBalanceTransaction(c.id, {
-            amount: -1 * amount_subtotal,
-            currency: "usd",
-          });
+      if (livemode && customer) {
+        const customer_id = (customer as Stripe.Customer).id;
+        const lineItems =
+          await stripeClient.checkout.sessions.listLineItems(id);
+        for (const lineItem of lineItems.data) {
+          const { price, amount_subtotal } = lineItem;
+          if (price?.id === "price_1NtMGxFPpv8QfieYD2d3FSwe") {
+            await stripeClient.customers.createBalanceTransaction(customer_id, {
+              amount: -1 * amount_subtotal,
+              currency: "usd",
+            });
+          }
         }
       }
     }
