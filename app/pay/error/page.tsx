@@ -24,7 +24,7 @@ export default function CSRPage() {
         }
       />
       <Link
-        href={"/chat"}
+        href={"/"}
         prefetch
         className={"text-gray-500 hover:text-gray-800 text-sm underline"}
       >
