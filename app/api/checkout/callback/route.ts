@@ -1,9 +1,6 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import stripeClient from "@/utils/stripeClient";
-import sqsClient from "@/utils/sqsClient";
-import { SendMessageBatchCommand } from "@aws-sdk/client-sqs";
-import redisClient from "@/utils/redisClient";
 
 const POST = async (req: Request) => {
   let event: Stripe.Event;
@@ -29,53 +26,18 @@ const POST = async (req: Request) => {
     if (event.type === "checkout.session.completed") {
       const checkoutSessionCompleted = event.data
         .object as Stripe.Checkout.Session;
-      const {
-        id,
-        payment_intent,
-        created,
-        metadata,
-        amount_subtotal, // 100 decimal
-        currency,
-      } = checkoutSessionCompleted;
-      const item = await redisClient.get(id);
-      if (
-        item === "price_1NtMGxFPpv8QfieYD2d3FSwe" &&
-        currency === "usd" &&
-        metadata?.id &&
-        amount_subtotal
-      ) {
-        await sqsClient.send(
-          new SendMessageBatchCommand({
-            QueueUrl: process.env.AI_DB_UPDATE_SQS_FIFO_URL,
-            Entries: [
-              {
-                Id: `update-balance-${payment_intent}`,
-                MessageBody: JSON.stringify({
-                  TableName: "abandonai-prod",
-                  Key: {
-                    PK: `USER#${metadata.id}`,
-                    SK: `BALANCE`,
-                  },
-                  UpdateExpression: `ADD #balance :add_credit`,
-                  ExpressionAttributeNames: {
-                    "#balance": "balance",
-                  },
-                  ExpressionAttributeValues: {
-                    ":add_credit": amount_subtotal / 100,
-                  },
-                }),
-                MessageAttributes: {
-                  Command: {
-                    DataType: "String",
-                    StringValue: "UpdateCommand",
-                  },
-                },
-                MessageGroupId: "update-balance",
-              },
-            ],
-          }),
-        );
-        await redisClient.del(id);
+      const { id, customer, livemode } = checkoutSessionCompleted;
+      if (!livemode || !customer) return;
+      const c = customer as Stripe.Customer;
+      const lineItems = await stripeClient.checkout.sessions.listLineItems(id);
+      for (const lineItem of lineItems.data) {
+        const { price, amount_subtotal } = lineItem;
+        if (price?.id === "price_1NtMGxFPpv8QfieYD2d3FSwe") {
+          await stripeClient.customers.createBalanceTransaction(c.id, {
+            amount: -1 * amount_subtotal,
+            currency: "usd",
+          });
+        }
       }
     }
   } catch (e) {

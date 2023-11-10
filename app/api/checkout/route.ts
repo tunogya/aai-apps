@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSession } from "@auth0/nextjs-auth0";
 import stripeClient from "@/utils/stripeClient";
-import redisClient from "@/utils/redisClient";
 
 const POST = async (req: NextRequest) => {
   // @ts-ignore
@@ -35,10 +34,6 @@ const POST = async (req: NextRequest) => {
       cancel_url: `${req.nextUrl.origin}/pay/error?error=Canceled`,
       automatic_tax: { enabled: true },
       customer: customer,
-    });
-    const id = session.id;
-    await redisClient.set(id, "price_1NtMGxFPpv8QfieYD2d3FSwe", {
-      ex: 60 * 60 * 24,
     });
     return NextResponse.json({
       session: session,
