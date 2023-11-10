@@ -33,8 +33,8 @@ const Toolbar: FC<{ border?: boolean }> = (props) => {
     >
       <div>
         <InstantSearch searchClient={searchClient} indexName="chat_search">
-          {/*<CustomSearchBox />*/}
-          {/*<Hits hitComponent={Hit} />*/}
+          <CustomSearchBox />
+          <Hits hitComponent={Hit} />
         </InstantSearch>
       </div>
       <div className={"text-sm font-semibold flex items-center space-x-1"}>
