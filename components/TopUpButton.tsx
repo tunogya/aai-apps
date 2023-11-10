@@ -1,7 +1,6 @@
 "use client";
 import React, { FC, useState } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 
 export const TopUpButton: FC<{
   className?: string;
@@ -19,6 +18,17 @@ export const TopUpButton: FC<{
           setStatus("loading");
           const { session } = await fetch(`/api/checkout`, {
             method: "POST",
+            body: JSON.stringify({
+              line_items: [
+                {
+                  price: "price_1NtMGxFPpv8QfieYD2d3FSwe",
+                  quantity: 1,
+                },
+              ],
+              mode: "payment",
+              success_url: `${window.location.origin}/pay/success`,
+              cancel_url: `${window.location.origin}/pay/error?error=Canceled`,
+            }),
           }).then((res) => res.json());
           if (session?.url) {
             setStatus("success");
@@ -40,13 +50,6 @@ export const TopUpButton: FC<{
         }
       }}
     >
-      <Image
-        alt={""}
-        src={"/stripe-logos.jpeg"}
-        width={20}
-        height={20}
-        fetchPriority={"low"}
-      />
       {status === "idle" && "Buy credits"}
       {status === "loading" && "Loading..."}
       {status === "success" && "Waiting..."}

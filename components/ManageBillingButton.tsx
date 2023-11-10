@@ -1,9 +1,7 @@
-"use client";
 import React, { FC, useState } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 
-export const SubscribeButton: FC<{
+const ManageBillingButton: FC<{
   className?: string;
 }> = ({ className }) => {
   const router = useRouter();
@@ -12,25 +10,15 @@ export const SubscribeButton: FC<{
   return (
     <button
       className={`${
-        className || ""
-      } flex items-center gap-2 bg-gray-100 text-gray-800 px-4 py-2 rounded-md text-sm font-semibold cursor-pointer`}
+        className ||
+        "bg-gray-100 text-gray-800 px-4 py-2 rounded-md text-sm font-semibold"
+      }`}
       onClick={async () => {
         try {
           setStatus("loading");
-          const { session } = await fetch(`/api/checkout`, {
-            method: "POST",
-            body: JSON.stringify({
-              line_items: [
-                {
-                  price: "price_1OAAdIFPpv8QfieYpQX1p21d",
-                  quantity: 1,
-                },
-              ],
-              mode: "subscription",
-              success_url: `${window.location.origin}/pay/success`,
-              cancel_url: `${window.location.origin}/pay/error?error=Canceled`,
-            }),
-          }).then((res) => res.json());
+          const { session } = await fetch("/api/billing").then((res) =>
+            res.json(),
+          );
           if (session?.url) {
             setStatus("success");
             router.push(session.url);
@@ -51,7 +39,7 @@ export const SubscribeButton: FC<{
         }
       }}
     >
-      {status === "idle" && "Subscribe"}
+      {status === "idle" && "Manage billing"}
       {status === "loading" && "Loading..."}
       {status === "success" && "Waiting..."}
       {status === "error" && "Error"}
@@ -59,4 +47,4 @@ export const SubscribeButton: FC<{
   );
 };
 
-export default SubscribeButton;
+export default ManageBillingButton;

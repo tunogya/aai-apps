@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import TopUpButton from "@/components/TopUpButton";
+import ManageBillingButton from "@/components/ManageBillingButton";
 import SubscribeButton from "@/components/SubscribeButton";
 
 export default function CSRPage() {
@@ -34,11 +35,10 @@ export default function CSRPage() {
         <div className={"text-gray-600 text-sm"}>
           Enjoy all our features for free.
         </div>
-        <SubscribeButton
-          className={
-            "bg-gray-100 text-gray-800 px-4 py-2 rounded-md text-sm font-semibold"
-          }
-        />
+        <div className={"flex gap-4"}>
+          <SubscribeButton />
+          <ManageBillingButton />
+        </div>
       </div>
     </div>
   );

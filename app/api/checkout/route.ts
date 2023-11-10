@@ -5,6 +5,7 @@ import stripeClient from "@/utils/stripeClient";
 const POST = async (req: NextRequest) => {
   // @ts-ignore
   const { user } = await getSession();
+  const { line_items, mode, success_url, cancel_url } = await req.json();
   const customers = await stripeClient.customers.list({
     email: user.email,
   });
@@ -23,15 +24,10 @@ const POST = async (req: NextRequest) => {
   }
   try {
     const session = await stripeClient.checkout.sessions.create({
-      line_items: [
-        {
-          price: "price_1NtMGxFPpv8QfieYD2d3FSwe",
-          quantity: 1,
-        },
-      ],
-      mode: "payment",
-      success_url: `${req.nextUrl.origin}/pay/success`,
-      cancel_url: `${req.nextUrl.origin}/pay/error?error=Canceled`,
+      line_items,
+      mode,
+      success_url,
+      cancel_url,
       automatic_tax: { enabled: true },
       customer: customer,
     });
