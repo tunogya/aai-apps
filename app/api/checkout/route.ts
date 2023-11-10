@@ -5,7 +5,8 @@ import stripeClient from "@/utils/stripeClient";
 const POST = async (req: NextRequest) => {
   // @ts-ignore
   const { user } = await getSession();
-  const { line_items, mode, success_url, cancel_url } = await req.json();
+  const { line_items, mode, success_url, cancel_url, allow_promotion_codes } =
+    await req.json();
   const customers = await stripeClient.customers.list({
     email: user.email,
   });
@@ -28,6 +29,7 @@ const POST = async (req: NextRequest) => {
       mode,
       success_url,
       cancel_url,
+      allow_promotion_codes,
       automatic_tax: { enabled: true },
       customer: customer,
     });

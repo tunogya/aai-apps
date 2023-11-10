@@ -26,6 +26,7 @@ export const TopUpButton: FC<{
                 },
               ],
               mode: "payment",
+              allow_promotion_codes: false,
               success_url: `${window.location.origin}/pay/success`,
               cancel_url: `${window.location.origin}/pay/error?error=Canceled`,
             }),
