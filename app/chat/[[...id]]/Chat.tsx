@@ -15,6 +15,7 @@ import moment from "moment/moment";
 import { BoltIcon, SparklesIcon } from "@heroicons/react/24/solid";
 import dynamic from "next/dynamic";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import CodePreview from "@/components/CodePreview";
 
 const MobileDrawer = dynamic(() => import("./MobileDrawer"), { ssr: false });
 
@@ -307,18 +308,12 @@ export default function Chat() {
                               className || "",
                             );
                             return match ? (
-                              // @ts-ignore
-                              <SyntaxHighlighter
-                                {...rest}
-                                PreTag="div"
-                                language={match[1]}
-                                customStyle={{
-                                  borderRadius: "8px",
-                                  backgroundColor: "#f3f4f6",
-                                }}
-                              >
-                                {String(children).replace(/\n$/, "")}
-                              </SyntaxHighlighter>
+                              // eslint-disable-next-line react/no-children-prop
+                              <CodePreview
+                                children={children}
+                                match={match}
+                                rest={rest}
+                              />
                             ) : (
                               <code {...rest} className={className}>
                                 {children}
