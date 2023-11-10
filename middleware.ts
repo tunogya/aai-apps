@@ -22,8 +22,6 @@ export const config = {
     "/billing/:path*",
     // chat page
     "/chat/:path*",
-    // dashboard page
-    "/dashboard/:path*",
     // developers page
     "/developers/:path*",
   ],
