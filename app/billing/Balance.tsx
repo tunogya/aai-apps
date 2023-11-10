@@ -10,7 +10,11 @@ const Balance = () => {
   );
 
   return (
-    <div className={"text-4xl text-gray-800"}>
+    <div
+      className={`text-4xl ${
+        isLoading || data?.balance <= 0 ? "text-gray-800" : "text-red-500"
+      }`}
+    >
       ${isLoading ? "-" : (data?.balance / 100) * -1}
     </div>
   );
