@@ -54,13 +54,17 @@ function CustomSearchBox(props: UseSearchBoxProps) {
         className={"w-full h-full px-4 py-2 flex gap-2 items-center"}
       >
         {status === "error" && (
-          <ExclamationTriangleIcon className={"w-4 h-4 text-red-500"} />
+          <ExclamationTriangleIcon
+            className={"w-4 h-4 text-red-500 stroke-2"}
+          />
         )}
         {status === "loading" && (
-          <ArrowPathIcon className={"w-4 h-4 text-gray-500 animate-spin"} />
+          <ArrowPathIcon
+            className={"w-4 h-4 text-gray-500 animate-spin stroke-2"}
+          />
         )}
         {(status === "idle" || status === "stalled") && (
-          <MagnifyingGlassIcon className={"w-4 h-4 text-gray-500"} />
+          <MagnifyingGlassIcon className={"w-4 h-4 text-gray-500 stroke-2"} />
         )}
         <input
           ref={inputRef}
