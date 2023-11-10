@@ -22,8 +22,8 @@ export default async function SSRPage() {
         </div>
         <Balance />
         <div className={"text-gray-600 text-sm max-w-screen-md"}>
-          Credits can be used to offset expenses within the Abandon platform,
-          including the Abandon+ subscription.
+          Use credits to save on Abandon services, including your Abandon+
+          subscription.
         </div>
         <div className={"flex gap-4"}>
           <TopUpButton />
