@@ -84,7 +84,7 @@ const SecondaryNav = () => {
             <line x1="5" y1="12" x2="19" y2="12"></line>
           </svg>
         </div>
-        <div className={"text-sm"}>New Chat</div>
+        <div className={"text-sm font-medium text-gray-800"}>New Chat</div>
       </Link>
       <div className={"h-full overflow-y-auto px-2"}>
         {reducedData.length > 0 && (
@@ -98,7 +98,7 @@ const SecondaryNav = () => {
                     item.SK.replace("CHAT2#", "") === currentChatId
                       ? "bg-gray-100"
                       : ""
-                  } hover:bg-gray-100 rounded px-3 py-2 cursor-pointer select-none`}
+                  } hover:bg-gray-100 text-gray-800 rounded px-3 py-2 cursor-pointer select-none`}
                 >
                   <Link
                     href={`/chat/${item.SK.replace("CHAT2#", "")}?model=${
