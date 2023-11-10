@@ -25,7 +25,6 @@ export default function CSRPage() {
         </div>
         <div className={"flex gap-4"}>
           <TopUpButton />
-          <WldButton />
         </div>
       </div>
       <div className={"space-y-4"}>
