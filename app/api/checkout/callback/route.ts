@@ -27,8 +27,8 @@ const POST = async (req: Request) => {
       const checkoutSessionCompleted = event.data
         .object as Stripe.Checkout.Session;
       const { id, customer, livemode } = checkoutSessionCompleted;
-      if (livemode && customer) {
-        const customer_id = (customer as Stripe.Customer).id;
+      const customer_id = (customer as Stripe.Customer)?.id || undefined;
+      if (livemode && customer_id) {
         const lineItems =
           await stripeClient.checkout.sessions.listLineItems(id);
         for (const lineItem of lineItems.data) {
