@@ -1,8 +1,17 @@
 import React from "react";
-import TopUpButton from "@/components/TopUpButton";
-import ManageBillingButton from "@/components/ManageBillingButton";
-import SubscribeButton from "@/components/SubscribeButton";
-import Balance from "@/app/billing/Balance";
+import dynamic from "next/dynamic";
+
+const TopUpButton = dynamic(() => import("@/components/TopUpButton"), {
+  ssr: false,
+});
+const ManageBillingButton = dynamic(
+  () => import("@/components/ManageBillingButton"),
+  { ssr: false },
+);
+const SubscribeButton = dynamic(() => import("@/components/SubscribeButton"), {
+  ssr: false,
+});
+const Balance = dynamic(() => import("@/app/billing/Balance"), { ssr: false });
 
 export const runtime = "edge";
 
