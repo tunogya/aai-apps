@@ -37,7 +37,7 @@ function Hit({ hit }: any) {
 const CustomHits = (props: any) => {
   const { hits, results, sendEvent } = useHits(props);
 
-  if (!results || !results.query || !results.hits.length) {
+  if (!results || !results.query) {
     return null;
   }
 
@@ -46,9 +46,11 @@ const CustomHits = (props: any) => {
       <div className={"px-4 py-2 border-b"}>
         <div className={"font-semibold text-gray-800"}>Chats</div>
       </div>
-      {hits.map((hit: any) => (
-        <Hit hit={hit} key={hit.objectID} />
-      ))}
+      {hits.length > 0 ? (
+        hits.map((hit: any) => <Hit hit={hit} key={hit.objectID} />)
+      ) : (
+        <div className={"px-4 py-2 text-gray-600"}>No result</div>
+      )}
     </div>
   );
 };
