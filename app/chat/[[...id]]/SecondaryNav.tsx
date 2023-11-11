@@ -84,7 +84,7 @@ const SecondaryNav = () => {
             <line x1="5" y1="12" x2="19" y2="12"></line>
           </svg>
         </div>
-        <div className={"text-sm font-medium text-gray-800"}>New Chat</div>
+        <div className={"text-sm text-gray-800"}>New Chat</div>
       </Link>
       <div className={"h-full overflow-y-auto px-2"}>
         {reducedData.length > 0 && (
