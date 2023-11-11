@@ -61,7 +61,11 @@ const Toolbar: FC<{ border?: boolean }> = (props) => {
     >
       <div className={"relative"}>
         <InstantSearch searchClient={searchClient} indexName="chat_search">
-          <Configure filters={`author:${user?.sub}`} />
+          <Configure
+            hitsPerPage={10}
+            facets={["author"]}
+            facetFilters={[`author:${user?.sub}`]}
+          />
           <CustomSearchBox />
           <Hits
             hitComponent={Hit}
