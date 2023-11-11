@@ -17,11 +17,11 @@ const SearchBar = dynamic(() => import("@/components/SearchBar"), {
 const Toolbar: FC<{ border?: boolean }> = (props) => {
   return (
     <div
-      className={`hidden h-[60px] w-full md:flex items-center justify-between px-4 md:px-10 ${
+      className={`hidden h-[60px] w-full md:flex items-center justify-between px-4 md:px-10 gap-8 ${
         props.border ? "border-b" : ""
       }`}
     >
-      <div className={"relative"}>
+      <div className={"relative w-full"}>
         <SearchBar />
       </div>
       <div className={"text-sm font-semibold flex items-center space-x-1"}>

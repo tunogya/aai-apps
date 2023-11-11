@@ -49,7 +49,7 @@ const CustomHits = (props: any) => {
   }
 
   return (
-    <div className="absolute mt-2 bg-white border shadow w-[600px] rounded-lg z-20 h-[50vh] overflow-y-auto overflow-x-hidden">
+    <div className="absolute mt-2 bg-white border shadow w-full rounded-lg z-20 h-[50vh] overflow-y-auto overflow-x-hidden">
       <div className={"px-4 py-2 border-b"}>
         <div className={"font-semibold text-gray-800"}>Chats</div>
       </div>
