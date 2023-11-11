@@ -6,9 +6,15 @@ import Link from "next/link";
 import ModelSwitch from "@/components/ModelSwitch";
 import { Configure, InstantSearch } from "react-instantsearch";
 import searchClient from "@/utils/searchClient";
-import CustomSearchBox from "@/components/CustomSearchBox";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import CustomHits from "@/components/CustomHits";
+import dynamic from "next/dynamic";
+
+const CustomSearchBox = dynamic(() => import("@/components/CustomSearchBox"), {
+  ssr: false,
+});
+const CustomHits = dynamic(() => import("@/components/CustomHits"), {
+  ssr: false,
+});
 
 const Toolbar: FC<{ border?: boolean }> = (props) => {
   const { user } = useUser();
