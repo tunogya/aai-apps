@@ -5,10 +5,14 @@ import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
-import CodePreview from "@/components/CodePreview";
 import React, { FC } from "react";
 import { CheckIcon, ClipboardIcon } from "@heroicons/react/24/outline";
 import copy from "copy-to-clipboard";
+import dynamic from "next/dynamic";
+
+const CodePreview = dynamic(() => import("@/components/CodePreview"), {
+  ssr: false,
+});
 
 const MessageBox: FC<{
   message: any;
