@@ -4,7 +4,7 @@ import { Configure, InstantSearch } from "react-instantsearch";
 import searchClient from "@/utils/searchClient";
 import React from "react";
 import dynamic from "next/dynamic";
-import { useUser } from "@auth0/nextjs-auth0/dist/client";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 const CustomSearchBox = dynamic(() => import("@/components/CustomSearchBox"), {
   ssr: false,
