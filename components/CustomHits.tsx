@@ -7,7 +7,9 @@ function Hit({ hit }: any) {
 
   return (
     <Link href={"/chat/" + id}>
-      <div className={"text-sm px-4 py-3 text-gray-800 border-b"}>
+      <div
+        className={"text-sm px-4 py-3 text-gray-800 border-b hover:bg-gray-50"}
+      >
         <div className={"flex justify-between items-center"}>
           <div className={"truncate text-[#0066FF] font-medium text-lg"}>
             {hit?.title}
@@ -22,7 +24,7 @@ function Hit({ hit }: any) {
             ?.map((item: any, index: number) => (
               <span
                 key={index}
-                className={`p-2 bg-gray-100 rounded ${
+                className={`p-2 rounded border ${
                   item?.role?.value === "user" ? "border-r-4" : "border-l-4"
                 }`}
                 dangerouslySetInnerHTML={{
