@@ -4,7 +4,6 @@ import React from "react";
 
 function Hit({ hit }: any) {
   const id = hit.objectID;
-  console.log(hit);
   return (
     <Link href={"/chat/" + id}>
       <div className={"text-sm px-4 py-3 text-gray-800 hover:bg-gray-100"}>
