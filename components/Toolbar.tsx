@@ -11,14 +11,21 @@ import CustomSearchBox from "@/components/CustomSearchBox";
 
 function Hit({ hit }: any) {
   return (
-    <article>
-      <img src={hit.image} alt={hit.name} />
-      <p>{hit.categories[0]}</p>
-      <h1>
-        <Highlight attribute="name" hit={hit} />
-      </h1>
-      <p>${hit.price}</p>
-    </article>
+    <div className={"absolute w-[600px] bg-red-500"}>
+      {hit?.messages?.map(
+        (
+          item: { content: string; role: string; created: number },
+          index: number,
+        ) => (
+          <div key={index} className={"w-full"}>
+            {item.content.slice(0, 10)}
+          </div>
+        ),
+      )}
+      {/*<h1>*/}
+      {/*  <Highlight attribute="name" hit={hit} />*/}
+      {/*</h1>*/}
+    </div>
   );
 }
 
@@ -31,11 +38,11 @@ const Toolbar: FC<{ border?: boolean }> = (props) => {
         props.border ? "border-b" : ""
       }`}
     >
-      <div>
-        <InstantSearch searchClient={searchClient} indexName="chat_search">
-          <CustomSearchBox />
-          <Hits hitComponent={Hit} />
-        </InstantSearch>
+      <div className={"relative"}>
+        {/*<InstantSearch searchClient={searchClient} indexName="chat_search">*/}
+        {/*  <CustomSearchBox />*/}
+        {/*  <Hits hitComponent={Hit} />*/}
+        {/*</InstantSearch>*/}
       </div>
       <div className={"text-sm font-semibold flex items-center space-x-1"}>
         <Link
