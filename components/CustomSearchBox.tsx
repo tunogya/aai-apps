@@ -87,9 +87,9 @@ function CustomSearchBox(props: UseSearchBoxProps) {
               setInputValue("");
               clear();
             }}
-            className={"p-1"}
+            className={"p-1 hover:bg-gray-100 rounded"}
           >
-            <XMarkIcon className={"w-4 h-4 stroke-2"} />
+            <XMarkIcon className={"w-4 h-4 stroke-2 text-gray-500"} />
           </button>
         )}
       </form>
