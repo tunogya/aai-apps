@@ -11,10 +11,10 @@ const menu = [
   //   path: "/dashboard",
   //   name: "Dashboard",
   // },
-  // {
-  //   path: "/personas",
-  //   name: "Personas",
-  // },
+  {
+    path: "/personas",
+    name: "Personas",
+  },
   {
     path: "/billing",
     name: "Billing",

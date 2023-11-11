@@ -2,11 +2,8 @@
 
 import Link from "next/link";
 import { ChevronUpIcon } from "@heroicons/react/20/solid";
-import { roundUp } from "@/utils/roundUp";
 import React, { useState } from "react";
-import useSWR from "swr";
 import { useSearchParams } from "next/navigation";
-import { useUser } from "@auth0/nextjs-auth0/client";
 import dynamic from "next/dynamic";
 
 const TopUpButton = dynamic(() => import("@/components/TopUpButton"), {
