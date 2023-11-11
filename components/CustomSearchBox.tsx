@@ -19,8 +19,11 @@ function CustomSearchBox(props: UseSearchBoxProps) {
 
   function setQuery(newQuery: string) {
     setInputValue(newQuery);
-
-    refine(newQuery);
+    if (newQuery.length > 0) {
+      refine(newQuery);
+    } else {
+      clear();
+    }
   }
 
   return (
@@ -44,8 +47,6 @@ function CustomSearchBox(props: UseSearchBoxProps) {
         onReset={(event) => {
           event.preventDefault();
           event.stopPropagation();
-
-          setQuery("");
 
           if (inputRef.current) {
             inputRef.current.focus();

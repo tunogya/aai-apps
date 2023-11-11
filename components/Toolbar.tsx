@@ -22,7 +22,12 @@ const Toolbar: FC<{ border?: boolean }> = (props) => {
       }`}
     >
       <div className={"relative"}>
-        <InstantSearch searchClient={searchClient} indexName="chat_search">
+        <InstantSearch
+          searchClient={searchClient}
+          indexName={"chat_search"}
+          stalledSearchDelay={500}
+          insights={true}
+        >
           <Configure
             hitsPerPage={10}
             facets={["author"]}
