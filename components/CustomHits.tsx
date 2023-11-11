@@ -9,9 +9,9 @@ function Hit({ hit }: any) {
       <div className={"text-sm px-4 py-3 text-gray-800 hover:bg-gray-100"}>
         <div className={"flex items-start gap-1"}>
           <div className={"text-sm"}>
-            {hit._snippetResult.messages
-              .filter((item: any) => item.content.matchLevel === "full")
-              .map((item: any, index: number) => (
+            {hit?._snippetResult?.messages
+              ?.filter((item: any) => item.content.matchLevel === "full")
+              ?.map((item: any, index: number) => (
                 <div
                   key={index}
                   className={"line-clamp-2 text-gray-500"}
