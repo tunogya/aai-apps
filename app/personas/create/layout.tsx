@@ -1,8 +1,5 @@
 import { Metadata } from "next";
 import { ReactNode } from "react";
-import Dock from "@/components/Dock";
-import Toolbar from "@/components/Toolbar";
-import PrimaryNav from "@/components/Nav/PrimaryNav";
 
 export const runtime = "edge";
 
