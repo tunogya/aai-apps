@@ -8,33 +8,28 @@ function Hit({ hit }: any) {
   return (
     <Link href={"/chat/" + id}>
       <div className={"text-sm px-4 py-3 text-gray-800 border-b"}>
-        <div className={"flex items-start gap-1"}>
-          <div className={"text-sm"}>
-            <div className={"flex justify-between items-center"}>
-              <div className={"truncate text-[#0066FF] font-medium text-lg"}>
-                {hit?.title}
-              </div>
-              <div className={"text-gray-600 text-xs"}>
-                {new Date(Number(hit?.updated) * 1000).toLocaleString()}
-              </div>
-            </div>
-            <div className={"flex flex-col space-y-1 mt-2"}>
-              {hit?._snippetResult?.messages
-                ?.slice(1)
-                ?.filter((item: any) => item?.content?.matchLevel === "full")
-                ?.map((item: any, index: number) => (
-                  <span
-                    key={index}
-                    className={`p-2 bg-gray-100 rounded ${
-                      item?.role?.value === "user" ? "ml-4" : "mr-4"
-                    }`}
-                    dangerouslySetInnerHTML={{
-                      __html: item?.content?.value,
-                    }}
-                  />
-                ))}
-            </div>
+        <div className={"flex justify-between items-center"}>
+          <div className={"truncate text-[#0066FF] font-medium text-lg"}>
+            {hit?.title}
           </div>
+          <div className={"text-gray-600 text-xs"}>
+            {new Date(Number(hit?.updated) * 1000).toLocaleString()}
+          </div>
+        </div>
+        <div className={"flex flex-col space-y-1 mt-2"}>
+          {hit?._snippetResult?.messages
+            ?.filter((item: any) => item?.content?.matchLevel === "full")
+            ?.map((item: any, index: number) => (
+              <span
+                key={index}
+                className={`p-2 bg-gray-100 rounded ${
+                  item?.role?.value === "user" ? "border-r-4" : "border-l-4"
+                }`}
+                dangerouslySetInnerHTML={{
+                  __html: item?.content?.value,
+                }}
+              />
+            ))}
         </div>
       </div>
     </Link>
