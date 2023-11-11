@@ -6,7 +6,6 @@ import { Configure, InstantSearch } from "react-instantsearch";
 import searchClient from "@/utils/searchClient";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import dynamic from "next/dynamic";
-import SettingPopover from "@/components/SettingPopover";
 
 const CustomSearchBox = dynamic(() => import("@/components/CustomSearchBox"), {
   ssr: false,
@@ -15,6 +14,9 @@ const CustomHits = dynamic(() => import("@/components/CustomHits"), {
   ssr: false,
 });
 const ModelSwitch = dynamic(() => import("@/components/ModelSwitch"), {
+  ssr: false,
+});
+const SettingPopover = dynamic(() => import("@/components/SettingPopover"), {
   ssr: false,
 });
 
