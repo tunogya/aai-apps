@@ -8,9 +8,11 @@ import { v4 as uuidv4 } from "uuid";
 import useSWR from "swr";
 import { BoltIcon, SparklesIcon } from "@heroicons/react/24/solid";
 import dynamic from "next/dynamic";
-import MessageBox from "@/components/MessageBox";
 
 const MobileDrawer = dynamic(() => import("./MobileDrawer"), { ssr: false });
+const MessageBox = dynamic(() => import("@/components/MessageBox"), {
+  ssr: false,
+});
 
 export default function Chat() {
   const params = useParams();
