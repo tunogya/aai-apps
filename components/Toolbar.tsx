@@ -38,17 +38,6 @@ const Toolbar: FC<{ border?: boolean }> = (props) => {
         </InstantSearch>
       </div>
       <div className={"text-sm font-semibold flex items-center space-x-1"}>
-        <Link
-          href={"/developers"}
-          prefetch
-          className={`px-2 py-1.5 hover:bg-gray-100 rounded-lg text-sm font-medium ${
-            pathname.startsWith("/developers")
-              ? "text-[#0066FF]"
-              : "text-gray-800"
-          }`}
-        >
-          Developers
-        </Link>
         <ModelSwitch />
         <Link
           href={
