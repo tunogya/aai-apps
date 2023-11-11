@@ -5,49 +5,11 @@ import { QuestionMarkCircleIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import ModelSwitch from "@/components/ModelSwitch";
-import {
-  Configure,
-  Highlight,
-  Hits,
-  InstantSearch,
-  Snippet,
-  useInstantSearch,
-} from "react-instantsearch";
+import { Configure, InstantSearch } from "react-instantsearch";
 import searchClient from "@/utils/searchClient";
 import CustomSearchBox from "@/components/CustomSearchBox";
 import { useUser } from "@auth0/nextjs-auth0/client";
-
-function Hit({ hit }: any) {
-  const id = hit.objectID;
-
-  return (
-    <Link href={"/chat/" + id}>
-      <div
-        className={
-          "text-sm px-4 py-3 flex items-center text-gray-800 hover:bg-gray-100"
-        }
-      >
-        <div className={"w-6 shrink-0"}>
-          <svg
-            stroke="currentColor"
-            fill="none"
-            strokeWidth="2"
-            viewBox="0 0 24 24"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="h-4 w-4"
-            height="1em"
-            width="1em"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-          </svg>
-        </div>
-        <div>{hit?.messages?.[0].content}</div>
-      </div>
-    </Link>
-  );
-}
+import CustomHits from "@/components/CustomHits";
 
 const Toolbar: FC<{ border?: boolean }> = (props) => {
   const pathname = usePathname();
@@ -67,12 +29,7 @@ const Toolbar: FC<{ border?: boolean }> = (props) => {
             facetFilters={[`author:${user?.sub}`]}
           />
           <CustomSearchBox />
-          <Hits
-            hitComponent={Hit}
-            className={
-              "absolute mt-2 bg-white border shadow w-[600px] rounded-lg z-20 h-[50vh] overflow-y-auto"
-            }
-          />
+          <CustomHits />
         </InstantSearch>
       </div>
       <div className={"text-sm font-semibold flex items-center space-x-1"}>

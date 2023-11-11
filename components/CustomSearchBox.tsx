@@ -21,7 +21,6 @@ function CustomSearchBox(props: UseSearchBoxProps) {
 
     refine(newQuery);
   }
-  console.log(status);
 
   return (
     <div
