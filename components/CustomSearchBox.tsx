@@ -9,9 +9,10 @@ import {
   ExclamationTriangleIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
+import { XMarkIcon } from "@heroicons/react/24/solid";
 
 function CustomSearchBox(props: UseSearchBoxProps) {
-  const { query, refine } = useSearchBox(props);
+  const { query, refine, clear } = useSearchBox(props);
   const { status } = useInstantSearch();
   const [inputValue, setInputValue] = useState(query);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -80,6 +81,17 @@ function CustomSearchBox(props: UseSearchBoxProps) {
           autoFocus={false}
           className={"w-full h-full outline-none bg-transparent"}
         />
+        {inputValue && (
+          <button
+            onClick={() => {
+              setInputValue("");
+              clear();
+            }}
+            className={"p-1"}
+          >
+            <XMarkIcon className={"w-4 h-4 stroke-2"} />
+          </button>
+        )}
       </form>
     </div>
   );
