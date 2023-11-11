@@ -3,7 +3,6 @@ import { Popover, Transition } from "@headlessui/react";
 import React, { FC, Fragment } from "react";
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import ModelSwitch from "@/components/ModelSwitch";
 import { Configure, InstantSearch } from "react-instantsearch";
 import searchClient from "@/utils/searchClient";
@@ -12,7 +11,6 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 import CustomHits from "@/components/CustomHits";
 
 const Toolbar: FC<{ border?: boolean }> = (props) => {
-  const pathname = usePathname();
   const { user } = useUser();
 
   return (
