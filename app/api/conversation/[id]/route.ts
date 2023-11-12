@@ -70,4 +70,51 @@ const DELETE = async (req: NextRequest, { params }: any) => {
   }
 };
 
-export { GET, DELETE };
+const PATCH = async (req: NextRequest, { params }: any) => {
+  const session = await getSession();
+  const sub = session?.user.sub;
+  const {
+    UpdateExpression,
+    ExpressionAttributeNames,
+    ExpressionAttributeValues,
+    ConstraintExpression,
+  } = await req.json();
+  try {
+    await sqsClient.send(
+      new SendMessageCommand({
+        QueueUrl: process.env.AI_DB_UPDATE_SQS_URL,
+        MessageBody: JSON.stringify({
+          TableName: "abandonai-prod",
+          Key: {
+            PK: `USER#${sub}`,
+            SK: `CHAT2#${params?.id}`,
+          },
+          UpdateExpression: UpdateExpression || undefined,
+          ExpressionAttributeNames: ExpressionAttributeNames || undefined,
+          ExpressionAttributeValues: ExpressionAttributeValues || undefined,
+          ConstraintExpression: ConstraintExpression || undefined,
+        }),
+        MessageAttributes: {
+          Command: {
+            DataType: "String",
+            StringValue: "UpdateCommand",
+          },
+        },
+      }),
+    );
+    return NextResponse.json({
+      updated: true,
+    });
+  } catch (e) {
+    return NextResponse.json(
+      {
+        error: "something went wrong",
+      },
+      {
+        status: 500,
+      },
+    );
+  }
+};
+
+export { GET, DELETE, PATCH };
