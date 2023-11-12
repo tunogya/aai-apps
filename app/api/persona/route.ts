@@ -1,9 +1,9 @@
 import { getSession } from "@auth0/nextjs-auth0";
 import { NextRequest, NextResponse } from "next/server";
-import ddbDocClient from "@/utils/ddbDocClient";
+import ddbDocClient from "@/app/utils/ddbDocClient";
 import { QueryCommand } from "@aws-sdk/lib-dynamodb";
 import { v4 as uuidv4 } from "uuid";
-import sqsClient from "@/utils/sqsClient";
+import sqsClient from "@/app/utils/sqsClient";
 import { SendMessageCommand } from "@aws-sdk/client-sqs";
 
 const GET = async (req: NextRequest) => {

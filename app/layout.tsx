@@ -8,7 +8,7 @@ import "./styles/katex.min.css";
 import dynamic from "next/dynamic";
 
 const TailwindIndicator = dynamic(
-  () => import("@/components/TailwindIndicator"),
+  () => import("@/app/components/TailwindIndicator"),
   { ssr: false },
 );
 

@@ -1,6 +1,6 @@
 import { getSession } from "@auth0/nextjs-auth0";
 import { NextRequest, NextResponse } from "next/server";
-import ddbDocClient from "@/utils/ddbDocClient";
+import ddbDocClient from "@/app/utils/ddbDocClient";
 import { QueryCommand } from "@aws-sdk/lib-dynamodb";
 
 const GET = async (req: NextRequest) => {

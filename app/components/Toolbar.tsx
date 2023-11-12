@@ -4,13 +4,16 @@ import { QuestionMarkCircleIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 
-const ModelSwitch = dynamic(() => import("@/components/ModelSwitch"), {
+const ModelSwitch = dynamic(() => import("@/app/components/ModelSwitch"), {
   ssr: false,
 });
-const SettingPopover = dynamic(() => import("@/components/SettingPopover"), {
-  ssr: false,
-});
-const SearchBar = dynamic(() => import("@/components/SearchBar"), {
+const SettingPopover = dynamic(
+  () => import("@/app/components/SettingPopover"),
+  {
+    ssr: false,
+  },
+);
+const SearchBar = dynamic(() => import("@/app/components/SearchBar"), {
   ssr: false,
 });
 

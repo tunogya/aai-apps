@@ -1,5 +1,5 @@
-import Account from "@/components/Account";
-import CoreNav from "@/components/Nav/CoreNav";
+import Account from "@/app/components/Account";
+import CoreNav from "@/app/components/Nav/CoreNav";
 import Image from "next/image";
 
 export const runtime = "edge";

@@ -2,7 +2,7 @@
 import Link from "next/link";
 import React, { FC, useEffect, useState } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import useDeleteItems from "@/hooks/useDeleteItems";
+import useDeleteItems from "@/app/hooks/useDeleteItems";
 
 const SecondaryNavItem: FC<{
   item: any;

@@ -6,10 +6,10 @@ import React, { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import dynamic from "next/dynamic";
 
-const TopUpButton = dynamic(() => import("@/components/TopUpButton"), {
+const TopUpButton = dynamic(() => import("@/app/components/TopUpButton"), {
   ssr: false,
 });
-const ModelSwitch = dynamic(() => import("@/components/ModelSwitch"), {
+const ModelSwitch = dynamic(() => import("@/app/components/ModelSwitch"), {
   ssr: false,
 });
 

@@ -10,7 +10,7 @@ import { BoltIcon, SparklesIcon } from "@heroicons/react/24/solid";
 import dynamic from "next/dynamic";
 
 const MobileDrawer = dynamic(() => import("./MobileDrawer"), { ssr: false });
-const MessageBox = dynamic(() => import("@/components/MessageBox"), {
+const MessageBox = dynamic(() => import("@/app/components/MessageBox"), {
   ssr: false,
 });
 

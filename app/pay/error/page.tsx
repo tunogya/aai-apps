@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { TopUpButton } from "@/components/TopUpButton";
+import { TopUpButton } from "@/app/components/TopUpButton";
 import React from "react";
 import { useSearchParams } from "next/navigation";
 

@@ -1,5 +1,5 @@
 import { Configuration, OpenAIApi } from "openai-edge";
-import redisClient from "@/utils/redisClient";
+import redisClient from "@/app/utils/redisClient";
 
 export const runtime = "edge";
 

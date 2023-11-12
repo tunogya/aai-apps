@@ -1,15 +1,18 @@
 "use client";
 
 import { Configure, InstantSearch } from "react-instantsearch";
-import searchClient from "@/utils/searchClient";
+import searchClient from "@/app/utils/searchClient";
 import React from "react";
 import dynamic from "next/dynamic";
 import { useUser } from "@auth0/nextjs-auth0/client";
 
-const CustomSearchBox = dynamic(() => import("@/components/CustomSearchBox"), {
-  ssr: false,
-});
-const CustomHits = dynamic(() => import("@/components/CustomHits"), {
+const CustomSearchBox = dynamic(
+  () => import("@/app/components/CustomSearchBox"),
+  {
+    ssr: false,
+  },
+);
+const CustomHits = dynamic(() => import("@/app/components/CustomHits"), {
   ssr: false,
 });
 

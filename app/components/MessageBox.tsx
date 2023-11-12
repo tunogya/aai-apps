@@ -13,9 +13,9 @@ import {
 } from "@heroicons/react/24/outline";
 import copy from "copy-to-clipboard";
 import dynamic from "next/dynamic";
-import useDeleteItems from "@/hooks/useDeleteItems";
+import useDeleteItems from "@/app/hooks/useDeleteItems";
 
-const CodePreview = dynamic(() => import("@/components/CodePreview"), {
+const CodePreview = dynamic(() => import("@/app/components/CodePreview"), {
   ssr: false,
 });
 

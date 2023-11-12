@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSession } from "@auth0/nextjs-auth0";
-import stripeClient from "@/utils/stripeClient";
+import stripeClient from "@/app/utils/stripeClient";
 
 const GET = async (req: NextRequest) => {
   // @ts-ignore
