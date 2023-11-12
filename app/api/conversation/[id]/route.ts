@@ -77,7 +77,7 @@ const PATCH = async (req: NextRequest, { params }: any) => {
     UpdateExpression,
     ExpressionAttributeNames,
     ExpressionAttributeValues,
-    ConstraintExpression,
+    ConditionExpression,
   } = await req.json();
   try {
     await sqsClient.send(
@@ -92,7 +92,7 @@ const PATCH = async (req: NextRequest, { params }: any) => {
           UpdateExpression: UpdateExpression || undefined,
           ExpressionAttributeNames: ExpressionAttributeNames || undefined,
           ExpressionAttributeValues: ExpressionAttributeValues || undefined,
-          ConstraintExpression: ConstraintExpression || undefined,
+          ConditionExpression: ConditionExpression || undefined,
         }),
         MessageAttributes: {
           Command: {
