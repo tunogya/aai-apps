@@ -9,10 +9,8 @@ import useSWR from "swr";
 import { BoltIcon, SparklesIcon } from "@heroicons/react/24/solid";
 import dynamic from "next/dynamic";
 
-const MobileDrawer = dynamic(() => import("./MobileDrawer"), { ssr: false });
-const MessageBox = dynamic(() => import("@/app/components/MessageBox"), {
-  ssr: false,
-});
+const MobileDrawer = dynamic(() => import("./MobileDrawer"));
+const MessageBox = dynamic(() => import("@/app/components/MessageBox"));
 
 export default function Chat() {
   const params = useParams();

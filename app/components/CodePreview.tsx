@@ -1,3 +1,4 @@
+"use client";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import React, { FC } from "react";
 import { CheckIcon, ClipboardIcon } from "@heroicons/react/24/outline";

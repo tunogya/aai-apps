@@ -7,9 +7,6 @@ import dynamic from "next/dynamic";
 
 const SecondaryNavItem = dynamic(
   () => import("@/app/chat/[[...id]]/SecondaryNavItem"),
-  {
-    ssr: false,
-  },
 );
 
 const SecondaryNav = () => {

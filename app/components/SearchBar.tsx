@@ -8,13 +8,8 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 
 const CustomSearchBox = dynamic(
   () => import("@/app/components/CustomSearchBox"),
-  {
-    ssr: false,
-  },
 );
-const CustomHits = dynamic(() => import("@/app/components/CustomHits"), {
-  ssr: false,
-});
+const CustomHits = dynamic(() => import("@/app/components/CustomHits"));
 
 const SearchBar = () => {
   const { user } = useUser();

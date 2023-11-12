@@ -6,12 +6,8 @@ import React, { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import dynamic from "next/dynamic";
 
-const TopUpButton = dynamic(() => import("@/app/components/TopUpButton"), {
-  ssr: false,
-});
-const ModelSwitch = dynamic(() => import("@/app/components/ModelSwitch"), {
-  ssr: false,
-});
+// const TopUpButton = dynamic(() => import("@/app/components/TopUpButton"));
+const ModelSwitch = dynamic(() => import("@/app/components/ModelSwitch"));
 
 const CSR = () => {
   const searchParams = useSearchParams();

@@ -9,7 +9,6 @@ import dynamic from "next/dynamic";
 
 const TailwindIndicator = dynamic(
   () => import("@/app/components/TailwindIndicator"),
-  { ssr: false },
 );
 
 const title = "AbandonAI";

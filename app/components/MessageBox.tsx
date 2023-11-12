@@ -15,9 +15,7 @@ import copy from "copy-to-clipboard";
 import dynamic from "next/dynamic";
 import useDeleteItems from "@/app/hooks/useDeleteItems";
 
-const CodePreview = dynamic(() => import("@/app/components/CodePreview"), {
-  ssr: false,
-});
+const CodePreview = dynamic(() => import("@/app/components/CodePreview"));
 
 const MessageBox: FC<{
   currentChatId: string;

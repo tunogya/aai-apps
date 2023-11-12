@@ -1,3 +1,4 @@
+"use client";
 import { useHits } from "react-instantsearch";
 import Link from "next/link";
 import React from "react";

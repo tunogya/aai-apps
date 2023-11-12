@@ -4,18 +4,9 @@ import { QuestionMarkCircleIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 
-const ModelSwitch = dynamic(() => import("@/app/components/ModelSwitch"), {
-  ssr: false,
-});
-const SettingPopover = dynamic(
-  () => import("@/app/components/SettingPopover"),
-  {
-    ssr: false,
-  },
-);
-const SearchBar = dynamic(() => import("@/app/components/SearchBar"), {
-  ssr: false,
-});
+const ModelSwitch = dynamic(() => import("@/app/components/ModelSwitch"));
+const SettingPopover = dynamic(() => import("@/app/components/SettingPopover"));
+const SearchBar = dynamic(() => import("@/app/components/SearchBar"));
 
 const Toolbar: FC<{ border?: boolean }> = (props) => {
   return (
