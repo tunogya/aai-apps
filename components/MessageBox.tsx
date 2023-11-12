@@ -131,15 +131,14 @@ const MessageBox: FC<{
                           "Content-Type": "application/json",
                         },
                         body: JSON.stringify({
-                          UpdateExpression: `REMOVE #messages[:index]`,
-                          ConditionExpression: `#messages[:index].#id = :id`,
+                          UpdateExpression: `REMOVE #messages[${index}]`,
+                          ConditionExpression: `#messages[${index}].#id = :id`,
                           ExpressionAttributeNames: {
                             "#messages": "messages",
                             "#id": "id",
                           },
                           ExpressionAttributeValues: {
                             ":id": message.id,
-                            ":index": index,
                           },
                         }),
                       },
