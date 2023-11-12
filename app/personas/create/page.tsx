@@ -9,11 +9,41 @@ const models = [
   { id: 2, name: "gpt-4-1106-preview" },
 ];
 
+const communication_styles = [
+  { id: 1, name: "Direct" },
+  { id: 2, name: "Indirect" },
+  { id: 3, name: "Text" },
+  { id: 4, name: "Audio" },
+];
+
+const response_strategy = [
+  { id: 1, name: "Escape" },
+  { id: 2, name: "Coping" },
+  { id: 3, name: "Logic" },
+  { id: 4, name: "Emotion" },
+];
+
+const social_preferences = [
+  { id: 1, name: "Group" },
+  { id: 2, name: "Individual" },
+  { id: 3, name: "Active" },
+  { id: 4, name: "Observation" },
+];
+
 export default function CSRPage() {
   const [selectModel, setSelectModel] = useState(models[0]);
+  const [selectCommunicationStyle, setSelectCommunicationStyle] = useState(
+    communication_styles[0],
+  );
+  const [selectResponseStrategy, setSelectResponseStrategy] = useState(
+    response_strategy[0],
+  );
+  const [selectSocialPreferences, setSelectSocialPreferences] = useState(
+    social_preferences[0],
+  );
 
   return (
-    <div className={"h-full w-full select-none"}>
+    <div className={"h-full w-full"}>
       <div
         className={
           "py-5 pl-2 pr-5 text-sm flex items-center justify-between border-b h-[68px] w-full"
@@ -87,17 +117,10 @@ export default function CSRPage() {
                   "border text-sm overflow-x-scroll max-w-[360px] w-full h-7 px-2 py-1 rounded focus:outline-[#0066FF]"
                 }
               />
-            </div>
-            <div className={"space-y-4 text-gray-800"}>
-              <div className={"text-xl font-medium"}>
-                Cognitive function priority
+              <div className={"text-sm text-gray-400"}>
+                You can change the order of four words to adjust the priority of
+                cognitive functions.
               </div>
-              <textarea
-                placeholder={"What are your Persona's preferences?"}
-                className={
-                  "border text-sm overflow-x-scroll max-w-[360px] w-full h-7 px-2 py-1 rounded focus:outline-[#0066FF] min-h-[80px] max-h-[240px]"
-                }
-              />
             </div>
             <div className={"space-y-4 text-gray-800"}>
               <div className={"text-xl font-medium"}>Hobbies and interests</div>
@@ -119,24 +142,27 @@ export default function CSRPage() {
             </div>
             <div className={"space-y-4 text-gray-800"}>
               <div className={"text-xl font-medium"}>Communication style</div>
-              <Listbox value={selectModel} onChange={setSelectModel}>
+              <Listbox
+                value={selectCommunicationStyle}
+                onChange={setSelectCommunicationStyle}
+              >
                 <div className="relative mt-1">
                   <Listbox.Button
                     className={
-                      "relative text-sm border max-w-[360px] w-full h-7 px-2 py-1 text-start rounded hover:outline hover:outline-[#0066FF]"
+                      "text-sm border max-w-[360px] w-full h-7 px-2 py-1 text-start rounded hover:outline hover:outline-[#0066FF]"
                     }
                   >
                     <div className={"flex items-center justify-between"}>
-                      {selectModel.name}
+                      {selectCommunicationStyle.name}
                       <ChevronUpDownIcon className={"w-4 h-4"} />
                     </div>
                   </Listbox.Button>
                   <Listbox.Options
                     className={
-                      "absolute mt-1 max-h-60 max-w-[360px] w-full overflow-auto rounded bg-white shadow border py-1"
+                      "absolute z-10 mt-1 max-h-60 max-w-[360px] w-full overflow-auto rounded bg-white shadow border py-1"
                     }
                   >
-                    {models.map((m) => (
+                    {communication_styles.map((m) => (
                       <Listbox.Option
                         key={m.id}
                         value={m}
@@ -153,24 +179,27 @@ export default function CSRPage() {
             </div>
             <div className={"space-y-4 text-gray-800"}>
               <div className={"text-xl font-medium"}>Response strategy</div>
-              <Listbox value={selectModel} onChange={setSelectModel}>
+              <Listbox
+                value={selectResponseStrategy}
+                onChange={setSelectResponseStrategy}
+              >
                 <div className="relative mt-1">
                   <Listbox.Button
                     className={
-                      "relative text-sm border max-w-[360px] w-full h-7 px-2 py-1 text-start rounded hover:outline hover:outline-[#0066FF]"
+                      "text-sm border max-w-[360px] w-full h-7 px-2 py-1 text-start rounded hover:outline hover:outline-[#0066FF]"
                     }
                   >
                     <div className={"flex items-center justify-between"}>
-                      {selectModel.name}
+                      {selectResponseStrategy.name}
                       <ChevronUpDownIcon className={"w-4 h-4"} />
                     </div>
                   </Listbox.Button>
                   <Listbox.Options
                     className={
-                      "absolute mt-1 max-h-60 max-w-[360px] w-full overflow-auto rounded bg-white shadow border py-1"
+                      "absolute z-10 mt-1 max-h-60 max-w-[360px] w-full overflow-auto rounded bg-white shadow border py-1"
                     }
                   >
-                    {models.map((m) => (
+                    {response_strategy.map((m) => (
                       <Listbox.Option
                         key={m.id}
                         value={m}
@@ -187,24 +216,27 @@ export default function CSRPage() {
             </div>
             <div className={"space-y-4 text-gray-800"}>
               <div className={"text-xl font-medium"}>Social preferences</div>
-              <Listbox value={selectModel} onChange={setSelectModel}>
+              <Listbox
+                value={selectSocialPreferences}
+                onChange={setSelectSocialPreferences}
+              >
                 <div className="relative mt-1">
                   <Listbox.Button
                     className={
-                      "relative text-sm border max-w-[360px] w-full h-7 px-2 py-1 text-start rounded hover:outline hover:outline-[#0066FF]"
+                      "text-sm border max-w-[360px] w-full h-7 px-2 py-1 text-start rounded hover:outline hover:outline-[#0066FF]"
                     }
                   >
                     <div className={"flex items-center justify-between"}>
-                      {selectModel.name}
+                      {selectSocialPreferences.name}
                       <ChevronUpDownIcon className={"w-4 h-4"} />
                     </div>
                   </Listbox.Button>
                   <Listbox.Options
                     className={
-                      "absolute mt-1 max-h-60 max-w-[360px] w-full overflow-auto rounded bg-white shadow border py-1"
+                      "absolute z-10 mt-1 max-h-60 max-w-[360px] w-full overflow-auto rounded bg-white shadow border py-1"
                     }
                   >
-                    {models.map((m) => (
+                    {social_preferences.map((m) => (
                       <Listbox.Option
                         key={m.id}
                         value={m}
