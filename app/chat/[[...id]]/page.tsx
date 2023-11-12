@@ -232,7 +232,7 @@ export default function Chat() {
             {messages
               .map((message, index) => (
                 <MessageBox
-                  currentChatId={`CHAT#${currentChatId}`}
+                  currentChatId={currentChatId}
                   key={index}
                   message={message}
                   index={index}

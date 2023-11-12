@@ -120,29 +120,23 @@ const MessageBox: FC<{
                 onClick={async () => {
                   try {
                     deleteById(message.id);
-                    await fetch(
-                      `/api/conversation/${currentChatId.replace(
-                        "CHAT2#",
-                        "",
-                      )}`,
-                      {
-                        method: "PATCH",
-                        headers: {
-                          "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                          UpdateExpression: `REMOVE #messages[${index}]`,
-                          ConditionExpression: `#messages[${index}].#id = :id`,
-                          ExpressionAttributeNames: {
-                            "#messages": "messages",
-                            "#id": "id",
-                          },
-                          ExpressionAttributeValues: {
-                            ":id": message.id,
-                          },
-                        }),
+                    await fetch(`/api/conversation/${currentChatId}`, {
+                      method: "PATCH",
+                      headers: {
+                        "Content-Type": "application/json",
                       },
-                    );
+                      body: JSON.stringify({
+                        UpdateExpression: `REMOVE #messages[${index}]`,
+                        ConditionExpression: `#messages[${index}].#id = :id`,
+                        ExpressionAttributeNames: {
+                          "#messages": "messages",
+                          "#id": "id",
+                        },
+                        ExpressionAttributeValues: {
+                          ":id": message.id,
+                        },
+                      }),
+                    });
                   } catch (e) {
                     console.log(e);
                   }
