@@ -38,11 +38,7 @@ const SecondaryNav = () => {
   }, [reducedData]);
 
   return (
-    <div
-      className={
-        "w-[300px] shrink-0 h-full border-r overflow-y-auto flex-col hidden md:flex"
-      }
-    >
+    <div className={"w-[300px] shrink-0 h-full border-r hidden md:block"}>
       <Link
         href={`/chat?model=${searchParams.get("model") || "gpt-3.5-turbo"}`}
         prefetch
@@ -69,7 +65,7 @@ const SecondaryNav = () => {
         </div>
         <div className={"text-sm text-gray-800"}>New Chat</div>
       </Link>
-      <div className={"h-full overflow-y-auto px-2"}>
+      <div className={"h-[calc(100vh-66px)] overflow-y-auto px-2"}>
         {reducedData?.length > 0 && (
           <div className={"mb-2"}>
             {reducedData
