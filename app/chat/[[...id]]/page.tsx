@@ -48,7 +48,7 @@ export default function Chat() {
     if (!params?.id?.[0] && currentChatId && model) {
       router.replace(`/chat/${currentChatId}?model=${model}`);
     }
-  }, [params, currentChatId, model]);
+  }, [params, currentChatId, model, router]);
 
   return (
     <div className={"w-full md:min-w-[400px]"}>

@@ -20,7 +20,7 @@ const ModelSwitch = () => {
       params.set("model", "gpt-3.5-turbo");
       router.replace(`${pathname}?${params.toString()}`);
     }
-  }, [useGPT4]);
+  }, [useGPT4, searchParams, pathname, router]);
 
   useEffect(() => {
     if (searchParams.get("model")?.startsWith("gpt-4")) {
