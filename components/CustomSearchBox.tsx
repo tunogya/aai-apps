@@ -19,11 +19,6 @@ function CustomSearchBox(props: UseSearchBoxProps) {
 
   function setQuery(newQuery: string) {
     setInputValue(newQuery);
-    if (newQuery.length > 0) {
-      refine(newQuery);
-    } else {
-      clear();
-    }
   }
 
   return (
@@ -32,28 +27,7 @@ function CustomSearchBox(props: UseSearchBoxProps) {
         query && "bg-gray-100"
       }`}
     >
-      <form
-        action=""
-        role="search"
-        noValidate
-        onSubmit={(event) => {
-          event.preventDefault();
-          event.stopPropagation();
-
-          if (inputRef.current) {
-            inputRef.current.blur();
-          }
-        }}
-        onReset={(event) => {
-          event.preventDefault();
-          event.stopPropagation();
-
-          if (inputRef.current) {
-            inputRef.current.focus();
-          }
-        }}
-        className={"w-full h-full px-4 py-2 flex gap-2 items-center"}
-      >
+      <div className={"w-full h-full px-4 py-2 flex gap-2 items-center"}>
         {status === "error" && (
           <ExclamationTriangleIcon
             className={"w-4 h-4 text-red-500 stroke-2"}
@@ -79,6 +53,17 @@ function CustomSearchBox(props: UseSearchBoxProps) {
           onChange={(event) => {
             setQuery(event.currentTarget.value);
           }}
+          onKeyDown={async (e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              if (e.nativeEvent.isComposing) return;
+              e.preventDefault();
+              if (e.currentTarget.value.length > 0) {
+                refine(e.currentTarget.value);
+              } else {
+                clear();
+              }
+            }
+          }}
           autoFocus={false}
           className={"w-full h-full outline-none bg-transparent"}
         />
@@ -93,7 +78,7 @@ function CustomSearchBox(props: UseSearchBoxProps) {
             <XMarkIcon className={"w-4 h-4 stroke-2 text-gray-500"} />
           </button>
         )}
-      </form>
+      </div>
     </div>
   );
 }
