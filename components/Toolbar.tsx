@@ -21,7 +21,7 @@ const Toolbar: FC<{ border?: boolean }> = (props) => {
         props.border ? "border-b" : ""
       }`}
     >
-      <div className={"relative w-full"}>
+      <div className={"relative w-full max-w-[40vw]"}>
         <SearchBar />
       </div>
       <div className={"text-sm font-semibold flex items-center space-x-1"}>
