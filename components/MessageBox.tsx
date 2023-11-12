@@ -116,33 +116,33 @@ const MessageBox: FC<{
                   <ClipboardIcon className={"w-4 h-4 stroke-2"} />
                 )}
               </button>
-              <button
-                onClick={async () => {
-                  try {
-                    deleteById(message.id);
-                    await fetch(
-                      `/api/conversation/${currentChatId.replace(
-                        "CHAT2#",
-                        "",
-                      )}`,
-                      {
-                        method: "PATCH",
-                        headers: {
-                          "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                          UpdateExpression: `REMOVE messages[${index}]`,
-                        }),
-                      },
-                    );
-                  } catch (e) {
-                    console.log(e);
-                  }
-                }}
-                className={"rounded p-1 hover:bg-gray-100 cursor-pointer"}
-              >
-                <TrashIcon className={"w-4 h-4 stroke-2"} />
-              </button>
+              {/*<button*/}
+              {/*  onClick={async () => {*/}
+              {/*    try {*/}
+              {/*      deleteById(message.id);*/}
+              {/*      await fetch(*/}
+              {/*        `/api/conversation/${currentChatId.replace(*/}
+              {/*          "CHAT2#",*/}
+              {/*          "",*/}
+              {/*        )}`,*/}
+              {/*        {*/}
+              {/*          method: "PATCH",*/}
+              {/*          headers: {*/}
+              {/*            "Content-Type": "application/json",*/}
+              {/*          },*/}
+              {/*          body: JSON.stringify({*/}
+              {/*            UpdateExpression: `REMOVE messages[${index}]`,*/}
+              {/*          }),*/}
+              {/*        },*/}
+              {/*      );*/}
+              {/*    } catch (e) {*/}
+              {/*      console.log(e);*/}
+              {/*    }*/}
+              {/*  }}*/}
+              {/*  className={"rounded p-1 hover:bg-gray-100 cursor-pointer"}*/}
+              {/*>*/}
+              {/*  <TrashIcon className={"w-4 h-4 stroke-2"} />*/}
+              {/*</button>*/}
             </div>
           </div>
           <Markdown
