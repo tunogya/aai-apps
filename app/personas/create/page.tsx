@@ -4,11 +4,6 @@ import Link from "next/link";
 import { Listbox } from "@headlessui/react";
 import { ChevronUpDownIcon } from "@heroicons/react/24/solid";
 
-const models = [
-  { id: 1, name: "gpt-3.5-turbo" },
-  { id: 2, name: "gpt-4-1106-preview" },
-];
-
 const communication_styles = [
   { id: 1, name: "Direct" },
   { id: 2, name: "Indirect" },
@@ -31,7 +26,6 @@ const social_preferences = [
 ];
 
 export default function CSRPage() {
-  const [selectModel, setSelectModel] = useState(models[0]);
   const [selectCommunicationStyle, setSelectCommunicationStyle] = useState(
     communication_styles[0],
   );
