@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import React, { useMemo } from "react";
 import useSWRInfinite from "swr/infinite";
 import dynamic from "next/dynamic";
 
@@ -13,9 +13,7 @@ const SecondaryNavItem = dynamic(
 );
 
 const SecondaryNav = () => {
-  const params = useParams();
   const searchParams = useSearchParams();
-  const router = useRouter();
   const getKey = (pageIndex: number, previousPageData: any) => {
     if (previousPageData && !previousPageData.nextCursor) return null;
     if (pageIndex === 0) return `/api/conversation?limit=20`;
@@ -38,29 +36,6 @@ const SecondaryNav = () => {
   const haveMore = useMemo(() => {
     return reducedData.length % 20 === 0 && reducedData.length > 0;
   }, [reducedData]);
-
-  const currentChatId = params?.id?.[0] || null;
-  const [deleteItems, setDeleteItems] = useState<string[]>([]);
-
-  const deleteChat = async (id: string) => {
-    if (id === currentChatId) {
-      router.replace("/chat");
-    }
-    try {
-      await fetch(`/api/conversation/${id}`, {
-        method: "DELETE",
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  useEffect(() => {
-    const items = JSON.parse(sessionStorage.getItem("deleteItems") || "[]");
-    if (items) {
-      setDeleteItems(items);
-    }
-  }, []);
 
   return (
     <div
@@ -100,14 +75,7 @@ const SecondaryNav = () => {
             {reducedData
               ?.sort((a: any, b: any) => b.updated - a.updated)
               ?.map((item: any) => (
-                <SecondaryNavItem
-                  key={item.SK}
-                  item={item}
-                  currentChatId={currentChatId}
-                  deleteItems={deleteItems}
-                  setDeleteItems={setDeleteItems}
-                  deleteChat={deleteChat}
-                />
+                <SecondaryNavItem key={item.SK} item={item} />
               ))}
           </div>
         )}

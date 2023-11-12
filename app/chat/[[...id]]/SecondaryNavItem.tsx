@@ -1,16 +1,30 @@
 "use client";
 import Link from "next/link";
-import React, { FC } from "react";
-import { useSearchParams } from "next/navigation";
+import React, { FC, useEffect, useState } from "react";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
+import useDeleteItems from "@/hooks/useDeleteItems";
 
 const SecondaryNavItem: FC<{
   item: any;
-  currentChatId: any;
-  deleteItems: any;
-  setDeleteItems: any;
-  deleteChat: any;
-}> = ({ item, currentChatId, deleteItems, setDeleteItems, deleteChat }) => {
+}> = ({ item }) => {
+  const params = useParams();
   const searchParams = useSearchParams();
+  const router = useRouter();
+  const { deleteItems, deleteById } = useDeleteItems();
+  const currentChatId = params?.id?.[0] || null;
+
+  const deleteChat = async (id: string) => {
+    if (id === currentChatId) {
+      router.replace("/chat");
+    }
+    try {
+      await fetch(`/api/conversation/${id}`, {
+        method: "DELETE",
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <div
@@ -52,12 +66,7 @@ const SecondaryNavItem: FC<{
             deleteItems.includes(item.SK) ? "text-red-500" : ""
           }`}
           onClick={async () => {
-            const _newDeleteItems = [...deleteItems, item.SK];
-            setDeleteItems(_newDeleteItems);
-            sessionStorage.setItem(
-              "deleteItems",
-              JSON.stringify(_newDeleteItems),
-            );
+            deleteById(item.SK);
             await deleteChat(item.SK.replace("CHAT2#", ""));
           }}
         >

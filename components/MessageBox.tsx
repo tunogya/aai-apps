@@ -6,28 +6,45 @@ import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import React, { FC } from "react";
-import { CheckIcon, ClipboardIcon } from "@heroicons/react/24/outline";
+import {
+  CheckIcon,
+  ClipboardIcon,
+  TrashIcon,
+} from "@heroicons/react/24/outline";
 import copy from "copy-to-clipboard";
 import dynamic from "next/dynamic";
+import useDeleteItems from "@/hooks/useDeleteItems";
 
 const CodePreview = dynamic(() => import("@/components/CodePreview"), {
   ssr: false,
 });
 
 const MessageBox: FC<{
+  currentChatId: string;
   message: any;
   index: number;
   isPurple: boolean;
   picture: string | null | undefined;
   isLoading: boolean;
   length: number;
-}> = ({ message, index, isPurple, picture, isLoading, length }) => {
+}> = ({
+  message,
+  index,
+  isPurple,
+  picture,
+  isLoading,
+  length,
+  currentChatId,
+}) => {
   const [state, setState] = React.useState(false);
+  const { deleteItems, deleteById } = useDeleteItems();
 
   return (
     <div
       className={`flex border-t p-3 md:p-8 ${
         message.role === "user" ? "bg-white" : "bg-gray-50"
+      } ${
+        deleteItems.includes(message.id) ? "hidden" : ""
       } items-center justify-center group`}
     >
       <div className={`max-w-3xl w-full h-fit flex gap-3 items-start`}>
@@ -82,7 +99,7 @@ const MessageBox: FC<{
                 .startOf("second")
                 .fromNow()}
             </div>
-            <div className={"group-hover:opacity-100 opacity-0"}>
+            <div className={"group-hover:opacity-100 opacity-0 space-x-1"}>
               <button
                 onClick={() => {
                   copy(message.content);
@@ -98,6 +115,33 @@ const MessageBox: FC<{
                 ) : (
                   <ClipboardIcon className={"w-4 h-4 stroke-2"} />
                 )}
+              </button>
+              <button
+                onClick={async () => {
+                  try {
+                    deleteById(message.id);
+                    await fetch(
+                      `/api/conversation/${currentChatId.replace(
+                        "CHAT2#",
+                        "",
+                      )}`,
+                      {
+                        method: "PATCH",
+                        headers: {
+                          "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                          UpdateExpression: `REMOVE messages[${index}]`,
+                        }),
+                      },
+                    );
+                  } catch (e) {
+                    console.log(e);
+                  }
+                }}
+                className={"rounded p-1 hover:bg-gray-100 cursor-pointer"}
+              >
+                <TrashIcon className={"w-4 h-4 stroke-2"} />
               </button>
             </div>
           </div>
