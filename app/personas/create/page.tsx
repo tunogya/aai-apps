@@ -1,21 +1,13 @@
 import React from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import CreateForm from "@/app/personas/create/Form/CreateForm";
 
-const CreateForm = dynamic(() => import("@/app/personas/create/CreateForm"), {
-  ssr: false,
-});
 const CreatePreview = dynamic(
   () => import("@/app/personas/create/CreatePreview"),
-  {
-    ssr: false,
-  },
 );
 const ActionButtonGroup = dynamic(
   () => import("@/app/personas/create/ActionButtonGroup"),
-  {
-    ssr: false,
-  },
 );
 
 export const runtime = "edge";
