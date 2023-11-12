@@ -88,7 +88,7 @@ const MessageBox: FC<{
             )
           )}
         </div>
-        <div className={"flex flex-col md:gap-1 w-full overflow-x-hidden"}>
+        <div className={"md:space-y-1 w-full overflow-x-hidden"}>
           <div
             className={
               "flex items-center text-xs text-gray-500 justify-between"

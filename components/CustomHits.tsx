@@ -18,7 +18,7 @@ function Hit({ hit }: any) {
             {new Date(Number(hit?.updated) * 1000).toLocaleString()}
           </div>
         </div>
-        <div className={"flex flex-col space-y-1 mt-2"}>
+        <div className={"space-y-1 mt-2"}>
           {hit?._snippetResult?.messages
             ?.filter((item: any) => item?.content?.matchLevel === "full")
             ?.map((item: any, index: number) => (

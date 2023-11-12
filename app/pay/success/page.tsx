@@ -9,7 +9,7 @@ export default async function SSRPage() {
   return (
     <div
       className={
-        "h-full w-full flex flex-col items-center justify-center gap-4 select-none relative"
+        "h-full w-full items-center justify-center space-y-4 select-none relative"
       }
     >
       <div className={"text-[120px]"}>🎉</div>

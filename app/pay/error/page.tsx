@@ -11,7 +11,7 @@ export default function CSRPage() {
   return (
     <div
       className={
-        "h-full w-full flex flex-col items-center justify-center gap-4 select-none relative"
+        "h-full w-full space-y-4 items-center justify-center select-none relative"
       }
     >
       <div className={"text-[120px]"}>😫</div>
