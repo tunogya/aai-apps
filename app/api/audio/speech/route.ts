@@ -1,12 +1,8 @@
-import { getSession } from "@auth0/nextjs-auth0";
 import OpenAI from "openai";
 
+export const runtime = "edge";
 // @ts-ignore
 export async function POST(req: Request): Promise<Response> {
-  // @ts-ignore
-  const { user } = await getSession();
-  const sub = user.sub;
-
   let { model, input, voice, response_format, speed } = await req.json();
 
   const openai = new OpenAI({
@@ -26,6 +22,10 @@ export async function POST(req: Request): Promise<Response> {
 
     return new Response(buffer, {
       status: 200,
+      headers: {
+        "Content-Type": "audio/mpeg",
+        "Content-Disposition": 'attachment; filename="audio.mp3"',
+      },
     });
   } catch (e) {
     return new Response("Internal Server Error", {
