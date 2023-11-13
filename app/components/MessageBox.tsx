@@ -67,6 +67,8 @@ const MessageBox: FC<{
       audio.current.removeEventListener("ended", () => {
         setSpeechState("ended");
       });
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      audio.current.pause();
     };
   }, []);
 
