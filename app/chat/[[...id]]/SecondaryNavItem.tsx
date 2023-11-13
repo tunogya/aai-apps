@@ -32,16 +32,16 @@ const SecondaryNavItem: FC<{
       key={item.SK}
       className={`relative flex group items-center gap-2 ${
         item.SK.replace("CHAT2#", "") === currentChatId ? "bg-gray-100" : ""
-      } hover:bg-gray-100 text-gray-800 rounded px-3 py-2 cursor-pointer select-none`}
+      } hover:bg-gray-100 text-gray-800 rounded px-3 py-2 cursor-pointer select-none ${
+        deleteItems.includes(item.SK) ? "hidden" : ""
+      }`}
     >
       <Link
         href={`/chat/${item.SK.replace("CHAT2#", "")}?model=${
           searchParams.get("model") || "gpt-3.5-turbo"
         }`}
         prefetch
-        className={`flex w-full items-center ${
-          deleteItems.includes(item.SK) ? "line-through text-red-500" : ""
-        }`}
+        className={`flex w-full items-center`}
       >
         <div className={"w-6 shrink-0"}>
           <svg
