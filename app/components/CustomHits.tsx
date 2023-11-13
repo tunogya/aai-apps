@@ -23,7 +23,7 @@ function Hit({ hit }: any) {
           {hit?._snippetResult?.messages
             ?.filter((item: any) => item?.content?.matchLevel === "full")
             ?.map((item: any, index: number) => (
-              <span
+              <div
                 key={index}
                 className={`p-2 rounded border ${
                   item?.role?.value === "user" ? "border-r-4" : "border-l-4"
