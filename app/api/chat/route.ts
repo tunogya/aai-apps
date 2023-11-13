@@ -22,7 +22,11 @@ export async function POST(req: Request): Promise<Response> {
 
   let { messages, model, id } = await req.json();
 
-  messages.slice(-16);
+  if (model?.startsWith("gpt-4")) {
+    messages?.slice(-16);
+  } else {
+    messages?.slice(-8);
+  }
 
   const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
