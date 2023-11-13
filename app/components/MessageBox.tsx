@@ -5,17 +5,18 @@ import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
-import React, { FC } from "react";
+import React, { FC, useEffect, useRef } from "react";
 import {
+  ArrowPathIcon,
   CheckIcon,
   ClipboardIcon,
+  PlayIcon,
+  PlayPauseIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
 import copy from "copy-to-clipboard";
-import dynamic from "next/dynamic";
 import useDeleteItems from "@/app/hooks/useDeleteItems";
-
-const CodePreview = dynamic(() => import("@/app/components/CodePreview"));
+import CodePreview from "@/app/components/CodePreview";
 
 const MessageBox: FC<{
   currentChatId: string;
@@ -35,7 +36,60 @@ const MessageBox: FC<{
   currentChatId,
 }) => {
   const [state, setState] = React.useState(false);
+  const [speechState, setSpeechState] = React.useState("ended");
   const { deleteItems, deleteById } = useDeleteItems();
+  const audio = useRef(new Audio());
+
+  useEffect(() => {
+    audio.current.addEventListener("play", () => {
+      setSpeechState("play");
+    });
+    audio.current.addEventListener("playing", () => {
+      setSpeechState("playing");
+    });
+    audio.current.addEventListener("pause", () => {
+      setSpeechState("pause");
+    });
+    audio.current.addEventListener("ended", () => {
+      setSpeechState("ended");
+    });
+
+    return () => {
+      audio.current.removeEventListener("play", () => {
+        setSpeechState("play");
+      });
+      audio.current.removeEventListener("playing", () => {
+        setSpeechState("playing");
+      });
+      audio.current.removeEventListener("pause", () => {
+        setSpeechState("pause");
+      });
+      audio.current.removeEventListener("ended", () => {
+        setSpeechState("ended");
+      });
+    };
+  }, []);
+
+  const speech = async (input: string) => {
+    setSpeechState("loading");
+    const res = await fetch("/api/audio/speech", {
+      method: "POST",
+      body: JSON.stringify({
+        model: "tts-1",
+        input,
+        voice: "onyx",
+        response_format: "opus",
+        speed: "1.0",
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const buffer = Buffer.from(await res.arrayBuffer());
+
+    audio.current.src = `data:audio/mpeg;base64,${buffer.toString("base64")}`;
+    await audio.current.play();
+  };
 
   return (
     <div
@@ -94,6 +148,30 @@ const MessageBox: FC<{
                 .fromNow()}
             </div>
             <div className={"group-hover:opacity-100 opacity-0 space-x-1"}>
+              <button
+                onClick={async () => {
+                  if (speechState === "ended") {
+                    await speech(message.content);
+                  } else if (speechState === "playing") {
+                    audio.current.pause();
+                    setSpeechState("pause");
+                  } else if (speechState === "pause") {
+                    await audio.current.play();
+                    setSpeechState("playing");
+                  }
+                }}
+                className={"rounded p-1 hover:bg-gray-100 cursor-pointer"}
+              >
+                {(speechState === "ended" || speechState === "pause") && (
+                  <PlayIcon className={"w-4 h-4 stroke-2"} />
+                )}
+                {speechState === "playing" && (
+                  <PlayPauseIcon className={"w-4 h-4 stroke-2"} />
+                )}
+                {speechState === "loading" && (
+                  <ArrowPathIcon className={"w-4 h-4 stroke-2 animate-spin"} />
+                )}
+              </button>
               <button
                 onClick={() => {
                   copy(message.content);
