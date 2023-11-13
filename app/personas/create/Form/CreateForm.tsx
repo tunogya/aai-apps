@@ -1,5 +1,6 @@
 import React from "react";
 import dynamic from "next/dynamic";
+
 const NameInput = dynamic(() => import("./NameInput"));
 const PersonalityTypeInput = dynamic(() => import("./PersonalityTypeInput"));
 const HobbiesInput = dynamic(() => import("./HobbiesInput"));
@@ -13,6 +14,7 @@ const ResponseStrategySelect = dynamic(
 const SocialPreferencesSelect = dynamic(
   () => import("./SocialPreferencesSelect"),
 );
+const VoiceOptionSelect = dynamic(() => import("./VoiceOptionSelect"));
 
 export const runtime = "edge";
 
@@ -30,6 +32,10 @@ const CreateForm = () => {
           You can change the order of four words to adjust the priority of
           cognitive functions.
         </div>
+      </div>
+      <div className={"space-y-4 text-gray-800"}>
+        <div className={"text-xl font-medium"}>Voice option</div>
+        <VoiceOptionSelect />
       </div>
       <div className={"space-y-4 text-gray-800"}>
         <div className={"text-xl font-medium"}>Hobbies and interests</div>

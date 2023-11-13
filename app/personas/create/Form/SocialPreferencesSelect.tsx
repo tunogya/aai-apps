@@ -24,7 +24,7 @@ const SocialPreferencesSelect = () => {
       <div className="relative mt-1">
         <Listbox.Button
           className={
-            "text-sm border max-w-[360px] w-full h-7 px-2 py-1 text-start rounded hover:outline hover:outline-[#0066FF]"
+            "text-sm border max-w-[360px] w-full h-7 px-2 py-1 text-start rounded outline-2 hover:outline hover:outline-[#0066FF]"
           }
         >
           <div className={"flex items-center justify-between"}>

@@ -3,23 +3,20 @@ import { Listbox } from "@headlessui/react";
 import { ChevronUpDownIcon } from "@heroicons/react/24/solid";
 import React, { useState } from "react";
 
-const response_strategy = [
-  { id: 1, name: "Escape" },
-  { id: 2, name: "Coping" },
-  { id: 3, name: "Logic" },
-  { id: 4, name: "Emotion" },
+const voice_options = [
+  { id: 1, name: "Alloy" },
+  { id: 2, name: "Echo" },
+  { id: 3, name: "Fable" },
+  { id: 4, name: "Onyx" },
+  { id: 5, name: "Nova" },
+  { id: 6, name: "Shimmer" },
 ];
 
-const ResponseStrategySelect = () => {
-  const [selectResponseStrategy, setSelectResponseStrategy] = useState(
-    response_strategy[0],
-  );
+const VoiceOptionSelect = () => {
+  const [selectVoiceOption, setSelectVoiceOption] = useState(voice_options[0]);
 
   return (
-    <Listbox
-      value={selectResponseStrategy}
-      onChange={setSelectResponseStrategy}
-    >
+    <Listbox value={selectVoiceOption} onChange={setSelectVoiceOption}>
       <div className="relative mt-1">
         <Listbox.Button
           className={
@@ -27,7 +24,7 @@ const ResponseStrategySelect = () => {
           }
         >
           <div className={"flex items-center justify-between"}>
-            {selectResponseStrategy.name}
+            {selectVoiceOption.name}
             <ChevronUpDownIcon className={"w-4 h-4"} />
           </div>
         </Listbox.Button>
@@ -36,7 +33,7 @@ const ResponseStrategySelect = () => {
             "absolute z-10 mt-1 max-h-60 max-w-[360px] w-full overflow-auto rounded bg-white shadow border py-1"
           }
         >
-          {response_strategy.map((m) => (
+          {voice_options.map((m) => (
             <Listbox.Option
               key={m.id}
               value={m}
@@ -51,4 +48,4 @@ const ResponseStrategySelect = () => {
   );
 };
 
-export default ResponseStrategySelect;
+export default VoiceOptionSelect;
