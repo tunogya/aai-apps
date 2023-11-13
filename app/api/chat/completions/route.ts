@@ -1,5 +1,5 @@
-import { Configuration, OpenAIApi } from "openai-edge";
 import redisClient from "@/app/utils/redisClient";
+import OpenAI from "openai";
 
 export const runtime = "edge";
 
@@ -26,17 +26,13 @@ export async function POST(req: Request): Promise<Response> {
       },
     });
   }
-  const configuration = new Configuration({
+
+  const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
   });
 
-  const openai = new OpenAIApi(configuration);
-
   try {
-    const res = await openai
-      .createChatCompletion(config)
-      .then((res) => res.json());
-
+    const res = await openai.chat.completions.create(config);
     return new Response(JSON.stringify(res), {
       status: 200,
       headers: {

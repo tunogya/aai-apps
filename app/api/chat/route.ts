@@ -1,5 +1,5 @@
 import { OpenAIStream, StreamingTextResponse } from "ai";
-import { Configuration, OpenAIApi } from "openai-edge";
+import OpenAI from "openai";
 import { SendMessageBatchCommand, SQSClient } from "@aws-sdk/client-sqs";
 import { v4 as uuidv4 } from "uuid";
 import { getSession } from "@auth0/nextjs-auth0/edge";
@@ -24,14 +24,12 @@ export async function POST(req: Request): Promise<Response> {
 
   messages.slice(-16);
 
-  const configuration = new Configuration({
+  const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
   });
 
-  const openai = new OpenAIApi(configuration);
-
   try {
-    const res = await openai.createChatCompletion({
+    const res = await openai.chat.completions.create({
       model,
       messages,
       temperature: 0.7,
