@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import React, { useMemo } from "react";
 import useSWRInfinite from "swr/infinite";
 import dynamic from "next/dynamic";
+import { PlusIcon } from "@heroicons/react/24/outline";
 
 const SecondaryNavItem = dynamic(
   () => import("@/app/chat/[[...id]]/SecondaryNavItem"),
@@ -43,22 +44,8 @@ const SecondaryNav = () => {
           "flex items-center border hover:bg-gray-50 p-3 rounded cursor-pointer select-none m-2 text-gray-800"
         }
       >
-        <div className={"w-6 shrink-0"}>
-          <svg
-            stroke="currentColor"
-            fill="none"
-            strokeWidth="2"
-            viewBox="0 0 24 24"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="h-4 w-4"
-            height="1em"
-            width="1em"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <line x1="12" y1="5" x2="12" y2="19"></line>
-            <line x1="5" y1="12" x2="19" y2="12"></line>
-          </svg>
+        <div className={"p-1"}>
+          <PlusIcon className={"w-4 h-4 stroke-2"} />
         </div>
         <div className={"text-sm text-gray-800"}>New Chat</div>
       </Link>

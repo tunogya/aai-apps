@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import CreateForm from "@/app/personas/create/Form/CreateForm";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 
 const CreatePreview = dynamic(
   () => import("@/app/personas/create/CreatePreview"),
@@ -28,20 +29,7 @@ export default function SSRPage() {
             prefetch
             className={"px-3 pr-4 cursor-pointer"}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="2"
-              stroke="currentColor"
-              className="w-4 h-4"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
+            <XMarkIcon className={"w-4 h-4 stroke-2"} />
           </Link>
           <div className={"pl-5 text-gray-800 font-medium"}>
             Create new Persona
