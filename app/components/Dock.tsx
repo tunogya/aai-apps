@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { PlusSmallIcon } from "@heroicons/react/24/solid";
+import { PlusIcon } from "@heroicons/react/24/outline";
 
 export const runtime = "edge";
 
@@ -17,7 +17,7 @@ const Dock = () => {
           "h-8 w-8 rounded border flex items-center justify-center text-sm hover:shadow hover:bg-gray-100"
         }
       >
-        <PlusSmallIcon className={"w-4 h-4"} />
+        <PlusIcon className={"w-4 h-4 stroke-2"} />
       </Link>
     </div>
   );
