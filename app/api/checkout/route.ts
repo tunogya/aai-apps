@@ -30,7 +30,6 @@ const POST = async (req: NextRequest) => {
       success_url,
       cancel_url,
       allow_promotion_codes,
-      automatic_tax: { enabled: true },
       customer: customer,
     });
     return NextResponse.json({
