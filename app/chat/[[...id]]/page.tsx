@@ -6,7 +6,12 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 import useSWR from "swr";
-import { BoltIcon, SparklesIcon } from "@heroicons/react/24/solid";
+import {
+  BoltIcon,
+  SparklesIcon,
+  PlayIcon,
+  StopIcon,
+} from "@heroicons/react/24/solid";
 import dynamic from "next/dynamic";
 
 const MobileDrawer = dynamic(() => import("./MobileDrawer"));
@@ -126,37 +131,9 @@ export default function Chat() {
                   } justify-center rounded`}
                 >
                   {isLoading ? (
-                    <svg
-                      stroke="currentColor"
-                      fill="none"
-                      strokeWidth="2"
-                      viewBox="0 0 24 24"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="h-5 w-5"
-                    >
-                      <rect
-                        x="3"
-                        y="3"
-                        width="18"
-                        height="18"
-                        rx="2"
-                        ry="2"
-                      ></rect>
-                    </svg>
+                    <StopIcon className={"w-5 h-5 stroke-2"} />
                   ) : (
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 16 16"
-                      fill="none"
-                      className="h-5 w-5"
-                      strokeWidth="2"
-                    >
-                      <path
-                        d="M.5 1.163A1 1 0 0 1 1.97.28l12.868 6.837a1 1 0 0 1 0 1.766L1.969 15.72A1 1 0 0 1 .5 14.836V10.33a1 1 0 0 1 .816-.983L8.5 8 1.316 6.653A1 1 0 0 1 .5 5.67V1.163Z"
-                        fill="currentColor"
-                      ></path>
-                    </svg>
+                    <PlayIcon className={"w-5 h-5 stroke-2"} />
                   )}
                 </button>
               </div>
@@ -170,27 +147,7 @@ export default function Chat() {
                     className={`p-2 bg-[#0066FF] text-white rounded-full`}
                     onClick={stop}
                   >
-                    <svg
-                      stroke="currentColor"
-                      fill="none"
-                      strokeWidth="2"
-                      viewBox="0 0 24 24"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="h-3 w-3"
-                      height="1em"
-                      width="1em"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <rect
-                        x="3"
-                        y="3"
-                        width="18"
-                        height="18"
-                        rx="2"
-                        ry="2"
-                      ></rect>
-                    </svg>
+                    <StopIcon className={"w-4 h-4 stroke-2"} />
                   </button>
                 ) : (
                   <button
@@ -199,20 +156,7 @@ export default function Chat() {
                       isPurple ? "bg-[#AB68FF]" : "bg-[#19C37D]"
                     } rounded-full text-white`}
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="2"
-                      stroke="currentColor"
-                      className="w-4 h-4"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75"
-                      />
-                    </svg>
+                    <PlayIcon className={"w-4 h-4 stroke-2"} />
                   </button>
                 )}
               </div>
