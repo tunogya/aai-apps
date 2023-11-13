@@ -2,6 +2,7 @@
 import { Popover, Transition } from "@headlessui/react";
 import React, { Fragment } from "react";
 import { Cog8ToothIcon } from "@heroicons/react/24/solid";
+import { PowerIcon } from "@heroicons/react/24/outline";
 
 const SettingPopover = () => {
   return (
@@ -30,10 +31,11 @@ const SettingPopover = () => {
           <a href={"/api/auth/logout"}>
             <div
               className={
-                "hover:bg-gray-100 w-full py-2 px-4 font-semibold text-start text-red-500"
+                "hover:bg-gray-100 w-full py-2 px-4 font-semibold text-start flex items-center space-x-2"
               }
             >
-              Logout
+              <PowerIcon className={"w-4 h-4 stroke-2"} />
+              <div>Logout</div>
             </div>
           </a>
         </Popover.Panel>
