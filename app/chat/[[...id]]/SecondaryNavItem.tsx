@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import React, { FC, useMemo } from "react";
+import React, { FC } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import useDeleteItems from "@/app/hooks/useDeleteItems";
 import { TrashIcon } from "@heroicons/react/24/outline";
