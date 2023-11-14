@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import React, { FC } from "react";
+import React, { FC, useMemo } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import useDeleteItems from "@/app/hooks/useDeleteItems";
 import { TrashIcon } from "@heroicons/react/24/outline";
@@ -27,13 +27,17 @@ const SecondaryNavItem: FC<{
     }
   };
 
+  const isHidden = useMemo(() => {
+    return deleteItems.includes(item.SK);
+  }, [deleteItems, item.SK]);
+
   return (
     <div
       key={item.SK}
       className={`relative flex group items-center gap-2 ${
         item.SK.replace("CHAT2#", "") === currentChatId ? "bg-gray-100" : ""
       } hover:bg-gray-100 text-gray-800 rounded px-3 py-2 cursor-pointer select-none ${
-        deleteItems.includes(item.SK) ? "hidden" : ""
+        isHidden ? "hidden" : ""
       }`}
     >
       <Link
