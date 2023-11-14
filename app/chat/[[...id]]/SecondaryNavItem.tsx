@@ -33,7 +33,7 @@ const SecondaryNavItem: FC<{
       className={`relative flex group items-center gap-2 ${
         item.SK.replace("CHAT2#", "") === currentChatId ? "bg-gray-100" : ""
       } hover:bg-gray-100 text-gray-800 rounded px-3 py-2 cursor-pointer select-none ${
-        deleteItems.includes(item.SK) ? "text-gray-400" : ""
+        deleteItems.includes(item.SK) ? "text-red-400" : ""
       }`}
     >
       <Link
