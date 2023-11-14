@@ -27,17 +27,13 @@ const SecondaryNavItem: FC<{
     }
   };
 
-  const isHidden = useMemo(() => {
-    return deleteItems.includes(item.SK);
-  }, [deleteItems, item.SK]);
-
   return (
     <div
       key={item.SK}
       className={`relative flex group items-center gap-2 ${
         item.SK.replace("CHAT2#", "") === currentChatId ? "bg-gray-100" : ""
       } hover:bg-gray-100 text-gray-800 rounded px-3 py-2 cursor-pointer select-none ${
-        isHidden ? "hidden" : ""
+        deleteItems.includes(item.SK) ? "text-gray-400" : ""
       }`}
     >
       <Link
