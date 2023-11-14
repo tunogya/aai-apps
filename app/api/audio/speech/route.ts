@@ -10,7 +10,7 @@ export async function POST(req: Request): Promise<Response> {
   });
 
   try {
-    const mp3 = await openai.audio.speech.create({
+    const response = await openai.audio.speech.create({
       model,
       voice,
       input,
@@ -18,7 +18,7 @@ export async function POST(req: Request): Promise<Response> {
       speed,
     });
 
-    const buffer = Buffer.from(await mp3.arrayBuffer());
+    const buffer = Buffer.from(await response.arrayBuffer());
 
     return new Response(buffer, {
       status: 200,
