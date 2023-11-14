@@ -5,7 +5,7 @@ import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
-import React, { FC, useEffect, useRef } from "react";
+import React, { FC, useEffect, useMemo, useRef } from "react";
 import {
   ArrowPathIcon,
   CheckIcon,
@@ -93,13 +93,15 @@ const MessageBox: FC<{
     await audio.current.play();
   };
 
+  const isHidden = useMemo(() => {
+    return deleteItems.includes(message.id);
+  }, [deleteItems, message.id]);
+
   return (
     <div
       className={`flex border-t p-3 md:p-8 ${
         message.role === "user" ? "bg-white" : "bg-gray-50"
-      } ${
-        deleteItems.includes(message.id) ? "hidden" : ""
-      } items-center justify-center group`}
+      } ${isHidden ? "hidden" : ""} items-center justify-center group`}
     >
       <div className={`max-w-3xl w-full h-fit flex gap-3 items-start`}>
         <div className={"shrink-0"}>
