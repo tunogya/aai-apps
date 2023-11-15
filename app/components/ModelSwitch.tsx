@@ -4,31 +4,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const ModelSwitch = () => {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const pathname = usePathname();
-  const [useGPT4, setUseGPT4] = useState(
-    searchParams.get("model")?.startsWith("gpt-4"),
-  );
-
-  useEffect(() => {
-    const params = new URLSearchParams(searchParams);
-    if (useGPT4) {
-      params.set("model", "gpt-4-1106-preview");
-      router.replace(`${pathname}?${params.toString()}`);
-    } else {
-      params.set("model", "gpt-3.5-turbo");
-      router.replace(`${pathname}?${params.toString()}`);
-    }
-  }, [useGPT4, searchParams, pathname, router]);
-
-  useEffect(() => {
-    if (searchParams.get("model")?.startsWith("gpt-4")) {
-      setUseGPT4(true);
-    } else {
-      setUseGPT4(false);
-    }
-  }, [searchParams]);
+  const [useGPT4, setUseGPT4] = useState(false);
 
   return (
     <div className={"text-sm md:font-semibold md:hover:bg-gray-100 rounded-lg"}>

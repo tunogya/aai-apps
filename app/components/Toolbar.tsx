@@ -4,11 +4,12 @@ import { QuestionMarkCircleIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 
-const ModelSwitch = dynamic(() => import("@/app/components/ModelSwitch"));
 const SettingPopover = dynamic(() => import("@/app/components/SettingPopover"));
 const SearchBar = dynamic(() => import("@/app/components/SearchBar"));
 
-const Toolbar: FC<{ border?: boolean }> = (props) => {
+const Toolbar: FC<{ border?: boolean; children?: React.ReactNode }> = (
+  props,
+) => {
   return (
     <div
       className={`hidden h-[60px] w-full md:flex items-center justify-between px-4 md:px-10 gap-8 ${
@@ -19,7 +20,7 @@ const Toolbar: FC<{ border?: boolean }> = (props) => {
         <SearchBar />
       </div>
       <div className={"text-sm font-semibold flex items-center space-x-1"}>
-        <ModelSwitch />
+        {props?.children}
         <Link
           href={
             "https://www.abandon.ai/docs/resource/Introduction/introduction"

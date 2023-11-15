@@ -4,6 +4,8 @@ import Dock from "@/app/components/Dock";
 import Toolbar from "@/app/components/Toolbar";
 import PrimaryNav from "@/app/components/Nav/PrimaryNav";
 import SecondaryNav from "@/app/chat/[[...id]]/SecondaryNav";
+import dynamic from "next/dynamic";
+const ModelSwitch = dynamic(() => import("@/app/components/ModelSwitch"));
 
 export const runtime = "edge";
 
@@ -22,7 +24,9 @@ export default function Layout(props: { children: ReactNode }) {
         <PrimaryNav />
         <SecondaryNav />
         <div className={"w-full h-full lg:mr-10 relative"}>
-          <Toolbar border={false} />
+          <Toolbar border={false}>
+            <ModelSwitch />
+          </Toolbar>
           {props.children}
         </div>
       </div>
