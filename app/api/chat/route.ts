@@ -21,9 +21,10 @@ export async function POST(req: Request): Promise<Response> {
   const sub = user.sub;
 
   let { messages, model, id } = await req.json();
+  let max_tokens = 1024;
 
   if (model?.startsWith("gpt-4")) {
-    messages?.slice(-16);
+    max_tokens = 4096;
   } else {
     messages?.slice(-8);
   }
@@ -38,7 +39,7 @@ export async function POST(req: Request): Promise<Response> {
       messages,
       temperature: 0.7,
       stream: true,
-      max_tokens: 1024,
+      max_tokens,
     });
 
     const stream = OpenAIStream(res, {
