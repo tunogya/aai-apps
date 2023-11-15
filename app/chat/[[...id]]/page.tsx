@@ -3,7 +3,7 @@
 import { useChat } from "ai/react";
 import React, { useEffect, useMemo, useRef } from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 import useSWR from "swr";
 import {
@@ -13,13 +13,13 @@ import {
   StopIcon,
 } from "@heroicons/react/24/solid";
 import dynamic from "next/dynamic";
+import { useLocalStorage } from "@uidotdev/usehooks";
 
 const MobileDrawer = dynamic(() => import("./MobileDrawer"));
 const MessageBox = dynamic(() => import("@/app/components/MessageBox"));
 
 export default function Chat() {
   const params = useParams();
-  const searchParams = useSearchParams();
   const { user } = useUser();
   const currentChatId = useMemo(() => {
     if (params?.id?.[0]) {
@@ -32,7 +32,7 @@ export default function Chat() {
     fetch(url).then((res) => res.json()),
   );
   const inputRef = useRef(null);
-  const model = searchParams.get("model") || "gpt-3.5-turbo";
+  const [model, setModel] = useLocalStorage("chat-model", "gpt-3.5-turbo");
   const { messages, input, handleInputChange, handleSubmit, isLoading, stop } =
     useChat({
       api: "/api/chat",
@@ -50,10 +50,10 @@ export default function Chat() {
   const router = useRouter();
 
   useEffect(() => {
-    if (!params?.id?.[0] && currentChatId && model) {
-      router.replace(`/chat/${currentChatId}?model=${model}`);
+    if (!params?.id?.[0] && currentChatId) {
+      router.replace(`/chat/${currentChatId}`);
     }
-  }, [params, currentChatId, model, router]);
+  }, [params, currentChatId, router]);
 
   return (
     <div className={"w-full md:min-w-[400px]"}>

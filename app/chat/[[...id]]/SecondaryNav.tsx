@@ -38,7 +38,7 @@ const SecondaryNav = () => {
   return (
     <div className={"w-[300px] shrink-0 h-full border-r hidden md:block"}>
       <Link
-        href={`/chat?model=${searchParams.get("model") || "gpt-3.5-turbo"}`}
+        href={`/chat`}
         prefetch
         className={
           "flex items-center border hover:bg-gray-50 p-3 rounded cursor-pointer select-none m-2 text-gray-800"

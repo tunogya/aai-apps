@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import React, { FC } from "react";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import useDeleteItems from "@/app/hooks/useDeleteItems";
 import { TrashIcon } from "@heroicons/react/24/outline";
 
@@ -9,7 +9,6 @@ const SecondaryNavItem: FC<{
   item: any;
 }> = ({ item }) => {
   const params = useParams();
-  const searchParams = useSearchParams();
   const router = useRouter();
   const { deleteItems, deleteById } = useDeleteItems();
   const currentChatId = params?.id?.[0] || null;
@@ -37,9 +36,7 @@ const SecondaryNavItem: FC<{
       }`}
     >
       <Link
-        href={`/chat/${item.SK.replace("CHAT2#", "")}?model=${
-          searchParams.get("model") || "gpt-3.5-turbo"
-        }`}
+        href={`/chat/${item.SK.replace("CHAT2#", "")}`}
         prefetch
         className={`flex w-full items-center`}
       >

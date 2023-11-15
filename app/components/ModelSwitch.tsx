@@ -1,17 +1,26 @@
 "use client";
 import { Switch } from "@headlessui/react";
-import React, { useState } from "react";
+import React from "react";
+import { useLocalStorage } from "@uidotdev/usehooks";
 
 const ModelSwitch = () => {
-  const [useGPT4, setUseGPT4] = useState(false);
+  const [model, setModel] = useLocalStorage("chat-model", "gpt-3.5-turbo");
 
+  const useGPT4 = model.startsWith("gpt-4");
+  console.log(model, useGPT4);
   return (
     <div className={"text-sm md:font-semibold md:hover:bg-gray-100 rounded-lg"}>
       <div
         className={
           "flex items-center gap-2 px-2 py-1.5 rounded select-none w-full justify-between cursor-pointer"
         }
-        onClick={() => setUseGPT4(!useGPT4)}
+        onClick={() => {
+          if (model.startsWith("gpt-4")) {
+            setModel("gpt-3.5-turbo");
+          } else {
+            setModel("gpt-4-1106-preview");
+          }
+        }}
       >
         <div
           className={`whitespace-nowrap text-sm font-medium ${
