@@ -7,7 +7,7 @@ const ModelSwitch = () => {
   const [model, setModel] = useLocalStorage("chat-model", "gpt-3.5-turbo");
 
   const useGPT4 = model.startsWith("gpt-4");
-  console.log(model, useGPT4);
+
   return (
     <div className={"text-sm md:font-semibold md:hover:bg-gray-100 rounded-lg"}>
       <div
