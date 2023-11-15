@@ -1,7 +1,6 @@
 "use client";
 import { Switch } from "@headlessui/react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 const ModelSwitch = () => {
   const [useGPT4, setUseGPT4] = useState(false);
