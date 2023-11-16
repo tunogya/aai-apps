@@ -24,8 +24,8 @@ function CustomSearchBox(props: UseSearchBoxProps) {
 
   return (
     <div
-      className={`w-full h-10 hover:bg-gray-100 rounded text-sm ${
-        query && "bg-gray-100"
+      className={`h-10 w-[300px] hover:bg-gray-100 hover:w-full rounded text-sm transition-all duration-300 ease-in-out ${
+        inputValue && "bg-gray-100 w-full"
       }`}
     >
       <div className={"w-full h-full px-4 py-2 flex gap-2 items-center"}>
