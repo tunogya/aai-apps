@@ -14,7 +14,7 @@
     "**/*": "prettier --write --ignore-unknown"
   },
   "dependencies": {
-    "@auth0/nextjs-auth0": "^3.1.0",
+    "@auth0/nextjs-auth0": "^3.3.0",
     "@aws-sdk/client-dynamodb": "^3.449.0",
     "@aws-sdk/client-s3": "^3.450.0",
     "@aws-sdk/client-sqs": "^3.449.0",
