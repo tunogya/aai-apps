@@ -44,7 +44,12 @@ export default function Chat() {
         const parsedFunctionCallArguments: { code: string } = JSON.parse(
           functionCall.arguments,
         );
-        const result = eval(parsedFunctionCallArguments.code);
+        let result: string;
+        try {
+          result = `${eval(parsedFunctionCallArguments.code)}`;
+        } catch (e) {
+          result = `An error occurred during eval: ${e}`;
+        }
         return {
           messages: [
             ...chatMessages,
@@ -52,7 +57,7 @@ export default function Chat() {
               id: nanoid(),
               name: "eval_code_in_browser",
               role: "function" as const,
-              content: `${result}`,
+              content: result,
             },
           ],
         };
