@@ -80,13 +80,14 @@ export async function POST(req: Request): Promise<Response> {
         try {
           const { function_call } = JSON.parse(completion);
           const _name = function_call.name;
-          list_append.push({
-            id: uuidv4(),
-            createdAt: new Date(),
-            role: "function",
-            name: _name,
-            content: completion,
-          });
+          console.log(_name);
+          // list_append.push({
+          //   id: uuidv4(),
+          //   createdAt: new Date(),
+          //   role: "function",
+          //   name: _name,
+          //   content: completion,
+          // });
         } catch (e) {
           list_append.push({
             id: uuidv4(),
