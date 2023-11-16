@@ -31,7 +31,9 @@ const MessageBox: FC<{
         <div className={"space-y-2 w-full overflow-x-hidden"}>
           <button
             disabled={isLoading && isLast}
-            className={"bg-gray-200 px-3 h-6 md:h-8 rounded-md text-sm"}
+            className={
+              "bg-gray-200 px-3 h-6 md:h-8 rounded-md text-sm w-[150px]"
+            }
             onClick={() => {
               setShow(!show);
             }}
@@ -39,8 +41,8 @@ const MessageBox: FC<{
             {isLoading && isLast
               ? "Running..."
               : show
-              ? "Hidden result"
-              : "Show result"}
+              ? "Hidden run result"
+              : "Show run result"}
           </button>
           {show && <div className={"text-gray-700"}>{message.content}</div>}
         </div>
