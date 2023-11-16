@@ -3,12 +3,11 @@ import {
   OpenAIStream,
   StreamingTextResponse,
   Message,
+  nanoid,
 } from "ai";
 import OpenAI from "openai";
 import { SendMessageBatchCommand, SQSClient } from "@aws-sdk/client-sqs";
-import { v4 as uuidv4 } from "uuid";
 import { getSession } from "@auth0/nextjs-auth0/edge";
-import functions from "@/app/utils/functions";
 
 const sqsClient = new SQSClient({
   region: "ap-northeast-1",
@@ -26,7 +25,7 @@ export async function POST(req: Request): Promise<Response> {
   const { user } = await getSession();
   const sub = user.sub;
 
-  let { messages, model, id } = await req.json();
+  let { messages, model, id, functions } = await req.json();
   let max_tokens = 1024;
 
   if (model?.startsWith("gpt-4")) {
@@ -42,7 +41,7 @@ export async function POST(req: Request): Promise<Response> {
   const list_append: Array<Message> = [];
   list_append.push({
     ...messages[messages.length - 1],
-    id: uuidv4(),
+    id: nanoid(),
     createdAt: new Date(),
   });
 
@@ -54,7 +53,6 @@ export async function POST(req: Request): Promise<Response> {
       stream: true,
       max_tokens,
       functions: functions,
-      function_call: "auto",
     });
     const data = new experimental_StreamData();
     const stream = OpenAIStream(res, {
@@ -82,7 +80,7 @@ export async function POST(req: Request): Promise<Response> {
           const _name = function_call.name;
           console.log(_name);
           // list_append.push({
-          //   id: uuidv4(),
+          //   id: nanoid(),
           //   createdAt: new Date(),
           //   role: "function",
           //   name: _name,
@@ -90,7 +88,7 @@ export async function POST(req: Request): Promise<Response> {
           // });
         } catch (e) {
           list_append.push({
-            id: uuidv4(),
+            id: nanoid(),
             createdAt: new Date(),
             role: "assistant",
             content: completion,

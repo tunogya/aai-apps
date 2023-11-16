@@ -4,7 +4,6 @@ import { useChat } from "ai/react";
 import React, { useEffect, useMemo, useRef } from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { useParams, useRouter } from "next/navigation";
-import { v4 as uuidv4 } from "uuid";
 import useSWR from "swr";
 import {
   BoltIcon,
@@ -15,6 +14,7 @@ import {
 import dynamic from "next/dynamic";
 import { useLocalStorage } from "@uidotdev/usehooks";
 import { FunctionCallHandler, nanoid } from "ai";
+import functions from "@/app/utils/functions";
 
 const MobileDrawer = dynamic(() => import("./MobileDrawer"));
 const MessageBox = dynamic(() => import("@/app/components/MessageBox"));
@@ -26,7 +26,7 @@ export default function Chat() {
     if (params?.id?.[0]) {
       return params?.id?.[0];
     } else {
-      return uuidv4();
+      return nanoid();
     }
   }, [params?.id]);
   const { data } = useSWR(`/api/conversation/${currentChatId}`, (url) =>
@@ -38,6 +38,7 @@ export default function Chat() {
     chatMessages,
     functionCall,
   ) => {
+    console.log(functionCall);
     if (functionCall.name === "eval_code_in_browser") {
       if (functionCall.arguments) {
         // Parsing here does not always work since it seems that some characters in generated code aren't escaped properly.
@@ -63,7 +64,6 @@ export default function Chat() {
   const { messages, input, handleInputChange, handleSubmit, isLoading, stop } =
     useChat({
       api: "/api/chat",
-      experimental_onFunctionCall: functionCallHandler,
       id: currentChatId,
       headers: {
         "Content-Type": "application/json",
@@ -71,8 +71,10 @@ export default function Chat() {
       body: {
         id: currentChatId,
         model: model,
+        functions: functions,
       },
       initialMessages: data ? data?.item?.messages : [],
+      experimental_onFunctionCall: functionCallHandler,
     });
   const isPurple = model.startsWith("gpt-4");
   const router = useRouter();
