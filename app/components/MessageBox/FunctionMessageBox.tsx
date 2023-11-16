@@ -1,7 +1,7 @@
 "use client";
 import React, { FC, useState } from "react";
 import { Message } from "ai";
-import { SparklesIcon } from "@heroicons/react/24/solid";
+import { CodeBracketIcon } from "@heroicons/react/24/outline";
 
 const MessageBox: FC<{
   message: Message;
@@ -25,7 +25,7 @@ const MessageBox: FC<{
               isPurple ? "bg-[#AB68FF]" : "bg-[#19C37D]"
             } text-white flex items-center justify-center rounded-full md:rounded-none`}
           >
-            <SparklesIcon className={"w-4 h-4 md:w-5 md:h-5 stroke-1.5"} />
+            <CodeBracketIcon className={"w-4 h-4 md:w-5 md:h-5 stroke-1.5"} />
           </div>
         </div>
         <div className={"space-y-2 w-full overflow-x-hidden"}>
