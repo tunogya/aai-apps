@@ -1,18 +1,15 @@
 "use client";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import React, { useMemo } from "react";
 import useSWRInfinite from "swr/infinite";
 import dynamic from "next/dynamic";
 import { PlusIcon } from "@heroicons/react/24/outline";
-import { nanoid } from "ai";
 
 const SecondaryNavItem = dynamic(
   () => import("@/app/chat/[[...id]]/SecondaryNavItem"),
 );
 
 const SecondaryNav = () => {
-  const searchParams = useSearchParams();
   const getKey = (pageIndex: number, previousPageData: any) => {
     if (previousPageData && !previousPageData.nextCursor) return null;
     if (pageIndex === 0) return `/api/conversation?limit=20`;
@@ -39,7 +36,7 @@ const SecondaryNav = () => {
   return (
     <div className={"w-[300px] shrink-0 h-full border-r hidden md:block"}>
       <Link
-        href={`/chat/${nanoid()}`}
+        href={`/chat`}
         prefetch
         className={
           "flex items-center border hover:bg-gray-50 p-3 rounded cursor-pointer select-none m-2 text-gray-800"

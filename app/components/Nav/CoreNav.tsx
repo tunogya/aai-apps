@@ -1,11 +1,10 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { nanoid } from "ai";
 
 const menu = [
   {
-    path: `/chat/${nanoid()}`,
+    path: `/chat`,
     name: "ChatGPT",
   },
   // {
