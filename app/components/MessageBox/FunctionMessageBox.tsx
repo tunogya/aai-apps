@@ -42,7 +42,7 @@ const MessageBox: FC<{
               ? "Hidden result"
               : "Show result"}
           </button>
-          {show && <div>{message.content}</div>}
+          {show && <div className={"text-gray-700"}>{message.content}</div>}
         </div>
       </div>
     </div>
