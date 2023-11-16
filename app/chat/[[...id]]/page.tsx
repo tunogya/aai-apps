@@ -126,7 +126,7 @@ export default function Chat() {
               <div
                 className={`border ${
                   isPurple ? "border-[#AB68FF] ring-[#AB68FF] ring-1" : "shadow"
-                } flex rounded-[18px] md:rounded w-full px-3 py-1.5 md:py-4 md:px-5 text-gray-800 bg-white items-end gap-2`}
+                } flex rounded-[18px] md:rounded w-full px-3 py-1.5 md:py-3 md:px-5 text-gray-800 bg-white items-end gap-2`}
               >
                 {isLoading ? (
                   <div
@@ -216,7 +216,7 @@ export default function Chat() {
       </form>
       <div
         className={
-          "h-[calc(100vh-85px)] md:h-[calc(100vh-142px)] w-full overflow-y-auto relative"
+          "h-[calc(100vh-85px)] md:h-[calc(100vh-134px)] w-full overflow-y-auto relative"
         }
       >
         {messages.length > 0 ? (
