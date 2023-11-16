@@ -14,8 +14,7 @@ import {
 import dynamic from "next/dynamic";
 import { useLocalStorage } from "@uidotdev/usehooks";
 import { nanoid } from "ai";
-import functions from "@/app/utils/functions";
-import functionCallHandler from "@/app/utils/functions/functionCallHandler";
+import { functions, functionCallHandler } from "@/app/utils/functions";
 
 const MobileDrawer = dynamic(() => import("./MobileDrawer"));
 const MessageBox = dynamic(() => import("@/app/components/MessageBox"));

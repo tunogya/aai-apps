@@ -1,37 +1,54 @@
 import { ChatCompletionCreateParams } from "openai/resources/chat";
+import { FunctionCallHandler, nanoid } from "ai";
+import {
+  get_current_weather,
+  get_current_weather_handler,
+} from "./get_current_weather";
+import {
+  eval_code_in_browser,
+  eval_code_in_browser_handler,
+} from "./eval_code_in_browser";
 
 const functions: ChatCompletionCreateParams.Function[] = [
-  {
-    name: "get_current_weather",
-    description: "Get the current weather.",
-    parameters: {
-      type: "object",
-      properties: {
-        format: {
-          type: "string",
-          enum: ["celsius", "fahrenheit"],
-          description: "The temperature unit to use.",
-        },
-      },
-      required: ["format"],
-    },
-  },
-  {
-    name: "eval_code_in_browser",
-    description: "Execute javascript code in the browser with eval().",
-    parameters: {
-      type: "object",
-      properties: {
-        code: {
-          type: "string",
-          description: `Javascript code that will be directly executed via eval(). Do not use backticks in your response.
-           DO NOT include any newlines in your response, and be sure to provide only valid JSON when providing the arguments object.
-           The output of the eval() will be returned directly by the function.`,
-        },
-      },
-      required: ["code"],
-    },
-  },
+  get_current_weather,
+  eval_code_in_browser,
 ];
 
-export default functions;
+const functionHandlerMap: Record<string, any> = {
+  get_current_weather: get_current_weather_handler,
+  eval_code_in_browser: eval_code_in_browser_handler,
+};
+
+const functionCallHandler: FunctionCallHandler = async (
+  chatMessages,
+  functionCall,
+) => {
+  const handler = functionHandlerMap[functionCall.name!];
+  if (!handler) {
+    return {
+      messages: [
+        ...chatMessages,
+        {
+          id: nanoid(),
+          name: functionCall.name,
+          role: "function" as const,
+          content: "Function handler not found",
+        },
+      ],
+    };
+  }
+  const content = await handler(chatMessages, functionCall);
+  return {
+    messages: [
+      ...chatMessages,
+      {
+        id: nanoid(),
+        name: functionCall.name,
+        role: "function" as const,
+        content: content as string,
+      },
+    ],
+  };
+};
+
+export { functions, functionCallHandler };
