@@ -33,7 +33,7 @@ export default function Chat() {
 
   const { messages, input, handleInputChange, handleSubmit, data } = useChat({
     api: "/api/chat/chat-with-functions",
-    // experimental_onFunctionCall: functionCallHandler,
+    experimental_onFunctionCall: functionCallHandler,
   });
 
   console.log(messages);

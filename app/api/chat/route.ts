@@ -1,8 +1,14 @@
-import { OpenAIStream, StreamingTextResponse } from "ai";
+import {
+  experimental_StreamData,
+  OpenAIStream,
+  StreamingTextResponse,
+  Message,
+} from "ai";
 import OpenAI from "openai";
 import { SendMessageBatchCommand, SQSClient } from "@aws-sdk/client-sqs";
 import { v4 as uuidv4 } from "uuid";
 import { getSession } from "@auth0/nextjs-auth0/edge";
+import functions from "@/app/utils/functions";
 
 const sqsClient = new SQSClient({
   region: "ap-northeast-1",
@@ -33,6 +39,13 @@ export async function POST(req: Request): Promise<Response> {
     apiKey: process.env.OPENAI_API_KEY,
   });
 
+  const list_append: Array<Message> = [];
+  list_append.push({
+    ...messages[messages.length - 1],
+    id: uuidv4(),
+    createdAt: new Date(),
+  });
+
   try {
     const res = await openai.chat.completions.create({
       model,
@@ -40,10 +53,50 @@ export async function POST(req: Request): Promise<Response> {
       temperature: 0.7,
       stream: true,
       max_tokens,
+      functions: functions,
+      function_call: "auto",
     });
-
+    const data = new experimental_StreamData();
     const stream = OpenAIStream(res, {
+      experimental_onFunctionCall: async (
+        { name, arguments: args },
+        createFunctionCallMessages,
+      ) => {
+        if (name === "get_current_weather") {
+          const weatherData = {
+            temperature: 20,
+            unit: args.format === "celsius" ? "C" : "F",
+          };
+
+          const newMessages = createFunctionCallMessages(weatherData);
+          return openai.chat.completions.create({
+            messages: [...messages, ...newMessages],
+            stream: true,
+            model: model,
+          });
+        }
+      },
       async onCompletion(completion) {
+        try {
+          const { function_call } = JSON.parse(completion);
+          const _name = function_call.name;
+          list_append.push({
+            id: uuidv4(),
+            createdAt: new Date(),
+            role: "function",
+            name: _name,
+            content: completion,
+          });
+        } catch (e) {
+          list_append.push({
+            id: uuidv4(),
+            createdAt: new Date(),
+            role: "assistant",
+            content: completion,
+          });
+        }
+      },
+      async onFinal(completion) {
         await sqsClient.send(
           new SendMessageBatchCommand({
             QueueUrl: process.env.AI_DB_UPDATE_SQS_FIFO_URL,
@@ -63,19 +116,7 @@ export async function POST(req: Request): Promise<Response> {
                   },
                   ExpressionAttributeValues: {
                     ":empty_list": [],
-                    ":messages": [
-                      {
-                        ...messages[messages.length - 1],
-                        id: uuidv4(),
-                        createdAt: new Date(),
-                      },
-                      {
-                        id: uuidv4(),
-                        createdAt: new Date(),
-                        role: "assistant",
-                        content: completion,
-                      },
-                    ],
+                    ":messages": list_append,
                     ":updated": Math.floor(Date.now() / 1000),
                     ":title": messages[0]?.content?.slice(0, 40) || "Title",
                   },
@@ -93,10 +134,12 @@ export async function POST(req: Request): Promise<Response> {
             ],
           }),
         );
+        await data.close();
       },
+      experimental_streamData: true,
     });
 
-    return new StreamingTextResponse(stream);
+    return new StreamingTextResponse(stream, {}, data);
   } catch (e) {
     return new Response("Internal Server Error", {
       status: 500,
