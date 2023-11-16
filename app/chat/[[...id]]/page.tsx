@@ -1,7 +1,7 @@
 "use client";
 
 import { useChat } from "ai/react";
-import React, { useEffect, useMemo, useRef } from "react";
+import React, { Fragment, useEffect, useMemo, useRef } from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { useParams, useRouter } from "next/navigation";
 import useSWR from "swr";
@@ -11,13 +11,14 @@ import {
   PlayIcon,
   StopIcon,
 } from "@heroicons/react/24/solid";
-import dynamic from "next/dynamic";
 import { useLocalStorage } from "@uidotdev/usehooks";
 import { nanoid } from "ai";
 import { functions, functionCallHandler } from "@/app/utils/functions";
-
-const MobileDrawer = dynamic(() => import("./MobileDrawer"));
-const MessageBox = dynamic(() => import("@/app/components/MessageBox"));
+import AssistantMessageBox from "@/app/components/MessageBox/AssistantMessageBox";
+import AssistantFunctionCallMessageBox from "@/app/components/MessageBox/AssistantFunctionCallMessageBox";
+import UserMessageBox from "@/app/components/MessageBox/UserMessageBox";
+import FunctionMessageBox from "@/app/components/MessageBox/FunctionMessageBox";
+import MobileDrawer from "@/app/chat/[[...id]]/MobileDrawer";
 
 export default function Chat() {
   const params = useParams();
@@ -176,16 +177,45 @@ export default function Chat() {
           <>
             {messages
               .map((message, index) => (
-                <MessageBox
-                  currentChatId={currentChatId}
-                  key={index}
-                  message={message}
-                  index={index}
-                  isPurple={isPurple}
-                  picture={user?.picture}
-                  isLoading={isLoading}
-                  length={messages.length}
-                />
+                <Fragment key={index}>
+                  {message.role === "assistant" && !!message.content && (
+                    <AssistantMessageBox
+                      message={message}
+                      index={index}
+                      isLast={index === messages.length - 1}
+                      currentChatId={currentChatId}
+                      isLoading={isLoading}
+                      isPurple={isPurple}
+                    />
+                  )}
+                  {message.role === "assistant" && !message.content && (
+                    <AssistantFunctionCallMessageBox
+                      message={message}
+                      index={index}
+                      isLast={index === messages.length - 1}
+                      currentChatId={currentChatId}
+                      isLoading={isLoading}
+                      isPurple={isPurple}
+                    />
+                  )}
+                  {message.role === "user" && (
+                    <UserMessageBox
+                      message={message}
+                      index={index}
+                      currentChatId={currentChatId}
+                      picture={user?.picture}
+                    />
+                  )}
+                  {message.role === "function" && (
+                    <FunctionMessageBox
+                      message={message}
+                      isLast={index === messages.length - 1}
+                      index={index}
+                      isLoading={isLoading}
+                      isPurple={isPurple}
+                    />
+                  )}
+                </Fragment>
               ))
               .reverse()}
             <div className={"h-20 xl:hidden"}></div>
