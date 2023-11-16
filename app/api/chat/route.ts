@@ -56,23 +56,7 @@ export async function POST(req: Request): Promise<Response> {
     });
     const data = new experimental_StreamData();
     const stream = OpenAIStream(res, {
-      experimental_onFunctionCall: async (
-        { name, arguments: args },
-        createFunctionCallMessages,
-      ) => {
-        if (name === "get_current_weather") {
-          const weatherData = {
-            temperature: 20,
-            unit: args.format === "celsius" ? "C" : "F",
-          };
-          const newMessages = createFunctionCallMessages(weatherData);
-          return openai.chat.completions.create({
-            messages: [...messages, ...newMessages],
-            stream: true,
-            model: model,
-          });
-        }
-      },
+      experimental_onFunctionCall: async () => {},
       async onCompletion(completion) {
         try {
           const { function_call } = JSON.parse(completion);

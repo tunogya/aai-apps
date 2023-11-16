@@ -58,6 +58,21 @@ export default function Chat() {
           ],
         };
       }
+    } else if (functionCall.name === "get_current_weather") {
+      return {
+        messages: [
+          ...chatMessages,
+          {
+            id: nanoid(),
+            name: "get_current_weather",
+            role: "function" as const,
+            content: JSON.stringify({
+              temperature: 10,
+              unit: "C",
+            }),
+          },
+        ],
+      };
     }
   };
   const { messages, input, handleInputChange, handleSubmit, isLoading, stop } =
