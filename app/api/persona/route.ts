@@ -2,9 +2,9 @@ import { getSession } from "@auth0/nextjs-auth0";
 import { NextRequest, NextResponse } from "next/server";
 import ddbDocClient from "@/app/utils/ddbDocClient";
 import { QueryCommand } from "@aws-sdk/lib-dynamodb";
-import { v4 as uuidv4 } from "uuid";
 import sqsClient from "@/app/utils/sqsClient";
 import { SendMessageCommand } from "@aws-sdk/client-sqs";
+import { nanoid } from "ai";
 
 const GET = async (req: NextRequest) => {
   const session = await getSession();
@@ -52,7 +52,7 @@ const POST = async (req: NextRequest) => {
   const sub = session?.user.sub;
   const { name, description } = await req.json();
   try {
-    const persona_id = uuidv4();
+    const persona_id = nanoid();
     const item = {
       PK: `USER#${sub}`,
       SK: `PERSONA#${persona_id}`,
