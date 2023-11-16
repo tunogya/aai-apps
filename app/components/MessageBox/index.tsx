@@ -1,6 +1,5 @@
 import React, { FC, Fragment } from "react";
 import AssistantMessageBox from "@/app/components/MessageBox/AssistantMessageBox";
-import AssistantFunctionCallMessageBox from "@/app/components/MessageBox/AssistantFunctionCallMessageBox";
 import UserMessageBox from "@/app/components/MessageBox/UserMessageBox";
 import FunctionMessageBox from "@/app/components/MessageBox/FunctionMessageBox";
 import { Message } from "ai";
@@ -21,16 +20,6 @@ const MessageBox: FC<{
           <Fragment key={index}>
             {message.role === "assistant" && !!message.content && (
               <AssistantMessageBox
-                message={message}
-                index={index}
-                isLast={index === messages.length - 1}
-                currentChatId={currentChatId}
-                isLoading={isLoading}
-                isPurple={isPurple}
-              />
-            )}
-            {message.role === "assistant" && !message.content && (
-              <AssistantFunctionCallMessageBox
                 message={message}
                 index={index}
                 isLast={index === messages.length - 1}
