@@ -16,7 +16,7 @@ const Toolbar: FC<{ border?: boolean; children?: React.ReactNode }> = (
         props.border ? "border-b" : ""
       }`}
     >
-      <div className={"relative w-full max-w-[40vw]"}>
+      <div className={"relative w-full max-w-[30vw]"}>
         <SearchBar />
       </div>
       <div className={"text-sm font-semibold flex items-center space-x-1"}>
