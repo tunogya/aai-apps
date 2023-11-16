@@ -1,5 +1,5 @@
 "use client";
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import { Message } from "ai";
 import { CodeBracketIcon } from "@heroicons/react/24/outline";
 
@@ -10,8 +10,6 @@ const MessageBox: FC<{
   isLoading: boolean;
   isLast: boolean;
 }> = ({ message, isPurple, isLoading, isLast }) => {
-  const [show, setShow] = useState(false);
-
   return (
     <div
       className={`flex border-t p-3 md:p-8 ${
@@ -31,20 +29,10 @@ const MessageBox: FC<{
         <div className={"space-y-2 w-full overflow-x-hidden"}>
           <button
             disabled={isLoading && isLast}
-            className={
-              "bg-gray-200 px-3 h-6 md:h-8 rounded-md text-sm w-[150px]"
-            }
-            onClick={() => {
-              setShow(!show);
-            }}
+            className={"bg-gray-200 px-3 h-6 md:h-8 rounded-md text-sm"}
           >
-            {isLoading && isLast
-              ? "Running..."
-              : show
-              ? "Hidden run result"
-              : "Show run result"}
+            {isLoading && isLast ? "Running..." : message.name}
           </button>
-          {show && <div className={"text-gray-700"}>{message.content}</div>}
         </div>
       </div>
     </div>
