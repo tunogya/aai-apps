@@ -65,7 +65,6 @@ export async function POST(req: Request): Promise<Response> {
             temperature: 20,
             unit: args.format === "celsius" ? "C" : "F",
           };
-
           const newMessages = createFunctionCallMessages(weatherData);
           return openai.chat.completions.create({
             messages: [...messages, ...newMessages],
@@ -78,14 +77,14 @@ export async function POST(req: Request): Promise<Response> {
         try {
           const { function_call } = JSON.parse(completion);
           const _name = function_call.name;
-          console.log(_name);
-          // list_append.push({
-          //   id: nanoid(),
-          //   createdAt: new Date(),
-          //   role: "function",
-          //   name: _name,
-          //   content: completion,
-          // });
+          list_append.push({
+            id: nanoid(),
+            createdAt: new Date(),
+            role: "assistant",
+            name: _name,
+            content: "",
+            function_call,
+          });
         } catch (e) {
           list_append.push({
             id: nanoid(),

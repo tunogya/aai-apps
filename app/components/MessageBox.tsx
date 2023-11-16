@@ -17,10 +17,12 @@ import {
 import copy from "copy-to-clipboard";
 import useDeleteItems from "@/app/hooks/useDeleteItems";
 import CodePreview from "@/app/components/CodePreview";
+import { Message } from "ai";
+import { SparklesIcon } from "@heroicons/react/24/solid";
 
 const MessageBox: FC<{
   currentChatId: string;
-  message: any;
+  message: Message;
   index: number;
   isPurple: boolean;
   picture: string | null | undefined;
@@ -105,7 +107,7 @@ const MessageBox: FC<{
     >
       <div className={`max-w-3xl w-full h-fit flex gap-3 items-start`}>
         <div className={"shrink-0"}>
-          {message.role === "assistant" ? (
+          {message.role === "assistant" && (
             <div
               className={`w-6 h-6 my-1 md:my-0 md:w-8 md:h-8 ${
                 isPurple ? "bg-[#AB68FF]" : "bg-[#19C37D]"
@@ -125,19 +127,27 @@ const MessageBox: FC<{
                 ></path>
               </svg>
             </div>
-          ) : (
-            picture && (
-              <Image
-                src={picture!}
-                alt={""}
-                width={32}
-                height={32}
-                className={
-                  "rounded-full md:rounded-none w-6 h-6 md:w-8 md:h-8 my-1 md:my-0"
-                }
-                priority
-              />
-            )
+          )}
+          {message.role === "user" && picture && (
+            <Image
+              src={picture!}
+              alt={""}
+              width={32}
+              height={32}
+              className={
+                "rounded-full md:rounded-none w-6 h-6 md:w-8 md:h-8 my-1 md:my-0"
+              }
+              priority
+            />
+          )}
+          {message.role === "function" && (
+            <div
+              className={`w-6 h-6 my-1 md:my-0 md:w-8 md:h-8 ${
+                isPurple ? "bg-[#AB68FF]" : "bg-[#19C37D]"
+              } text-white flex items-center justify-center rounded-full md:rounded-none`}
+            >
+              <SparklesIcon className={"w-4 h-4 md:w-5 md:h-5 stroke-1.5"} />
+            </div>
           )}
         </div>
         <div className={"md:space-y-1 w-full overflow-x-hidden"}>
@@ -242,12 +252,12 @@ const MessageBox: FC<{
               },
             }}
             className={`${
-              message.role === "assistant" && isLoading && index === length - 1
+              message.role !== "user" && isLoading && index === length - 1
                 ? "result-streaming"
                 : ""
             } markdown prose w-full overflow-x-hidden break-words leading-8`}
           >
-            {message.content}
+            {message.content || message?.name || "No content."}
           </Markdown>
         </div>
       </div>

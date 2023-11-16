@@ -38,7 +38,6 @@ export default function Chat() {
     chatMessages,
     functionCall,
   ) => {
-    console.log(functionCall);
     if (functionCall.name === "eval_code_in_browser") {
       if (functionCall.arguments) {
         // Parsing here does not always work since it seems that some characters in generated code aren't escaped properly.
@@ -78,6 +77,8 @@ export default function Chat() {
     });
   const isPurple = model.startsWith("gpt-4");
   const router = useRouter();
+
+  console.log(messages);
 
   useEffect(() => {
     if (!params?.id?.[0] && currentChatId) {
