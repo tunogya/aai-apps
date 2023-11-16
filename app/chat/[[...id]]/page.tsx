@@ -58,20 +58,16 @@ export default function Chat() {
 
   const tips = useMemo(() => {
     if (!isLoading) {
-      return "Generating ✨✨";
+      return "⚙️ Generating content, please wait...";
     }
     const lastMessage = messages[messages.length - 1];
-    if (lastMessage.role === "assistant") {
-      if (lastMessage.content) {
-        return "Generating ✨✨";
-      } else {
-        return `Prepare to run tool: ${lastMessage.name}`;
-      }
+    if (lastMessage.role === "assistant" && !lastMessage.content) {
+      return `🛠️ Preparing to run tool: ${lastMessage.name}`;
     }
     if (lastMessage.role === "function") {
-      return `Running tool: ${lastMessage.name}`;
+      return `🏃 Running tool: ${lastMessage.name}, please be patient for the results...`;
     }
-    return "Generating ✨✨";
+    return "⚙️ Generating content, please wait...";
   }, [messages, isLoading]);
 
   return (
