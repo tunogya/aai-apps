@@ -56,6 +56,24 @@ export default function Chat() {
     }
   }, [params, currentChatId, router]);
 
+  const tips = useMemo(() => {
+    if (!isLoading) {
+      return "Generating ✨✨";
+    }
+    const lastMessage = messages[messages.length - 1];
+    if (lastMessage.role === "assistant") {
+      if (lastMessage.content) {
+        return "Generating ✨✨";
+      } else {
+        return `Prepare to run tool: ${lastMessage.name}`;
+      }
+    }
+    if (lastMessage.role === "function") {
+      return `Running tool: ${lastMessage.name}`;
+    }
+    return "Generating ✨✨";
+  }, [messages, isLoading]);
+
   return (
     <div className={"w-full md:min-w-[400px]"}>
       <form
@@ -85,7 +103,7 @@ export default function Chat() {
                       "w-full text-gray-500 outline-none text-sm md:text-base focus:outline-none focus:bg-transparent max-h-52 min-h-6 overflow-y-auto resize-none"
                     }
                   >
-                    Generating ✨✨
+                    {tips}
                   </div>
                 ) : (
                   <textarea
