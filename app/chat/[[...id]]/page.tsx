@@ -13,8 +13,9 @@ import {
 } from "@heroicons/react/24/solid";
 import dynamic from "next/dynamic";
 import { useLocalStorage } from "@uidotdev/usehooks";
-import { FunctionCallHandler, nanoid } from "ai";
+import { nanoid } from "ai";
 import functions from "@/app/utils/functions";
+import functionCallHandler from "@/app/utils/functions/functionCallHandler";
 
 const MobileDrawer = dynamic(() => import("./MobileDrawer"));
 const MessageBox = dynamic(() => import("@/app/components/MessageBox"));
@@ -34,51 +35,6 @@ export default function Chat() {
   );
   const inputRef = useRef(null);
   const [model, setModel] = useLocalStorage("chat-model", "gpt-3.5-turbo");
-  const functionCallHandler: FunctionCallHandler = async (
-    chatMessages,
-    functionCall,
-  ) => {
-    if (functionCall.name === "eval_code_in_browser") {
-      if (functionCall.arguments) {
-        // Parsing here does not always work since it seems that some characters in generated code aren't escaped properly.
-        const parsedFunctionCallArguments: { code: string } = JSON.parse(
-          functionCall.arguments,
-        );
-        let result: string;
-        try {
-          result = `${eval(parsedFunctionCallArguments.code)}`;
-        } catch (e) {
-          result = `An error occurred during eval: ${e}`;
-        }
-        return {
-          messages: [
-            ...chatMessages,
-            {
-              id: nanoid(),
-              name: "eval_code_in_browser",
-              role: "function" as const,
-              content: result,
-            },
-          ],
-        };
-      }
-    } else if (functionCall.name === "get_current_weather") {
-      return {
-        messages: [
-          ...chatMessages,
-          {
-            id: nanoid(),
-            name: "get_current_weather",
-            role: "function" as const,
-            content: JSON.stringify({
-              temperature: 10,
-              unit: "C",
-            }),
-          },
-        ],
-      };
-    }
-  };
   const { messages, input, handleInputChange, handleSubmit, isLoading, stop } =
     useChat({
       api: "/api/chat",
@@ -96,8 +52,6 @@ export default function Chat() {
     });
   const isPurple = model.startsWith("gpt-4");
   const router = useRouter();
-
-  console.log(messages);
 
   useEffect(() => {
     if (!params?.id?.[0] && currentChatId) {
