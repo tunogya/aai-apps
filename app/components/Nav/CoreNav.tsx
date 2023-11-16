@@ -1,16 +1,13 @@
 "use client";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
+import { nanoid } from "ai";
 
 const menu = [
   {
-    path: "/chat",
+    path: `/chat/${nanoid()}`,
     name: "ChatGPT",
   },
-  // {
-  //   path: "/dashboard",
-  //   name: "Dashboard",
-  // },
   // {
   //   path: "/personas",
   //   name: "Personas",
@@ -22,7 +19,6 @@ const menu = [
 ];
 
 const CoreNav = () => {
-  const searchParams = useSearchParams();
   const path = usePathname();
 
   return (
@@ -38,9 +34,7 @@ const CoreNav = () => {
             }`}
           ></div>
           <Link
-            href={`${item.path}?model=${
-              searchParams.get("model") || "gpt-3.5-turbo"
-            }`}
+            href={`${item.path}`}
             prefetch
             scroll={false}
             className={`text-sm font-semibold hover:bg-gray-50 w-full p-2 rounded ${

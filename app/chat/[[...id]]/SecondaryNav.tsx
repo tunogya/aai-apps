@@ -5,6 +5,7 @@ import React, { useMemo } from "react";
 import useSWRInfinite from "swr/infinite";
 import dynamic from "next/dynamic";
 import { PlusIcon } from "@heroicons/react/24/outline";
+import { nanoid } from "ai";
 
 const SecondaryNavItem = dynamic(
   () => import("@/app/chat/[[...id]]/SecondaryNavItem"),
@@ -38,7 +39,7 @@ const SecondaryNav = () => {
   return (
     <div className={"w-[300px] shrink-0 h-full border-r hidden md:block"}>
       <Link
-        href={`/chat`}
+        href={`/chat/${nanoid()}`}
         prefetch
         className={
           "flex items-center border hover:bg-gray-50 p-3 rounded cursor-pointer select-none m-2 text-gray-800"
