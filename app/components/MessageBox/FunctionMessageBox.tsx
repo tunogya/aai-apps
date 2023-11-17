@@ -12,9 +12,7 @@ const MessageBox: FC<{
 }> = ({ message, isPurple, isLoading, isLast }) => {
   return (
     <div
-      className={`flex border-t p-3 md:p-8 ${
-        message.role === "user" ? "bg-white" : "bg-gray-50"
-      } items-center justify-center group`}
+      className={`flex border-t p-3 md:p-8 bg-gray-50 items-center justify-center group`}
     >
       <div className={`max-w-3xl w-full h-fit flex gap-3 items-start`}>
         <div className={"shrink-0"}>
@@ -31,7 +29,9 @@ const MessageBox: FC<{
             disabled={isLoading && isLast}
             className={"bg-gray-200 px-3 h-6 md:h-8 rounded-md text-sm"}
           >
-            {isLoading && isLast ? "Running..." : message.name}
+            {isLoading && isLast
+              ? "Running..."
+              : message?.name?.replaceAll("_", " ")}
           </button>
         </div>
       </div>

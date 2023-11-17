@@ -90,9 +90,9 @@ const MessageBox: FC<{
 
   return (
     <div
-      className={`flex border-t p-3 md:p-8 ${
-        message.role === "user" ? "bg-white" : "bg-gray-50"
-      } ${isHidden ? "hidden" : ""} items-center justify-center group`}
+      className={`flex border-t p-3 md:p-8 bg-gray-50 ${
+        isHidden ? "hidden" : ""
+      } items-center justify-center group`}
     >
       <div className={`max-w-3xl w-full h-fit flex gap-3 items-start`}>
         <div className={"shrink-0"}>
