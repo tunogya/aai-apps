@@ -1,21 +1,13 @@
 import { ChatCompletionCreateParams } from "openai/resources/chat";
 import { FunctionCallHandler, nanoid } from "ai";
 import {
-  get_current_weather,
-  get_current_weather_handler,
-} from "./get_current_weather";
-import {
   eval_code_in_browser,
   eval_code_in_browser_handler,
 } from "./eval_code_in_browser";
 
-const functions: ChatCompletionCreateParams.Function[] = [
-  get_current_weather,
-  eval_code_in_browser,
-];
+const functions: ChatCompletionCreateParams.Function[] = [eval_code_in_browser];
 
 const functionHandlerMap: Record<string, any> = {
-  get_current_weather: get_current_weather_handler,
   eval_code_in_browser: eval_code_in_browser_handler,
 };
 
