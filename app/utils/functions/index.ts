@@ -8,15 +8,21 @@ import {
   dall_e_3_images_generate,
   dall_e_3_images_generate_handler,
 } from "@/app/utils/functions/dall_e_3_images_generate";
+import {
+  serper_google_search,
+  serper_google_search_handler,
+} from "@/app/utils/functions/serper_google_search";
 
 const functions: ChatCompletionCreateParams.Function[] = [
   eval_code_in_browser,
   dall_e_3_images_generate,
+  serper_google_search,
 ];
 
 const functionHandlerMap: Record<string, any> = {
   eval_code_in_browser: eval_code_in_browser_handler,
   dall_e_3_images_generate: dall_e_3_images_generate_handler,
+  serper_google_search: serper_google_search_handler,
 };
 
 const functionCallHandler: FunctionCallHandler = async (

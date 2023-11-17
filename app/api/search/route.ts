@@ -11,16 +11,27 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   let { q } = await req.json();
 
-  const data = await fetch(`https://google.serper.dev/search`, {
-    method: "post",
-    headers: {
-      "Content-Type": "application/json",
-      "X-API-Key": process.env.SERPER_API_KEY!,
-    },
-    body: JSON.stringify({
-      q,
-    }),
-  }).then((res) => res.json());
-
-  return NextResponse.json(data);
+  try {
+    const data = await fetch(`https://google.serper.dev/search`, {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        "X-API-Key": process.env.SERPER_API_KEY!,
+      },
+      body: JSON.stringify({
+        q,
+      }),
+    }).then((res) => res.json());
+    return NextResponse.json(data);
+  } catch (e) {
+    console.log(e);
+    return NextResponse.json(
+      {
+        message: "Internal Server Error",
+      },
+      {
+        status: 500,
+      },
+    );
+  }
 }
