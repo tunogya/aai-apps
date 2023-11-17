@@ -2,11 +2,16 @@ import OpenAI from "openai";
 import { nanoid } from "ai";
 import s3Client from "@/app/utils/s3Client";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
+import { getSession } from "@auth0/nextjs-auth0/edge";
 
 export const runtime = "edge";
 
 // @ts-ignore
 export async function POST(req: Request): Promise<Response> {
+  // @ts-ignore
+  const { user } = await getSession();
+  const sub = user.sub;
+
   let { prompt, size } = await req.json();
 
   const openai = new OpenAI({
@@ -20,6 +25,7 @@ export async function POST(req: Request): Promise<Response> {
       size,
       model: "dall-e-3",
       response_format: "b64_json",
+      user: sub,
     });
     const hash = nanoid();
     const image = data.data[0].b64_json;

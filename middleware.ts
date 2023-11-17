@@ -4,6 +4,7 @@ export default withMiddlewareAuthRequired();
 export const config = {
   matcher: [
     "/api/audio/:path*",
+    "/api/images/:path*",
     "/api/chat",
     "/api/checkout",
     "/api/conversation/:path*",
