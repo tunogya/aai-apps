@@ -17,14 +17,8 @@ export const dall_e_3_images_generate: ChatCompletionCreateParams.Function = {
         enum: ["1024x1024", "1024×1792", "1792×1024"],
         default: "1024x1024",
       },
-      style: {
-        type: "string",
-        description: "The style of the generated images",
-        enum: ["natural", "vivid"],
-        default: "natural",
-      },
     },
-    required: ["prompt", "style", "size"],
+    required: ["prompt"],
   },
 };
 
@@ -37,7 +31,6 @@ export const dall_e_3_images_generate_handler = async (
     const parsedFunctionCallArguments: {
       prompt: string;
       size: string;
-      style: string;
     } = JSON.parse(functionCall.arguments);
     try {
       const data = await fetch(`/api/images/generations`, {
@@ -48,7 +41,6 @@ export const dall_e_3_images_generate_handler = async (
         body: JSON.stringify({
           prompt: parsedFunctionCallArguments.prompt,
           size: parsedFunctionCallArguments.size,
-          style: parsedFunctionCallArguments.style,
         }),
       }).then((res) => res.json());
       return JSON.stringify(data);
