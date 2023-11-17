@@ -1,8 +1,8 @@
-"use client";
 import Link from "next/link";
-import { TopUpButton } from "@/app/components/TopUpButton";
 import React from "react";
 import { useSearchParams } from "next/navigation";
+
+export const runtime = "edge";
 
 export default function CSRPage() {
   const searchParams = useSearchParams();
