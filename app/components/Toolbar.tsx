@@ -5,7 +5,6 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 
 const SettingPopover = dynamic(() => import("@/app/components/SettingPopover"));
-const SearchBar = dynamic(() => import("@/app/components/SearchBar"));
 
 const Toolbar: FC<{ border?: boolean; children?: React.ReactNode }> = (
   props,
