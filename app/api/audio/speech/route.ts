@@ -79,6 +79,7 @@ export async function POST(req: Request): Promise<Response> {
             Bucket: "abandonai-prod",
             Key: `audio/${hash}.mp3`,
             Body: buffer,
+            ContentType: "audio/mpeg",
           }),
         ),
         s3Client.send(
@@ -86,13 +87,13 @@ export async function POST(req: Request): Promise<Response> {
             Bucket: "abandonai-prod",
             Key: `audio/${hash}.json`,
             Body: jsonBuffer,
+            ContentType: "application/json",
           }),
         ),
       ]);
     } catch (e) {
       console.log(e);
     }
-
     return new Response(buffer, {
       status: 200,
       headers: {

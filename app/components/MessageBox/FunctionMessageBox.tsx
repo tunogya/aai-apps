@@ -29,9 +29,7 @@ const MessageBox: FC<{
             disabled={isLoading && isLast}
             className={"bg-gray-200 px-3 h-6 md:h-8 rounded-md text-sm"}
           >
-            {isLoading && isLast
-              ? "Running..."
-              : message?.name?.replaceAll("_", " ")}
+            {isLoading && isLast ? "Running..." : message.name}
           </button>
         </div>
       </div>
