@@ -19,7 +19,6 @@ const SearchBar = () => {
       searchClient={searchClient}
       indexName={"chat_search"}
       stalledSearchDelay={500}
-      insights={true}
     >
       <Configure
         hitsPerPage={10}
