@@ -29,6 +29,7 @@ export async function POST(req: Request): Promise<Response> {
   });
   const hash = nanoid();
   const image = data.data[0].b64_json;
+  const revised_prompt = data.data[0].revised_prompt;
   if (image) {
     const buffer = Buffer.from(image, "base64");
     const jsonBuffer = Buffer.from(JSON.stringify(data));
@@ -54,6 +55,7 @@ export async function POST(req: Request): Promise<Response> {
 
   return new Response(
     JSON.stringify({
+      revised_prompt: revised_prompt,
       url: `https://s3.abandon.ai/images/${hash}.png`,
     }),
     {
