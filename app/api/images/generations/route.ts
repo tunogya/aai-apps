@@ -3,11 +3,12 @@ import { nanoid } from "ai";
 import s3Client from "@/app/utils/s3Client";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSession } from "@auth0/nextjs-auth0/edge";
+import { NextRequest, NextResponse } from "next/server";
 
 export const runtime = "edge";
 
 // @ts-ignore
-export async function POST(req: Request): Promise<Response> {
+export async function POST(req: NextRequest): Promise<Response> {
   // @ts-ignore
   const { user } = await getSession();
   const sub = user.sub;
@@ -53,21 +54,24 @@ export async function POST(req: Request): Promise<Response> {
       ]);
     }
 
-    return new Response(
-      JSON.stringify({
+    return NextResponse.json(
+      {
         revised_prompt: revised_prompt,
         url: `https://s3.abandon.ai/images/${hash}.png`,
-      }),
+      },
       {
-        headers: {
-          "Content-Type": "application/json",
-        },
+        status: 200,
       },
     );
   } catch (e) {
     console.log(e);
-    return new Response("Internal Server Error", {
-      status: 500,
-    });
+    return NextResponse.json(
+      {
+        message: "Internal Server Error",
+      },
+      {
+        status: 500,
+      },
+    );
   }
 }

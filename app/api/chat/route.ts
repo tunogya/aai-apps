@@ -8,6 +8,7 @@ import {
 import OpenAI from "openai";
 import { SendMessageBatchCommand, SQSClient } from "@aws-sdk/client-sqs";
 import { getSession } from "@auth0/nextjs-auth0/edge";
+import { NextRequest, NextResponse } from "next/server";
 
 const sqsClient = new SQSClient({
   region: "ap-northeast-1",
@@ -20,7 +21,7 @@ const sqsClient = new SQSClient({
 export const runtime = "edge";
 
 // @ts-ignore
-export async function POST(req: Request): Promise<Response> {
+export async function POST(req: NextRequest): Promise<Response> {
   // @ts-ignore
   const { user } = await getSession();
   const sub = user.sub;
@@ -120,11 +121,15 @@ export async function POST(req: Request): Promise<Response> {
       },
       experimental_streamData: true,
     });
-
     return new StreamingTextResponse(stream, {}, data);
   } catch (e) {
-    return new Response("Internal Server Error", {
-      status: 500,
-    });
+    return NextResponse.json(
+      {
+        message: "Internal Server Error",
+      },
+      {
+        status: 500,
+      },
+    );
   }
 }

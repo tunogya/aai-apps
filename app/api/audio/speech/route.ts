@@ -6,10 +6,11 @@ import {
   NoSuchKey,
   PutObjectCommand,
 } from "@aws-sdk/client-s3";
+import { NextRequest } from "next/server";
 
 export const runtime = "edge";
 
-export async function POST(req: Request): Promise<Response> {
+export async function POST(req: NextRequest): Promise<Response> {
   let { model, input, voice, response_format, speed } = await req.json();
 
   const openai = new OpenAI({
