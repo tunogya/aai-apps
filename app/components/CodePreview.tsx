@@ -13,9 +13,6 @@ const CodePreview: FC<{
   return (
     <div className={"relative"}>
       <div className={"absolute right-2 top-2 flex items-center gap-2"}>
-        <div className={"text-xs text-gray-400 font-light select-none z-10"}>
-          {match[0]}
-        </div>
         <button
           onClick={() => {
             copy(String(children));
