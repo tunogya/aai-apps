@@ -2,9 +2,7 @@ This is an AI Web app, built with [NextJS](https://nextjs.org/) and [Tailwindcss
 
 Other service providers: [OpenAI](https://openai.com/), [Auth0](https://auth0.com/), [Stripe](https://stripe.com/), [Upstash Redis](https://upstash.com/)
 
-We may adopt the [LangChain](https://js.langchain.com/docs/get_started) framework in the future.
-
-![Chat](https://nftstorage.link/ipfs/bafybeigo543gmpnxcoiu2ozh5vukvrj6pbiw5rcltlycubl3tqfef4dq4i)
+![Chat](https://nftstorage.link/ipfs/bafybeigp46v7upbttqkakx6ksw7tdjz52nepblo4jqv6cvjeowfb5tlgpq)
 
 ## Getting Started
 
@@ -19,18 +17,6 @@ pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-- Dashboard page
-  ![Dashboard](https://nftstorage.link/ipfs/bafybeihkujragbdaocpzneunzwcv372xbtgsnhvcijx4wpkspqa6umpiie)
-
-- Usage page
-  ![Usage](https://nftstorage.link/ipfs/bafybeiftebllec7shlwcrtnoohipmwqf2jmflde4zlr5geuyahvoorfpiu)
 
 ## Deploy on Vercel
 
