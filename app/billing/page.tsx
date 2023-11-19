@@ -46,7 +46,7 @@ export default async function SSRPage() {
           20 credits per month.
         </div>
         <div className={"text-gray-600 text-sm"}>
-          Enjoy all our features for free.
+          Enjoy all our features for 1 month.
         </div>
         <div className={"flex gap-4"}>
           <SubscribeButton />
