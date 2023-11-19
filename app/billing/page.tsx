@@ -21,22 +21,27 @@ export default async function SSRPage() {
     >
       <div className={"space-y-4"}>
         <div className={"text-3xl text-gray-800 font-semibold"}>
-          Abandon credits
+          Pay as You Go
         </div>
         <div className={"text-xl text-gray-800 font-semibold"}>
-          Available balance
+          Available credits
         </div>
         <Balance />
         <div className={"text-gray-600 text-sm max-w-screen-md"}>
-          Use credits to save on Abandon services, including your Abandon+
-          subscription.
+          Instead of paying a monthly recurring charge, you can buy credits as
+          needed through our Pay As You Go plan.
+          <br />
+          It&#39;s best for infrequent users. One credit can enjoy all functions
+          for one day.
         </div>
         <div className={"flex gap-4"}>
           <TopUpButton />
         </div>
       </div>
       <div className={"space-y-4"}>
-        <div className={"text-3xl text-gray-800 font-semibold"}>AbandonAI+</div>
+        <div className={"text-3xl text-gray-800 font-semibold"}>
+          Abandon AI+
+        </div>
         <div className={"text-xl text-gray-800 font-semibold"}>
           You currently hold a valid subscription.
         </div>
