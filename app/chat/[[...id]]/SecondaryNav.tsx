@@ -34,7 +34,7 @@ const SecondaryNav = () => {
   }, [reducedData]);
 
   return (
-    <div className={"w-[300px] shrink-0 h-full border-r hidden md:block"}>
+    <div className={"w-[300px] shrink-0 h-full border-r hidden lg:block"}>
       <Link
         href={`/chat`}
         prefetch

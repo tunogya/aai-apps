@@ -11,13 +11,14 @@ const Toolbar: FC<{ border?: boolean; children?: React.ReactNode }> = (
 ) => {
   return (
     <div
-      className={`hidden h-[60px] w-full md:flex items-center justify-between px-4 md:px-10 gap-8 ${
+      className={`hidden h-[60px] w-full md:flex items-center justify-between px-6 xl:px-10 gap-8 ${
         props.border ? "border-b" : ""
       }`}
     >
-      <div className={"relative w-full max-w-[36vw]"}></div>
-      <div className={"text-sm font-semibold flex items-center space-x-1"}>
-        {props?.children}
+      <div
+        className={"text-sm font-semibold flex items-center space-x-1 w-full"}
+      >
+        <div className={"w-full"}>{props?.children}</div>
         <Link
           href={
             "https://www.abandon.ai/docs/resource/Introduction/introduction"
