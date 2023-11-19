@@ -31,8 +31,8 @@ export default async function SSRPage() {
           Instead of paying a monthly recurring charge, you can buy credits as
           needed through our Pay As You Go plan.
           <br />
-          It&#39;s best for infrequent users. One credit can enjoy all functions
-          for one day.
+          It&#39;s best for infrequent users. 1 credit can enjoy all functions
+          for 1 day.
         </div>
         <div className={"flex gap-4"}>
           <TopUpButton />
@@ -43,7 +43,7 @@ export default async function SSRPage() {
           Abandon AI+
         </div>
         <div className={"text-xl text-gray-800 font-semibold"}>
-          You currently hold a valid subscription.
+          20 credits per month.
         </div>
         <div className={"text-gray-600 text-sm"}>
           Enjoy all our features for free.
