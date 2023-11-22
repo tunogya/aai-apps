@@ -16,7 +16,7 @@ const SecondaryNav = () => {
     return `/api/conversation?cursor=${previousPageData.nextCursor}&limit=20`;
   };
 
-  const { data, size, setSize, isValidating } = useSWRInfinite(
+  const { data, size, setSize, isLoading } = useSWRInfinite(
     getKey,
     (url) => fetch(url).then((res) => res.json()),
     {
@@ -64,11 +64,11 @@ const SecondaryNav = () => {
         {haveMore ? (
           <button
             className={`w-full border p-2 mb-2 text-xs hover:bg-gray-50 rounded ${
-              isValidating ? "cursor-wait" : ""
+              isLoading ? "cursor-wait" : ""
             }`}
             onClick={() => setSize(size + 1)}
           >
-            {isValidating ? "Loading..." : "Load More"}
+            {isLoading ? "Loading..." : "Load More"}
           </button>
         ) : null}
       </div>
