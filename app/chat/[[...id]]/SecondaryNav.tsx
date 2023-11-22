@@ -63,7 +63,7 @@ const SecondaryNav = () => {
         )}
         {haveMore ? (
           <button
-            className={`w-full border p-2 text-xs hover:bg-gray-50 rounded ${
+            className={`w-full border p-2 mb-2 text-xs hover:bg-gray-50 rounded ${
               isValidating ? "cursor-wait" : ""
             }`}
             onClick={() => setSize(size + 1)}
