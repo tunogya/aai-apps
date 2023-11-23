@@ -32,10 +32,9 @@ export default async function SSRPage() {
         <Balance />
         <div className={"text-gray-600 text-sm max-w-screen-md"}>
           Instead of paying a monthly recurring charge, you can buy credits as
-          needed.
+          needed. It&#39;s best for infrequent users.
           <br />
-          It&#39;s best for infrequent users. 1 credit can enjoy all functions
-          for 1 day.
+          If you prefer to save more, you can subscribe AbandonAI+.
         </div>
         <div className={"flex gap-4"}>
           <TopUpButton />

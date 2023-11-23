@@ -51,7 +51,7 @@ export const TopUpButton: FC<{
         }
       }}
     >
-      {status === "idle" && "Buy credits"}
+      {status === "idle" && "Buy credits ($1/d)"}
       {status === "loading" && "Loading..."}
       {status === "success" && "Waiting..."}
       {status === "error" && "Error"}
