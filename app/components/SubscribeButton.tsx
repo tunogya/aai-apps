@@ -51,7 +51,7 @@ export const SubscribeButton: FC<{
         }
       }}
     >
-      {status === "idle" && "Subscribe"}
+      {status === "idle" && "Subscribe AbandonAI+ ($20/mo)"}
       {status === "loading" && "Loading..."}
       {status === "success" && "Waiting..."}
       {status === "error" && "Error"}
