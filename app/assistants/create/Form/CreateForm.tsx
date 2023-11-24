@@ -2,19 +2,9 @@ import React from "react";
 import dynamic from "next/dynamic";
 
 const NameInput = dynamic(() => import("./NameInput"));
-const PersonalityTypeInput = dynamic(() => import("./PersonalityTypeInput"));
-const HobbiesInput = dynamic(() => import("./HobbiesInput"));
-const ValuesInput = dynamic(() => import("./ValuesInput"));
-const CommunicationStyleSelect = dynamic(
-  () => import("./CommunicationStyleSelect"),
-);
-const ResponseStrategySelect = dynamic(
-  () => import("./ResponseStrategySelect"),
-);
-const SocialPreferencesSelect = dynamic(
-  () => import("./SocialPreferencesSelect"),
-);
+const InstructionsInput = dynamic(() => import("./InstructionsInput"));
 const VoiceOptionSelect = dynamic(() => import("./VoiceOptionSelect"));
+const ModelOptionSelect = dynamic(() => import("./ModelOptionSelect"));
 
 export const runtime = "edge";
 
@@ -26,36 +16,16 @@ const CreateForm = () => {
         <NameInput />
       </div>
       <div className={"space-y-4 text-gray-800"}>
-        <div className={"text-xl font-medium"}>Personality type</div>
-        <PersonalityTypeInput />
-        <div className={"text-sm text-gray-400"}>
-          You can change the order of four words to adjust the priority of
-          cognitive functions.
-        </div>
+        <div className={"text-xl font-medium"}>Instructions</div>
+        <InstructionsInput />
       </div>
       <div className={"space-y-4 text-gray-800"}>
-        <div className={"text-xl font-medium"}>Voice option</div>
+        <div className={"text-xl font-medium"}>Voice</div>
         <VoiceOptionSelect />
       </div>
       <div className={"space-y-4 text-gray-800"}>
-        <div className={"text-xl font-medium"}>Hobbies and interests</div>
-        <HobbiesInput />
-      </div>
-      <div className={"space-y-4 text-gray-800"}>
-        <div className={"text-xl font-medium"}>Values and beliefs</div>
-        <ValuesInput />
-      </div>
-      <div className={"space-y-4 text-gray-800"}>
-        <div className={"text-xl font-medium"}>Communication style</div>
-        <CommunicationStyleSelect />
-      </div>
-      <div className={"space-y-4 text-gray-800"}>
-        <div className={"text-xl font-medium"}>Response strategy</div>
-        <ResponseStrategySelect />
-      </div>
-      <div className={"space-y-4 text-gray-800"}>
-        <div className={"text-xl font-medium"}>Social preferences</div>
-        <SocialPreferencesSelect />
+        <div className={"text-xl font-medium"}>Model</div>
+        <ModelOptionSelect />
       </div>
     </div>
   );

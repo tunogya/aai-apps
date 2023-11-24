@@ -1,14 +1,14 @@
 import React from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import CreateForm from "@/app/personas/create/Form/CreateForm";
+import CreateForm from "@/app/assistants/create/Form/CreateForm";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
 const CreatePreview = dynamic(
-  () => import("@/app/personas/create/CreatePreview"),
+  () => import("@/app/assistants/create/CreatePreview"),
 );
 const ActionButtonGroup = dynamic(
-  () => import("@/app/personas/create/ActionButtonGroup"),
+  () => import("@/app/assistants/create/ActionButtonGroup"),
 );
 
 export const runtime = "edge";
@@ -32,7 +32,7 @@ export default function SSRPage() {
             <XMarkIcon className={"w-4 h-4 stroke-2"} />
           </Link>
           <div className={"pl-5 text-gray-800 font-medium"}>
-            Create new Persona
+            Create an assistant
           </div>
         </div>
         <ActionButtonGroup />

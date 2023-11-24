@@ -3,23 +3,18 @@ import { Listbox } from "@headlessui/react";
 import { ChevronUpDownIcon } from "@heroicons/react/24/solid";
 import React, { useState } from "react";
 
-const response_strategy = [
-  { id: 1, name: "Escape" },
-  { id: 2, name: "Coping" },
-  { id: 3, name: "Logic" },
-  { id: 4, name: "Emotion" },
+const model_options = [
+  { id: 1, name: "gpt-4-1106-preview" },
+  { id: 2, name: "gpt-4" },
+  { id: 3, name: "gpt-3.5-turbo-16k" },
+  { id: 4, name: "gpt-3.5-turbo" },
 ];
 
-const ResponseStrategySelect = () => {
-  const [selectResponseStrategy, setSelectResponseStrategy] = useState(
-    response_strategy[0],
-  );
+const ModelOptionSelect = () => {
+  const [selectModel, setSelectModel] = useState(model_options[0]);
 
   return (
-    <Listbox
-      value={selectResponseStrategy}
-      onChange={setSelectResponseStrategy}
-    >
+    <Listbox value={selectModel} onChange={setSelectModel}>
       <div className="relative mt-1">
         <Listbox.Button
           className={
@@ -27,7 +22,7 @@ const ResponseStrategySelect = () => {
           }
         >
           <div className={"flex items-center justify-between"}>
-            {selectResponseStrategy.name}
+            {selectModel.name}
             <ChevronUpDownIcon className={"w-4 h-4"} />
           </div>
         </Listbox.Button>
@@ -36,7 +31,7 @@ const ResponseStrategySelect = () => {
             "absolute z-10 mt-1 max-h-60 max-w-[360px] w-full overflow-auto rounded bg-white shadow border py-1"
           }
         >
-          {response_strategy.map((m) => (
+          {model_options.map((m) => (
             <Listbox.Option
               key={m.id}
               value={m}
@@ -51,4 +46,4 @@ const ResponseStrategySelect = () => {
   );
 };
 
-export default ResponseStrategySelect;
+export default ModelOptionSelect;

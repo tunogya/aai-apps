@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 
 export const runtime = "edge";
 
@@ -6,7 +7,7 @@ export default async function SSRPage() {
   return (
     <div
       className={
-        "px-4 md:px-10 md:pt-2 absolute h-[calc(100vh-60px)] w-full overflow-y-auto space-y-20"
+        "flex flex-col px-4 md:px-10 md:pt-2 absolute h-[calc(100vh-60px)] w-full overflow-y-auto space-y-8"
       }
     >
       <div
@@ -15,6 +16,15 @@ export default async function SSRPage() {
         }
       >
         <div className={"text-3xl font-semibold"}>Assistants</div>
+      </div>
+      <div className={"flex flex-col items-center justify-center flex-1 gap-2"}>
+        <div className={"text-gray-800 font-medium"}>Create an assistant</div>
+        <Link
+          href={"/assistants/create"}
+          className={"ml-2 bg-[#0066FF] text-white px-2 py-1 rounded"}
+        >
+          + Create
+        </Link>
       </div>
     </div>
   );
