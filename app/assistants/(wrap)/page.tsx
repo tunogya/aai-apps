@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import { RocketLaunchIcon } from "@heroicons/react/24/outline";
 
 export const runtime = "edge";
 
@@ -27,6 +28,7 @@ export default async function SSRPage() {
         </Link>
       </div>
       <div className={"flex flex-col items-center justify-center flex-1 gap-2"}>
+        <RocketLaunchIcon className={"w-5 h-5"} />
         <div className={"text-gray-800 font-medium"}>Create an assistant</div>
         <Link href={"/assistants/create"}>
           <div
