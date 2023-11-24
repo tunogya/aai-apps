@@ -4,7 +4,9 @@ import dynamic from "next/dynamic";
 import CreateForm from "@/app/assistants/create/Form/CreateForm";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
-const Binding = dynamic(() => import("@/app/assistants/create/Binding"));
+const Binding = dynamic(
+  () => import("@/app/assistants/create/Binding/Binding"),
+);
 const ActionButtonGroup = dynamic(
   () => import("@/app/assistants/create/ActionButtonGroup"),
 );
@@ -23,7 +25,7 @@ export default function SSRPage() {
           className={"flex items-center divide-x divide-gray-300 text-gray-800"}
         >
           <Link
-            href={"/personas"}
+            href={"/assistants"}
             prefetch
             className={"px-3 pr-4 cursor-pointer"}
           >
