@@ -1,14 +1,14 @@
 import React from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import CreateForm from "@/app/assistants/create/Form/CreateForm";
+import CreateForm from "@/app/assistants/(nowrap)/create/Form/CreateForm";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
 const Binding = dynamic(
-  () => import("@/app/assistants/create/Binding/Binding"),
+  () => import("@/app/assistants/(nowrap)/create/Binding/Binding"),
 );
 const ActionButtonGroup = dynamic(
-  () => import("@/app/assistants/create/ActionButtonGroup"),
+  () => import("@/app/assistants/(nowrap)/create/ActionButtonGroup"),
 );
 
 export const runtime = "edge";
