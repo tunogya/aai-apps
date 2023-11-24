@@ -1,6 +1,9 @@
 import React from "react";
 import Link from "next/link";
-import { RocketLaunchIcon } from "@heroicons/react/24/outline";
+import dynamic from "next/dynamic";
+const AssistantList = dynamic(
+  () => import("@/app/assistants/(wrap)/AssistantList"),
+);
 
 export const runtime = "edge";
 
@@ -27,19 +30,7 @@ export default async function SSRPage() {
           </div>
         </Link>
       </div>
-      <div className={"flex flex-col items-center justify-center flex-1 gap-2"}>
-        <RocketLaunchIcon className={"w-5 h-5"} />
-        <div className={"text-gray-800 font-medium"}>Create an assistant</div>
-        <Link href={"/assistants/create"}>
-          <div
-            className={
-              "bg-[#0066FF] text-white px-2 py-1 rounded-lg font-medium text-sm"
-            }
-          >
-            + Create
-          </div>
-        </Link>
-      </div>
+      <AssistantList />
     </div>
   );
 }

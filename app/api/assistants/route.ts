@@ -20,6 +20,10 @@ const GET = async (req: NextRequest) => {
           ":pk": `USER#${sub}`,
           ":sk": "ASSISTANT#",
         },
+        ExpressionAttributeNames: {
+          "#pk": "PK",
+          "#sk": "SK",
+        },
         Limit: limit,
         ScanIndexForward: false,
         ExclusiveStartKey: cursor
