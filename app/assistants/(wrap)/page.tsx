@@ -11,7 +11,7 @@ export default async function SSRPage() {
   return (
     <div
       className={
-        "flex flex-col px-4 md:px-10 md:pt-2 absolute h-[calc(100vh-60px)] w-full overflow-y-auto space-y-8"
+        "flex flex-col px-4 md:px-10 md:pt-2 absolute h-[calc(100vh-60px)] w-full overflow-y-auto space-y-4"
       }
     >
       <div
