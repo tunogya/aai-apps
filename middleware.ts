@@ -8,7 +8,7 @@ export const config = {
     "/api/chat",
     "/api/checkout",
     "/api/conversation/:path*",
-    "/api/persona/:path*",
+    "/api/assistants/:path*",
     "/api/customer/:path*",
     "/billing/:path*",
     "/chat/:path*",

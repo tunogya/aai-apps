@@ -1,6 +1,5 @@
 import { Metadata } from "next";
 import { ReactNode } from "react";
-import Dock from "@/app/components/Dock";
 import Toolbar from "@/app/components/Toolbar";
 import PrimaryNav from "@/app/components/Nav/PrimaryNav";
 
@@ -24,7 +23,6 @@ export default function Layout(props: { children: ReactNode }) {
           {props.children}
         </div>
       </div>
-      <Dock />
     </div>
   );
 }

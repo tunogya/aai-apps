@@ -7,10 +7,10 @@ const menu = [
     path: `/chat`,
     name: "ChatGPT",
   },
-  // {
-  //   path: "/personas",
-  //   name: "Personas",
-  // },
+  {
+    path: "/assistants",
+    name: "Assistants",
+  },
   {
     path: "/billing",
     name: "Billing",
