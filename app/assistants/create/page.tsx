@@ -4,9 +4,7 @@ import dynamic from "next/dynamic";
 import CreateForm from "@/app/assistants/create/Form/CreateForm";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
-const CreatePreview = dynamic(
-  () => import("@/app/assistants/create/CreatePreview"),
-);
+const Binding = dynamic(() => import("@/app/assistants/create/Binding"));
 const ActionButtonGroup = dynamic(
   () => import("@/app/assistants/create/ActionButtonGroup"),
 );
@@ -44,7 +42,7 @@ export default function SSRPage() {
           <CreateForm />
         </div>
         <div className={"w-1/2 bg-gray-100 p-10"}>
-          <CreatePreview />
+          <Binding />
         </div>
       </div>
     </div>
