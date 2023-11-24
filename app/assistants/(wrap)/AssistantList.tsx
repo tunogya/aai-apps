@@ -1,6 +1,6 @@
 "use client";
 
-import { RocketLaunchIcon } from "@heroicons/react/24/outline";
+import { ArrowPathIcon, RocketLaunchIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import React, { useMemo } from "react";
 import useSWRInfinite from "swr/infinite";
@@ -28,6 +28,10 @@ const AssistantList = () => {
   const haveMore = useMemo(() => {
     return reducedData.length % 20 === 0 && reducedData.length > 0;
   }, [reducedData]);
+
+  if (isLoading) {
+    return <ArrowPathIcon className={"w-4 h-4 animate-spin"} />;
+  }
 
   if (reducedData.length === 0) {
     return (
