@@ -18,14 +18,14 @@ const GET = async (req: NextRequest) => {
         KeyConditionExpression: "#pk = :pk AND begins_with(#sk, :sk)",
         ExpressionAttributeValues: {
           ":pk": `USER#${sub}`,
-          ":sk": "PERSONA#",
+          ":sk": "ASSISTANT#",
         },
         Limit: limit,
         ScanIndexForward: false,
         ExclusiveStartKey: cursor
           ? {
               PK: `USER#${sub}`,
-              SK: `PERSONA#${cursor}`,
+              SK: `ASSISTANT#${cursor}`,
             }
           : undefined,
       }),
@@ -33,7 +33,7 @@ const GET = async (req: NextRequest) => {
     return NextResponse.json({
       items: Items,
       count: Count,
-      nextCursor: LastEvaluatedKey?.SK.replace("PERSONA#", "") || undefined,
+      nextCursor: LastEvaluatedKey?.SK.replace("ASSISTANT#", "") || undefined,
     });
   } catch (e) {
     return NextResponse.json(
@@ -55,7 +55,7 @@ const POST = async (req: NextRequest) => {
     const persona_id = nanoid();
     const item = {
       PK: `USER#${sub}`,
-      SK: `PERSONA#${persona_id}`,
+      SK: `ASSISTANT#${persona_id}`,
       user_id: sub,
       persona_id: persona_id,
       name,
