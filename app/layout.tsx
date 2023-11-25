@@ -5,6 +5,7 @@ import { ReactNode } from "react";
 import Link from "next/link";
 import "./styles/globals.css";
 import "./styles/katex.min.css";
+import "react-loading-skeleton/dist/skeleton.css";
 import dynamic from "next/dynamic";
 
 const TailwindIndicator = dynamic(
