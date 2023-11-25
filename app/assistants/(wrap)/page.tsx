@@ -20,7 +20,7 @@ export default async function SSRPage() {
         }
       >
         <div className={"text-3xl font-semibold"}>Assistants</div>
-        <Link href={"/assistants/create"}>
+        <Link href={"/assistants/create"} prefetch>
           <div
             className={
               "bg-[#0066FF] text-white px-2 py-1 rounded-lg font-medium text-sm"

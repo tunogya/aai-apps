@@ -1,7 +1,7 @@
 "use client";
 import { Listbox } from "@headlessui/react";
 import { ChevronUpDownIcon } from "@heroicons/react/24/solid";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const voice_options = [
   { id: 1, name: "Alloy" },
@@ -13,7 +13,27 @@ const voice_options = [
 ];
 
 const VoiceOptionSelect = () => {
-  const [selectVoiceOption, setSelectVoiceOption] = useState(voice_options[0]);
+  const [selectVoiceOption, setSelectVoiceOption] = useState<
+    { id: number; name: string } | undefined
+  >(undefined);
+
+  useEffect(() => {
+    const voice = sessionStorage.getItem("create-assistant-voice");
+    if (voice) {
+      setSelectVoiceOption(JSON.parse(voice));
+    } else {
+      setSelectVoiceOption(voice_options[0]);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (selectVoiceOption) {
+      sessionStorage.setItem(
+        "create-assistant-voice",
+        JSON.stringify(selectVoiceOption),
+      );
+    }
+  }, [selectVoiceOption]);
 
   return (
     <Listbox value={selectVoiceOption} onChange={setSelectVoiceOption}>
@@ -24,7 +44,7 @@ const VoiceOptionSelect = () => {
           }
         >
           <div className={"flex items-center justify-between"}>
-            {selectVoiceOption.name}
+            {selectVoiceOption?.name || "-"}
             <ChevronUpDownIcon className={"w-4 h-4"} />
           </div>
         </Listbox.Button>

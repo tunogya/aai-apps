@@ -4,7 +4,6 @@ import ddbDocClient from "@/app/utils/ddbDocClient";
 import { QueryCommand } from "@aws-sdk/lib-dynamodb";
 import sqsClient from "@/app/utils/sqsClient";
 import { SendMessageCommand } from "@aws-sdk/client-sqs";
-import { nanoid } from "ai";
 
 const GET = async (req: NextRequest) => {
   const session = await getSession();
@@ -54,31 +53,41 @@ const GET = async (req: NextRequest) => {
 const POST = async (req: NextRequest) => {
   const session = await getSession();
   const sub = session?.user.sub;
-  const { name, description } = await req.json();
+  const { assistant_id, name, instructions, voice, model, telegram_bot_token } =
+    await req.json();
   try {
-    const persona_id = nanoid();
     const item = {
       PK: `USER#${sub}`,
-      SK: `ASSISTANT#${persona_id}`,
-      user_id: sub,
-      persona_id: persona_id,
-      name,
-      description,
+      SK: `ASSISTANT#${assistant_id}`,
       created: Math.floor(Date.now() / 1000),
+      instructions,
+      model,
+      name,
+      telegram_bot_token,
       updated: Math.floor(Date.now() / 1000),
+      voice,
     };
-    await sqsClient.send(
+    const result = await sqsClient.send(
       new SendMessageCommand({
         QueueUrl: process.env.AI_DB_UPDATE_SQS_URL,
         MessageBody: JSON.stringify({
           TableName: "abandonai-prod",
           Item: item,
+          ConditionExpression:
+            "attribute_not_exists(PK) AND attribute_not_exists(SK)",
         }),
+        MessageAttributes: {
+          Command: {
+            DataType: "String",
+            StringValue: "PutCommand",
+          },
+        },
       }),
     );
     return NextResponse.json({
       success: true,
       item,
+      message: result,
     });
   } catch (e) {
     return NextResponse.json({

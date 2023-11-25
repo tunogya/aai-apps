@@ -2,7 +2,7 @@
 
 import { ArrowPathIcon, RocketLaunchIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import useSWRInfinite from "swr/infinite";
 
 const Types = [
@@ -29,12 +29,12 @@ const AssistantList = () => {
     return <ArrowPathIcon className={"w-4 h-4 animate-spin"} />;
   }
 
-  if (data?.[data?.length - 1]?.length === 0) {
+  if (data?.[0]?.count === 0) {
     return (
       <div className={"flex flex-col items-center justify-center flex-1 gap-2"}>
         <RocketLaunchIcon className={"w-5 h-5"} />
         <div className={"text-gray-800 font-medium"}>Create an assistant</div>
-        <Link href={"/assistants/create"}>
+        <Link href={"/assistants/create"} prefetch>
           <div
             className={
               "bg-[#0066FF] text-white px-2 py-1 rounded-lg font-medium text-sm"
@@ -78,29 +78,7 @@ const AssistantList = () => {
             </tr>
           </thead>
           <tbody>
-            {[
-              {
-                name: "Tom",
-                instructions: "Hello, how are you?",
-                voice: "Tom",
-                model: "gpt-3.5-turbo",
-                created: new Date().getTime(),
-              },
-              {
-                name: "Tom",
-                instructions: "Hello, how are you?",
-                voice: "Tom",
-                model: "gpt-3.5-turbo",
-                created: new Date().getTime(),
-              },
-              {
-                name: "Tom",
-                instructions: "Hello, how are you?",
-                voice: "Tom",
-                model: "gpt-3.5-turbo",
-                created: new Date().getTime(),
-              },
-            ].map((item: any, index: number) => (
+            {data?.[size - 1]?.items?.map((item: any, index: number) => (
               <tr
                 key={index}
                 className={
@@ -113,23 +91,41 @@ const AssistantList = () => {
                 <td className={"py-2 pr-6"}>{item.instructions}</td>
                 <td className={"py-2 pr-6"}>{item.voice}</td>
                 <td className={"py-2 pr-6"}>{item.model}</td>
-                <td className={"py-2 pr-6"}>xxx</td>
+                <td className={"py-2 pr-6"}>
+                  {new Date(item.created * 1000).toLocaleString()}
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
         <div className={"flex mt-4 justify-between"}>
-          <div className={"text-sm text-gray-700"}>12 of 100</div>
+          <div className={"text-sm text-gray-700"}>
+            {data?.[size - 1]?.count || 0} record
+            {data?.[size - 1]?.count > 1 ? "s" : ""}
+          </div>
           <div className={"flex space-x-2"}>
             <button
-              disabled
+              disabled={size <= 1}
               className={
                 "text-xs text-gray-700 disabled:text-gray-500 bg-white border px-2 py-1 rounded-lg disabled:cursor-auto"
               }
+              onClick={async () => {
+                if (size <= 1) {
+                  return;
+                }
+                await setSize(size - 1);
+              }}
             >
               Previous
             </button>
             <button
+              disabled={data?.[size - 1]?.count !== 20}
+              onClick={async () => {
+                if (data?.[size - 1]?.count !== 20) {
+                  return;
+                }
+                await setSize(size + 1);
+              }}
               className={
                 "text-xs text-gray-700 disabled:text-gray-500 bg-white border px-2 py-1 rounded-lg disabled:cursor-auto"
               }

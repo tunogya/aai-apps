@@ -1,7 +1,7 @@
 "use client";
 import { Listbox } from "@headlessui/react";
 import { ChevronUpDownIcon } from "@heroicons/react/24/solid";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const model_options = [
   { id: 1, name: "gpt-4-1106-preview" },
@@ -11,7 +11,27 @@ const model_options = [
 ];
 
 const ModelOptionSelect = () => {
-  const [selectModel, setSelectModel] = useState(model_options[0]);
+  const [selectModel, setSelectModel] = useState<
+    { id: number; name: string } | undefined
+  >(undefined);
+
+  useEffect(() => {
+    const voice = sessionStorage.getItem("create-assistant-model");
+    if (voice) {
+      setSelectModel(JSON.parse(voice));
+    } else {
+      setSelectModel(model_options[0]);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (selectModel) {
+      sessionStorage.setItem(
+        "create-assistant-model",
+        JSON.stringify(selectModel),
+      );
+    }
+  }, [selectModel]);
 
   return (
     <Listbox value={selectModel} onChange={setSelectModel}>
@@ -22,7 +42,7 @@ const ModelOptionSelect = () => {
           }
         >
           <div className={"flex items-center justify-between"}>
-            {selectModel.name}
+            {selectModel?.name || "-"}
             <ChevronUpDownIcon className={"w-4 h-4"} />
           </div>
         </Listbox.Button>

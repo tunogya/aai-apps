@@ -37,7 +37,7 @@ const DELETE = async (req: NextRequest, { params }: any) => {
   const session = await getSession();
   const sub = session?.user.sub;
   try {
-    await sqsClient.send(
+    const result = await sqsClient.send(
       new SendMessageCommand({
         QueueUrl: process.env.AI_DB_UPDATE_SQS_URL,
         MessageBody: JSON.stringify({
@@ -57,6 +57,7 @@ const DELETE = async (req: NextRequest, { params }: any) => {
     );
     return NextResponse.json({
       delete: true,
+      message: result,
     });
   } catch (e) {
     return NextResponse.json(
@@ -80,7 +81,7 @@ const PATCH = async (req: NextRequest, { params }: any) => {
     ConditionExpression,
   } = await req.json();
   try {
-    await sqsClient.send(
+    const result = await sqsClient.send(
       new SendMessageCommand({
         QueueUrl: process.env.AI_DB_UPDATE_SQS_URL,
         MessageBody: JSON.stringify({
@@ -104,6 +105,7 @@ const PATCH = async (req: NextRequest, { params }: any) => {
     );
     return NextResponse.json({
       updated: true,
+      message: result,
     });
   } catch (e) {
     return NextResponse.json(
