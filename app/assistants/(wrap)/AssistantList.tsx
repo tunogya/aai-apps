@@ -49,7 +49,7 @@ const AssistantList = () => {
         <table className={"table-auto w-full"}>
           <thead className={"border-y"}>
             <tr className={"text-xs text-gray-700"}>
-              <th className={"py-2 pr-6 text-start"}>Name</th>
+              <th className={"py-2 pr-6 text-start pl-2"}>Name</th>
               <th className={"py-2 pr-6 text-start"}>Instructions</th>
               <th className={"py-2 pr-6 text-start"}>Voice</th>
               <th className={"py-2 pr-6 text-start"}>Model</th>
@@ -73,7 +73,7 @@ const AssistantList = () => {
                 >
                   <td
                     className={
-                      "py-2 pr-6 text-gray-700 font-semibold truncate max-w-[240px]"
+                      "py-2 pr-6 pl-2 text-gray-700 font-semibold truncate max-w-[240px]"
                     }
                   >
                     {item.name}
