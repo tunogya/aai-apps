@@ -14,7 +14,7 @@ const ActionButtonGroup = () => {
       </button>
       <button
         className={
-          "bg-[#0066FF] px-2 py-1 rounded-lg text-white disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer font-medium"
+          "bg-[#0066FF] px-2 py-1 rounded-lg text-white disabled:opacity-50 disabled:cursor-auto cursor-pointer font-medium"
         }
         disabled
       >
