@@ -49,24 +49,7 @@ const AssistantList = () => {
 
   return (
     <div className={"w-full h-full"}>
-      <div className={"flex space-x-2 justify-between"}>
-        {Types.map((item, index) => (
-          <button
-            key={index}
-            className={`p-[11px] border rounded-lg w-full text-sm ring-[#0066FF] hover:ring-1 whitespace-nowrap ${
-              selectIndex === index
-                ? "text-[#0066FF] border-[#0066FF] ring-1 font-semibold"
-                : "text-gray-800 font-normal"
-            }`}
-            onClick={() => {
-              setSelectIndex(index);
-            }}
-          >
-            {item}
-          </button>
-        ))}
-      </div>
-      <div className={"mt-4"}>
+      <div className={"gap-4 flex flex-col"}>
         <table className={"table-auto w-full"}>
           <thead className={"border-y"}>
             <tr className={"text-xs text-gray-700"}>
@@ -108,7 +91,7 @@ const AssistantList = () => {
             ))}
           </tbody>
         </table>
-        <div className={"flex mt-4 justify-between"}>
+        <div className={"flex justify-between"}>
           <div className={"text-sm text-gray-700"}>
             {data?.[size - 1]?.count || 0} record
             {data?.[size - 1]?.count > 1 ? "s" : ""}

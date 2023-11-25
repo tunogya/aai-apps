@@ -16,7 +16,7 @@ export default async function SSRPage() {
     >
       <div
         className={
-          "flex gap-2 w-full py-1 xl:border-b text-gray-800 justify-between items-center"
+          "flex gap-2 w-full py-1 text-gray-800 justify-between items-center"
         }
       >
         <div className={"text-3xl font-semibold"}>Assistants</div>
