@@ -85,13 +85,23 @@ const AssistantList = () => {
                   "border-b text-sm text-gray-500 hover:bg-gray-50 cursor-pointer"
                 }
               >
-                <td className={"py-2 pr-6 text-gray-700 font-semibold"}>
+                <td
+                  className={
+                    "py-2 pr-6 text-gray-700 font-semibold truncate max-w-[240px]"
+                  }
+                >
                   {item.name}
                 </td>
-                <td className={"py-2 pr-6"}>{item.instructions}</td>
-                <td className={"py-2 pr-6"}>{item.voice}</td>
-                <td className={"py-2 pr-6"}>{item.model}</td>
-                <td className={"py-2 pr-6"}>
+                <td className={"py-2 pr-6 truncate max-w-[240px]"}>
+                  {item.instructions}
+                </td>
+                <td className={"py-2 pr-6 truncate max-w-[240px]"}>
+                  {item.voice}
+                </td>
+                <td className={"py-2 pr-6 truncate max-w-[240px]"}>
+                  {item.model}
+                </td>
+                <td className={"py-2 pr-6 truncate max-w-[240px]"}>
                   {new Date(item.created * 1000).toLocaleString()}
                 </td>
               </tr>
