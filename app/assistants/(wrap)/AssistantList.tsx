@@ -21,8 +21,12 @@ const AssistantList = () => {
     return `/api/assistants?cursor=${previousPageData.nextCursor}&limit=20`;
   };
 
-  const { data, size, setSize, isLoading } = useSWRInfinite(getKey, (url) =>
-    fetch(url).then((res) => res.json()),
+  const { data, size, setSize, isLoading } = useSWRInfinite(
+    getKey,
+    (url) => fetch(url).then((res) => res.json()),
+    {
+      refreshInterval: 5_000,
+    },
   );
 
   if (isLoading) {
@@ -61,34 +65,36 @@ const AssistantList = () => {
             </tr>
           </thead>
           <tbody>
-            {data?.[size - 1]?.items?.map((item: any, index: number) => (
-              <tr
-                key={index}
-                className={
-                  "border-b text-sm text-gray-500 hover:bg-gray-50 cursor-pointer"
-                }
-              >
-                <td
+            {data?.[size - 1]?.items
+              ?.sort((a: any, b: any) => a.created - b.created)
+              ?.map((item: any, index: number) => (
+                <tr
+                  key={index}
                   className={
-                    "py-2 pr-6 text-gray-700 font-semibold truncate max-w-[240px]"
+                    "border-b text-sm text-gray-500 hover:bg-gray-50 cursor-pointer"
                   }
                 >
-                  {item.name}
-                </td>
-                <td className={"py-2 pr-6 truncate max-w-[240px]"}>
-                  {item.instructions}
-                </td>
-                <td className={"py-2 pr-6 truncate max-w-[240px]"}>
-                  {item.voice}
-                </td>
-                <td className={"py-2 pr-6 truncate max-w-[240px]"}>
-                  {item.model}
-                </td>
-                <td className={"py-2 pr-6 truncate max-w-[240px]"}>
-                  {new Date(item.created * 1000).toLocaleString()}
-                </td>
-              </tr>
-            ))}
+                  <td
+                    className={
+                      "py-2 pr-6 text-gray-700 font-semibold truncate max-w-[240px]"
+                    }
+                  >
+                    {item.name}
+                  </td>
+                  <td className={"py-2 pr-6 truncate max-w-[240px]"}>
+                    {item.instructions}
+                  </td>
+                  <td className={"py-2 pr-6 truncate max-w-[240px]"}>
+                    {item.voice}
+                  </td>
+                  <td className={"py-2 pr-6 truncate max-w-[240px]"}>
+                    {item.model}
+                  </td>
+                  <td className={"py-2 pr-6 truncate max-w-[240px]"}>
+                    {new Date(item.created * 1000).toLocaleString()}
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
         <div className={"flex justify-between"}>

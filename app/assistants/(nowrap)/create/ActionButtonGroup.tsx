@@ -37,9 +37,21 @@ const ActionButtonGroup = () => {
           telegram_bot_token,
         }),
       }).then((res) => res.json());
-      console.log(result);
+      if (result?.success) {
+        sessionStorage.removeItem("create-assistant-name");
+        sessionStorage.removeItem("create-assistant-voice");
+        sessionStorage.removeItem("create-assistant-instructions");
+        sessionStorage.removeItem("create-assistant-model");
+        sessionStorage.removeItem("create-assistant-tg-token");
+        router.push("/assistants");
+      }
     } catch (e) {
-      console.log(e);
+      sessionStorage.removeItem("create-assistant-name");
+      sessionStorage.removeItem("create-assistant-voice");
+      sessionStorage.removeItem("create-assistant-instructions");
+      sessionStorage.removeItem("create-assistant-model");
+      sessionStorage.removeItem("create-assistant-tg-token");
+      router.back();
     }
   };
 
