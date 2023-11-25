@@ -5,7 +5,7 @@ import PrimaryNav from "@/app/components/Nav/PrimaryNav";
 
 export const runtime = "edge";
 
-const title = "Personas";
+const title = "Assistants";
 const description = "Powered by OpenAI";
 
 export const metadata: Metadata = {

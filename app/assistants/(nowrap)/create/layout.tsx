@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 
 export const runtime = "edge";
 
-const title = "Create new Persona";
+const title = "Create an assistant";
 const description = "Powered by OpenAI";
 
 export const metadata: Metadata = {
