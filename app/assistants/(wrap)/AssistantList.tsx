@@ -4,6 +4,7 @@ import { ArrowPathIcon, RocketLaunchIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import useSWRInfinite from "swr/infinite";
 import { useRouter } from "next/navigation";
+import Skeleton from "react-loading-skeleton";
 
 const AssistantList = () => {
   const router = useRouter();
@@ -21,7 +22,7 @@ const AssistantList = () => {
   );
 
   if (isLoading) {
-    return <ArrowPathIcon className={"w-4 h-4 animate-spin"} />;
+    return <Skeleton count={3} height={"33px"} />;
   }
 
   if (data?.[0]?.count === 0) {

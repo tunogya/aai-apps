@@ -3,7 +3,8 @@ import Link from "next/link";
 import React, { useMemo } from "react";
 import useSWRInfinite from "swr/infinite";
 import dynamic from "next/dynamic";
-import { ArrowPathIcon, PlusIcon } from "@heroicons/react/24/outline";
+import { PlusIcon } from "@heroicons/react/24/outline";
+import Skeleton from "react-loading-skeleton";
 
 const SecondaryNavItem = dynamic(
   () => import("@/app/chat/[[...id]]/SecondaryNavItem"),
@@ -52,7 +53,7 @@ const SecondaryNav = () => {
         <div className={"text-sm text-gray-800"}>New Chat</div>
       </Link>
       <div className={"h-[calc(100vh-66px)] overflow-y-auto px-2"}>
-        {isLoading && <ArrowPathIcon className={"w-4 h-4 animate-spin"} />}
+        {isLoading && <Skeleton count={5} height={"36px"} />}
         {reducedData?.length > 0 && (
           <div className={"mb-2"}>
             {reducedData
