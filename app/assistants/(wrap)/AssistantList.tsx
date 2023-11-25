@@ -2,17 +2,8 @@
 
 import { ArrowPathIcon, RocketLaunchIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
-import { useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import { useRouter } from "next/navigation";
-
-const Types = [
-  "all",
-  "gpt-4-1106-preview",
-  "gpt-4",
-  "gpt-3.5-turbo-16k",
-  "gpt-3.5-turbo",
-];
 
 const AssistantList = () => {
   const router = useRouter();
