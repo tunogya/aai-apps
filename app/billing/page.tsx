@@ -21,7 +21,7 @@ export default async function SSRPage() {
     >
       <div
         className={
-          "flex gap-2 w-full py-1 xl:border-b text-gray-800 justify-between"
+          "flex gap-2 w-full pt-1 pb-2 xl:border-b text-gray-800 justify-between"
         }
       >
         <div className={"text-3xl font-semibold"}>Billing Settings</div>
