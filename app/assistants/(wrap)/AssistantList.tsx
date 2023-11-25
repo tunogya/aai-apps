@@ -95,7 +95,7 @@ const AssistantList = () => {
         </table>
         <div className={"flex justify-between"}>
           <div className={"text-sm text-gray-700"}>
-            {data?.[size - 1]?.count || 0} record
+            {data?.[size - 1]?.count || 0} item
             {data?.[size - 1]?.count > 1 ? "s" : ""}
           </div>
           <div className={"flex space-x-2"}>
