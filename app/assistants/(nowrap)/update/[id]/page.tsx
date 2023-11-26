@@ -1,17 +1,18 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Skeleton from "react-loading-skeleton";
-import { AssistantCreateParams } from "openai/src/resources/beta/assistants/assistants";
+import { AssistantUpdateParams } from "openai/src/resources/beta/assistants/assistants";
+import useSWRImmutable from "swr/immutable";
 
 const Help = dynamic(() => import("@/app/assistants/(nowrap)/create/Help"), {
   loading: () => <Skeleton count={5} height={"28px"} />,
 });
-const CreateForm = dynamic(
-  () => import("@/app/assistants/(nowrap)/create/CreateForm"),
+const UpdateForm = dynamic(
+  () => import("@/app/assistants/(nowrap)/update/[id]/UpdateForm"),
   {
     loading: () => <Skeleton count={5} height={"28px"} />,
   },
@@ -19,38 +20,56 @@ const CreateForm = dynamic(
 
 export default function CSRPage() {
   const router = useRouter();
-  const [createParams, setCreateParams] = useState<AssistantCreateParams>({
+  const params = useParams();
+  const [updateParams, setUpdateParams] = useState<AssistantUpdateParams>({
     name: "",
     description: "",
     instructions: "",
-    model: "gpt-4-1106-preview",
+    model: "",
     metadata: {
-      voice: "Alloy",
+      voice: "",
     },
   });
 
-  const create = async () => {
+  const update = async () => {
     try {
-      const result = await fetch(`/api/assistants`, {
-        method: "POST",
+      const result = await fetch(`/api/assistants/${params?.id}`, {
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: createParams?.name?.trim() || undefined,
-          description: createParams?.description?.trim() || undefined,
-          instructions: createParams?.instructions?.trim() || undefined,
-          model: createParams?.model?.toLowerCase() || undefined,
-          metadata: createParams?.metadata || {},
+          name: updateParams?.name?.trim(),
+          description: updateParams?.description?.trim() || undefined,
+          instructions: updateParams?.instructions?.trim() || undefined,
+          model: updateParams?.model?.toLowerCase() || "gpt-4-1106-preview",
+          metadata: updateParams?.metadata || {},
         }),
       }).then((res) => res.json());
       if (result?.success) {
-        router.push("/assistants");
+        router.push(`/assistants/${params?.id}`);
       }
     } catch (e) {
       router.back();
     }
   };
+
+  const { data, isLoading } = useSWRImmutable(
+    params?.id ? `/api/assistants/${params.id}` : undefined,
+    (url) => fetch(url).then((res) => res.json()),
+  );
+
+  useEffect(() => {
+    if (data) {
+      setUpdateParams({
+        name: data?.item?.name || "",
+        description: data?.item?.description || "",
+        instructions: data?.item?.instructions || "",
+        model: data?.item?.model || "gpt-4-1106-preview",
+        metadata: data?.item?.metadata || {},
+      });
+    }
+  }, [data]);
 
   return (
     <div className={"h-full w-full"}>
@@ -70,7 +89,7 @@ export default function CSRPage() {
             <XMarkIcon className={"w-4 h-4 stroke-2"} />
           </Link>
           <div className={"pl-5 text-gray-800 font-medium"}>
-            Create an assistant
+            Update an assistant
           </div>
         </div>
         <div className={"flex items-center gap-3"}>
@@ -85,13 +104,13 @@ export default function CSRPage() {
             Cancel
           </button>
           <button
-            disabled={!createParams.name || !createParams.model}
-            onClick={create}
+            disabled={!updateParams.name || !updateParams.model}
+            onClick={update}
             className={
               "bg-[#0066FF] px-2 py-1 rounded-lg text-white disabled:cursor-auto cursor-pointer font-medium disabled:opacity-50"
             }
           >
-            Create
+            Update
           </button>
         </div>
       </div>
@@ -99,9 +118,9 @@ export default function CSRPage() {
         <div
           className={"w-1/2 min-w-[440px] flex justify-center overflow-y-auto"}
         >
-          <CreateForm
-            createParams={createParams}
-            setCreateParams={setCreateParams}
+          <UpdateForm
+            updateParams={updateParams}
+            setUpdateParams={setUpdateParams}
           />
         </div>
         <div className={"w-1/2 bg-gray-100 p-10 overflow-y-auto"}>

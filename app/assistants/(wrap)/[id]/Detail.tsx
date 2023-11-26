@@ -3,6 +3,7 @@
 import useSWR from "swr";
 import { useParams } from "next/navigation";
 import Skeleton from "react-loading-skeleton";
+import Link from "next/link";
 
 const CSRPage = () => {
   const params = useParams();
@@ -24,14 +25,15 @@ const CSRPage = () => {
       <div className={"space-y-3"}>
         <div className={"flex justify-between mt-16 pb-3 border-b"}>
           <div className={"text-gray-800 font-semibold"}>Detail</div>
-          <button
-            disabled
+          <Link
+            prefetch
+            href={`/assistants/update/${params?.id}`}
             className={
               "text-sm text-[#0066FF] font-medium disabled:cursor-auto disabled:opacity-50"
             }
           >
             Edit
-          </button>
+          </Link>
         </div>
         <div>
           <div className={"text-sm text-gray-500"}>Assistant ID</div>
