@@ -17,7 +17,7 @@ const AssistantList = () => {
     getKey,
     (url) => fetch(url).then((res) => res.json()),
     {
-      refreshInterval: 5_000,
+      refreshInterval: 3_000,
     },
   );
 
