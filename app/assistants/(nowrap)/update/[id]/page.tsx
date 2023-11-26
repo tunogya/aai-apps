@@ -49,7 +49,7 @@ export default function CSRPage() {
         }),
       }).then((res) => res.json());
       setStatus("success");
-      if (result?.update) {
+      if (result?.updated) {
         router.push(`/assistants/${params?.id}`);
       }
     } catch (e) {

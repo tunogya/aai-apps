@@ -61,7 +61,6 @@ const POST = async (req: NextRequest) => {
       instructions,
       name,
       description,
-      tools: [],
       model,
       metadata,
     });

@@ -50,6 +50,7 @@ const AssistantList = () => {
           <thead className={"border-y"}>
             <tr className={"text-xs text-gray-700"}>
               <th className={"py-2 pr-6 text-start pl-2"}>Name</th>
+              <th className={"py-2 pr-6 text-start"}>Description</th>
               <th className={"py-2 pr-6 text-start"}>Instructions</th>
               <th className={"py-2 pr-6 text-start"}>Voice</th>
               <th className={"py-2 pr-6 text-start"}>Model</th>
@@ -77,6 +78,9 @@ const AssistantList = () => {
                     {item.name}
                   </td>
                   <td className={"py-2 pr-6 truncate max-w-[240px]"}>
+                    {item.description}
+                  </td>
+                  <td className={"py-2 pr-6 truncate max-w-[240px]"}>
                     {item.instructions}
                   </td>
                   <td className={"py-2 pr-6 truncate max-w-[240px]"}>
@@ -86,7 +90,7 @@ const AssistantList = () => {
                     {item.model}
                   </td>
                   <td className={"py-2 pr-6 truncate max-w-[240px]"}>
-                    {new Date(item.created_at * 1000).toLocaleString()}
+                    {new Date(item.created_at * 1000).toLocaleDateString()}
                   </td>
                 </tr>
               ))}

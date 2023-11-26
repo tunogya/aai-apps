@@ -6,6 +6,9 @@ import {
   GetCommand,
   UpdateCommand,
 } from "@aws-sdk/lib-dynamodb";
+import OpenAI from "openai";
+import sqsClient from "@/app/utils/sqsClient";
+import { SendMessageCommand } from "@aws-sdk/client-sqs";
 
 const GET = async (req: NextRequest, { params }: any) => {
   const session = await getSession();
@@ -38,33 +41,41 @@ const GET = async (req: NextRequest, { params }: any) => {
 const PATCH = async (req: NextRequest, { params }: any) => {
   const session = await getSession();
   const sub = session?.user.sub;
-  const needToUpdateObject = await req.json();
-  const UpdateExpression = Object.keys(needToUpdateObject)
-    .map((key) => `#${key} = :${key}`)
-    .join(", ");
-  const ExpressionAttributeNames = {};
-  const ExpressionAttributeValues = {};
-  Object.keys(needToUpdateObject).forEach((key) => {
-    // @ts-ignore
-    ExpressionAttributeNames[`#${key}`] = key;
-    // @ts-ignore
-    ExpressionAttributeValues[`:${key}`] = needToUpdateObject[key];
-  });
+  const { name, description, instructions, metadata, model } = await req.json();
+
   try {
-    await ddbDocClient.send(
-      new UpdateCommand({
-        TableName: "abandonai-prod",
-        Key: {
-          PK: `USER#${sub}`,
-          SK: `ASST#${params?.id}`,
+    const openai = new OpenAI();
+    const newAssistant = await openai.beta.assistants.update(params.id, {
+      name,
+      description,
+      instructions,
+      model,
+      metadata,
+    });
+    const item = {
+      ...newAssistant,
+      PK: `USER#${sub}`,
+      SK: `ASST#${newAssistant.id}`,
+    };
+    const result = await sqsClient.send(
+      new SendMessageCommand({
+        QueueUrl: process.env.AI_DB_UPDATE_SQS_URL,
+        MessageBody: JSON.stringify({
+          TableName: "abandonai-prod",
+          Item: item,
+        }),
+        MessageAttributes: {
+          Command: {
+            DataType: "String",
+            StringValue: "PutCommand",
+          },
         },
-        UpdateExpression: `SET ${UpdateExpression}`,
-        ExpressionAttributeNames,
-        ExpressionAttributeValues,
       }),
     );
     return NextResponse.json({
-      update: true,
+      updated: true,
+      item,
+      message: result,
     });
   } catch (e) {
     return NextResponse.json(
@@ -82,6 +93,8 @@ const DELETE = async (req: NextRequest, { params }: any) => {
   const session = await getSession();
   const sub = session?.user.sub;
   try {
+    const openai = new OpenAI();
+    const response = await openai.beta.assistants.del("asst_abc123");
     await ddbDocClient.send(
       new DeleteCommand({
         TableName: "abandonai-prod",
@@ -92,7 +105,8 @@ const DELETE = async (req: NextRequest, { params }: any) => {
       }),
     );
     return NextResponse.json({
-      delete: true,
+      id: params?.id,
+      deleted: true,
     });
   } catch (e) {
     return NextResponse.json(
