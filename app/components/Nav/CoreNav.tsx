@@ -1,19 +1,32 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
 
 const menu = [
   {
     path: `/chat`,
     name: "ChatGPT",
+    prefetch: true,
+    target: undefined,
   },
   {
     path: "/assistants",
     name: "Assistants",
+    prefetch: true,
+    target: undefined,
   },
   {
     path: "/billing",
     name: "Billing",
+    prefetch: true,
+    target: undefined,
+  },
+  {
+    path: "https://github.com/tunogya/abandonai-app/discussions/new/choose",
+    name: "Feedback",
+    prefetch: false,
+    target: "_blank",
   },
 ];
 
@@ -33,14 +46,18 @@ const CoreNav = () => {
             }`}
           ></div>
           <Link
+            target={item.target}
             href={`${item.path}`}
-            prefetch
+            prefetch={item.prefetch}
             scroll={false}
-            className={`text-sm font-semibold hover:bg-gray-50 w-full p-2 rounded ${
+            className={`text-sm font-semibold hover:bg-gray-50 w-full p-2 rounded flex items-center ${
               path.includes(item.path) ? `text-[#0066FF]` : "text-gray-700"
             }`}
           >
             {item.name}
+            {item.target === "_blank" && (
+              <ArrowTopRightOnSquareIcon className={"w-4 h-4 ml-1"} />
+            )}
           </Link>
         </div>
       ))}
