@@ -100,7 +100,7 @@ export default function CSRPage() {
         >
           <Form form={form} setForm={setForm} />
         </div>
-        <div className={"w-1/2 bg-gray-100 p-10"}>
+        <div className={"w-1/2 bg-gray-100 p-10 overflow-y-auto"}>
           <Help />
         </div>
       </div>
