@@ -6,7 +6,7 @@ import Skeleton from "react-loading-skeleton";
 
 const CSRPage = () => {
   const params = useParams();
-  const { data, isLoading } = useSWR(
+  const { data } = useSWR(
     params?.id ? `/api/assistants/${params.id}` : undefined,
     (url) => fetch(url).then((res) => res.json()),
   );
@@ -48,7 +48,17 @@ const CSRPage = () => {
         <div>
           <div className={"text-sm text-gray-500"}>Voice</div>
           <div className={"text-sm text-gray-600"}>
-            {data?.item?.voice || <Skeleton />}
+            {data?.item?.metadata?.voice || <Skeleton />}
+          </div>
+        </div>
+        <div>
+          <div className={"text-sm text-gray-500"}>Create at</div>
+          <div className={"text-sm text-gray-600"}>
+            {data?.item?.created_at ? (
+              new Date(data.item.created_at * 1000).toLocaleString()
+            ) : (
+              <Skeleton />
+            )}
           </div>
         </div>
       </div>
