@@ -12,5 +12,6 @@ export const config = {
     "/api/customer/:path*",
     "/billing/:path*",
     "/chat/:path*",
+    "/assistants/:path*",
   ],
 };
