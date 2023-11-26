@@ -7,8 +7,11 @@ import { nanoid } from "ai";
 import { useRouter } from "next/navigation";
 import { Listbox } from "@headlessui/react";
 import { ChevronUpDownIcon } from "@heroicons/react/24/solid";
+import Skeleton from "react-loading-skeleton";
 
-const Help = dynamic(() => import("@/app/assistants/(nowrap)/create/Help"));
+const Help = dynamic(() => import("@/app/assistants/(nowrap)/create/Help"), {
+  loading: () => <Skeleton />,
+});
 
 const voice_options = ["Alloy", "Echo", "Fable", "Onyx", "Nova", "Shimmer"];
 
