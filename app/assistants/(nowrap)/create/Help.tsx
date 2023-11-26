@@ -1,5 +1,6 @@
-"use client";
 import React from "react";
+
+export const runtime = "edge";
 
 const Help = () => {
   return (
