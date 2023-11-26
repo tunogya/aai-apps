@@ -1,7 +1,6 @@
 import { Listbox } from "@headlessui/react";
 import { ChevronUpDownIcon } from "@heroicons/react/24/solid";
 import React, { FC } from "react";
-import { AssistantCreateParams } from "openai/src/resources/beta/assistants/assistants";
 
 const voice_options = ["Alloy", "Echo", "Fable", "Onyx", "Nova", "Shimmer"];
 
@@ -13,8 +12,8 @@ const model_options = [
 ];
 
 const CreateForm: FC<{
-  createParams: AssistantCreateParams;
-  setCreateParams: (createParams: AssistantCreateParams) => void;
+  createParams: any;
+  setCreateParams: (createParams: any) => void;
 }> = ({ createParams, setCreateParams }) => {
   return (
     <div className={"p-10 min-w-[360px] w-[608px] space-y-8 h-fit pb-40"}>

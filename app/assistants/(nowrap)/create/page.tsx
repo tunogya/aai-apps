@@ -5,7 +5,6 @@ import dynamic from "next/dynamic";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
 import Skeleton from "react-loading-skeleton";
-import { AssistantCreateParams } from "openai/src/resources/beta/assistants/assistants";
 
 const Help = dynamic(() => import("@/app/assistants/(nowrap)/create/Help"), {
   loading: () => <Skeleton count={5} height={"28px"} />,
@@ -19,7 +18,7 @@ const CreateForm = dynamic(
 
 export default function CSRPage() {
   const router = useRouter();
-  const [createParams, setCreateParams] = useState<AssistantCreateParams>({
+  const [createParams, setCreateParams] = useState<any>({
     name: "",
     description: "",
     instructions: "",

@@ -5,7 +5,6 @@ import dynamic from "next/dynamic";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useParams, useRouter } from "next/navigation";
 import Skeleton from "react-loading-skeleton";
-import { AssistantUpdateParams } from "openai/src/resources/beta/assistants/assistants";
 import useSWRImmutable from "swr/immutable";
 
 const Help = dynamic(() => import("@/app/assistants/(nowrap)/create/Help"), {
@@ -21,7 +20,7 @@ const UpdateForm = dynamic(
 export default function CSRPage() {
   const router = useRouter();
   const params = useParams();
-  const [updateParams, setUpdateParams] = useState<AssistantUpdateParams>({
+  const [updateParams, setUpdateParams] = useState<any>({
     name: "",
     description: "",
     instructions: "",
