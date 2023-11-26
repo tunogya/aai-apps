@@ -20,8 +20,8 @@ export default function CSRPage() {
   const [form, setForm] = useState<FORM>({
     name: "",
     instructions: "",
-    voice: "",
-    model: "",
+    voice: "Alloy",
+    model: "gpt-4-1106-preview",
   });
 
   const create = async () => {
@@ -34,7 +34,10 @@ export default function CSRPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          ...form,
+          name: form.name.trim(),
+          instructions: form.instructions.trim(),
+          voice: form.voice.toLowerCase(),
+          model: form.model.toLowerCase(),
           assistant_id,
         }),
       }).then((res) => res.json());
@@ -79,9 +82,12 @@ export default function CSRPage() {
             Cancel
           </button>
           <button
+            disabled={
+              !form.name || !form.instructions || !form.voice || !form.model
+            }
             onClick={create}
             className={
-              "bg-[#0066FF] px-2 py-1 rounded-lg text-white disabled:cursor-auto cursor-pointer font-medium"
+              "bg-[#0066FF] px-2 py-1 rounded-lg text-white disabled:cursor-auto cursor-pointer font-medium disabled:opacity-50"
             }
           >
             Create
