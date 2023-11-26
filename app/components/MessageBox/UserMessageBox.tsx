@@ -1,10 +1,6 @@
 "use client";
 import Image from "next/image";
 import moment from "moment";
-import Markdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import remarkMath from "remark-math";
-import rehypeKatex from "rehype-katex";
 import React, { FC, useEffect, useMemo, useRef } from "react";
 import {
   ArrowPathIcon,
@@ -16,8 +12,13 @@ import {
 } from "@heroicons/react/24/outline";
 import copy from "copy-to-clipboard";
 import useDeleteItems from "@/app/hooks/useDeleteItems";
-import CodePreview from "@/app/components/CodePreview";
 import { Message } from "ai";
+import dynamic from "next/dynamic";
+import Skeleton from "react-loading-skeleton";
+
+const Markdown = dynamic(() => import("@/app/components/MessageBox/Markdown"), {
+  loading: () => <Skeleton count={3} height={"28px"} />,
+});
 
 const MessageBox: FC<{
   currentChatId: string;
@@ -191,28 +192,7 @@ const MessageBox: FC<{
               </button>
             </div>
           </div>
-          <Markdown
-            remarkPlugins={[remarkGfm, remarkMath]}
-            rehypePlugins={[rehypeKatex]}
-            components={{
-              code(props) {
-                const { children, className, node, ...rest } = props;
-                const match = /language-(\w+)/.exec(className || "");
-                return match ? (
-                  <CodePreview match={match} rest={rest}>
-                    {children}
-                  </CodePreview>
-                ) : (
-                  <code {...rest} className={className}>
-                    {children}
-                  </code>
-                );
-              },
-            }}
-            className={`markdown prose w-full overflow-x-hidden break-words leading-8`}
-          >
-            {message.content}
-          </Markdown>
+          <Markdown content={message.content} isLoading={false} />
         </div>
       </div>
     </div>
