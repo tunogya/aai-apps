@@ -28,7 +28,7 @@ export default async function SSRPage() {
       </div>
       <div className={"space-y-2"}>
         <div className={"text-xl text-gray-800 font-semibold"}>
-          Pay as You Go / AbandonAI+
+          Pay as You Go / AbandonAI Premium
         </div>
         <div className={"text-md text-gray-800 font-semibold"}>
           Credit remaining
@@ -38,7 +38,8 @@ export default async function SSRPage() {
           Instead of paying a monthly recurring charge, you can buy credits as
           needed. It&#39;s best for infrequent users.
           <br />
-          If you prefer to save more, you can subscribe AbandonAI+.
+          For those seeking greater savings, consider opting for the AbandonAI
+          Premium subscription.
         </div>
         <div className={"flex gap-4"}>
           <TopUpButton />
