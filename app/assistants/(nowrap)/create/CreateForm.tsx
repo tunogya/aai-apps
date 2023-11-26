@@ -1,6 +1,7 @@
 import { Listbox } from "@headlessui/react";
 import { ChevronUpDownIcon } from "@heroicons/react/24/solid";
 import React, { FC } from "react";
+import { AssistantCreateParams } from "openai/src/resources/beta/assistants/assistants";
 
 const voice_options = ["Alloy", "Echo", "Fable", "Onyx", "Nova", "Shimmer"];
 
@@ -11,42 +12,54 @@ const model_options = [
   "gpt-3.5-turbo",
 ];
 
-export type FORM = {
-  name: string;
-  instructions: string;
-  voice: string;
-  model: string;
-};
-
-const Form: FC<{
-  form: FORM;
-  setForm: (form: FORM) => void;
-}> = ({ form, setForm }) => {
+const CreateForm: FC<{
+  createParams: AssistantCreateParams;
+  setCreateParams: (createParams: AssistantCreateParams) => void;
+}> = ({ createParams, setCreateParams }) => {
   return (
     <div className={"p-10 min-w-[360px] w-[608px] space-y-8 h-fit pb-40"}>
       <div className={"space-y-4 text-gray-800"}>
-        <div className={"text-xl font-medium"}>Name</div>
+        <div className={"text-xl font-medium"}>Name*</div>
         <input
-          value={form.name}
+          maxLength={256}
+          value={createParams?.name || ""}
           onChange={(e) =>
-            setForm({
-              ...form,
+            setCreateParams({
+              ...createParams,
               name: e.target.value,
             })
           }
-          placeholder={"Enter a user friendly name"}
+          placeholder={"Enter a user friendly name."}
           className={
             "border text-sm overflow-x-scroll max-w-[360px] w-full h-7 px-2 py-1 rounded focus:outline-[#0066FF]"
           }
         />
       </div>
       <div className={"space-y-4 text-gray-800"}>
+        <div className={"text-xl font-medium"}>Description</div>
+        <textarea
+          maxLength={512}
+          value={createParams?.description || ""}
+          onChange={(e) =>
+            setCreateParams({
+              ...createParams,
+              description: e.target.value,
+            })
+          }
+          placeholder={"The description of the assistant."}
+          className={
+            "border text-sm overflow-x-scroll max-w-[360px] w-full h-7 px-2 py-1 rounded focus:outline-[#0066FF] min-h-[80px] max-h-[240px]"
+          }
+        />
+      </div>
+      <div className={"space-y-4 text-gray-800"}>
         <div className={"text-xl font-medium"}>Instructions</div>
         <textarea
-          value={form.instructions}
+          maxLength={32768}
+          value={createParams?.instructions || ""}
           onChange={(e) =>
-            setForm({
-              ...form,
+            setCreateParams({
+              ...createParams,
               instructions: e.target.value,
             })
           }
@@ -59,8 +72,17 @@ const Form: FC<{
       <div className={"space-y-4 text-gray-800"}>
         <div className={"text-xl font-medium"}>Voice</div>
         <Listbox
-          value={form.voice}
-          onChange={(m) => setForm({ ...form, voice: m })}
+          // @ts-ignore
+          value={createParams?.metadata?.voice || "-"}
+          onChange={(m) =>
+            setCreateParams({
+              ...createParams,
+              metadata: {
+                ...(createParams?.metadata || {}),
+                voice: m,
+              },
+            })
+          }
         >
           <div className="relative mt-1">
             <Listbox.Button
@@ -69,7 +91,8 @@ const Form: FC<{
               }
             >
               <div className={"flex items-center justify-between"}>
-                {form?.voice || "-"}
+                {/* @ts-ignore */}
+                {createParams?.metadata?.voice || "-"}
                 <ChevronUpDownIcon className={"w-4 h-4"} />
               </div>
             </Listbox.Button>
@@ -94,10 +117,10 @@ const Form: FC<{
         </Listbox>
       </div>
       <div className={"space-y-4 text-gray-800"}>
-        <div className={"text-xl font-medium"}>Model</div>
+        <div className={"text-xl font-medium"}>Model*</div>
         <Listbox
-          value={form.model}
-          onChange={(m) => setForm({ ...form, model: m })}
+          value={createParams.model}
+          onChange={(m) => setCreateParams({ ...createParams, model: m })}
         >
           <div className="relative mt-1">
             <Listbox.Button
@@ -106,7 +129,7 @@ const Form: FC<{
               }
             >
               <div className={"flex items-center justify-between"}>
-                {form?.model || "-"}
+                {createParams?.model || "-"}
                 <ChevronUpDownIcon className={"w-4 h-4"} />
               </div>
             </Listbox.Button>
@@ -134,4 +157,4 @@ const Form: FC<{
   );
 };
 
-export default Form;
+export default CreateForm;

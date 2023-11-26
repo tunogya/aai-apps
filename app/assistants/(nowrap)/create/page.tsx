@@ -6,27 +6,31 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { nanoid } from "ai";
 import { useRouter } from "next/navigation";
 import Skeleton from "react-loading-skeleton";
-import { FORM } from "@/app/assistants/(nowrap)/create/Form";
+import { AssistantCreateParams } from "openai/src/resources/beta/assistants/assistants";
 
 const Help = dynamic(() => import("@/app/assistants/(nowrap)/create/Help"), {
   loading: () => <Skeleton count={5} height={"28px"} />,
 });
-const Form = dynamic(() => import("@/app/assistants/(nowrap)/create/Form"), {
-  loading: () => <Skeleton count={5} height={"28px"} />,
-});
+const CreateForm = dynamic(
+  () => import("@/app/assistants/(nowrap)/create/CreateForm"),
+  {
+    loading: () => <Skeleton count={5} height={"28px"} />,
+  },
+);
 
 export default function CSRPage() {
   const router = useRouter();
-  const [form, setForm] = useState<FORM>({
+  const [createParams, setCreateParams] = useState<AssistantCreateParams>({
     name: "",
+    description: "",
     instructions: "",
-    voice: "Alloy",
     model: "gpt-4-1106-preview",
+    metadata: {
+      voice: "Alloy",
+    },
   });
 
   const create = async () => {
-    const assistant_id = nanoid();
-
     try {
       const result = await fetch(`/api/assistants`, {
         method: "POST",
@@ -34,11 +38,10 @@ export default function CSRPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: form.name.trim(),
-          instructions: form.instructions.trim(),
-          voice: form.voice.toLowerCase(),
-          model: form.model.toLowerCase(),
-          assistant_id,
+          name: createParams?.name?.trim(),
+          instructions: createParams?.instructions?.trim(),
+          model: createParams.model.toLowerCase(),
+          metadata: createParams.metadata,
         }),
       }).then((res) => res.json());
       if (result?.success) {
@@ -82,9 +85,7 @@ export default function CSRPage() {
             Cancel
           </button>
           <button
-            disabled={
-              !form.name || !form.instructions || !form.voice || !form.model
-            }
+            disabled={!createParams.name || !createParams.model}
             onClick={create}
             className={
               "bg-[#0066FF] px-2 py-1 rounded-lg text-white disabled:cursor-auto cursor-pointer font-medium disabled:opacity-50"
@@ -98,7 +99,10 @@ export default function CSRPage() {
         <div
           className={"w-1/2 min-w-[440px] flex justify-center overflow-y-auto"}
         >
-          <Form form={form} setForm={setForm} />
+          <CreateForm
+            createParams={createParams}
+            setCreateParams={setCreateParams}
+          />
         </div>
         <div className={"w-1/2 bg-gray-100 p-10 overflow-y-auto"}>
           <Help />

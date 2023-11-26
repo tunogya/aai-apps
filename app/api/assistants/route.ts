@@ -4,6 +4,7 @@ import ddbDocClient from "@/app/utils/ddbDocClient";
 import { QueryCommand } from "@aws-sdk/lib-dynamodb";
 import sqsClient from "@/app/utils/sqsClient";
 import { SendMessageCommand } from "@aws-sdk/client-sqs";
+import OpenAI from "openai";
 
 const GET = async (req: NextRequest) => {
   const session = await getSession();
@@ -17,7 +18,7 @@ const GET = async (req: NextRequest) => {
         KeyConditionExpression: "#pk = :pk AND begins_with(#sk, :sk)",
         ExpressionAttributeValues: {
           ":pk": `USER#${sub}`,
-          ":sk": "ASSISTANT#",
+          ":sk": "ASST#",
         },
         ExpressionAttributeNames: {
           "#pk": "PK",
@@ -28,7 +29,7 @@ const GET = async (req: NextRequest) => {
         ExclusiveStartKey: cursor
           ? {
               PK: `USER#${sub}`,
-              SK: `ASSISTANT#${cursor}`,
+              SK: `ASST#${cursor}`,
             }
           : undefined,
       }),
@@ -36,7 +37,7 @@ const GET = async (req: NextRequest) => {
     return NextResponse.json({
       items: Items,
       count: Count,
-      nextCursor: LastEvaluatedKey?.SK.replace("ASSISTANT#", "") || undefined,
+      nextCursor: LastEvaluatedKey?.SK.replace("ASST#", "") || undefined,
     });
   } catch (e) {
     return NextResponse.json(
@@ -53,17 +54,21 @@ const GET = async (req: NextRequest) => {
 const POST = async (req: NextRequest) => {
   const session = await getSession();
   const sub = session?.user.sub;
-  const { assistant_id, name, instructions, voice, model } = await req.json();
+  const { name, description, instructions, metadata, model } = await req.json();
   try {
-    const item = {
-      PK: `USER#${sub}`,
-      SK: `ASSISTANT#${assistant_id}`,
-      created: Math.floor(Date.now() / 1000),
+    const openai = new OpenAI();
+    const newAssistant = await openai.beta.assistants.create({
       instructions,
-      model,
       name,
-      updated: Math.floor(Date.now() / 1000),
-      voice,
+      description,
+      tools: [],
+      model,
+      metadata,
+    });
+    const item = {
+      ...newAssistant,
+      PK: `USER#${sub}`,
+      SK: `ASST#${newAssistant.id}`,
     };
     const result = await sqsClient.send(
       new SendMessageCommand({

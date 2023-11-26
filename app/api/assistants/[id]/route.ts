@@ -16,7 +16,7 @@ const GET = async (req: NextRequest, { params }: any) => {
         TableName: "abandonai-prod",
         Key: {
           PK: `USER#${sub}`,
-          SK: `ASSISTANT#${params?.id}`,
+          SK: `ASST#${params?.id}`,
         },
       }),
     );
@@ -56,7 +56,7 @@ const PATCH = async (req: NextRequest, { params }: any) => {
         TableName: "abandonai-prod",
         Key: {
           PK: `USER#${sub}`,
-          SK: `ASSISTANT#${params?.id}`,
+          SK: `ASST#${params?.id}`,
         },
         UpdateExpression: `SET ${UpdateExpression}`,
         ExpressionAttributeNames,
@@ -87,7 +87,7 @@ const DELETE = async (req: NextRequest, { params }: any) => {
         TableName: "abandonai-prod",
         Key: {
           PK: `USER#${sub}`,
-          SK: `ASSISTANT#${params?.id}`,
+          SK: `ASST#${params?.id}`,
         },
       }),
     );

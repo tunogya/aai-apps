@@ -58,14 +58,12 @@ const AssistantList = () => {
           </thead>
           <tbody>
             {data?.[size - 1]?.items
-              ?.sort((a: any, b: any) => a.created - b.created)
+              ?.sort((a: any, b: any) => a.created_at - b.created_at)
               ?.map((item: any, index: number) => (
                 <tr
                   key={index}
                   onClick={() => {
-                    router.push(
-                      `/assistants/${item.SK.replace("ASSISTANT#", "")}`,
-                    );
+                    router.push(`/assistants/${item.SK.replace("ASST#", "")}`);
                   }}
                   className={
                     "border-b text-sm text-gray-500 hover:bg-gray-50 cursor-pointer"
@@ -82,13 +80,13 @@ const AssistantList = () => {
                     {item.instructions}
                   </td>
                   <td className={"py-2 pr-6 truncate max-w-[240px]"}>
-                    {item.voice}
+                    {item.metadata?.voice || "-"}
                   </td>
                   <td className={"py-2 pr-6 truncate max-w-[240px]"}>
                     {item.model}
                   </td>
                   <td className={"py-2 pr-6 truncate max-w-[240px]"}>
-                    {new Date(item.created * 1000).toLocaleString()}
+                    {new Date(item.created_at * 1000).toLocaleString()}
                   </td>
                 </tr>
               ))}

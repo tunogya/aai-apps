@@ -36,7 +36,7 @@ const CSRPage = () => {
         <div>
           <div className={"text-sm text-gray-500"}>Assistant ID</div>
           <div className={"text-sm text-gray-600"}>
-            {data?.item?.SK.replace("ASSISTANT#", "") || <Skeleton />}
+            {data?.item?.SK.replace("ASST#", "") || <Skeleton />}
           </div>
         </div>
         <div>
