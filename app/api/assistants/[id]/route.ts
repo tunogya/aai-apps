@@ -94,20 +94,42 @@ const DELETE = async (req: NextRequest, { params }: any) => {
   const sub = session?.user.sub;
   try {
     const openai = new OpenAI();
-    const response = await openai.beta.assistants.del("asst_abc123");
-    await ddbDocClient.send(
-      new DeleteCommand({
-        TableName: "abandonai-prod",
-        Key: {
-          PK: `USER#${sub}`,
-          SK: `ASST#${params?.id}`,
+    const response = await openai.beta.assistants.del(params.id);
+    if (response?.deleted) {
+      const result = await sqsClient.send(
+        new SendMessageCommand({
+          QueueUrl: process.env.AI_DB_UPDATE_SQS_URL,
+          MessageBody: JSON.stringify({
+            TableName: "abandonai-prod",
+            Key: {
+              PK: `USER#${sub}`,
+              SK: `ASST#${params?.id}`,
+            },
+          }),
+          MessageAttributes: {
+            Command: {
+              DataType: "String",
+              StringValue: "DeleteCommand",
+            },
+          },
+        }),
+      );
+      return NextResponse.json({
+        id: params?.id,
+        deleted: true,
+        message: result,
+      });
+    } else {
+      return NextResponse.json(
+        {
+          error: "something went wrong",
+          message: response,
         },
-      }),
-    );
-    return NextResponse.json({
-      id: params?.id,
-      deleted: true,
-    });
+        {
+          status: 500,
+        },
+      );
+    }
   } catch (e) {
     return NextResponse.json(
       {
