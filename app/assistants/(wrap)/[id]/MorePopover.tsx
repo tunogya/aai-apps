@@ -2,8 +2,23 @@
 import { Popover, Transition } from "@headlessui/react";
 import React, { Fragment } from "react";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
+import { useParams, useRouter } from "next/navigation";
 
 const MorePopover = () => {
+  const params = useParams();
+  const router = useRouter();
+
+  const deleteItem = async () => {
+    const res = await fetch(`/api/assistants/${params?.id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((res) => res.json());
+    console.log(res);
+    router.push("/assistants");
+  };
+
   return (
     <Popover className="relative">
       <Popover.Button
@@ -28,6 +43,8 @@ const MorePopover = () => {
           }
         >
           <button
+            disabled={!params?.id}
+            onClick={deleteItem}
             className={
               "hover:bg-gray-50 w-full py-1 px-3 font-semibold text-start flex items-center space-x-2 text-sm text-red-500 hover:text-gray-800"
             }
