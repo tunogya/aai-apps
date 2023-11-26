@@ -12,7 +12,7 @@ const MorePopover = () => {
     <Popover className="relative">
       <Popover.Button
         className={
-          "px-2 py-1 border rounded-lg hover:bg-gray-100 p-2 text-gray-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+          "px-2 py-1 border rounded-lg hover:bg-gray-50 p-2 text-gray-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
         }
       >
         <EllipsisHorizontalIcon className={"w-4 h-4"} />
@@ -28,16 +28,15 @@ const MorePopover = () => {
       >
         <Popover.Panel
           className={
-            "absolute mt-1 right-0 w-40 rounded border shadow py-2 z-50 bg-white"
+            "absolute mt-1 right-0 w-40 rounded border shadow z-50 bg-white"
           }
         >
           <button
             className={
-              "hover:bg-gray-100 w-full py-2 px-4 font-semibold text-start flex items-center space-x-2 text-sm"
+              "hover:bg-gray-50 w-full py-1 px-3 font-semibold text-start flex items-center space-x-2 text-sm text-red-500 hover:text-gray-800"
             }
           >
-            <TrashIcon className={"w-4 h-4 stroke-2"} />
-            <div>Delete</div>
+            Delete
           </button>
         </Popover.Panel>
       </Transition>

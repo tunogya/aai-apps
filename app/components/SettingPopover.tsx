@@ -25,13 +25,13 @@ const SettingPopover = () => {
       >
         <Popover.Panel
           className={
-            "absolute mt-1 right-0 w-40 rounded border shadow py-2 z-50 bg-white"
+            "absolute mt-1 right-0 w-60 rounded border shadow z-50 bg-white p-2"
           }
         >
           <a href={"/api/auth/logout"}>
             <div
               className={
-                "hover:bg-gray-100 w-full py-2 px-4 font-semibold text-start flex items-center space-x-2"
+                "hover:bg-gray-100 w-full py-1 px-2 font-semibold text-start flex items-center space-x-2 rounded text-[#0066FF] hover:text-gray-800"
               }
             >
               <PowerIcon className={"w-4 h-4 stroke-2"} />
