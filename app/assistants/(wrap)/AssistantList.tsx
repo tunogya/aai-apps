@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowPathIcon, RocketLaunchIcon } from "@heroicons/react/24/outline";
+import { RocketLaunchIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import useSWRInfinite from "swr/infinite";
 import { useRouter } from "next/navigation";
