@@ -6,7 +6,10 @@ import SecondaryNav from "@/app/chat/[[...id]]/SecondaryNav";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { PlusIcon } from "@heroicons/react/24/outline";
-const ModelSwitch = dynamic(() => import("@/app/components/ModelSwitch"));
+import Skeleton from "react-loading-skeleton";
+const ModelSwitch = dynamic(() => import("@/app/components/ModelSwitch"), {
+  loading: () => <Skeleton width={"90px"} height={"20px"} className={"p-1"} />,
+});
 
 export const runtime = "edge";
 
