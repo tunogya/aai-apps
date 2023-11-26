@@ -26,7 +26,7 @@ const CSRPage = () => {
         </Link>
         <Detail />
       </div>
-      <div className={"space-y-2 flex-1 py-1 text-gray-800"}>
+      <div className={"space-y-6 flex-1 py-1 text-gray-800"}>
         <div className={"border-b flex justify-between"}>
           <div className={"flex gap-8"}>
             <button
