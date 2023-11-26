@@ -7,7 +7,7 @@ import Link from "next/link";
 
 const CSRPage = () => {
   const params = useParams();
-  const { data } = useSWR(
+  const { data, isLoading } = useSWR(
     params?.id ? `/api/assistants/${params.id}` : undefined,
     (url) => fetch(url).then((res) => res.json()),
   );
@@ -16,10 +16,10 @@ const CSRPage = () => {
     <div className={""}>
       <div className={"space-y-1"}>
         <div className={"text-3xl font-medium text-gray-800"}>
-          {data?.item.name || <Skeleton />}
+          {isLoading ? <Skeleton /> : data?.item.name || "Null"}
         </div>
         <div className={"text-gray-500"}>
-          {data?.item.model || <Skeleton />}
+          {isLoading ? <Skeleton /> : data?.item.model || "Null"}
         </div>
       </div>
       <div className={"space-y-3"}>
@@ -38,28 +38,48 @@ const CSRPage = () => {
         <div>
           <div className={"text-sm text-gray-500"}>Assistant ID</div>
           <div className={"text-sm text-gray-600"}>
-            {data?.item?.SK.replace("ASST#", "") || <Skeleton />}
+            {isLoading ? (
+              <Skeleton />
+            ) : (
+              data?.item?.SK.replace("ASST#", "") || "Null"
+            )}
+          </div>
+        </div>
+        <div>
+          <div className={"text-sm text-gray-500"}>Description</div>
+          <div className={"text-sm text-gray-600 break-words"}>
+            {isLoading ? (
+              <Skeleton count={3} />
+            ) : (
+              data?.item?.description || "Null"
+            )}
           </div>
         </div>
         <div>
           <div className={"text-sm text-gray-500"}>Instructions</div>
           <div className={"text-sm text-gray-600 break-words"}>
-            {data?.item?.instructions || <Skeleton count={3} />}
+            {isLoading ? (
+              <Skeleton count={3} />
+            ) : (
+              data?.item?.instructions || "Null"
+            )}
           </div>
         </div>
         <div>
           <div className={"text-sm text-gray-500"}>Voice</div>
           <div className={"text-sm text-gray-600"}>
-            {data?.item?.metadata?.voice || <Skeleton />}
+            {isLoading ? <Skeleton /> : data?.item?.metadata?.voice || "Null"}
           </div>
         </div>
         <div>
           <div className={"text-sm text-gray-500"}>Create at</div>
           <div className={"text-sm text-gray-600"}>
-            {data?.item?.created_at ? (
+            {isLoading ? (
+              <Skeleton />
+            ) : data?.item?.created_at ? (
               new Date(data.item.created_at * 1000).toLocaleString()
             ) : (
-              <Skeleton />
+              "Null"
             )}
           </div>
         </div>

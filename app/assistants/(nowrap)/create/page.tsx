@@ -28,8 +28,10 @@ export default function CSRPage() {
       voice: "Alloy",
     },
   });
+  const [status, setStatus] = useState("idle");
 
   const create = async () => {
+    setStatus("loading");
     try {
       const result = await fetch(`/api/assistants`, {
         method: "POST",
@@ -44,11 +46,15 @@ export default function CSRPage() {
           metadata: createParams?.metadata || {},
         }),
       }).then((res) => res.json());
+      setStatus("success");
       if (result?.success) {
         router.push("/assistants");
       }
     } catch (e) {
-      router.back();
+      setStatus("error");
+      setTimeout(() => {
+        setStatus("idle");
+      }, 3000);
     }
   };
 
@@ -85,13 +91,18 @@ export default function CSRPage() {
             Cancel
           </button>
           <button
-            disabled={!createParams.name || !createParams.model}
+            disabled={
+              !createParams?.name || !createParams?.model || status !== "idle"
+            }
             onClick={create}
             className={
               "bg-[#0066FF] px-2 py-1 rounded-lg text-white disabled:cursor-auto cursor-pointer font-medium disabled:opacity-50"
             }
           >
-            Create
+            {status === "success" && "Created!"}
+            {status === "error" && "Error!"}
+            {status === "idle" && "Create"}
+            {status === "loading" && "Creating..."}
           </button>
         </div>
       </div>

@@ -30,8 +30,10 @@ export default function CSRPage() {
       voice: "",
     },
   });
+  const [status, setStatus] = useState("idle");
 
   const update = async () => {
+    setStatus("loading");
     try {
       const result = await fetch(`/api/assistants/${params?.id}`, {
         method: "PATCH",
@@ -46,11 +48,15 @@ export default function CSRPage() {
           metadata: updateParams?.metadata || {},
         }),
       }).then((res) => res.json());
-      if (result?.success) {
+      setStatus("success");
+      if (result?.update) {
         router.push(`/assistants/${params?.id}`);
       }
     } catch (e) {
-      router.back();
+      setStatus("error");
+      setTimeout(() => {
+        setStatus("idle");
+      }, 3000);
     }
   };
 
@@ -104,13 +110,18 @@ export default function CSRPage() {
             Cancel
           </button>
           <button
-            disabled={!updateParams.name || !updateParams.model}
+            disabled={
+              !updateParams?.name || !updateParams?.model || status !== "idle"
+            }
             onClick={update}
             className={
               "bg-[#0066FF] px-2 py-1 rounded-lg text-white disabled:cursor-auto cursor-pointer font-medium disabled:opacity-50"
             }
           >
-            Update
+            {status === "success" && "Updated!"}
+            {status === "error" && "Error!"}
+            {status === "idle" && "Update"}
+            {status === "loading" && "Updating..."}
           </button>
         </div>
       </div>
