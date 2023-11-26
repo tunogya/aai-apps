@@ -1,7 +1,7 @@
 import React, { FC, Fragment } from "react";
-import AssistantMessageBox from "@/app/components/MessageBox/AssistantMessageBox";
-import UserMessageBox from "@/app/components/MessageBox/UserMessageBox";
-import FunctionMessageBox from "@/app/components/MessageBox/FunctionMessageBox";
+import AssistantMessageBox from "@/app/chat/[[...id]]/MessageBox/AssistantMessageBox";
+import UserMessageBox from "@/app/chat/[[...id]]/MessageBox/UserMessageBox";
+import FunctionMessageBox from "@/app/chat/[[...id]]/MessageBox/FunctionMessageBox";
 import { Message } from "ai";
 import { useUser } from "@auth0/nextjs-auth0/client";
 

@@ -16,7 +16,7 @@ import { functions, functionCallHandler } from "@/app/utils/functions";
 import MobileDrawer from "@/app/chat/[[...id]]/MobileDrawer";
 import dynamic from "next/dynamic";
 
-const MessageBox = dynamic(() => import("@/app/components/MessageBox"));
+const MessageBox = dynamic(() => import("@/app/chat/[[...id]]/MessageBox"));
 
 export default function Chat() {
   const params = useParams();

@@ -16,9 +16,12 @@ import { Message } from "ai";
 import dynamic from "next/dynamic";
 import Skeleton from "react-loading-skeleton";
 
-const Markdown = dynamic(() => import("@/app/components/MessageBox/Markdown"), {
-  loading: () => <Skeleton count={3} height={"28px"} />,
-});
+const Markdown = dynamic(
+  () => import("@/app/chat/[[...id]]/MessageBox/Markdown"),
+  {
+    loading: () => <Skeleton count={3} height={"28px"} />,
+  },
+);
 
 const MessageBox: FC<{
   currentChatId: string;
