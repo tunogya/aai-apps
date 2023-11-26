@@ -53,8 +53,7 @@ const GET = async (req: NextRequest) => {
 const POST = async (req: NextRequest) => {
   const session = await getSession();
   const sub = session?.user.sub;
-  const { assistant_id, name, instructions, voice, model, telegram_bot_token } =
-    await req.json();
+  const { assistant_id, name, instructions, voice, model } = await req.json();
   try {
     const item = {
       PK: `USER#${sub}`,
@@ -63,7 +62,6 @@ const POST = async (req: NextRequest) => {
       instructions,
       model,
       name,
-      telegram_bot_token,
       updated: Math.floor(Date.now() / 1000),
       voice,
     };
