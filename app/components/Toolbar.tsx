@@ -3,8 +3,16 @@ import React, { FC } from "react";
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import Skeleton from "react-loading-skeleton";
 
-const SettingPopover = dynamic(() => import("@/app/components/SettingPopover"));
+const SettingPopover = dynamic(
+  () => import("@/app/components/SettingPopover"),
+  {
+    loading: () => (
+      <Skeleton width={"36px"} height={"20px"} className={"p-1"} />
+    ),
+  },
+);
 
 const Toolbar: FC<{ border?: boolean; children?: React.ReactNode }> = (
   props,
