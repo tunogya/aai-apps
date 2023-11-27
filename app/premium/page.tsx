@@ -77,14 +77,12 @@ const CSR = () => {
                 <br />
                 gpt-3.5-turbo-16k,
                 <br />
-                and more...
+                ...
               </td>
             </tr>
             <tr className={"border-b"}>
               <td className={"px-3 py-4"}>Tools</td>
-              <td className={"px-3 py-4 bg-gray-50"}>
-                <MinusSmallIcon className={"w-8 h-8"} />
-              </td>
+              <td className={"px-3 py-4 bg-gray-50"}>Code Interpreter</td>
               <td
                 className={
                   "px-3 py-4 bg-gradient-to-b from-[#7d33cb] to-[#9133ca] text-white"
@@ -96,7 +94,7 @@ const CSR = () => {
                 <br />
                 Code Interpreter,
                 <br />
-                and more...
+                ...
               </td>
             </tr>
             <tr className={"border-b"}>
