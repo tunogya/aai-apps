@@ -142,9 +142,9 @@ const CSR = () => {
           <div className={"text-3xl font-semibold"}>
             Affordable plans for any situation
           </div>
-          <div className={"text-gray-500"}>
-            Choose a Premium plan and use ChatGPT without limits. Pay in various
-            ways. Cancel anytime.
+          <div className={"text-gray-500 max-w-[600px]"}>
+            Choose a Premium plan and use ChatGPT and Assistants without limits.
+            Pay in various ways. Cancel anytime.
           </div>
         </div>
         <div
