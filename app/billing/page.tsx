@@ -28,7 +28,7 @@ export default async function SSRPage() {
       </div>
       <div className={"space-y-2"}>
         <div className={"text-xl text-gray-800 font-semibold"}>
-          Pay as You Go / AbandonAI Premium
+          Pay as You Go / Premium Standard
         </div>
         <div className={"text-md text-gray-800 font-semibold"}>
           Credit remaining
