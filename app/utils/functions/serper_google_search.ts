@@ -11,6 +11,12 @@ export const serper_google_search: ChatCompletionCreateParams.Function = {
         type: "string",
         description: "The query to search for.",
       },
+      num: {
+        type: "number",
+        description:
+          "The number of results to return. Defaults to 10. Max is 100.",
+        default: 10,
+      },
     },
     required: ["q"],
   },
@@ -23,6 +29,7 @@ export const serper_google_search_handler = async (
   if (functionCall.arguments) {
     const parsedFunctionCallArguments: {
       q: string;
+      num: number;
     } = JSON.parse(functionCall.arguments);
     try {
       const data = await fetch(`/api/serper/search`, {
@@ -32,7 +39,7 @@ export const serper_google_search_handler = async (
         },
         body: JSON.stringify({
           q: parsedFunctionCallArguments.q,
-          num: 100,
+          num: parsedFunctionCallArguments.num,
         }),
       }).then((res) => res.json());
       return JSON.stringify(data);
