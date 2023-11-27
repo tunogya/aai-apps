@@ -34,7 +34,7 @@ const Toolbar: FC<{ border?: boolean; children?: React.ReactNode }> = (
             "hover:shadow-lg px-4 py-2 text-sm rounded-full bg-[#0066FF] text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 whitespace-nowrap"
           }
         >
-          Discover Premium
+          Explore Premium
         </Link>
         <Link
           href={
