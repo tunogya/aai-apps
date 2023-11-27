@@ -13,9 +13,7 @@ export const runtime = "edge";
 export async function POST(req: NextRequest): Promise<Response> {
   let { model, input, voice, response_format, speed } = await req.json();
 
-  const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-  });
+  const openai = new OpenAI();
 
   const hash = await calculateHash(
     JSON.stringify({

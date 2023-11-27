@@ -35,9 +35,7 @@ export async function POST(req: NextRequest): Promise<Response> {
     messages?.slice(-8);
   }
 
-  const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-  });
+  const openai = new OpenAI();
 
   const list_append: Array<Message> = [];
   list_append.push({

@@ -15,9 +15,7 @@ export async function POST(req: NextRequest): Promise<Response> {
 
   let { prompt, size } = await req.json();
 
-  const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-  });
+  const openai = new OpenAI();
 
   try {
     const data = await openai.images.generate({
