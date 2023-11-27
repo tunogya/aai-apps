@@ -10,9 +10,7 @@ export const TopUpButton: FC<{
 
   return (
     <button
-      className={`${
-        className || ""
-      } flex items-center gap-2 bg-gray-100 text-gray-800 px-4 py-2 rounded-md text-sm font-semibold cursor-pointer hover:shadow`}
+      className={`${className || ""}`}
       onClick={async () => {
         try {
           setStatus("loading");

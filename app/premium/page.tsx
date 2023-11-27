@@ -5,6 +5,7 @@ import { CheckCircleIcon } from "@heroicons/react/24/solid";
 import { MinusSmallIcon } from "@heroicons/react/24/outline";
 import SubscribeButton from "@/app/components/SubscribeButton";
 import Link from "next/link";
+import TopUpButton from "@/app/components/TopUpButton";
 
 const CSR = () => {
   return (
@@ -147,34 +148,72 @@ const CSR = () => {
             Pay in various ways. Cancel anytime.
           </div>
         </div>
-        <div
-          className={
-            "p-4 border-4 border-yellow-500 w-96 flex flex-col items-center rounded-lg"
-          }
-        >
-          <div className={"flex justify-between w-full"}>
-            <div className={"text-2xl font-medium"}>Premium Standard</div>
-            <div className={"flex flex-col items-center"}>
-              <div className={"text-lg font-bold"}>$20.00</div>
-              <div className={"text-[10px]"}>PER MONTH</div>
+        <div className={"flex gap-8 flex-col lg:flex-row"}>
+          <div
+            className={
+              "p-4 border-4 border-pink-300 w-96 flex flex-col items-center rounded-lg"
+            }
+          >
+            <div className={"flex justify-between w-full"}>
+              <div className={"text-2xl font-medium"}>Premium Standard</div>
+              <div className={"flex flex-col items-center"}>
+                <div className={"text-lg font-bold"}>$20.00</div>
+                <div className={"text-[10px]"}>PER MONTH</div>
+              </div>
+            </div>
+            <div className={"text-start w-full pt-20 font-medium"}>
+              <li>1 Premium account</li>
+              <li>Cancel anytime</li>
+            </div>
+            <div className={"w-full pt-16"}>
+              <SubscribeButton
+                className={
+                  "flex items-center gap-2 bg-pink-300 text-gray-800 px-4 py-3 rounded-full font-semibold cursor-pointer w-full justify-center"
+                }
+              />
+            </div>
+            <div className={""}>
+              <Link
+                href={"https://www.abandon.ai/docs/policies/Legal/terms-of-use"}
+                target={"_blank"}
+                className={"text-xs pt-2 underline text-gray-500"}
+              >
+                Terms and conditions apply.
+              </Link>
             </div>
           </div>
-          <div className={"text-start w-full pt-20 font-medium"}>
-            <li>1 Premium account</li>
-            <li>Cancel anytime</li>
-          </div>
-
-          <div className={"w-full pt-20"}>
-            <SubscribeButton />
-          </div>
-          <div className={"h-10"}>
-            <Link
-              href={"https://www.abandon.ai/docs/policies/Legal/terms-of-use"}
-              target={"_blank"}
-              className={"text-xs pt-2 underline text-gray-500"}
-            >
-              Terms and conditions apply.
-            </Link>
+          <div
+            className={
+              "p-4 border-4 border-gray-300 w-96 flex flex-col items-center rounded-lg"
+            }
+          >
+            <div className={"flex justify-between w-full"}>
+              <div className={"text-2xl font-medium"}>Pay As You Go</div>
+              <div className={"flex flex-col items-center"}>
+                <div className={"text-lg font-bold"}>$1.00</div>
+                <div className={"text-[10px]"}>PER DAY</div>
+              </div>
+            </div>
+            <div className={"text-start w-full pt-20 font-medium"}>
+              <li>Pay only for what you use</li>
+              <li>Recharge is permanently valid</li>
+            </div>
+            <div className={"w-full pt-16"}>
+              <TopUpButton
+                className={
+                  "flex items-center gap-2 bg-gray-300 text-gray-800 px-4 py-3 rounded-full font-semibold cursor-pointer w-full justify-center"
+                }
+              />
+            </div>
+            <div className={""}>
+              <Link
+                href={"https://www.abandon.ai/docs/policies/Legal/terms-of-use"}
+                target={"_blank"}
+                className={"text-xs pt-2 underline text-gray-500"}
+              >
+                Terms and conditions apply.
+              </Link>
+            </div>
           </div>
         </div>
       </div>

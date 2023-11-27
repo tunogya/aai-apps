@@ -10,9 +10,7 @@ export const SubscribeButton: FC<{
 
   return (
     <button
-      className={`${
-        className || ""
-      } flex items-center gap-2 bg-yellow-500 text-white px-4 py-3 rounded-full font-semibold cursor-pointer w-full justify-center`}
+      className={`${className || ""}`}
       onClick={async () => {
         try {
           setStatus("loading");

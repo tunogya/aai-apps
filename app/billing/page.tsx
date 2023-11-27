@@ -39,7 +39,11 @@ export default async function SSRPage() {
           Enjoy ad-free ChatGPT, Assistants, and more. Cancel anytime.
         </div>
         <div className={"flex gap-4"}>
-          <TopUpButton />
+          <TopUpButton
+            className={
+              "flex items-center gap-2 bg-gray-100 text-gray-800 px-4 py-2 rounded-md text-sm font-semibold cursor-pointer hover:shadow"
+            }
+          />
           <ManageBillingButton />
           <Link
             href={"/premium"}
