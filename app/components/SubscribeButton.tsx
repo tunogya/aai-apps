@@ -12,7 +12,7 @@ export const SubscribeButton: FC<{
     <button
       className={`${
         className || ""
-      } flex items-center gap-2 bg-gray-100 text-gray-800 px-4 py-2 rounded-md text-sm font-semibold cursor-pointer`}
+      } flex items-center gap-2 bg-yellow-500 text-white px-4 py-3 rounded-full font-semibold cursor-pointer w-full justify-center`}
       onClick={async () => {
         try {
           setStatus("loading");
@@ -51,7 +51,7 @@ export const SubscribeButton: FC<{
         }
       }}
     >
-      {status === "idle" && "Premium Standard"}
+      {status === "idle" && "Get Premium Standard"}
       {status === "loading" && "Loading..."}
       {status === "success" && "Waiting..."}
       {status === "error" && "Error"}
