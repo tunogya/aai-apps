@@ -16,10 +16,10 @@ const CSRPage = () => {
     <div className={""}>
       <div className={"space-y-1"}>
         <div className={"text-3xl font-medium text-gray-800"}>
-          {isLoading ? <Skeleton /> : data?.item.name || "Null"}
+          {isLoading ? <Skeleton /> : data?.item.name || "N/A"}
         </div>
         <div className={"text-gray-500"}>
-          {isLoading ? <Skeleton /> : data?.item.model || "Null"}
+          {isLoading ? <Skeleton /> : data?.item.model || "N/A"}
         </div>
       </div>
       <div className={"space-y-3"}>
@@ -41,7 +41,7 @@ const CSRPage = () => {
             {isLoading ? (
               <Skeleton />
             ) : (
-              data?.item?.SK.replace("ASST#", "") || "Null"
+              data?.item?.SK.replace("ASST#", "") || "N/A"
             )}
           </div>
         </div>
@@ -51,7 +51,7 @@ const CSRPage = () => {
             {isLoading ? (
               <Skeleton count={3} />
             ) : (
-              data?.item?.description || "Null"
+              data?.item?.description || "N/A"
             )}
           </div>
         </div>
@@ -61,14 +61,14 @@ const CSRPage = () => {
             {isLoading ? (
               <Skeleton count={3} />
             ) : (
-              data?.item?.instructions || "Null"
+              data?.item?.instructions || "N/A"
             )}
           </div>
         </div>
         <div>
           <div className={"text-sm text-gray-500"}>Voice</div>
           <div className={"text-sm text-gray-600"}>
-            {isLoading ? <Skeleton /> : data?.item?.metadata?.voice || "Null"}
+            {isLoading ? <Skeleton /> : data?.item?.metadata?.voice || "N/A"}
           </div>
         </div>
         <div>
@@ -79,7 +79,7 @@ const CSRPage = () => {
             ) : data?.item?.created_at ? (
               new Date(data.item.created_at * 1000).toLocaleString()
             ) : (
-              "Null"
+              "N/A"
             )}
           </div>
         </div>
