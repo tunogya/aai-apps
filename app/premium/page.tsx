@@ -45,9 +45,7 @@ const CSR = () => {
               >
                 AbandonAI&apos;s
                 <br />
-                Premium
-                <br />
-                plans
+                Premium plans
               </th>
             </tr>
           </thead>
