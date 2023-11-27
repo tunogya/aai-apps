@@ -1,5 +1,6 @@
 import React from "react";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 
 const TopUpButton = dynamic(() => import("@/app/components/TopUpButton"));
 const ManageBillingButton = dynamic(
@@ -28,23 +29,27 @@ export default async function SSRPage() {
       </div>
       <div className={"space-y-2"}>
         <div className={"text-xl text-gray-800 font-semibold"}>
-          Pay as You Go / Premium Standard
+          Current Plan: Premium Standard
         </div>
         <div className={"text-md text-gray-800 font-semibold"}>
           Credit remaining
         </div>
         <Balance />
         <div className={"text-gray-600 text-sm max-w-screen-md py-2"}>
-          Instead of paying a monthly recurring charge, you can buy credits as
-          needed. It&#39;s best for infrequent users.
-          <br />
-          For those seeking greater savings, consider opting for the AbandonAI
-          Premium subscription.
+          Enjoy ad-free ChatGPT, Assistants, and more. Cancel anytime.
         </div>
         <div className={"flex gap-4"}>
           <TopUpButton />
-          <SubscribeButton />
           <ManageBillingButton />
+          <Link
+            href={"/premium"}
+            prefetch
+            className={
+              "px-4 py-2 border-2 border-[#0066FF] rounded-md font-medium text-sm text-[#0066FF] hover:bg-[#0066FF] hover:text-white"
+            }
+          >
+            View all Premium plans
+          </Link>
         </div>
       </div>
     </div>

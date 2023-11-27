@@ -51,7 +51,7 @@ export const SubscribeButton: FC<{
         }
       }}
     >
-      {status === "idle" && "Premium Standard ($20/mo)"}
+      {status === "idle" && "Premium Standard"}
       {status === "loading" && "Loading..."}
       {status === "success" && "Waiting..."}
       {status === "error" && "Error"}

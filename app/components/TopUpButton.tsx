@@ -12,7 +12,7 @@ export const TopUpButton: FC<{
     <button
       className={`${
         className || ""
-      } flex items-center gap-2 bg-gray-100 text-gray-800 px-4 py-2 rounded-md text-sm font-semibold cursor-pointer`}
+      } flex items-center gap-2 bg-gray-100 text-gray-800 px-4 py-2 rounded-md text-sm font-semibold cursor-pointer hover:shadow`}
       onClick={async () => {
         try {
           setStatus("loading");
@@ -51,7 +51,7 @@ export const TopUpButton: FC<{
         }
       }}
     >
-      {status === "idle" && "Buy credits ($1/d)"}
+      {status === "idle" && "Buy credits"}
       {status === "loading" && "Loading..."}
       {status === "success" && "Waiting..."}
       {status === "error" && "Error"}
