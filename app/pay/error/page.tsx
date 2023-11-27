@@ -1,17 +1,16 @@
+"use client";
 import Link from "next/link";
 import React from "react";
 import { useSearchParams } from "next/navigation";
 
-export const runtime = "edge";
-
-export default function CSRPage() {
+export default function CSRPage({ params }: any) {
   const searchParams = useSearchParams();
   const error = searchParams.get("error") || "Something went wrong";
 
   return (
     <div
       className={
-        "h-full w-full space-y-4 items-center justify-center select-none relative"
+        "h-full w-full space-y-4 items-center justify-center select-none relative flex flex-col"
       }
     >
       <div className={"text-[120px]"}>😫</div>
