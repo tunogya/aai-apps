@@ -10,6 +10,7 @@ export const config = {
     "/api/conversation/:path*",
     "/api/assistants/:path*",
     "/api/customer/:path*",
+    "/api/serper/:path*",
     "/billing/:path*",
     "/chat/:path*",
     "/assistants/:path*",

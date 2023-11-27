@@ -9,7 +9,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const { user } = await getSession();
   const sub = user.sub;
 
-  let { q } = await req.json();
+  let { q, num = 10 } = await req.json();
 
   try {
     const data = await fetch(`https://google.serper.dev/search`, {
@@ -20,6 +20,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       },
       body: JSON.stringify({
         q,
+        num,
       }),
     }).then((res) => res.json());
     return NextResponse.json(data);

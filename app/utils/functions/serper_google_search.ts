@@ -25,13 +25,14 @@ export const serper_google_search_handler = async (
       q: string;
     } = JSON.parse(functionCall.arguments);
     try {
-      const data = await fetch(`/api/search`, {
+      const data = await fetch(`/api/serper/search`, {
         method: "post",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           q: parsedFunctionCallArguments.q,
+          num: 100,
         }),
       }).then((res) => res.json());
       return JSON.stringify(data);
