@@ -13,12 +13,8 @@ const AssistantList = () => {
     if (pageIndex === 0) return `/api/assistants?limit=20`;
     return `/api/assistants?cursor=${previousPageData.nextCursor}&limit=20`;
   };
-  const { data, size, setSize, isLoading } = useSWRInfinite(
-    getKey,
-    (url) => fetch(url).then((res) => res.json()),
-    {
-      refreshInterval: 3_000,
-    },
+  const { data, size, setSize, isLoading } = useSWRInfinite(getKey, (url) =>
+    fetch(url).then((res) => res.json()),
   );
 
   if (isLoading) {
