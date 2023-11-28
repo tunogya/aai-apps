@@ -71,7 +71,7 @@ const POST = async (req: NextRequest) => {
     };
     const result = await sqsClient.send(
       new SendMessageCommand({
-        QueueUrl: process.env.AI_DB_UPDATE_SQS_URL,
+        QueueUrl: process.env.AI_DB_UPDATE_SQS_FIFO_URL,
         MessageBody: JSON.stringify({
           TableName: "abandonai-prod",
           Item: item,
@@ -84,6 +84,7 @@ const POST = async (req: NextRequest) => {
             StringValue: "PutCommand",
           },
         },
+        MessageGroupId: newAssistant.id,
       }),
     );
     return NextResponse.json({

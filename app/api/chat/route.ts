@@ -83,7 +83,7 @@ export async function POST(req: NextRequest): Promise<Response> {
             QueueUrl: process.env.AI_DB_UPDATE_SQS_FIFO_URL,
             Entries: [
               {
-                Id: `update-chat-${id}-${new Date().getTime()}`,
+                Id: `chat_${id}_${new Date().getTime()}`,
                 MessageBody: JSON.stringify({
                   TableName: "abandonai-prod",
                   Key: {
@@ -110,7 +110,7 @@ export async function POST(req: NextRequest): Promise<Response> {
                     StringValue: "UpdateCommand",
                   },
                 },
-                MessageGroupId: "update-chat",
+                MessageGroupId: `chat_${id}`,
               },
             ],
           }),

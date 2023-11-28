@@ -39,7 +39,7 @@ const DELETE = async (req: NextRequest, { params }: any) => {
   try {
     const result = await sqsClient.send(
       new SendMessageCommand({
-        QueueUrl: process.env.AI_DB_UPDATE_SQS_URL,
+        QueueUrl: process.env.AI_DB_UPDATE_SQS_FIFO_URL,
         MessageBody: JSON.stringify({
           TableName: "abandonai-prod",
           Key: {
@@ -53,6 +53,7 @@ const DELETE = async (req: NextRequest, { params }: any) => {
             StringValue: "DeleteCommand",
           },
         },
+        MessageGroupId: `chat_${params.id}`,
       }),
     );
     return NextResponse.json({
@@ -83,7 +84,7 @@ const PATCH = async (req: NextRequest, { params }: any) => {
   try {
     const result = await sqsClient.send(
       new SendMessageCommand({
-        QueueUrl: process.env.AI_DB_UPDATE_SQS_URL,
+        QueueUrl: process.env.AI_DB_UPDATE_SQS_FIFO_URL,
         MessageBody: JSON.stringify({
           TableName: "abandonai-prod",
           Key: {
@@ -101,6 +102,7 @@ const PATCH = async (req: NextRequest, { params }: any) => {
             StringValue: "UpdateCommand",
           },
         },
+        MessageGroupId: `chat_${params.id}`,
       }),
     );
     return NextResponse.json({

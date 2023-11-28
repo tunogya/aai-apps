@@ -55,7 +55,7 @@ const PATCH = async (req: NextRequest, { params }: any) => {
     };
     const result = await sqsClient.send(
       new SendMessageCommand({
-        QueueUrl: process.env.AI_DB_UPDATE_SQS_URL,
+        QueueUrl: process.env.AI_DB_UPDATE_SQS_FIFO_URL,
         MessageBody: JSON.stringify({
           TableName: "abandonai-prod",
           Item: item,
@@ -66,6 +66,7 @@ const PATCH = async (req: NextRequest, { params }: any) => {
             StringValue: "PutCommand",
           },
         },
+        MessageGroupId: params.id,
       }),
     );
     return NextResponse.json({
@@ -94,7 +95,7 @@ const DELETE = async (req: NextRequest, { params }: any) => {
     if (response?.deleted) {
       const result = await sqsClient.send(
         new SendMessageCommand({
-          QueueUrl: process.env.AI_DB_UPDATE_SQS_URL,
+          QueueUrl: process.env.AI_DB_UPDATE_SQS_FIFO_URL,
           MessageBody: JSON.stringify({
             TableName: "abandonai-prod",
             Key: {
@@ -108,6 +109,7 @@ const DELETE = async (req: NextRequest, { params }: any) => {
               StringValue: "DeleteCommand",
             },
           },
+          MessageGroupId: params.id,
         }),
       );
       return NextResponse.json({
