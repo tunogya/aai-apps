@@ -11,10 +11,10 @@ import {
   StopIcon,
 } from "@heroicons/react/24/solid";
 import { useLocalStorage } from "@uidotdev/usehooks";
-import { nanoid } from "ai";
 import { functions, functionCallHandler } from "@/app/utils/functions";
 import MobileDrawer from "@/app/chat/[[...id]]/MobileDrawer";
 import dynamic from "next/dynamic";
+import dysortid from "@/app/utils/dysortid";
 
 const MessageBox = dynamic(() => import("@/app/chat/[[...id]]/MessageBox"));
 
@@ -24,7 +24,7 @@ export default function Chat() {
     if (params?.id?.[0]) {
       return params?.id?.[0];
     } else {
-      return nanoid();
+      return dysortid();
     }
   }, [params?.id]);
   const { data } = useSWR(`/api/conversation/${currentChatId}`, (url) =>

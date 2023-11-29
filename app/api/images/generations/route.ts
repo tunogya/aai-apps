@@ -1,9 +1,9 @@
 import OpenAI from "openai";
-import { nanoid } from "ai";
 import s3Client from "@/app/utils/s3Client";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSession } from "@auth0/nextjs-auth0/edge";
 import { NextRequest, NextResponse } from "next/server";
+import dysortid from "@/app/utils/dysortid";
 
 export const runtime = "edge";
 
@@ -26,7 +26,7 @@ export async function POST(req: NextRequest): Promise<Response> {
       response_format: "b64_json",
       user: sub,
     });
-    const hash = nanoid();
+    const hash = dysortid();
     const image = data.data[0].b64_json;
     const revised_prompt = data.data[0].revised_prompt;
     if (image) {

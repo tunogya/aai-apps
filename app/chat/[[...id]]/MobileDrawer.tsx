@@ -5,9 +5,8 @@ import { ChevronUpIcon } from "@heroicons/react/20/solid";
 import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import { PlusIcon } from "@heroicons/react/24/outline";
-import { nanoid } from "ai";
+import dysortid from "@/app/utils/dysortid";
 
-// const TopUpButton = dynamic(() => import("@/app/components/TopUpButton"));
 const ModelSwitch = dynamic(() => import("@/app/components/ModelSwitch"));
 
 const CSR = () => {
@@ -17,7 +16,7 @@ const CSR = () => {
     <div className={"space-y-2"}>
       <div className={"flex items-center justify-between px-4 border-t"}>
         <Link
-          href={`/chat/${nanoid()}`}
+          href={`/chat/${dysortid()}`}
           prefetch
           className={
             "flex items-center rounded cursor-pointer select-none md:hidden"

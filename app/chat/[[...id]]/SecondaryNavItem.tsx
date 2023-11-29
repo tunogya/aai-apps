@@ -4,7 +4,7 @@ import React, { FC } from "react";
 import { useParams, useRouter } from "next/navigation";
 import useDeleteItems from "@/app/hooks/useDeleteItems";
 import { TrashIcon } from "@heroicons/react/24/outline";
-import { nanoid } from "ai";
+import dysortid from "@/app/utils/dysortid";
 
 const SecondaryNavItem: FC<{
   item: any;
@@ -16,7 +16,7 @@ const SecondaryNavItem: FC<{
 
   const deleteChat = async (id: string) => {
     if (id === currentChatId) {
-      router.replace(`/chat/${nanoid()}`);
+      router.replace(`/chat/${dysortid()}`);
     }
     try {
       await fetch(`/api/conversation/${id}`, {

@@ -3,12 +3,12 @@ import {
   OpenAIStream,
   StreamingTextResponse,
   Message,
-  nanoid,
 } from "ai";
 import OpenAI from "openai";
 import { SendMessageBatchCommand, SQSClient } from "@aws-sdk/client-sqs";
 import { getSession } from "@auth0/nextjs-auth0/edge";
 import { NextRequest, NextResponse } from "next/server";
+import dysortid from "@/app/utils/dysortid";
 
 const sqsClient = new SQSClient({
   region: "ap-northeast-1",
@@ -40,7 +40,7 @@ export async function POST(req: NextRequest): Promise<Response> {
   const list_append: Array<Message> = [];
   list_append.push({
     ...messages[messages.length - 1],
-    id: nanoid(),
+    id: dysortid(),
     createdAt: new Date(),
   });
 
@@ -61,7 +61,7 @@ export async function POST(req: NextRequest): Promise<Response> {
           const { function_call } = JSON.parse(completion);
           const _name = function_call.name;
           list_append.push({
-            id: nanoid(),
+            id: dysortid(),
             createdAt: new Date(),
             role: "assistant",
             name: _name,
@@ -70,7 +70,7 @@ export async function POST(req: NextRequest): Promise<Response> {
           });
         } catch (e) {
           list_append.push({
-            id: nanoid(),
+            id: dysortid(),
             createdAt: new Date(),
             role: "assistant",
             content: completion,

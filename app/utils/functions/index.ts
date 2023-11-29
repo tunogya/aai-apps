@@ -1,5 +1,5 @@
 import { ChatCompletionCreateParams } from "openai/resources/chat";
-import { FunctionCallHandler, nanoid } from "ai";
+import { FunctionCallHandler } from "ai";
 import {
   eval_code_in_browser,
   eval_code_in_browser_handler,
@@ -12,6 +12,7 @@ import {
   serper_google_search,
   serper_google_search_handler,
 } from "@/app/utils/functions/serper_google_search";
+import dysortid from "@/app/utils/dysortid";
 
 const functions: ChatCompletionCreateParams.Function[] = [
   eval_code_in_browser,
@@ -35,7 +36,7 @@ const functionCallHandler: FunctionCallHandler = async (
       messages: [
         ...chatMessages,
         {
-          id: nanoid(),
+          id: dysortid(),
           name: functionCall.name,
           role: "function" as const,
           content: "Function handler not found",
@@ -48,7 +49,7 @@ const functionCallHandler: FunctionCallHandler = async (
     messages: [
       ...chatMessages,
       {
-        id: nanoid(),
+        id: dysortid(),
         name: functionCall.name,
         role: "function" as const,
         content: content as string,
