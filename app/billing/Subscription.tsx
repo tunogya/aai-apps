@@ -8,9 +8,6 @@ const TopUpButton = dynamic(() => import("@/app/components/TopUpButton"));
 const ManageBillingButton = dynamic(
   () => import("@/app/components/ManageBillingButton"),
 );
-const SubscribeButton = dynamic(
-  () => import("@/app/components/SubscribeButton"),
-);
 
 const Subscription = () => {
   const { data, isLoading } = useSWR("/api/customer", (url) =>
@@ -33,7 +30,7 @@ const Subscription = () => {
           {isLoading ? (
             <Skeleton className={"h-7"} />
           ) : (
-            data?.subscription?.name
+            data?.subscription?.name || "N/A"
           )}
         </div>
       </div>
@@ -57,7 +54,11 @@ const Subscription = () => {
             "flex items-center gap-2 bg-gray-100 text-gray-800 px-4 py-2 rounded-md text-sm font-semibold cursor-pointer hover:shadow"
           }
         />
-        <ManageBillingButton />
+        <ManageBillingButton
+          className={
+            "bg-gray-100 text-gray-800 px-4 py-2 rounded-md text-sm font-semibold hover:shadow"
+          }
+        />
         <Link
           href={"/premium"}
           prefetch

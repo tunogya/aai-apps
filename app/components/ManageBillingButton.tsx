@@ -10,10 +10,7 @@ const ManageBillingButton: FC<{
 
   return (
     <button
-      className={`${
-        className ||
-        "bg-gray-100 text-gray-800 px-4 py-2 rounded-md text-sm font-semibold hover:shadow"
-      }`}
+      className={`${className || ""}`}
       onClick={async () => {
         try {
           setStatus("loading");
