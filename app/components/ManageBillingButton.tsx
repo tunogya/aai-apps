@@ -17,9 +17,9 @@ const ManageBillingButton: FC<{
       onClick={async () => {
         try {
           setStatus("loading");
-          const { session } = await fetch("/api/billing").then((res) =>
-            res.json(),
-          );
+          const { session } = await fetch("/api/billing", {
+            method: "POST",
+          }).then((res) => res.json());
           if (session?.url) {
             setStatus("success");
             router.push(session.url);

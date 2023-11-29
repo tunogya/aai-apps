@@ -17,14 +17,43 @@ const GET = async (req: NextRequest) => {
       },
     });
     return NextResponse.json({
-      data: customer,
-      count: 1,
+      customer: customer,
+      subscription: {
+        name: "AbandonAI Free",
+        isPremium: false,
+      },
     });
   }
-  return NextResponse.json({
-    data: customers.data[0],
-    count: customers.data.length,
+  const customer = customers.data[0];
+
+  const subscriptions = await stripeClient.subscriptions.list({
+    customer: customer.id,
+    status: "active",
   });
+
+  if (
+    subscriptions.data.some((sub) =>
+      sub.items.data.some(
+        (item) => item.plan.product === process.env.PREMIUM_STANDARD_PRODUCT,
+      ),
+    )
+  ) {
+    return NextResponse.json({
+      customer: customer,
+      subscription: {
+        name: "Premium Standard",
+        isPremium: true,
+      },
+    });
+  } else {
+    return NextResponse.json({
+      customer: customer,
+      subscription: {
+        name: "AbandonAI Free",
+        isPremium: false,
+      },
+    });
+  }
 };
 
 export { GET };

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getSession } from "@auth0/nextjs-auth0";
 import stripeClient from "@/app/utils/stripeClient";
 
-const GET = async (req: NextRequest) => {
+const POST = async (req: NextRequest) => {
   // @ts-ignore
   const { user } = await getSession();
   const customers = await stripeClient.customers.list({
@@ -30,4 +30,4 @@ const GET = async (req: NextRequest) => {
   });
 };
 
-export { GET };
+export { POST };

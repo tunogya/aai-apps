@@ -1,15 +1,11 @@
 import React from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import Skeleton from "react-loading-skeleton";
 
-const TopUpButton = dynamic(() => import("@/app/components/TopUpButton"));
-const ManageBillingButton = dynamic(
-  () => import("@/app/components/ManageBillingButton"),
-);
-const SubscribeButton = dynamic(
-  () => import("@/app/components/SubscribeButton"),
-);
-const Balance = dynamic(() => import("@/app/billing/Balance"));
+const Subscription = dynamic(() => import("@/app/billing/Subscription"), {
+  loading: () => <Skeleton className={""} count={3} />,
+});
 
 export const runtime = "edge";
 
@@ -27,35 +23,7 @@ export default async function SSRPage() {
       >
         <div className={"text-3xl font-semibold"}>Billing Settings</div>
       </div>
-      <div className={"space-y-2"}>
-        <div className={"text-xl text-gray-800 font-semibold"}>
-          Current Plan: Premium Standard
-        </div>
-        <div className={"text-md text-gray-800 font-semibold"}>
-          Credit remaining
-        </div>
-        <Balance />
-        <div className={"text-gray-600 text-sm max-w-screen-md py-2"}>
-          Enjoy ad-free ChatGPT, Assistants, and more. Cancel anytime.
-        </div>
-        <div className={"flex gap-4"}>
-          <TopUpButton
-            className={
-              "flex items-center gap-2 bg-gray-100 text-gray-800 px-4 py-2 rounded-md text-sm font-semibold cursor-pointer hover:shadow"
-            }
-          />
-          <ManageBillingButton />
-          <Link
-            href={"/premium"}
-            prefetch
-            className={
-              "px-4 py-2 border-2 border-[#0066FF] rounded-full font-medium text-sm text-[#0066FF]"
-            }
-          >
-            View all Premium plans
-          </Link>
-        </div>
-      </div>
+      <Subscription />
     </div>
   );
 }
