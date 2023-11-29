@@ -11,7 +11,7 @@ const CSR = () => {
   return (
     <div
       className={
-        "px-4 md:px-10 md:pt-2 absolute h-[calc(100vh-60px)] w-full overflow-y-auto space-y-6 pb-28"
+        "px-4 md:px-10 md:pt-2 absolute h-full md:h-[calc(100vh-60px)] w-full overflow-y-auto space-y-6 pb-28"
       }
     >
       <div
