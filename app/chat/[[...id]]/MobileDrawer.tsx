@@ -45,7 +45,7 @@ const CSR = () => {
             <PlusIcon className={"h-4 w-4 stroke-2"} />
           </div>
         </Link>
-        {!isLoading && !data.subscription.isPremium ? (
+        {!isLoading && !data?.subscription?.isPremium ? (
           <Link
             href={"/premium"}
             prefetch
