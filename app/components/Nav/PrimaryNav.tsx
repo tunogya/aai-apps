@@ -8,7 +8,7 @@ const PrimaryNav = () => {
   return (
     <div
       className={
-        "shrink-0 h-full border-r px-0 pr-4 2xl:pl-8 2xl:w-[260px] min-w-[220px] py-4 space-y-10 relative hidden md:block"
+        "shrink-0 h-full border-r px-0 pr-4 2xl:pl-8 w-[220px] 2xl:w-[260px] min-w-[220px] max-w-[260px] py-4 space-y-10 relative hidden md:block"
       }
     >
       <Account />
