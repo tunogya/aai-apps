@@ -56,11 +56,9 @@ const SecondaryNav = () => {
         {isLoading && <Skeleton count={5} height={"36px"} />}
         {reducedData?.length > 0 && (
           <div className={"mb-2"}>
-            {reducedData
-              ?.sort((a: any, b: any) => b.updated - a.updated)
-              ?.map((item: any) => (
-                <SecondaryNavItem key={item.SK} item={item} />
-              ))}
+            {reducedData?.map((item: any) => (
+              <SecondaryNavItem key={item.SK} item={item} />
+            ))}
           </div>
         )}
         {haveMore ? (
