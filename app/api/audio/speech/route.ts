@@ -7,10 +7,33 @@ import {
   PutObjectCommand,
 } from "@aws-sdk/client-s3";
 import { NextRequest } from "next/server";
+import { getSession } from "@auth0/nextjs-auth0/dist/edge";
+import redisClient from "@/app/utils/redisClient";
 
 export const runtime = "edge";
 
 export async function POST(req: NextRequest): Promise<Response> {
+  // @ts-ignore
+  const { user } = await getSession();
+  const sub = user.sub;
+
+  const isPremium = await redisClient.get(`premium:${sub}`);
+
+  if (!isPremium) {
+    return new Response(
+      JSON.stringify({
+        error: "premium required",
+        message: "Sorry, you need a Premium subscription to use this.",
+      }),
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+  }
+
   let { model, input, voice, response_format, speed } = await req.json();
 
   const openai = new OpenAI();

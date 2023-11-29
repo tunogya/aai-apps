@@ -9,6 +9,7 @@ import { SendMessageBatchCommand, SQSClient } from "@aws-sdk/client-sqs";
 import { getSession } from "@auth0/nextjs-auth0/edge";
 import { NextRequest, NextResponse } from "next/server";
 import dysortid from "@/app/utils/dysortid";
+import redisClient from "@/app/utils/redisClient";
 
 const sqsClient = new SQSClient({
   region: "ap-northeast-1",
@@ -29,7 +30,25 @@ export async function POST(req: NextRequest): Promise<Response> {
   let { messages, model, id, functions } = await req.json();
   let max_tokens = 1024;
 
+  const isPremium = await redisClient.get(`premium:${sub}`);
+
   if (model?.startsWith("gpt-4")) {
+    if (!isPremium) {
+      if (!isPremium) {
+        return new Response(
+          JSON.stringify({
+            error: "premium required",
+            message: "Sorry, you need a Premium subscription to use this.",
+          }),
+          {
+            status: 200,
+            headers: {
+              "Content-Type": "application/json",
+            },
+          },
+        );
+      }
+    }
     max_tokens = 4096;
   } else {
     messages?.slice(-8);
