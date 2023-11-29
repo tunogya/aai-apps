@@ -8,9 +8,14 @@ import dysortid from "@/app/utils/dysortid";
 import useSWR from "swr";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import dynamic from "next/dynamic";
-const TopUpButton = dynamic(() => import("@/app/components/TopUpButton"));
+const TopUpButton = dynamic(() => import("@/app/components/TopUpButton"), {
+  loading: () => <div className={"h-5"} />,
+});
 const ManageBillingButton = dynamic(
   () => import("@/app/components/ManageBillingButton"),
+  {
+    loading: () => <div className={"h-5"} />,
+  },
 );
 
 const ModelSwitch = dynamic(() => import("@/app/components/ModelSwitch"));
