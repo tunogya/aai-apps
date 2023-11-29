@@ -7,7 +7,7 @@ import {
   PutObjectCommand,
 } from "@aws-sdk/client-s3";
 import { NextRequest } from "next/server";
-import { getSession } from "@auth0/nextjs-auth0/dist/edge";
+import { getSession } from "@auth0/nextjs-auth0/edge";
 import redisClient from "@/app/utils/redisClient";
 
 export const runtime = "edge";
