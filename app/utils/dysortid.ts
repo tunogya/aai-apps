@@ -17,7 +17,7 @@ const encodeToBase62 = (num: number, size = 8) => {
 
 const dysortid = () => {
   const timestamp = new Date().getTime();
-  return `${encodeToBase62(timestamp, 12)}${nanoid(8)}`;
+  return `${encodeToBase62(timestamp, 8)}${nanoid(8)}`;
 };
 
 export default dysortid;
