@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSession } from "@auth0/nextjs-auth0";
 import stripeClient from "@/app/utils/stripeClient";
+import redisClient from "@/app/utils/redisClient";
 
 const GET = async (req: NextRequest) => {
   // @ts-ignore
@@ -15,6 +16,9 @@ const GET = async (req: NextRequest) => {
       metadata: {
         id: user.sub,
       },
+    });
+    await redisClient.set(`premium:${user.sub}`, false, {
+      ex: 86400,
     });
     return NextResponse.json({
       customer: customer,
@@ -38,6 +42,9 @@ const GET = async (req: NextRequest) => {
       ),
     )
   ) {
+    await redisClient.set(`premium:${user.sub}`, true, {
+      ex: 86400,
+    });
     return NextResponse.json({
       customer: customer,
       subscription: {
@@ -46,6 +53,9 @@ const GET = async (req: NextRequest) => {
       },
     });
   } else {
+    await redisClient.set(`premium:${user.sub}`, false, {
+      ex: 86400,
+    });
     return NextResponse.json({
       customer: customer,
       subscription: {
