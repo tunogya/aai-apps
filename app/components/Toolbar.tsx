@@ -31,7 +31,7 @@ const Toolbar: FC<{ border?: boolean; children?: React.ReactNode }> = (
           href={"/premium"}
           prefetch
           className={
-            "hover:shadow-lg px-4 py-2 text-sm rounded-full bg-[#0066FF] text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 whitespace-nowrap"
+            "hover:shadow-lg px-4 py-2 text-sm rounded-full bg-gradient-to-tr from-[#AB68FF] to-[#0066FF] text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 whitespace-nowrap"
           }
         >
           Explore Premium
