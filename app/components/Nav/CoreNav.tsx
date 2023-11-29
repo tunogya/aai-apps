@@ -23,12 +23,6 @@ const menu = [
     target: undefined,
   },
   {
-    path: "/premium",
-    name: "Premium",
-    prefetch: true,
-    target: undefined,
-  },
-  {
     path: "https://github.com/tunogya/abandonai-app/discussions/new/choose",
     name: "Feedback",
     prefetch: false,
