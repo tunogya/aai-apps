@@ -49,7 +49,7 @@ export default async function SSRPage() {
             href={"/premium"}
             prefetch
             className={
-              "px-4 py-2 border-2 border-[#0066FF] rounded-md font-medium text-sm text-[#0066FF] hover:bg-[#0066FF] hover:text-white"
+              "px-4 py-2 border-2 border-[#0066FF] rounded-full font-medium text-sm text-[#0066FF]"
             }
           >
             View all Premium plans
