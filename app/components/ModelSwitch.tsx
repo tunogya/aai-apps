@@ -26,7 +26,7 @@ const ModelSwitch = () => {
     <button
       disabled={isLoading || !data?.subscription?.isPremium}
       className={
-        "text-sm w-26 md:font-semibold md:hover:bg-gray-100 rounded-lg flex items-center gap-2 px-2 py-1.5 select-none justify-between cursor-pointer disabled:cursor-not-allowed"
+        "text-sm md:font-semibold md:hover:bg-gray-100 rounded-lg flex items-center gap-2 px-2 py-1.5 select-none justify-between cursor-pointer disabled:cursor-not-allowed"
       }
       onClick={() => {
         if (model.startsWith("gpt-4")) {
