@@ -18,12 +18,8 @@ const SettingPopover = dynamic(
 const Toolbar: FC<{ border?: boolean; children?: React.ReactNode }> = (
   props,
 ) => {
-  const { data, isLoading } = useSWR(
-    "/api/customer",
-    (url) => fetch(url).then((res) => res.json()),
-    {
-      refreshInterval: 3_000,
-    },
+  const { data, isLoading } = useSWR("/api/customer", (url) =>
+    fetch(url).then((res) => res.json()),
   );
 
   return (
