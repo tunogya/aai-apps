@@ -45,6 +45,7 @@ const ModelSwitch = () => {
       </div>
       <Switch
         checked={useGPT4}
+        disabled={isLoading || !data?.subscription?.isPremium}
         className={`${
           useGPT4 ? "bg-[#AB68FF]" : "bg-gray-200"
         } disabled:cursor-not-allowed
