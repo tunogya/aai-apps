@@ -8,16 +8,11 @@ import dysortid from "@/app/utils/dysortid";
 import useSWR from "swr";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import dynamic from "next/dynamic";
-const TopUpButton = dynamic(() => import("@/app/components/TopUpButton"), {
-  loading: () => <div className={"h-5"} />,
-});
+
+const TopUpButton = dynamic(() => import("@/app/components/TopUpButton"));
 const ManageBillingButton = dynamic(
   () => import("@/app/components/ManageBillingButton"),
-  {
-    loading: () => <div className={"h-5"} />,
-  },
 );
-
 const ModelSwitch = dynamic(() => import("@/app/components/ModelSwitch"));
 
 const CSR = () => {
@@ -30,9 +25,9 @@ const CSR = () => {
   return (
     <div className={"space-y-0"}>
       <div
-        className={
-          "flex items-center justify-between px-4 border-y bg-white h-10"
-        }
+        className={`flex items-center justify-between px-4 ${
+          showMore ? "border-y" : "border-t"
+        } bg-white h-10`}
       >
         <Link
           href={`/chat/${dysortid()}`}
@@ -92,12 +87,10 @@ const CSR = () => {
               {isLoading ? "N/A" : `$${(data?.customer?.balance / 100) * -1}`}
             </div>
           </div>
-          <div className={"flex justify-center border-b py-2 px-4"}>
-            <ManageBillingButton className={"text-[#0066FF]"} />
-          </div>
-          <div className={"flex justify-center border-b py-2 px-4"}>
-            <TopUpButton className={"text-[#0066FF]"} />
-          </div>
+          <ManageBillingButton
+            className={"text-[#0066FF] border-b py-2 px-4"}
+          />
+          <TopUpButton className={"text-[#0066FF] border-b py-2 px-4"} />
           <div className={"flex justify-center border-b py-2 px-4"}>
             <Link
               href={"/premium"}
