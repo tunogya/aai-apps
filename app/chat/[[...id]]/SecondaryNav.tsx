@@ -1,9 +1,9 @@
 "use client";
 import Link from "next/link";
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import dynamic from "next/dynamic";
-import { PlusIcon } from "@heroicons/react/24/outline";
+import { Bars3CenterLeftIcon, PlusIcon } from "@heroicons/react/24/outline";
 import Skeleton from "react-loading-skeleton";
 
 const SecondaryNavItem = dynamic(
@@ -34,43 +34,55 @@ const SecondaryNav = () => {
     return reducedData.length % 20 === 0 && reducedData.length > 0;
   }, [reducedData]);
 
+  const [hidden, setHidden] = useState(false);
+
   return (
-    <div
-      className={
-        "w-[240px] xl:w-[300px] shrink-0 h-full border-r hidden lg:block"
-      }
-    >
-      <Link
-        href={`/chat`}
-        prefetch
+    <div className={"relative z-10"}>
+      <button
+        onClick={() => setHidden(!hidden)}
         className={
-          "flex items-center border hover:bg-gray-50 p-3 rounded cursor-pointer select-none m-2 text-gray-800"
+          "absolute right-[-32px] top-[20px] bg-gray-50 hover:bg-gray-100 rounded-full p-1 cursor-pointer"
         }
       >
-        <div className={"p-1"}>
-          <PlusIcon className={"w-4 h-4 stroke-2"} />
-        </div>
-        <div className={"text-sm text-gray-800"}>New Chat</div>
-      </Link>
-      <div className={"h-[calc(100vh-66px)] overflow-y-auto px-2"}>
-        {isLoading && <Skeleton count={5} height={"36px"} />}
-        {reducedData?.length > 0 && (
-          <div className={"mb-2"}>
-            {reducedData?.map((item: any) => (
-              <SecondaryNavItem key={item.SK} item={item} />
-            ))}
+        <Bars3CenterLeftIcon className={"w-4 h-4 stroke-2"} />
+      </button>
+      <div
+        className={`${
+          hidden ? "hidden" : "w-[300px]"
+        } shrink-0 h-full border-r`}
+      >
+        <Link
+          href={`/chat`}
+          prefetch
+          className={
+            "flex items-center border hover:bg-gray-50 p-3 rounded cursor-pointer select-none m-2 text-gray-800"
+          }
+        >
+          <div className={"p-1"}>
+            <PlusIcon className={"w-4 h-4 stroke-2"} />
           </div>
-        )}
-        {haveMore ? (
-          <button
-            className={`w-full border p-2 mb-2 text-xs hover:bg-gray-50 rounded ${
-              isLoading ? "cursor-wait" : ""
-            }`}
-            onClick={() => setSize(size + 1)}
-          >
-            {isLoading ? "Loading..." : "Load More"}
-          </button>
-        ) : null}
+          <div className={"text-sm text-gray-800"}>New Chat</div>
+        </Link>
+        <div className={"h-[calc(100vh-66px)] overflow-y-auto px-2"}>
+          {isLoading && <Skeleton count={5} height={"36px"} />}
+          {reducedData?.length > 0 && (
+            <div className={"mb-2"}>
+              {reducedData?.map((item: any) => (
+                <SecondaryNavItem key={item.SK} item={item} />
+              ))}
+            </div>
+          )}
+          {haveMore ? (
+            <button
+              className={`w-full border p-2 mb-2 text-xs hover:bg-gray-50 rounded ${
+                isLoading ? "cursor-wait" : ""
+              }`}
+              onClick={() => setSize(size + 1)}
+            >
+              {isLoading ? "Loading..." : "Load More"}
+            </button>
+          ) : null}
+        </div>
       </div>
     </div>
   );
