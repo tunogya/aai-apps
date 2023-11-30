@@ -29,21 +29,7 @@ export default function Layout(props: { children: ReactNode }) {
         <SecondaryNav />
         <div className={"w-full h-full relative"}>
           <Toolbar border={false}>
-            <div className={"flex items-center lg:justify-end justify-between"}>
-              <Link
-                href={`/chat`}
-                prefetch
-                className={
-                  "flex lg:hidden items-center hover:bg-gray-100 rounded cursor-pointer select-none m-2 text-gray-800 px-2 py-1.5"
-                }
-              >
-                <div className={"p-1"}>
-                  <PlusIcon className={"w-4 h-4 stroke-2"} />
-                </div>
-                <div className={"text-sm font-medium text-gray-800"}>
-                  New Chat
-                </div>
-              </Link>
+            <div className={"flex items-center lg:justify-end justify-end"}>
               <ModelSwitch />
             </div>
           </Toolbar>

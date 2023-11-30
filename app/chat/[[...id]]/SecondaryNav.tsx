@@ -3,7 +3,11 @@ import Link from "next/link";
 import React, { useMemo, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import dynamic from "next/dynamic";
-import { Bars3CenterLeftIcon, PlusIcon } from "@heroicons/react/24/outline";
+import {
+  BarsArrowDownIcon,
+  BarsArrowUpIcon,
+  PlusIcon,
+} from "@heroicons/react/24/outline";
 import Skeleton from "react-loading-skeleton";
 
 const SecondaryNavItem = dynamic(
@@ -34,22 +38,41 @@ const SecondaryNav = () => {
     return reducedData.length % 20 === 0 && reducedData.length > 0;
   }, [reducedData]);
 
-  const [hidden, setHidden] = useState(false);
+  const [hidden, setHidden] = useState(true);
 
   return (
     <div className={"relative z-10"}>
-      <button
-        onClick={() => setHidden(!hidden)}
+      <div
         className={
-          "absolute right-[-32px] top-[20px] bg-gray-50 hover:bg-gray-100 rounded-full p-1 cursor-pointer"
+          "absolute right-[-80px] top-[0] flex w-[72px] h-[52px] md:h-[60px] items-center"
         }
       >
-        <Bars3CenterLeftIcon className={"w-4 h-4 stroke-2"} />
-      </button>
+        <button
+          onClick={() => setHidden(!hidden)}
+          className={
+            "hover:bg-gray-50 rounded-full p-2 cursor-pointer h-9 w-9 text-gray-800"
+          }
+        >
+          {hidden ? (
+            <BarsArrowDownIcon className={"w-5 h-5 stroke-1.5"} />
+          ) : (
+            <BarsArrowUpIcon className={"w-5 h-5 stroke-1.5"} />
+          )}
+        </button>
+        <Link
+          href={`/chat`}
+          prefetch
+          className={`hover:bg-gray-50 rounded-full p-2 cursor-pointer h-9 w-9 text-gray-800 ${
+            hidden ? "" : "hidden"
+          } hidden md:block`}
+        >
+          <PlusIcon className={"w-5 h-5 stroke-2"} />
+        </Link>
+      </div>
       <div
         className={`${
-          hidden ? "hidden" : "w-[300px]"
-        } shrink-0 h-full border-r`}
+          hidden ? "hidden" : ""
+        } w-[300px] shrink-0 h-full border-r bg-white`}
       >
         <Link
           href={`/chat`}
