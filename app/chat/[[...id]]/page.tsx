@@ -71,7 +71,7 @@ export default function Chat() {
   }, [messages, isLoading]);
 
   return (
-    <div className={"w-full md:min-w-[400px]"}>
+    <div className={"w-full min-w-[100vw] md:min-w-[400px] shrink-0"}>
       <form
         onSubmit={(e) => {
           handleSubmit(e);
