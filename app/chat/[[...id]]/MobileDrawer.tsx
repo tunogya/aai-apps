@@ -87,10 +87,14 @@ const CSR = () => {
               {isLoading ? "N/A" : `$${(data?.customer?.balance / 100) * -1}`}
             </div>
           </div>
-          <ManageBillingButton
-            className={"text-[#0066FF] border-b py-2 px-4"}
-          />
-          <TopUpButton className={"text-[#0066FF] border-b py-2 px-4"} />
+          <div className={"flex divide-x"}>
+            <ManageBillingButton
+              className={"text-[#0066FF] border-b py-2 px-4 w-[50%]"}
+            />
+            <TopUpButton
+              className={"text-[#0066FF] border-b py-2 px-4 w-[50%]"}
+            />
+          </div>
           <div className={"flex justify-center border-b py-2 px-4"}>
             <Link
               href={"/premium"}
