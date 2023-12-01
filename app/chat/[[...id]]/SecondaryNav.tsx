@@ -50,7 +50,7 @@ const SecondaryNav = () => {
       >
         <button
           onClick={() => setHidden(!hidden)}
-          className={`bg-gray-50 hover:bg-gray-100 rounded-full p-2 cursor-pointer h-9 w-9 text-gray-800`}
+          className={`hover:bg-gray-100 rounded-full p-2 cursor-pointer h-9 w-9 text-gray-800`}
         >
           {hidden ? (
             <BarsArrowDownIcon className={"w-5 h-5 stroke-1.5"} />
