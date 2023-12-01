@@ -44,9 +44,7 @@ const Toolbar: FC<{ border?: boolean; children?: React.ReactNode }> = (
           </Link>
         )}
         <Link
-          href={
-            "https://www.abandon.ai/docs/resource/Introduction/introduction"
-          }
+          href={"https://github.com/tunogya/abandonai-app/discussions"}
           target={"_blank"}
           className={
             "hover:bg-gray-100 p-2 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"

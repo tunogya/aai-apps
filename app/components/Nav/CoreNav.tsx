@@ -23,7 +23,7 @@ const menu = [
     target: undefined,
   },
   {
-    path: "https://github.com/tunogya/abandonai-app/discussions/new/choose",
+    path: "https://github.com/tunogya/abandonai-app/issues",
     name: "Feedback",
     prefetch: false,
     target: "_blank",
