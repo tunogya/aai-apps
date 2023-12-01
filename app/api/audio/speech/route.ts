@@ -1,16 +1,10 @@
 import OpenAI from "openai";
 import calculateHash from "@/app/utils/calculateHash";
 import s3Client from "@/app/utils/s3Client";
-import {
-  GetObjectCommand,
-  NoSuchKey,
-  PutObjectCommand,
-} from "@aws-sdk/client-s3";
+import { HeadObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
 import { NextRequest, NextResponse } from "next/server";
-import { getSession } from "@auth0/nextjs-auth0/edge";
+import { getSession } from "@auth0/nextjs-auth0";
 import redisClient from "@/app/utils/redisClient";
-
-export const runtime = "edge";
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   // @ts-ignore
@@ -41,23 +35,18 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   );
 
   try {
-    const file = await s3Client.send(
-      new GetObjectCommand({
+    await s3Client.send(
+      new HeadObjectCommand({
         Bucket: "abandonai-prod",
         Key: `audio/${hash}.mp3`,
       }),
     );
-    if (file.Body) {
-      return NextResponse.json({
-        source: `https://s3.abandon.ai/audio/${hash}.mp3`,
-      });
-    }
+    return NextResponse.json({
+      cache: true,
+      source: `https://s3.abandon.ai/audio/${hash}.mp3`,
+    });
   } catch (e) {
-    if (e instanceof NoSuchKey) {
-      console.log("NoSuchKey ");
-    } else {
-      console.log(e);
-    }
+    console.log("NoSuchKey ");
   }
 
   try {
