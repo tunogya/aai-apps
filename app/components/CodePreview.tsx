@@ -11,8 +11,8 @@ const CodePreview: FC<{
 }> = ({ children, rest, match }: any) => {
   const [state, setState] = React.useState(false);
   return (
-    <div className={"relative"}>
-      <div className={"absolute right-2 top-2 flex items-center gap-2"}>
+    <div className={"relative w-full"}>
+      <div className={"absolute right-3 top-3 flex items-center gap-2"}>
         <button
           onClick={() => {
             copy(String(children));
