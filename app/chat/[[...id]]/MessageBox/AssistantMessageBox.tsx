@@ -69,6 +69,9 @@ const MessageBox: FC<{
       audio.current.removeEventListener("ended", () => {
         setSpeechState("ended");
       });
+      audio.current.removeEventListener("error", () => {
+        setSpeechState("error");
+      });
       // eslint-disable-next-line react-hooks/exhaustive-deps
       audio.current.pause();
     };
@@ -159,7 +162,9 @@ const MessageBox: FC<{
                     setSpeechState("playing");
                   }
                 }}
-                className={"rounded p-1 hover:bg-gray-100 cursor-pointer"}
+                className={
+                  "rounded p-1 hover:bg-gray-100 cursor-pointer w-6 h-6"
+                }
               >
                 {(speechState === "ended" || speechState === "pause") && (
                   <SpeakerWaveIcon className={"w-4 h-4 stroke-2"} />
