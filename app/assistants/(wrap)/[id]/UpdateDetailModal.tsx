@@ -1,6 +1,7 @@
 import { Dialog, Listbox, Transition } from "@headlessui/react";
-import React, { FC, Fragment, useState } from "react";
+import React, { FC, Fragment, useEffect, useState } from "react";
 import { ChevronUpDownIcon } from "@heroicons/react/24/solid";
+import { ArrowUturnLeftIcon } from "@heroicons/react/24/outline";
 
 const voice_options = ["Alloy", "Echo", "Fable", "Onyx", "Nova", "Shimmer"];
 
@@ -63,6 +64,10 @@ const Modal: FC<{
     }
   };
 
+  useEffect(() => {
+    setUpdateParams(item);
+  }, []);
+
   return (
     <>
       <button
@@ -104,10 +109,20 @@ const Modal: FC<{
                 <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                   <Dialog.Title
                     as="h3"
-                    className="text-lg font-medium leading-6 text-gray-900"
+                    className="text-lg font-medium leading-6 text-gray-900 flex justify-between items-center"
                   >
-                    Update assistant
+                    <div>Update assistant</div>
+                    <button
+                      onClick={() => setUpdateParams(item)}
+                      className={
+                        "text-gray-400 hover:text-gray-800 rounded px-3 py-1.5 text-sm flex items-center space-x-1"
+                      }
+                    >
+                      <ArrowUturnLeftIcon className={"w-4 h-4 stroke-2"} />
+                      <div>Recovery</div>
+                    </button>
                   </Dialog.Title>
+
                   <div className={"space-y-4 h-fit mt-4"}>
                     <div className={"space-y-2 text-gray-800"}>
                       <div className={"font-medium"}>Name*</div>
@@ -252,14 +267,6 @@ const Modal: FC<{
                     </div>
                   </div>
                   <div className={"mt-10 flex justify-end gap-2"}>
-                    <button
-                      onClick={() => setIsOpen(false)}
-                      className={
-                        "text-gray-400 hover:text-gray-800 rounded px-3 py-1.5 text-sm"
-                      }
-                    >
-                      Cancel
-                    </button>
                     <button
                       onClick={update}
                       disabled={
