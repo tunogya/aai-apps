@@ -6,13 +6,13 @@ import {
   NoSuchKey,
   PutObjectCommand,
 } from "@aws-sdk/client-s3";
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { getSession } from "@auth0/nextjs-auth0/edge";
 import redisClient from "@/app/utils/redisClient";
 
 export const runtime = "edge";
 
-export async function POST(req: NextRequest): Promise<Response> {
+export async function POST(req: NextRequest): Promise<NextResponse> {
   // @ts-ignore
   const { user } = await getSession();
   const sub = user.sub;
@@ -20,18 +20,10 @@ export async function POST(req: NextRequest): Promise<Response> {
   const isPremium = await redisClient.get(`premium:${sub}`);
 
   if (!isPremium) {
-    return new Response(
-      JSON.stringify({
-        error: "premium required",
-        message: "Sorry, you need a Premium subscription to use this.",
-      }),
-      {
-        status: 200,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      },
-    );
+    return NextResponse.json({
+      error: "premium required",
+      message: "Sorry, you need a Premium subscription to use this.",
+    });
   }
 
   let { model, input, voice, response_format, speed } = await req.json();
@@ -55,15 +47,9 @@ export async function POST(req: NextRequest): Promise<Response> {
         Key: `audio/${hash}.mp3`,
       }),
     );
-
     if (file.Body) {
-      // @ts-ignore
-      return new Response(file.Body, {
-        status: 200,
-        headers: {
-          "Content-Type": "audio/mpeg",
-          "Content-Disposition": 'attachment; filename="audio.mp3"',
-        },
+      return NextResponse.json({
+        source: `https://s3.abandon.ai/audio/${hash}.mp3`,
       });
     }
   } catch (e) {
@@ -116,16 +102,17 @@ export async function POST(req: NextRequest): Promise<Response> {
     } catch (e) {
       console.log(e);
     }
-    return new Response(buffer, {
-      status: 200,
-      headers: {
-        "Content-Type": "audio/mpeg",
-        "Content-Disposition": 'attachment; filename="audio.mp3"',
-      },
+    return NextResponse.json({
+      source: `https://s3.abandon.ai/audio/${hash}.mp3`,
     });
   } catch (e) {
-    return new Response("Internal Server Error", {
-      status: 500,
-    });
+    return NextResponse.json(
+      {
+        error: "Internal Server Error",
+      },
+      {
+        status: 500,
+      },
+    );
   }
 }

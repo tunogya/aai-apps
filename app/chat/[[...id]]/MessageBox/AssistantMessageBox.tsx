@@ -1,6 +1,6 @@
 "use client";
 import moment from "moment";
-import React, { FC, useEffect, useMemo, useRef } from "react";
+import React, { FC, useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowPathIcon,
   CheckIcon,
@@ -15,6 +15,7 @@ import useDeleteItems from "@/app/hooks/useDeleteItems";
 import { Message } from "ai";
 import dynamic from "next/dynamic";
 import Skeleton from "react-loading-skeleton";
+import Link from "next/link";
 
 const Markdown = dynamic(
   () => import("@/app/chat/[[...id]]/MessageBox/Markdown"),
@@ -35,6 +36,7 @@ const MessageBox: FC<{
   const [speechState, setSpeechState] = React.useState("ended");
   const { deleteItems, deleteById } = useDeleteItems();
   const audio = useRef(new Audio());
+  const [source, setSource] = useState("");
 
   useEffect(() => {
     audio.current.addEventListener("play", () => {
@@ -82,10 +84,9 @@ const MessageBox: FC<{
       headers: {
         "Content-Type": "application/json",
       },
-    });
-    const buffer = Buffer.from(await res.arrayBuffer());
-
-    audio.current.src = `data:audio/mpeg;base64,${buffer.toString("base64")}`;
+    }).then((res) => res.json());
+    setSource(res.source);
+    audio.current.src = res.source;
     await audio.current.play();
   };
 
@@ -132,19 +133,15 @@ const MessageBox: FC<{
                 .startOf("second")
                 .fromNow()}
             </div>
-            <div className={"group-hover:opacity-100 opacity-0 space-x-1"}>
-              {audio.current.src && (
-                <button
-                  onClick={() => {
-                    const link = document.createElement("a");
-                    link.href = audio.current.src;
-                    link.download = `${currentChatId}-${index}.mp3`;
-                    link.click();
-                  }}
-                  className={"rounded p-1 hover:bg-gray-100 cursor-pointer"}
-                >
-                  <CloudArrowDownIcon className={"w-4 h-4 stroke-2"} />
-                </button>
+            <div className={"group-hover:opacity-100 opacity-0 space-x-1 flex"}>
+              {source && (
+                <Link href={source} target={"_blank"}>
+                  <div
+                    className={"rounded p-1 hover:bg-gray-100 cursor-pointer"}
+                  >
+                    <CloudArrowDownIcon className={"w-4 h-4 stroke-2"} />
+                  </div>
+                </Link>
               )}
               <button
                 onClick={async () => {
