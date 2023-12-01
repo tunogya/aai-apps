@@ -50,6 +50,7 @@ export async function POST(req: NextRequest): Promise<Response> {
       }
     }
     max_tokens = 4096;
+    messages?.slice(-8);
   } else {
     messages?.slice(-8);
   }
