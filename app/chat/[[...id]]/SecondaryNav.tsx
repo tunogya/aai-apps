@@ -9,6 +9,7 @@ import {
   PlusIcon,
 } from "@heroicons/react/24/outline";
 import Skeleton from "react-loading-skeleton";
+import { Transition } from "@headlessui/react";
 
 const SecondaryNavItem = dynamic(
   () => import("@/app/chat/[[...id]]/SecondaryNavItem"),
@@ -67,44 +68,42 @@ const SecondaryNav = () => {
           </Link>
         )}
       </div>
-      <div
-        className={`${
-          hidden ? "hidden" : ""
-        } w-[300px] shrink-0 h-full border-r bg-white`}
-      >
-        <Link
-          href={`/chat`}
-          prefetch
-          className={
-            "flex items-center border hover:bg-gray-50 p-3 rounded cursor-pointer select-none m-2 text-gray-800"
-          }
-        >
-          <div className={"p-1"}>
-            <PlusIcon className={"w-4 h-4 stroke-2"} />
-          </div>
-          <div className={"text-sm text-gray-800"}>New Chat</div>
-        </Link>
-        <div className={"h-[calc(100vh-66px)] overflow-y-auto px-2"}>
-          {isLoading && <Skeleton count={5} height={"36px"} />}
-          {reducedData?.length > 0 && (
-            <div className={"mb-2"}>
-              {reducedData?.map((item: any) => (
-                <SecondaryNavItem key={item.SK} item={item} />
-              ))}
+      <Transition show={!hidden}>
+        <div className={`w-[300px] shrink-0 h-full border-r bg-white`}>
+          <Link
+            href={`/chat`}
+            prefetch
+            className={
+              "flex items-center border hover:bg-gray-50 p-3 rounded cursor-pointer select-none m-2 text-gray-800"
+            }
+          >
+            <div className={"p-1"}>
+              <PlusIcon className={"w-4 h-4 stroke-2"} />
             </div>
-          )}
-          {haveMore ? (
-            <button
-              className={`w-full border p-2 mb-2 text-xs hover:bg-gray-50 rounded ${
-                isLoading ? "cursor-wait" : ""
-              }`}
-              onClick={() => setSize(size + 1)}
-            >
-              {isLoading ? "Loading..." : "Load More"}
-            </button>
-          ) : null}
+            <div className={"text-sm text-gray-800"}>New Chat</div>
+          </Link>
+          <div className={"h-[calc(100vh-66px)] overflow-y-auto px-2"}>
+            {isLoading && <Skeleton count={5} height={"36px"} />}
+            {reducedData?.length > 0 && (
+              <div className={"mb-2"}>
+                {reducedData?.map((item: any) => (
+                  <SecondaryNavItem key={item.SK} item={item} />
+                ))}
+              </div>
+            )}
+            {haveMore ? (
+              <button
+                className={`w-full border p-2 mb-2 text-xs hover:bg-gray-50 rounded ${
+                  isLoading ? "cursor-wait" : ""
+                }`}
+                onClick={() => setSize(size + 1)}
+              >
+                {isLoading ? "Loading..." : "Load More"}
+              </button>
+            ) : null}
+          </div>
         </div>
-      </div>
+      </Transition>
     </div>
   );
 };
