@@ -6,9 +6,10 @@ import {
   ArrowPathIcon,
   CheckIcon,
   ClipboardIcon,
-  PlayIcon,
+  SpeakerWaveIcon,
   PlayPauseIcon,
   TrashIcon,
+  CloudArrowDownIcon,
 } from "@heroicons/react/24/outline";
 import copy from "copy-to-clipboard";
 import useDeleteItems from "@/app/hooks/useDeleteItems";
@@ -124,6 +125,19 @@ const MessageBox: FC<{
                 .fromNow()}
             </div>
             <div className={"group-hover:opacity-100 opacity-0 space-x-1"}>
+              {audio.current.src && (
+                <button
+                  onClick={() => {
+                    const link = document.createElement("a");
+                    link.href = audio.current.src;
+                    link.download = `${currentChatId}-${index}.mp3`;
+                    link.click();
+                  }}
+                  className={"rounded p-1 hover:bg-gray-100 cursor-pointer"}
+                >
+                  <CloudArrowDownIcon className={"w-4 h-4 stroke-2"} />
+                </button>
+              )}
               <button
                 onClick={async () => {
                   if (speechState === "ended") {
@@ -139,7 +153,7 @@ const MessageBox: FC<{
                 className={"rounded p-1 hover:bg-gray-100 cursor-pointer"}
               >
                 {(speechState === "ended" || speechState === "pause") && (
-                  <PlayIcon className={"w-4 h-4 stroke-2"} />
+                  <SpeakerWaveIcon className={"w-4 h-4 stroke-2"} />
                 )}
                 {speechState === "playing" && (
                   <PlayPauseIcon className={"w-4 h-4 stroke-2"} />
