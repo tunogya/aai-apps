@@ -1,12 +1,13 @@
 "use client";
 import Image from "next/image";
 import moment from "moment";
-import { FC, useEffect, useMemo, useRef, useState } from "react";
+import React, { FC, useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowPathIcon,
   CheckIcon,
   ClipboardIcon,
   CloudArrowDownIcon,
+  ExclamationTriangleIcon,
   PlayPauseIcon,
   SpeakerWaveIcon,
   TrashIcon,
@@ -63,6 +64,9 @@ const MessageBox: FC<{
       });
       audio.current.removeEventListener("ended", () => {
         setSpeechState("ended");
+      });
+      audio.current.removeEventListener("error", () => {
+        setSpeechState("error");
       });
       // eslint-disable-next-line react-hooks/exhaustive-deps
       audio.current.pause();
@@ -157,6 +161,9 @@ const MessageBox: FC<{
                 )}
                 {speechState === "loading" && (
                   <ArrowPathIcon className={"w-4 h-4 stroke-2 animate-spin"} />
+                )}
+                {speechState === "error" && (
+                  <ExclamationTriangleIcon className={"w-4 h-4 stroke-2"} />
                 )}
               </button>
               <button

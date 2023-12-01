@@ -6,6 +6,7 @@ import {
   CheckIcon,
   ClipboardIcon,
   CloudArrowDownIcon,
+  ExclamationTriangleIcon,
   PlayPauseIcon,
   SpeakerWaveIcon,
   TrashIcon,
@@ -50,6 +51,9 @@ const MessageBox: FC<{
     });
     audio.current.addEventListener("ended", () => {
       setSpeechState("ended");
+    });
+    audio.current.addEventListener("error", () => {
+      setSpeechState("error");
     });
 
     return () => {
@@ -165,6 +169,9 @@ const MessageBox: FC<{
                 )}
                 {speechState === "loading" && (
                   <ArrowPathIcon className={"w-4 h-4 stroke-2 animate-spin"} />
+                )}
+                {speechState === "error" && (
+                  <ExclamationTriangleIcon className={"w-4 h-4 stroke-2"} />
                 )}
               </button>
               <button
