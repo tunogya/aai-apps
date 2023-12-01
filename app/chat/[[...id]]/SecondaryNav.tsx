@@ -57,15 +57,15 @@ const SecondaryNav = () => {
             <BarsArrowUpIcon className={"w-5 h-5 stroke-1.5"} />
           )}
         </button>
-        <Link
-          href={`/chat`}
-          prefetch
-          className={`hover:bg-gray-100 rounded-full p-2 cursor-pointer h-9 w-9 text-gray-800 ${
-            hidden ? "" : "hidden"
-          } hidden md:block`}
-        >
-          <PlusIcon className={"w-5 h-5 stroke-2"} />
-        </Link>
+        {hidden && (
+          <Link
+            href={`/chat`}
+            prefetch
+            className={`hover:bg-gray-100 rounded-full p-2 cursor-pointer h-9 w-9 text-gray-800 hidden md:block`}
+          >
+            <PlusIcon className={"w-5 h-5 stroke-2"} />
+          </Link>
+        )}
       </div>
       <div
         className={`${
