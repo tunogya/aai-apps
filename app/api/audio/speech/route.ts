@@ -22,8 +22,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   let { model, input, voice, response_format, speed } = await req.json();
 
-  const openai = new OpenAI();
-
   const hash = await calculateHash(
     JSON.stringify({
       model,
@@ -46,10 +44,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       source: `https://s3.abandon.ai/audio/${hash}.mp3`,
     });
   } catch (e) {
-    console.log("NoSuchKey ");
+    console.log("NoSuchKey:", `audio/${hash}.mp3`);
   }
 
   try {
+    const openai = new OpenAI();
     const response = await openai.audio.speech.create({
       model,
       voice,
