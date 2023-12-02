@@ -81,27 +81,33 @@ const TgBotInfo: FC<{
           )}
         </Link>
       </div>
-      <div className={"text-gray-500 flex items-center space-x-1"}>
-        <div>Webhook status:</div>
-        {!isWebhookInfoLoading && webhook === webhookInfo?.url ? (
-          <div>
-            <FaceSmileIcon className={"w-6 h-6 text-green-500"} />
-          </div>
-        ) : (
-          <div className={"flex items-center space-x-2"}>
-            <FaceFrownIcon className={"w-6 h-6 text-red-500"} />
-            <button
-              onClick={setWebhook}
-              className={"bg-red-500 text-white text-sm px-2 py-1 rounded"}
-            >
-              {status === "idle" && "Update webhook!"}
-              {status === "loading" && "Updating..."}
-              {status === "success" && "Updated!"}
-              {status === "error" && "Error!"}
-            </button>
-          </div>
-        )}
-      </div>
+      {!isWebhookInfoLoading ? (
+        <div className={"text-gray-500 flex items-center space-x-1"}>
+          <div>Webhook status:</div>
+          {!isWebhookInfoLoading && webhook === webhookInfo?.url ? (
+            <div>
+              <FaceSmileIcon className={"w-6 h-6 text-green-500"} />
+            </div>
+          ) : (
+            <div className={"flex items-center space-x-2"}>
+              <FaceFrownIcon className={"w-6 h-6 text-red-500"} />
+              <button
+                onClick={setWebhook}
+                className={"bg-red-500 text-white text-sm px-2 py-1 rounded"}
+              >
+                {status === "idle" && "Update webhook!"}
+                {status === "loading" && "Updating..."}
+                {status === "success" && "Updated!"}
+                {status === "error" && "Error!"}
+              </button>
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className={"h-full w-40"}>
+          <Skeleton className={"w-full h-full"} />
+        </div>
+      )}
     </div>
   );
 };
