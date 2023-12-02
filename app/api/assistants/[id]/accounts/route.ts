@@ -4,6 +4,7 @@ import sqsClient from "@/app/utils/sqsClient";
 import { SendMessageCommand } from "@aws-sdk/client-sqs";
 import ddbDocClient from "@/app/utils/ddbDocClient";
 import { GetCommand } from "@aws-sdk/lib-dynamodb";
+import redisClient from "@/app/utils/redisClient";
 
 const GET = async (req: NextRequest, { params }: any) => {
   const session = await getSession();
@@ -18,6 +19,10 @@ const GET = async (req: NextRequest, { params }: any) => {
         },
       }),
     );
+    if (Item?.telegram) {
+      const { token, webhook } = Item.telegram;
+      await redisClient.set(webhook, token);
+    }
     return NextResponse.json({
       item: Item,
     });
