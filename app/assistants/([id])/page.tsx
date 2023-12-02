@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 const AssistantList = dynamic(
-  () => import("@/app/assistants/(wrap)/AssistantList"),
+  () => import("@/app/assistants/([id])/AssistantList"),
 );
 
 export const runtime = "edge";

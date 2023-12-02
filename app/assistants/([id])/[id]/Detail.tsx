@@ -4,7 +4,7 @@ import useSWR from "swr";
 import { useParams } from "next/navigation";
 import Skeleton from "react-loading-skeleton";
 import Link from "next/link";
-import UpdateDetailModal from "@/app/assistants/(wrap)/[id]/UpdateDetailModal";
+import UpdateDetailModal from "@/app/assistants/([id])/[id]/UpdateDetailModal";
 
 const CSRPage = () => {
   const params = useParams();

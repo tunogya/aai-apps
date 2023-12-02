@@ -1,13 +1,12 @@
 "use client";
 import Link from "next/link";
-import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import dynamic from "next/dynamic";
-import MorePopover from "@/app/assistants/(wrap)/[id]/MorePopover";
+import MorePopover from "@/app/assistants/([id])/[id]/MorePopover";
 
-const Detail = dynamic(() => import("@/app/assistants/(wrap)/[id]/Detail"));
-const Overview = dynamic(() => import("@/app/assistants/(wrap)/[id]/Overview"));
-const Events = dynamic(() => import("@/app/assistants/(wrap)/[id]/Events"));
+const Detail = dynamic(() => import("@/app/assistants/([id])/[id]/Detail"));
+const Overview = dynamic(() => import("@/app/assistants/([id])/[id]/Overview"));
+const Events = dynamic(() => import("@/app/assistants/([id])/[id]/Events"));
 
 const CSRPage = () => {
   const [type, setType] = useState("overview");

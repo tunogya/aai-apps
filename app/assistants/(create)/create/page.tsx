@@ -6,11 +6,11 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
 import Skeleton from "react-loading-skeleton";
 
-const Help = dynamic(() => import("@/app/assistants/(nowrap)/create/Help"), {
+const Help = dynamic(() => import("@/app/assistants/(create)/create/Help"), {
   loading: () => <Skeleton count={5} height={"28px"} />,
 });
 const CreateForm = dynamic(
-  () => import("@/app/assistants/(nowrap)/create/CreateForm"),
+  () => import("@/app/assistants/(create)/create/CreateForm"),
   {
     loading: () => <Skeleton count={5} height={"28px"} />,
   },
