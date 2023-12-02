@@ -10,6 +10,25 @@ const GET = async (req: NextRequest, { params }: any) => {
   const session = await getSession();
   const sub = session?.user.sub;
   try {
+    const { Item: asst } = await ddbDocClient.send(
+      new GetCommand({
+        TableName: "abandonai-prod",
+        Key: {
+          PK: `USER#${sub}`,
+          SK: `ASST#${params?.id}`,
+        },
+      }),
+    );
+    if (!asst) {
+      return NextResponse.json(
+        {
+          error: "assistant not found",
+        },
+        {
+          status: 404,
+        },
+      );
+    }
     const { Item } = await ddbDocClient.send(
       new GetCommand({
         TableName: "abandonai-prod",
@@ -48,6 +67,25 @@ const PATCH = async (req: NextRequest, { params }: any) => {
     ConditionExpression,
   } = await req.json();
   try {
+    const { Item: asst } = await ddbDocClient.send(
+      new GetCommand({
+        TableName: "abandonai-prod",
+        Key: {
+          PK: `USER#${sub}`,
+          SK: `ASST#${params?.id}`,
+        },
+      }),
+    );
+    if (!asst) {
+      return NextResponse.json(
+        {
+          error: "assistant not found",
+        },
+        {
+          status: 404,
+        },
+      );
+    }
     const result = await sqsClient.send(
       new SendMessageCommand({
         QueueUrl: process.env.AI_DB_UPDATE_SQS_FIFO_URL,
