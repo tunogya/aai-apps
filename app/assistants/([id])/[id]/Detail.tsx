@@ -3,8 +3,10 @@
 import useSWR from "swr";
 import { useParams } from "next/navigation";
 import Skeleton from "react-loading-skeleton";
-import Link from "next/link";
-import UpdateDetailModal from "@/app/assistants/([id])/[id]/UpdateDetailModal";
+import dynamic from "next/dynamic";
+const UpdateDetailModal = dynamic(
+  () => import("@/app/assistants/([id])/[id]/UpdateDetailModal"),
+);
 
 const CSRPage = () => {
   const params = useParams();

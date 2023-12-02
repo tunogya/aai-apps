@@ -2,6 +2,36 @@ import { NextRequest, NextResponse } from "next/server";
 import { getSession } from "@auth0/nextjs-auth0";
 import sqsClient from "@/app/utils/sqsClient";
 import { SendMessageCommand } from "@aws-sdk/client-sqs";
+import ddbDocClient from "@/app/utils/ddbDocClient";
+import { GetCommand } from "@aws-sdk/lib-dynamodb";
+
+const GET = async (req: NextRequest, { params }: any) => {
+  const session = await getSession();
+  const sub = session?.user.sub;
+  try {
+    const { Item } = await ddbDocClient.send(
+      new GetCommand({
+        TableName: "abandonai-prod",
+        Key: {
+          PK: `ASST#${params?.id}`,
+          SK: "ACCOUNT",
+        },
+      }),
+    );
+    return NextResponse.json({
+      item: Item,
+    });
+  } catch (e) {
+    return NextResponse.json(
+      {
+        error: "something went wrong",
+      },
+      {
+        status: 500,
+      },
+    );
+  }
+};
 
 const PATCH = async (req: NextRequest, { params }: any) => {
   const session = await getSession();
@@ -44,6 +74,7 @@ const PATCH = async (req: NextRequest, { params }: any) => {
     return NextResponse.json(
       {
         error: "something went wrong",
+        message: e,
       },
       {
         status: 500,
@@ -52,4 +83,4 @@ const PATCH = async (req: NextRequest, { params }: any) => {
   }
 };
 
-export { PATCH };
+export { GET, PATCH };

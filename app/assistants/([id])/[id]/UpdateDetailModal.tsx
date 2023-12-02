@@ -40,7 +40,7 @@ const Modal: FC<{
   const update = async () => {
     setStatus("loading");
     try {
-      const result = await fetch(`/api/assistants/${assistantId}`, {
+      await fetch(`/api/assistants/${assistantId}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

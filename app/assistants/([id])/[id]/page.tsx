@@ -2,13 +2,17 @@
 import Link from "next/link";
 import { useState } from "react";
 import dynamic from "next/dynamic";
-import MorePopover from "@/app/assistants/([id])/[id]/MorePopover";
+import { useParams } from "next/navigation";
 
 const Detail = dynamic(() => import("@/app/assistants/([id])/[id]/Detail"));
 const Overview = dynamic(() => import("@/app/assistants/([id])/[id]/Overview"));
 const Events = dynamic(() => import("@/app/assistants/([id])/[id]/Events"));
+const MorePopover = dynamic(
+  () => import("@/app/assistants/([id])/[id]/MorePopover"),
+);
 
 const CSRPage = () => {
+  const params = useParams();
   const [type, setType] = useState("overview");
 
   return (
@@ -57,7 +61,11 @@ const CSRPage = () => {
           </div>
           <MorePopover />
         </div>
-        {type === "overview" ? <Overview /> : <Events />}
+        {type === "overview" ? (
+          <Overview assistantId={params?.id as string} />
+        ) : (
+          <Events />
+        )}
       </div>
     </div>
   );
