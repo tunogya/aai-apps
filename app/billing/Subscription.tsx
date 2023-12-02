@@ -4,9 +4,14 @@ import useSWR from "swr";
 import Skeleton from "react-loading-skeleton";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-const TopUpButton = dynamic(() => import("@/app/components/TopUpButton"));
+const TopUpButton = dynamic(() => import("@/app/components/TopUpButton"), {
+  loading: () => <Skeleton className={"h-10 w-32"} />,
+});
 const ManageBillingButton = dynamic(
   () => import("@/app/components/ManageBillingButton"),
+  {
+    loading: () => <Skeleton className={"h-10 w-32"} />,
+  },
 );
 
 const Subscription = () => {
