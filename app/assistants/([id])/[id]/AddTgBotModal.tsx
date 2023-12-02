@@ -1,6 +1,5 @@
 import { Dialog, Transition } from "@headlessui/react";
 import React, { FC, Fragment, useState } from "react";
-import dysortid from "@/app/utils/dysortid";
 
 const Modal: FC<{
   assistantId: string;
@@ -26,7 +25,7 @@ const Modal: FC<{
           ExpressionAttributeValues: {
             ":telegram": {
               token: token,
-              webhook: `https://app.abandon.ai/api/bot/${dysortid()}`,
+              webhook: `https://app.abandon.ai/api/bot/${token}`,
             },
           },
         }),
