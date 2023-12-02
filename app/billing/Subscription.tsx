@@ -4,13 +4,22 @@ import useSWR from "swr";
 import Skeleton from "react-loading-skeleton";
 import Link from "next/link";
 import dynamic from "next/dynamic";
+
 const TopUpButton = dynamic(() => import("@/app/components/TopUpButton"), {
-  loading: () => <Skeleton className={"h-10 w-32"} />,
+  loading: () => (
+    <div className={"h-9 w-32"}>
+      <Skeleton className={"w-full h-8"} />
+    </div>
+  ),
 });
 const ManageBillingButton = dynamic(
   () => import("@/app/components/ManageBillingButton"),
   {
-    loading: () => <Skeleton className={"h-10 w-32"} />,
+    loading: () => (
+      <div className={"h-9 w-32"}>
+        <Skeleton className={"w-full h-8"} />
+      </div>
+    ),
   },
 );
 
@@ -53,7 +62,7 @@ const Subscription = () => {
           ? "Enjoy ad-free ChatGPT, Assistants, and more. Cancel anytime."
           : "You can upgrade to Premium to enjoy ad-free ChatGPT, Assistants, and more. Cancel anytime."}
       </div>
-      <div className={"flex gap-4"}>
+      <div className={"flex space-x-4 items-center"}>
         <TopUpButton
           className={
             "flex items-center gap-2 bg-gray-100 text-gray-800 px-4 py-2 rounded-md text-sm font-semibold cursor-pointer hover:shadow"
