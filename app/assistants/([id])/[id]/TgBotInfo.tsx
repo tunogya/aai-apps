@@ -93,7 +93,7 @@ const TgBotInfo: FC<{
               <FaceFrownIcon className={"w-6 h-6 text-red-500"} />
               <button
                 onClick={setWebhook}
-                className={"bg-red-500 text-white text-sm px-2 py-1 rounded"}
+                className={"bg-red-500 text-white text-sm px-2 h-6 rounded"}
               >
                 {status === "idle" && "Update webhook!"}
                 {status === "loading" && "Updating..."}
