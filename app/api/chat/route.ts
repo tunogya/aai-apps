@@ -10,6 +10,7 @@ import { getSession } from "@auth0/nextjs-auth0/edge";
 import { NextRequest, NextResponse } from "next/server";
 import dysortid from "@/app/utils/dysortid";
 import redisClient from "@/app/utils/redisClient";
+import { Ratelimit } from "@upstash/ratelimit";
 
 const sqsClient = new SQSClient({
   region: "ap-northeast-1",
@@ -20,6 +21,8 @@ const sqsClient = new SQSClient({
 });
 
 export const runtime = "edge";
+
+const cache = new Map();
 
 // @ts-ignore
 export async function POST(req: NextRequest): Promise<Response> {
@@ -33,21 +36,46 @@ export async function POST(req: NextRequest): Promise<Response> {
   const isPremium = await redisClient.get(`premium:${sub}`);
 
   if (model?.startsWith("gpt-4")) {
-    if (!isPremium) {
-      if (!isPremium) {
-        return new Response(
-          JSON.stringify({
-            error: "premium required",
-            message: "Sorry, you need a Premium subscription to use this.",
-          }),
-          {
-            status: 200,
-            headers: {
-              "Content-Type": "application/json",
-            },
+    const ratelimit = new Ratelimit({
+      redis: redisClient,
+      limiter: Ratelimit.slidingWindow(50, "3 h"),
+      analytics: true,
+      prefix: "ratelimit:/api/chat:gpt-4",
+      ephemeralCache: cache,
+    });
+    const { success, limit, reset, remaining, pending } =
+      await ratelimit.limit(sub);
+    if (!success) {
+      return new Response(
+        JSON.stringify({
+          error: "limit reached",
+          message: "Sorry, you have reached the limit. Please try again later.",
+        }),
+        {
+          status: 429,
+          headers: {
+            "Content-Type": "application/json",
+            "x-ratelimit-limit-requests": `${limit}`,
+            "x-ratelimit-remaining-requests": `${remaining}`,
+            "x-ratelimit-reset-requests": `${reset}`,
+            "x-ratelimit-pending-requests": `${pending}`,
           },
-        );
-      }
+        },
+      );
+    }
+    if (!isPremium) {
+      return new Response(
+        JSON.stringify({
+          error: "premium required",
+          message: "Sorry, you need a Premium subscription to use this.",
+        }),
+        {
+          status: 403,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+      );
     }
     max_tokens = 4096;
     messages?.slice(-8);
