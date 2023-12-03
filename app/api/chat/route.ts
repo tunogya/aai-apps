@@ -33,8 +33,9 @@ export async function POST(req: NextRequest): Promise<Response> {
   let { messages, model, id, functions } = await req.json();
   let max_tokens = 1024;
 
+  const isPremium = await redisClient.get(`premium:${sub}`);
+
   if (model?.startsWith("gpt-4")) {
-    const isPremium = await redisClient.get(`premium:${sub}`);
     if (!isPremium) {
       return new Response(
         JSON.stringify({
@@ -49,7 +50,6 @@ export async function POST(req: NextRequest): Promise<Response> {
         },
       );
     }
-
     const ratelimit = new Ratelimit({
       redis: redisClient,
       limiter: Ratelimit.slidingWindow(50, "3 h"),
@@ -79,6 +79,35 @@ export async function POST(req: NextRequest): Promise<Response> {
     max_tokens = 4096;
     messages?.slice(-8);
   } else {
+    if (!isPremium) {
+      const ratelimit = new Ratelimit({
+        redis: redisClient,
+        limiter: Ratelimit.slidingWindow(50, "1 h"),
+        analytics: true,
+        prefix: "ratelimit:/api/chat:gpt-3.5",
+        ephemeralCache: cache,
+      });
+      const { success, limit, reset, remaining } = await ratelimit.limit(sub);
+      if (!success) {
+        return new Response(
+          JSON.stringify({
+            error: "limit reached",
+            message:
+              "Sorry, you have reached the limit. Please try again later.",
+          }),
+          {
+            status: 429,
+            headers: {
+              "Content-Type": "application/json",
+              "x-ratelimit-limit-requests": `${limit}`,
+              "x-ratelimit-remaining-requests": `${remaining}`,
+              "x-ratelimit-reset-requests": `${reset}`,
+            },
+          },
+        );
+      }
+    }
+
     messages?.slice(-8);
   }
 
