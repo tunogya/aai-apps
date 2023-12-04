@@ -4,8 +4,8 @@ import React, { useMemo, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import dynamic from "next/dynamic";
 import {
-  BarsArrowDownIcon,
-  BarsArrowUpIcon,
+  ArrowLeftIcon,
+  ArrowRightIcon,
   PlusIcon,
 } from "@heroicons/react/24/outline";
 import Skeleton from "react-loading-skeleton";
@@ -55,9 +55,9 @@ const SecondaryNav = () => {
           } hover:bg-gray-100 rounded-full p-2 cursor-pointer h-9 w-9 text-gray-800`}
         >
           {hidden ? (
-            <BarsArrowDownIcon className={"w-5 h-5 stroke-1.5"} />
+            <ArrowRightIcon className={"w-5 h-5 stroke-1.5"} />
           ) : (
-            <BarsArrowUpIcon className={"w-5 h-5 stroke-1.5"} />
+            <ArrowLeftIcon className={"w-5 h-5 stroke-1.5"} />
           )}
         </button>
         {hidden && (

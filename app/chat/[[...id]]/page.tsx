@@ -4,17 +4,13 @@ import { useChat } from "ai/react";
 import React, { useEffect, useMemo, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import useSWR from "swr";
-import {
-  BoltIcon,
-  SparklesIcon,
-  PlayIcon,
-  StopIcon,
-} from "@heroicons/react/24/solid";
+import { BoltIcon, SparklesIcon, StopIcon } from "@heroicons/react/24/solid";
 import { useLocalStorage } from "@uidotdev/usehooks";
 import { functions, functionCallHandler } from "@/app/utils/functions";
 import MobileDrawer from "@/app/chat/[[...id]]/MobileDrawer";
 import dynamic from "next/dynamic";
 import dysortid from "@/app/utils/dysortid";
+import { ArrowUpIcon } from "@heroicons/react/24/outline";
 
 const MessageBox = dynamic(() => import("@/app/chat/[[...id]]/MessageBox"));
 
@@ -146,7 +142,7 @@ export default function Chat() {
                   {isLoading ? (
                     <StopIcon className={"w-5 h-5 stroke-2"} />
                   ) : (
-                    <PlayIcon className={"w-5 h-5 stroke-2"} />
+                    <ArrowUpIcon className={"w-5 h-5 stroke-2"} />
                   )}
                 </button>
               </div>
@@ -169,7 +165,7 @@ export default function Chat() {
                       isPurple ? "bg-[#AB68FF]" : "bg-[#19C37D]"
                     } rounded-full text-white`}
                   >
-                    <PlayIcon className={"w-4 h-4 stroke-2"} />
+                    <ArrowUpIcon className={"w-5 h-5 stroke-2"} />
                   </button>
                 )}
               </div>
