@@ -1,5 +1,30 @@
 {
   "name": "AbandonAI",
+  "id": "ai.abandon.abandonai",
+  "launch_handler": "",
+  "shortcuts": [
+    {
+      "name": "ChatGPT",
+      "url": "/chat"
+    },
+    {
+      "name": "Billing",
+      "url": "/billing"
+    }
+  ],
+  "screenshots" : [
+    {
+      "src": "https://www.abandon.ai/img/app.png",
+      "sizes": "3260x2152",
+      "type": "image/png",
+      "platform": "wide"
+    }
+  ],
+  "lang": "en",
+  "scope_extensions": [
+    {"origin": "*.abandon.ai"}
+  ],
+  "handle_links": "preferred",
   "short_name": "AbandonAI",
   "categories": ["utilities"],
   "description": "Powered by OpenAI.",
