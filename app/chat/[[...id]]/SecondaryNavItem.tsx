@@ -2,7 +2,7 @@
 import Link from "next/link";
 import React, { FC } from "react";
 import { useParams, useRouter } from "next/navigation";
-import useDeleteItems from "@/app/hooks/useDeleteItems";
+import { useSessionStorage } from "@uidotdev/usehooks";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import dysortid from "@/app/utils/dysortid";
 
@@ -11,7 +11,10 @@ const SecondaryNavItem: FC<{
 }> = ({ item }) => {
   const params = useParams();
   const router = useRouter();
-  const { deleteItems, deleteById } = useDeleteItems();
+  const [deleteItems, setDeleteItems] = useSessionStorage(
+    "deleteItems",
+    [] as string[],
+  );
   const currentChatId = params?.id?.[0] || null;
 
   const deleteChat = async (id: string) => {
@@ -65,7 +68,7 @@ const SecondaryNavItem: FC<{
             deleteItems.includes(item.SK) ? "text-red-500" : ""
           }`}
           onClick={async () => {
-            deleteById(item.SK);
+            setDeleteItems([...deleteItems, item.SK]);
             await deleteChat(item.SK.replace("CHAT2#", ""));
           }}
         >

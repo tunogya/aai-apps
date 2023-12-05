@@ -13,11 +13,11 @@ import {
   TrashIcon,
 } from "@heroicons/react/24/outline";
 import copy from "copy-to-clipboard";
-import useDeleteItems from "@/app/hooks/useDeleteItems";
 import { Message } from "ai";
 import dynamic from "next/dynamic";
 import Skeleton from "react-loading-skeleton";
 import Link from "next/link";
+import { useSessionStorage } from "@uidotdev/usehooks";
 
 const Markdown = dynamic(
   () => import("@/app/chat/[[...id]]/MessageBox/Markdown"),
@@ -34,7 +34,10 @@ const MessageBox: FC<{
 }> = ({ message, index, picture, currentChatId }) => {
   const [state, setState] = useState(false);
   const [speechState, setSpeechState] = useState("ended");
-  const { deleteItems, deleteById } = useDeleteItems();
+  const [deleteItems, setDeleteItems] = useSessionStorage(
+    "deleteItems",
+    [] as string[],
+  );
   const audio = useRef(new Audio());
   const [source, setSource] = useState("");
 
@@ -190,7 +193,7 @@ const MessageBox: FC<{
               <button
                 onClick={async () => {
                   try {
-                    deleteById(message.id);
+                    setDeleteItems([...deleteItems, message.id]);
                     await fetch(`/api/conversation/${currentChatId}`, {
                       method: "PATCH",
                       headers: {
