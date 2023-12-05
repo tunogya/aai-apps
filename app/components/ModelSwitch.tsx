@@ -23,8 +23,7 @@ const ModelSwitch = () => {
   }, [isLoading, data, model]);
 
   return (
-    <button
-      disabled={isLoading || !data?.subscription?.isPremium}
+    <div
       className={
         "text-sm md:font-semibold md:hover:bg-gray-100 rounded-lg flex items-center gap-2 px-2 py-1.5 select-none justify-between cursor-pointer disabled:cursor-not-allowed"
       }
@@ -58,7 +57,7 @@ const ModelSwitch = () => {
             pointer-events-none inline-block h-[12px] w-[12px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}
         />
       </Switch>
-    </button>
+    </div>
   );
 };
 

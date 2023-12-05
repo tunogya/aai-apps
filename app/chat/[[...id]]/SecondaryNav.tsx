@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import dynamic from "next/dynamic";
 import {
@@ -10,24 +10,24 @@ import {
 } from "@heroicons/react/24/outline";
 import Skeleton from "react-loading-skeleton";
 import { Transition } from "@headlessui/react";
+import { pusherClient } from "@/app/utils/pusher";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 const SecondaryNavItem = dynamic(
   () => import("@/app/chat/[[...id]]/SecondaryNavItem"),
 );
 
 const SecondaryNav = () => {
+  const { user } = useUser();
   const getKey = (pageIndex: number, previousPageData: any) => {
     if (previousPageData && !previousPageData.nextCursor) return null;
     if (pageIndex === 0) return `/api/conversation?limit=20`;
     return `/api/conversation?cursor=${previousPageData.nextCursor}&limit=20`;
   };
 
-  const { data, size, setSize, isLoading } = useSWRInfinite(
+  const { data, size, setSize, isLoading, mutate } = useSWRInfinite(
     getKey,
     (url) => fetch(url).then((res) => res.json()),
-    {
-      refreshInterval: 3_000,
-    },
   );
 
   const reducedData = useMemo(() => {
@@ -40,6 +40,21 @@ const SecondaryNav = () => {
   }, [reducedData]);
 
   const [hidden, setHidden] = useState(true);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const channel_name = `private-${user?.sub?.replace("|", "")}`;
+    const channel = pusherClient.subscribe(channel_name);
+
+    channel.bind("CHAT2", (data: any) => {
+      mutate();
+    });
+
+    return () => {
+      pusherClient.unsubscribe(channel_name);
+    };
+  }, [user]);
 
   return (
     <div className={"relative z-10"}>

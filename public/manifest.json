@@ -1,7 +1,6 @@
 {
   "name": "AbandonAI",
   "id": "ai.abandon.abandonai",
-  "launch_handler": "",
   "shortcuts": [
     {
       "name": "ChatGPT",

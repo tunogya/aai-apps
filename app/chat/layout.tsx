@@ -4,8 +4,6 @@ import Toolbar from "@/app/components/Toolbar";
 import PrimaryNav from "@/app/components/Nav/PrimaryNav";
 import SecondaryNav from "@/app/chat/[[...id]]/SecondaryNav";
 import dynamic from "next/dynamic";
-import Link from "next/link";
-import { PlusIcon } from "@heroicons/react/24/outline";
 import Skeleton from "react-loading-skeleton";
 const ModelSwitch = dynamic(() => import("@/app/components/ModelSwitch"), {
   loading: () => <Skeleton width={"90px"} height={"20px"} className={"p-1"} />,
