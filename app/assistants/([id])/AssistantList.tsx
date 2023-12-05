@@ -5,37 +5,17 @@ import Link from "next/link";
 import useSWRInfinite from "swr/infinite";
 import { useRouter } from "next/navigation";
 import Skeleton from "react-loading-skeleton";
-import { useEffect } from "react";
-import { pusherClient } from "@/app/utils/pusher";
-import { useUser } from "@auth0/nextjs-auth0/client";
 
 const AssistantList = () => {
-  const { user } = useUser();
   const router = useRouter();
   const getKey = (pageIndex: number, previousPageData: any) => {
     if (previousPageData && !previousPageData.nextCursor) return null;
     if (pageIndex === 0) return `/api/assistants?limit=20`;
     return `/api/assistants?cursor=${previousPageData.nextCursor}&limit=20`;
   };
-  const { data, size, setSize, isLoading, mutate } = useSWRInfinite(
-    getKey,
-    (url) => fetch(url).then((res) => res.json()),
+  const { data, size, setSize, isLoading } = useSWRInfinite(getKey, (url) =>
+    fetch(url).then((res) => res.json()),
   );
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const channel_name = `private-${user?.sub?.replace("|", "")}`;
-    const channel = pusherClient.subscribe(channel_name);
-
-    channel.bind("ASST", (data: any) => {
-      mutate();
-    });
-
-    return () => {
-      pusherClient.unsubscribe(channel_name);
-    };
-  }, [user]);
 
   if (isLoading) {
     return <Skeleton count={3} height={"33px"} />;
