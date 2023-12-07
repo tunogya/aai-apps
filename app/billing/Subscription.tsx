@@ -4,6 +4,7 @@ import useSWR from "swr";
 import Skeleton from "react-loading-skeleton";
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import SubscribeButton from "@/app/components/SubscribeButton";
 
 const TopUpButton = dynamic(() => import("@/app/components/TopUpButton"), {
   loading: () => (
@@ -73,15 +74,11 @@ const Subscription = () => {
             "bg-gray-100 text-gray-800 px-4 py-2 rounded-md text-sm font-semibold hover:shadow"
           }
         />
-        <Link
-          href={"/premium"}
-          prefetch
+        <SubscribeButton
           className={
             "px-4 py-2 border-2 border-[#0066FF] rounded-full font-medium text-sm text-[#0066FF]"
           }
-        >
-          View all Premium plans
-        </Link>
+        />
       </div>
     </div>
   );
