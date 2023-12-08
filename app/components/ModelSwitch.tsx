@@ -41,7 +41,7 @@ const ModelSwitch = () => {
           useGPT4 ? "text-[#AB68FF]" : "text-gray-800"
         }`}
       >
-        {useGPT4 ? "GPT-4" : "GPT-3.5"}
+        GPT-4
       </div>
       <Switch
         checked={useGPT4}
