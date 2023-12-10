@@ -43,7 +43,7 @@ export default function Chat() {
       initialMessages: data ? data?.item?.messages : [],
       experimental_onFunctionCall: functionCallHandler,
     });
-  const isPurple = model.startsWith("gpt-4");
+  const isGPT4 = model.startsWith("gpt-4");
   const router = useRouter();
 
   useEffect(() => {
@@ -84,7 +84,7 @@ export default function Chat() {
             <div className={"w-full flex gap-2"}>
               <div
                 className={`border ${
-                  isPurple
+                  isGPT4
                     ? "border-[#AB68FF] ring-[#AB68FF] ring-1"
                     : "border-gray-200"
                 } flex rounded md:rounded w-full px-3 py-1.5 md:py-3 md:px-5 text-gray-800 bg-white items-end gap-2`}
@@ -104,14 +104,14 @@ export default function Chat() {
                       "w-full outline-none text-sm md:text-base focus:outline-none focus:bg-transparent max-h-52 min-h-6 overflow-y-auto resize-none"
                     }
                     ref={inputRef}
-                    maxLength={isPurple ? undefined : 2048}
+                    maxLength={isGPT4 ? undefined : 2048}
                     rows={1}
                     onChange={(e) => {
                       e.target.style.height = "auto";
                       e.target.style.height = e.target.scrollHeight + "px";
                       handleInputChange(e);
                     }}
-                    placeholder={isPurple ? "Message GPT-4" : "Message GPT-3.5"}
+                    placeholder={isGPT4 ? "Message GPT-4" : "Message GPT-3.5"}
                     onKeyDown={async (e) => {
                       if (e.key === "Enter" && !e.shiftKey) {
                         if (e.nativeEvent.isComposing) return;
@@ -144,7 +144,7 @@ export default function Chat() {
                   ) : (
                     <ArrowUpIcon
                       className={`w-6 h-6 stroke-2 p-1 text-white rounded ${
-                        isPurple ? "bg-[#AB68FF]" : "bg-gray-800"
+                        isGPT4 ? "bg-[#AB68FF]" : "bg-gray-800"
                       } `}
                     />
                   )}
@@ -166,7 +166,7 @@ export default function Chat() {
                   <button
                     type="submit"
                     className={`p-2 ${
-                      isPurple ? "bg-[#AB68FF]" : "bg-gray-800"
+                      isGPT4 ? "bg-[#AB68FF]" : "bg-gray-800"
                     } rounded-full text-white`}
                   >
                     <ArrowUpIcon className={"w-5 h-5 stroke-2"} />
@@ -187,20 +187,20 @@ export default function Chat() {
             messages={messages}
             currentChatId={currentChatId}
             isLoading={isLoading}
-            isPurple={isPurple}
+            isGPT4={isGPT4}
           />
         ) : (
           <div
             className={`${
-              isPurple ? "text-[#AB68FF]" : "text-gray-800"
+              isGPT4 ? "text-[#AB68FF]" : "text-gray-800"
             } w-full h-full flex items-center justify-center text-3xl md:text-4xl font-semibold pb-52`}
           >
-            {!isPurple ? (
+            {!isGPT4 ? (
               <BoltIcon className={"w-10 h-10"} />
             ) : (
               <SparklesIcon className={"w-10 h-10"} />
             )}
-            ChatGPT
+            abandon.ai
           </div>
         )}
       </div>

@@ -6,10 +6,10 @@ import { CodeBracketIcon } from "@heroicons/react/24/outline";
 const MessageBox: FC<{
   message: Message;
   index: number;
-  isPurple: boolean;
+  isGPT4: boolean;
   isLoading: boolean;
   isLast: boolean;
-}> = ({ message, isPurple, isLoading, isLast }) => {
+}> = ({ message, isGPT4, isLoading, isLast }) => {
   return (
     <div
       className={`flex border-t p-3 md:p-8 bg-gray-50 items-center justify-center group`}
@@ -18,7 +18,7 @@ const MessageBox: FC<{
         <div className={"shrink-0"}>
           <div
             className={`w-6 h-6 my-1 md:my-0 md:w-8 md:h-8 ${
-              isPurple ? "bg-[#AB68FF]" : "bg-[#19C37D]"
+              isGPT4 ? "bg-[#AB68FF]" : "bg-[#19C37D]"
             } text-white flex items-center justify-center rounded-full md:rounded-none`}
           >
             <CodeBracketIcon className={"w-4 h-4 md:w-5 md:h-5 stroke-1.5"} />

@@ -29,10 +29,10 @@ const MessageBox: FC<{
   currentChatId: string;
   message: Message;
   index: number;
-  isPurple: boolean;
+  isGPT4: boolean;
   isLoading: boolean;
   isLast: boolean;
-}> = ({ message, index, isPurple, isLoading, isLast, currentChatId }) => {
+}> = ({ message, index, isGPT4, isLoading, isLast, currentChatId }) => {
   const [state, setState] = React.useState(false);
   const [speechState, setSpeechState] = React.useState("ended");
   const [deleteItems, setDeleteItems] = useSessionStorage(
@@ -114,7 +114,7 @@ const MessageBox: FC<{
         <div className={"shrink-0"}>
           <div
             className={`w-6 h-6 my-1 md:my-0 md:w-8 md:h-8 ${
-              isPurple ? "bg-[#AB68FF]" : "bg-[#19C37D]"
+              isGPT4 ? "bg-[#AB68FF]" : "bg-[#19C37D]"
             } text-white flex items-center justify-center rounded-full md:rounded-none`}
           >
             <svg
