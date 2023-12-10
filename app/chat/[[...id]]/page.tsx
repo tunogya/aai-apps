@@ -20,10 +20,12 @@ import {
   ArrowDownTrayIcon,
   ArrowUpIcon,
   PaperClipIcon,
+  XCircleIcon,
 } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { useDropzone } from "react-dropzone";
 import { Transition } from "@headlessui/react";
+import Skeleton from "react-loading-skeleton";
 
 const MessageBox = dynamic(() => import("@/app/chat/[[...id]]/MessageBox"));
 
@@ -60,9 +62,11 @@ export default function Chat() {
     });
   const isGPT4 = model.startsWith("gpt-4");
   const router = useRouter();
-  const onDrop = useCallback((acceptedFiles: any) => {
+  const [uploadStatus, setUploadStatus] = useState("idle");
+  const onDropAccepted = useCallback((acceptedFiles: any) => {
     // Do something with the files
     console.log(acceptedFiles);
+    setUploadStatus("loading");
   }, []);
   const {
     getRootProps,
@@ -73,9 +77,14 @@ export default function Chat() {
     isDragAccept,
     isDragReject,
   } = useDropzone({
-    onDrop,
+    onDropAccepted,
     noClick: true,
     noDrag: !isGPT4,
+    accept: {
+      "image/*": [],
+    },
+    maxFiles: 1,
+    maxSize: 5 * 1024 * 1024,
   });
 
   useEffect(() => {
@@ -99,7 +108,34 @@ export default function Chat() {
   }, [messages, isLoading]);
 
   return (
-    <div className={"w-full min-w-[100vw] md:min-w-[400px] shrink-0"}>
+    <div
+      className={"w-full min-w-[100vw] md:min-w-[400px] shrink-0 relative"}
+      {...getRootProps()}
+    >
+      <Transition
+        show={isDragActive}
+        enter="transition-opacity duration-75"
+        enterFrom="opacity-0"
+        enterTo="opacity-100"
+        leave="transition-opacity duration-150"
+        leaveFrom="opacity-100"
+        leaveTo="opacity-0"
+      >
+        <div
+          className={
+            "absolute bg-gray-50 w-full h-[calc(100vh-80px)] md:h-[calc(100vh-60px)] p-4 z-10 border-t"
+          }
+        >
+          <div
+            className={
+              "w-full h-full border-4 border-dashed border-[#AB68FF] text-[#AB68FF] flex flex-col items-center justify-center rounded-lg gap-3"
+            }
+          >
+            <ArrowDownTrayIcon className={"w-10 h-10"} />
+            <div>Drag and drop files</div>
+          </div>
+        </div>
+      </Transition>
       <form
         onSubmit={(e) => {
           handleSubmit(e);
@@ -130,43 +166,77 @@ export default function Chat() {
                     {tips}
                   </div>
                 ) : (
-                  <textarea
-                    value={input}
-                    className={
-                      "w-full outline-none text-sm md:text-base focus:outline-none focus:bg-transparent max-h-52 min-h-6 overflow-y-auto resize-none"
-                    }
-                    ref={inputRef}
-                    maxLength={isGPT4 ? undefined : 2048}
-                    rows={1}
-                    onChange={(e) => {
-                      e.target.style.height = "auto";
-                      e.target.style.height = e.target.scrollHeight + "px";
-                      handleInputChange(e);
-                    }}
-                    placeholder={
-                      isGPT4 ? "Message GPT-4 ..." : "Message GPT-3.5 ..."
-                    }
-                    onKeyDown={async (e) => {
-                      if (e.key === "Enter" && !e.shiftKey) {
-                        if (e.nativeEvent.isComposing) return;
-                        e.preventDefault();
-                        handleSubmit(e as any);
-                        if (inputRef.current) {
-                          // @ts-ignore
-                          inputRef.current.style.height = "auto";
-                        }
-                      } else if (e.key === "Enter" && e.shiftKey) {
-                        if (inputRef.current) {
-                          // @ts-ignore
-                          inputRef.current.style.height = "auto";
-                          // @ts-ignore
-                          inputRef.current.style.height =
-                            // @ts-ignore
-                            e.target.scrollHeight + "px";
-                        }
+                  <div className={"w-full flex flex-col gap-2"}>
+                    <textarea
+                      value={input}
+                      className={
+                        "w-full outline-none text-sm md:text-base focus:outline-none focus:bg-transparent max-h-52 min-h-6 overflow-y-auto resize-none"
                       }
-                    }}
-                  />
+                      ref={inputRef}
+                      maxLength={isGPT4 ? undefined : 2048}
+                      rows={1}
+                      onChange={(e) => {
+                        e.target.style.height = "auto";
+                        e.target.style.height = e.target.scrollHeight + "px";
+                        handleInputChange(e);
+                      }}
+                      placeholder={
+                        isGPT4 ? "Message GPT-4 ..." : "Message GPT-3.5 ..."
+                      }
+                      onKeyDown={async (e) => {
+                        if (e.key === "Enter" && !e.shiftKey) {
+                          if (e.nativeEvent.isComposing) return;
+                          e.preventDefault();
+                          handleSubmit(e as any);
+                          if (inputRef.current) {
+                            // @ts-ignore
+                            inputRef.current.style.height = "auto";
+                          }
+                        } else if (e.key === "Enter" && e.shiftKey) {
+                          if (inputRef.current) {
+                            // @ts-ignore
+                            inputRef.current.style.height = "auto";
+                            // @ts-ignore
+                            inputRef.current.style.height =
+                              // @ts-ignore
+                              e.target.scrollHeight + "px";
+                          }
+                        }
+                      }}
+                    />
+                    {uploadStatus === "loading" && acceptedFiles.length > 0 && (
+                      <div className={"h-fit w-full relative"}>
+                        <div
+                          className={
+                            "absolute top-2 right-2 text-gray-400 text-xs z-20"
+                          }
+                        >
+                          uploading...
+                        </div>
+                        <Skeleton className={"w-full h-24 z-10"} />
+                      </div>
+                    )}
+                    {imageUrl && (
+                      <div className={"h-fit w-full py-1 relative"}>
+                        <button
+                          onClick={() => {}}
+                          className={
+                            "absolute top-2 right-2 text-gray-800 hover:text-red-500"
+                          }
+                        >
+                          <XCircleIcon className={"w-5 h-5"} />
+                        </button>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={imageUrl}
+                          alt={"images"}
+                          className={
+                            "w-full max-h-24 object-contain border rounded-lg"
+                          }
+                        />
+                      </div>
+                    )}
+                  </div>
                 )}
                 {isGPT4 && (
                   <button
@@ -220,33 +290,10 @@ export default function Chat() {
         </div>
       </form>
       <div
-        {...getRootProps()}
         className={
           "h-[calc(100vh-85px)] md:h-[calc(100vh-134px)] w-full overflow-y-auto relative"
         }
       >
-        <Transition
-          show={isDragActive}
-          enter="transition-opacity duration-75"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="transition-opacity duration-150"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
-          <div
-            className={"absolute bg-gray-50 w-full h-full p-4 z-10 border-t"}
-          >
-            <div
-              className={
-                "w-full h-full border-4 border-dashed border-[#AB68FF] text-[#AB68FF] flex flex-col items-center justify-center rounded-lg gap-3"
-              }
-            >
-              <ArrowDownTrayIcon className={"w-10 h-10"} />
-              <div>Drag and drop files</div>
-            </div>
-          </div>
-        </Transition>
         {messages.length > 0 ? (
           <MessageBox
             messages={messages}
