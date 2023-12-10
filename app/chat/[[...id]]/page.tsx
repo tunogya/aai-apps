@@ -1,7 +1,13 @@
 "use client";
 
 import { useChat } from "ai/react";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useParams, useRouter } from "next/navigation";
 import useSWR from "swr";
 import { StopIcon } from "@heroicons/react/24/solid";
@@ -10,8 +16,10 @@ import { functions, functionCallHandler } from "@/app/utils/functions";
 import MobileDrawer from "@/app/chat/[[...id]]/MobileDrawer";
 import dynamic from "next/dynamic";
 import dysortid from "@/app/utils/dysortid";
-import { ArrowUpIcon } from "@heroicons/react/24/outline";
+import { ArrowDownTrayIcon, ArrowUpIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
+import { useDropzone } from "react-dropzone";
+import { Transition } from "@headlessui/react";
 
 const MessageBox = dynamic(() => import("@/app/chat/[[...id]]/MessageBox"));
 
@@ -48,6 +56,13 @@ export default function Chat() {
     });
   const isGPT4 = model.startsWith("gpt-4");
   const router = useRouter();
+  const onDrop = useCallback((acceptedFiles: any) => {
+    // Do something with the files
+  }, []);
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    noClick: true,
+  });
 
   useEffect(() => {
     if (!params?.id?.[0] && currentChatId) {
@@ -163,7 +178,7 @@ export default function Chat() {
                     className={`p-2 bg-gray-800 text-white rounded-full`}
                     onClick={stop}
                   >
-                    <StopIcon className={"w-5 h-5 stroke-2"} />
+                    <StopIcon className={"w-4 h-4 stroke-2"} />
                   </button>
                 ) : (
                   <button
@@ -172,7 +187,7 @@ export default function Chat() {
                       isGPT4 ? "bg-[#AB68FF]" : "bg-gray-800"
                     } rounded-full text-white`}
                   >
-                    <ArrowUpIcon className={"w-5 h-5 stroke-2"} />
+                    <ArrowUpIcon className={"w-4 h-4 stroke-2"} />
                   </button>
                 )}
               </div>
@@ -181,10 +196,33 @@ export default function Chat() {
         </div>
       </form>
       <div
+        {...getRootProps()}
         className={
           "h-[calc(100vh-85px)] md:h-[calc(100vh-134px)] w-full overflow-y-auto relative"
         }
       >
+        <Transition
+          show={isDragActive}
+          enter="transition-opacity duration-75"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="transition-opacity duration-150"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <div
+            className={"absolute bg-gray-50 w-full h-full p-4 z-10 border-t"}
+          >
+            <div
+              className={
+                "w-full h-full border-4 border-dashed border-gray-400 flex flex-col items-center justify-center rounded-lg gap-3"
+              }
+            >
+              <ArrowDownTrayIcon className={"w-10 h-10 text-gray-600"} />
+              <div className={"text-gray-600"}>Drag and drop files</div>
+            </div>
+          </div>
+        </Transition>
         {messages.length > 0 ? (
           <MessageBox
             messages={messages}
