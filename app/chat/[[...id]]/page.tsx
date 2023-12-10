@@ -54,16 +54,16 @@ export default function Chat() {
 
   const tips = useMemo(() => {
     if (!isLoading) {
-      return "⚙️ Generating content...";
+      return "Generating content";
     }
     const lastMessage = messages[messages.length - 1];
     if (lastMessage.role === "assistant" && !lastMessage.content) {
-      return `🛠️ Preparing: ${lastMessage.name}`;
+      return `Prepare ${lastMessage.name}`;
     }
     if (lastMessage.role === "function") {
-      return `🏃 Running: ${lastMessage.name}...`;
+      return `Running ${lastMessage.name}`;
     }
-    return "⚙️ Generating content...";
+    return "Generating content";
   }, [messages, isLoading]);
 
   return (
@@ -84,8 +84,10 @@ export default function Chat() {
             <div className={"w-full flex gap-2"}>
               <div
                 className={`border ${
-                  isPurple ? "border-[#AB68FF] ring-[#AB68FF] ring-1" : "shadow"
-                } flex rounded-[18px] md:rounded w-full px-3 py-1.5 md:py-3 md:px-5 text-gray-800 bg-white items-end gap-2`}
+                  isPurple
+                    ? "border-[#AB68FF] ring-[#AB68FF] ring-1"
+                    : "border-gray-200"
+                } flex rounded md:rounded w-full px-3 py-1.5 md:py-3 md:px-5 text-gray-800 bg-white items-end gap-2`}
               >
                 {isLoading ? (
                   <div
@@ -109,7 +111,7 @@ export default function Chat() {
                       e.target.style.height = e.target.scrollHeight + "px";
                       handleInputChange(e);
                     }}
-                    placeholder={"Message"}
+                    placeholder={isPurple ? "Message GPT-4" : "Message GPT-3.5"}
                     onKeyDown={async (e) => {
                       if (e.key === "Enter" && !e.shiftKey) {
                         if (e.nativeEvent.isComposing) return;
@@ -135,14 +137,16 @@ export default function Chat() {
                 <button
                   type={isLoading ? "button" : "submit"}
                   onClick={isLoading ? stop : undefined}
-                  className={`h-6 w-6 items-center hidden md:flex ${
-                    isPurple ? "text-[#AB68FF]" : "text-[#19C37D]"
-                  } justify-center rounded`}
+                  className={`h-6 w-6 items-center hidden md:flex justify-center rounded`}
                 >
                   {isLoading ? (
-                    <StopIcon className={"w-5 h-5 stroke-2"} />
+                    <StopIcon className={"w-6 h-6 stroke-2"} />
                   ) : (
-                    <ArrowUpIcon className={"w-5 h-5 stroke-2"} />
+                    <ArrowUpIcon
+                      className={`w-6 h-6 stroke-2 p-1 text-white rounded ${
+                        isPurple ? "bg-[#AB68FF]" : "bg-gray-800"
+                      } `}
+                    />
                   )}
                 </button>
               </div>
@@ -153,16 +157,16 @@ export default function Chat() {
               >
                 {isLoading ? (
                   <button
-                    className={`p-2 bg-[#0066FF] text-white rounded-full`}
+                    className={`p-2 bg-gray-800 text-white rounded-full`}
                     onClick={stop}
                   >
-                    <StopIcon className={"w-4 h-4 stroke-2"} />
+                    <StopIcon className={"w-5 h-5 stroke-2"} />
                   </button>
                 ) : (
                   <button
                     type="submit"
                     className={`p-2 ${
-                      isPurple ? "bg-[#AB68FF]" : "bg-[#19C37D]"
+                      isPurple ? "bg-[#AB68FF]" : "bg-gray-800"
                     } rounded-full text-white`}
                   >
                     <ArrowUpIcon className={"w-5 h-5 stroke-2"} />
