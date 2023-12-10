@@ -16,7 +16,11 @@ import { functions, functionCallHandler } from "@/app/utils/functions";
 import MobileDrawer from "@/app/chat/[[...id]]/MobileDrawer";
 import dynamic from "next/dynamic";
 import dysortid from "@/app/utils/dysortid";
-import { ArrowDownTrayIcon, ArrowUpIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowDownTrayIcon,
+  ArrowUpIcon,
+  PaperClipIcon,
+} from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { useDropzone } from "react-dropzone";
 import { Transition } from "@headlessui/react";
@@ -60,7 +64,15 @@ export default function Chat() {
     // Do something with the files
     console.log(acceptedFiles);
   }, []);
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  const {
+    getRootProps,
+    getInputProps,
+    isDragActive,
+    open,
+    acceptedFiles,
+    isDragAccept,
+    isDragReject,
+  } = useDropzone({
     onDrop,
     noClick: true,
   });
@@ -73,16 +85,16 @@ export default function Chat() {
 
   const tips = useMemo(() => {
     if (!isLoading) {
-      return "Generating content";
+      return "Generating...";
     }
     const lastMessage = messages[messages.length - 1];
     if (lastMessage.role === "assistant" && !lastMessage.content) {
-      return `Prepare ${lastMessage.name}`;
+      return `Prepare ${lastMessage.name}...`;
     }
     if (lastMessage.role === "function") {
-      return `Running ${lastMessage.name}`;
+      return `Running ${lastMessage.name}...`;
     }
-    return "Generating content";
+    return "Generating...";
   }, [messages, isLoading]);
 
   return (
@@ -106,7 +118,7 @@ export default function Chat() {
                   isGPT4
                     ? "border-[#AB68FF] ring-[#AB68FF] ring-1"
                     : "border-gray-200"
-                } flex rounded md:rounded w-full px-3 py-1.5 md:py-3 md:px-5 text-gray-800 bg-white items-end gap-2`}
+                } flex rounded md:rounded w-full px-3 py-1.5 md:py-3 md:px-5 text-gray-800 bg-white items-end gap-3`}
               >
                 {isLoading ? (
                   <div
@@ -130,7 +142,9 @@ export default function Chat() {
                       e.target.style.height = e.target.scrollHeight + "px";
                       handleInputChange(e);
                     }}
-                    placeholder={isGPT4 ? "Message GPT-4" : "Message GPT-3.5"}
+                    placeholder={
+                      isGPT4 ? "Message GPT-4 ..." : "Message GPT-3.5 ..."
+                    }
                     onKeyDown={async (e) => {
                       if (e.key === "Enter" && !e.shiftKey) {
                         if (e.nativeEvent.isComposing) return;
@@ -152,6 +166,14 @@ export default function Chat() {
                       }
                     }}
                   />
+                )}
+                {isGPT4 && (
+                  <button
+                    onClick={open}
+                    className={`h-6 w-6 items-center flex justify-center`}
+                  >
+                    <PaperClipIcon className={"w-5 h-5 text-gray-600"} />
+                  </button>
                 )}
                 <button
                   type={isLoading ? "button" : "submit"}
