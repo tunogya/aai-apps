@@ -75,6 +75,7 @@ export default function Chat() {
   } = useDropzone({
     onDrop,
     noClick: true,
+    noDrag: !isGPT4,
   });
 
   useEffect(() => {
@@ -238,11 +239,11 @@ export default function Chat() {
           >
             <div
               className={
-                "w-full h-full border-4 border-dashed border-gray-400 flex flex-col items-center justify-center rounded-lg gap-3"
+                "w-full h-full border-4 border-dashed border-[#AB68FF] text-[#AB68FF] flex flex-col items-center justify-center rounded-lg gap-3"
               }
             >
-              <ArrowDownTrayIcon className={"w-10 h-10 text-gray-600"} />
-              <div className={"text-gray-600"}>Drag and drop files</div>
+              <ArrowDownTrayIcon className={"w-10 h-10"} />
+              <div>Drag and drop files</div>
             </div>
           </div>
         </Transition>
