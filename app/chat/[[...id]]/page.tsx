@@ -4,13 +4,14 @@ import { useChat } from "ai/react";
 import React, { useEffect, useMemo, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import useSWR from "swr";
-import { BoltIcon, SparklesIcon, StopIcon } from "@heroicons/react/24/solid";
+import { StopIcon } from "@heroicons/react/24/solid";
 import { useLocalStorage } from "@uidotdev/usehooks";
 import { functions, functionCallHandler } from "@/app/utils/functions";
 import MobileDrawer from "@/app/chat/[[...id]]/MobileDrawer";
 import dynamic from "next/dynamic";
 import dysortid from "@/app/utils/dysortid";
 import { ArrowUpIcon } from "@heroicons/react/24/outline";
+import Image from "next/image";
 
 const MessageBox = dynamic(() => import("@/app/chat/[[...id]]/MessageBox"));
 
@@ -191,16 +192,12 @@ export default function Chat() {
           />
         ) : (
           <div
-            className={`${
-              isGPT4 ? "text-[#AB68FF]" : "text-gray-800"
-            } w-full h-full flex items-center justify-center text-3xl md:text-4xl font-semibold pb-52`}
+            className={`w-full h-full flex flex-col items-center justify-center text-2xl md:text-3xl font-semibold pb-40 gap-3 text-gray-800`}
           >
-            {!isGPT4 ? (
-              <BoltIcon className={"w-10 h-10"} />
-            ) : (
-              <SparklesIcon className={"w-10 h-10"} />
-            )}
-            abandon.ai
+            <div className={"p-4 border rounded-full"}>
+              <Image src={"/favicon.svg"} alt={""} height={40} width={40} />
+            </div>
+            <div>abandon.ai</div>
           </div>
         )}
       </div>
