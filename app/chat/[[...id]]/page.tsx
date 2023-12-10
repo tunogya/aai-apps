@@ -19,13 +19,13 @@ import dysortid from "@/app/utils/dysortid";
 import {
   ArrowDownTrayIcon,
   ArrowUpIcon,
+  CloudArrowUpIcon,
   PaperClipIcon,
   XCircleIcon,
 } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { useDropzone } from "react-dropzone";
 import { Transition } from "@headlessui/react";
-import Skeleton from "react-loading-skeleton";
 
 const MessageBox = dynamic(() => import("@/app/chat/[[...id]]/MessageBox"));
 
@@ -72,16 +72,10 @@ export default function Chat() {
         method: "POST",
         body: formData,
       }).then((res) => res.json());
-      setUploadStatus("success");
+      setUploadStatus("idle");
       setImageUrl(res.url);
-      setTimeout(() => {
-        setUploadStatus("idle");
-      }, 3_000);
     } catch (e) {
       setUploadStatus("error");
-      setTimeout(() => {
-        setUploadStatus("idle");
-      }, 3_000);
     }
   }, []);
   const {
@@ -220,40 +214,44 @@ export default function Chat() {
                         }
                       }}
                     />
-                    {uploadStatus === "loading" && acceptedFiles.length > 0 && (
-                      <div className={"h-fit w-full relative"}>
-                        <div
-                          className={
-                            "absolute top-2 right-2 text-gray-400 text-xs z-20"
-                          }
-                        >
-                          uploading...
-                        </div>
-                        <Skeleton className={"w-full h-24 z-10"} />
-                      </div>
-                    )}
-                    {imageUrl && (
-                      <div className={"h-24 w-full relative"}>
-                        <button
-                          onClick={() => {
-                            setImageUrl(null);
-                          }}
-                          className={
-                            "absolute top-2 right-2 text-gray-800 hover:text-red-500"
-                          }
-                        >
-                          <XCircleIcon className={"w-5 h-5"} />
-                        </button>
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={imageUrl}
-                          alt={"images"}
-                          className={
-                            "w-full h-24 object-contain border rounded-lg"
-                          }
-                        />
-                      </div>
-                    )}
+                    <div className={"flex"}>
+                      {acceptedFiles.length > 0 &&
+                        (uploadStatus === "loading" ||
+                          (uploadStatus === "idle" && imageUrl)) && (
+                          <div className={"h-24 w-fit relative"}>
+                            {imageUrl ? (
+                              <button
+                                onClick={() => {
+                                  setImageUrl(null);
+                                }}
+                                className={
+                                  "absolute top-1 right-1 text-gray-800 hover:text-red-500"
+                                }
+                              >
+                                <XCircleIcon className={"w-5 h-5"} />
+                              </button>
+                            ) : (
+                              <div
+                                className={
+                                  "absolute top-1 right-1 text-gray-800"
+                                }
+                              >
+                                <CloudArrowUpIcon
+                                  className={"w-5 h-5 animate-bounce"}
+                                />
+                              </div>
+                            )}
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={URL.createObjectURL(acceptedFiles[0])}
+                              alt={"images"}
+                              className={
+                                "w-full h-24 object-contain rounded-lg"
+                              }
+                            />
+                          </div>
+                        )}
+                    </div>
                   </div>
                 )}
                 {isGPT4 && (
