@@ -40,7 +40,7 @@ const MessageBox: FC<{
     [] as string[],
   );
   const audio = useRef(new Audio());
-  const [source, setSource] = useState("");
+  const [url, setUrl] = useState("");
 
   useEffect(() => {
     audio.current.addEventListener("playing", () => {
@@ -89,8 +89,8 @@ const MessageBox: FC<{
         "Content-Type": "application/json",
       },
     }).then((res) => res.json());
-    setSource(res.source);
-    audio.current.src = res.source;
+    setUrl(res.url);
+    audio.current.src = res.url;
     await audio.current.play();
   };
 
@@ -138,8 +138,8 @@ const MessageBox: FC<{
                 .fromNow()}
             </div>
             <div className={"group-hover:opacity-100 opacity-0 space-x-1 flex"}>
-              {source && (
-                <Link href={source} target={"_blank"}>
+              {url && (
+                <Link href={url} target={"_blank"}>
                   <div
                     className={"rounded p-1 hover:bg-gray-100 cursor-pointer"}
                   >

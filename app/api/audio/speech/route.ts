@@ -43,7 +43,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     );
     return NextResponse.json({
       cache: true,
-      source: `https://s3.abandon.ai/audio/${cid}.mp3`,
+      url: `https://s3.abandon.ai/audio/${cid}.mp3`,
     });
   } catch (e) {
     console.log("NoSuchKey:", `audio/${cid}.mp3`);
@@ -93,7 +93,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       console.log(e);
     }
     return NextResponse.json({
-      source: `https://s3.abandon.ai/audio/${cid}.mp3`,
+      url: `https://s3.abandon.ai/audio/${cid}.mp3`,
     });
   } catch (e) {
     return NextResponse.json(
