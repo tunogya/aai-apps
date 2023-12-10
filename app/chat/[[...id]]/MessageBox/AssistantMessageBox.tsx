@@ -17,6 +17,7 @@ import dynamic from "next/dynamic";
 import Skeleton from "react-loading-skeleton";
 import Link from "next/link";
 import { useSessionStorage } from "@uidotdev/usehooks";
+import Image from "next/image";
 
 const Markdown = dynamic(
   () => import("@/app/chat/[[...id]]/MessageBox/Markdown"),
@@ -114,7 +115,7 @@ const MessageBox: FC<{
         <div className={"shrink-0"}>
           <div
             className={`w-6 h-6 my-1 md:my-0 md:w-8 md:h-8 ${
-              isGPT4 ? "bg-[#AB68FF]" : "bg-[#19C37D]"
+              isGPT4 ? "bg-[#AB68FF]" : "bg-gray-800"
             } text-white flex items-center justify-center rounded-full md:rounded-none`}
           >
             <svg
