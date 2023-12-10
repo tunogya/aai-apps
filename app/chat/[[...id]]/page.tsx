@@ -63,10 +63,26 @@ export default function Chat() {
   const isGPT4 = model.startsWith("gpt-4");
   const router = useRouter();
   const [uploadStatus, setUploadStatus] = useState("idle");
-  const onDropAccepted = useCallback((acceptedFiles: any) => {
-    // Do something with the files
-    console.log(acceptedFiles);
+  const onDropAccepted = useCallback(async (acceptedFiles: any) => {
     setUploadStatus("loading");
+    const formData = new FormData();
+    formData.append("file", acceptedFiles[0]);
+    try {
+      const res = await fetch(`/api/files`, {
+        method: "POST",
+        body: formData,
+      }).then((res) => res.json());
+      setUploadStatus("success");
+      setImageUrl(res.url);
+      setTimeout(() => {
+        setUploadStatus("idle");
+      }, 3_000);
+    } catch (e) {
+      setUploadStatus("error");
+      setTimeout(() => {
+        setUploadStatus("idle");
+      }, 3_000);
+    }
   }, []);
   const {
     getRootProps,
@@ -123,7 +139,7 @@ export default function Chat() {
       >
         <div
           className={
-            "absolute bg-gray-50 w-full h-[calc(100vh-80px)] md:h-[calc(100vh-60px)] p-4 z-10 border-t"
+            "absolute bg-gray-50 w-full h-[calc(100vh-80px)] md:h-[calc(100vh-60px)] p-4 z-50 border-t"
           }
         >
           <div
@@ -208,7 +224,7 @@ export default function Chat() {
                       <div className={"h-fit w-full relative"}>
                         <div
                           className={
-                            "absolute top-2 right-2 text-gray-400 text-xs z-11"
+                            "absolute top-2 right-2 text-gray-400 text-xs z-20"
                           }
                         >
                           uploading...
@@ -217,9 +233,11 @@ export default function Chat() {
                       </div>
                     )}
                     {imageUrl && (
-                      <div className={"h-fit w-full py-1 relative"}>
+                      <div className={"h-24 w-full relative"}>
                         <button
-                          onClick={() => {}}
+                          onClick={() => {
+                            setImageUrl(null);
+                          }}
                           className={
                             "absolute top-2 right-2 text-gray-800 hover:text-red-500"
                           }
@@ -231,7 +249,7 @@ export default function Chat() {
                           src={imageUrl}
                           alt={"images"}
                           className={
-                            "w-full max-h-24 object-contain border rounded-lg"
+                            "w-full h-24 object-contain border rounded-lg"
                           }
                         />
                       </div>
