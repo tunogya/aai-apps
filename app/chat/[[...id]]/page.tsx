@@ -208,7 +208,7 @@ export default function Chat() {
                       <div className={"h-fit w-full relative"}>
                         <div
                           className={
-                            "absolute top-2 right-2 text-gray-400 text-xs z-20"
+                            "absolute top-2 right-2 text-gray-400 text-xs z-11"
                           }
                         >
                           uploading...
