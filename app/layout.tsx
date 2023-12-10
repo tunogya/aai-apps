@@ -13,7 +13,8 @@ const TailwindIndicator = dynamic(
 );
 
 const title = "AbandonAI";
-const description = "Powered by OpenAI";
+const description =
+  "AbandonAI is a free-to-use AI system. It can help you with coding, drawing and more. All in one place.";
 
 export const metadata: Metadata = {
   title,
