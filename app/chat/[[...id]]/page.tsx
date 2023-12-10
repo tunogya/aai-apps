@@ -58,6 +58,7 @@ export default function Chat() {
   const router = useRouter();
   const onDrop = useCallback((acceptedFiles: any) => {
     // Do something with the files
+    console.log(acceptedFiles);
   }, []);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,

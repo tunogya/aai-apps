@@ -8,8 +8,8 @@ import {
   ClipboardIcon,
   CloudArrowDownIcon,
   ExclamationTriangleIcon,
-  PlayPauseIcon,
-  SpeakerWaveIcon,
+  PauseCircleIcon,
+  MusicalNoteIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
 import copy from "copy-to-clipboard";
@@ -42,9 +42,6 @@ const MessageBox: FC<{
   const [source, setSource] = useState("");
 
   useEffect(() => {
-    audio.current.addEventListener("play", () => {
-      setSpeechState("play");
-    });
     audio.current.addEventListener("playing", () => {
       setSpeechState("playing");
     });
@@ -59,9 +56,6 @@ const MessageBox: FC<{
     });
 
     return () => {
-      audio.current.removeEventListener("play", () => {
-        setSpeechState("play");
-      });
       audio.current.removeEventListener("playing", () => {
         setSpeechState("playing");
       });
@@ -162,10 +156,10 @@ const MessageBox: FC<{
                 }
               >
                 {(speechState === "ended" || speechState === "pause") && (
-                  <SpeakerWaveIcon className={"w-4 h-4 stroke-2"} />
+                  <MusicalNoteIcon className={"w-4 h-4 stroke-2"} />
                 )}
                 {speechState === "playing" && (
-                  <PlayPauseIcon className={"w-4 h-4 stroke-2"} />
+                  <PauseCircleIcon className={"w-4 h-4 stroke-2"} />
                 )}
                 {speechState === "loading" && (
                   <ArrowPathIcon className={"w-4 h-4 stroke-2 animate-spin"} />
