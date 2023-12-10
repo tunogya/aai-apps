@@ -1,7 +1,7 @@
 "use client";
 
 import { useChat } from "ai/react";
-import React, { useEffect, useMemo, useRef } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import useSWR from "swr";
 import { StopIcon } from "@heroicons/react/24/solid";
@@ -28,6 +28,7 @@ export default function Chat() {
     fetch(url).then((res) => res.json()),
   );
   const inputRef = useRef(null);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [model, setModel] = useLocalStorage("chat-model", "gpt-3.5-turbo");
   const { messages, input, handleInputChange, handleSubmit, isLoading, stop } =
     useChat({
@@ -40,6 +41,7 @@ export default function Chat() {
         id: currentChatId,
         model: model,
         functions: functions,
+        imageUrl: imageUrl,
       },
       initialMessages: data ? data?.item?.messages : [],
       experimental_onFunctionCall: functionCallHandler,

@@ -30,7 +30,28 @@ export async function POST(req: NextRequest): Promise<Response> {
   const { user } = await getSession();
   const sub = user.sub;
 
-  let { messages, model, id, functions } = await req.json();
+  let { messages, model, id, functions, imageUrl } = await req.json();
+  // handler for image
+  if (imageUrl) {
+    // only gpt-4-vision-preview is supported
+    model = "gpt-4-vision-preview";
+    const initialMessages = messages.slice(0, -1);
+    const currentMessage = messages[messages.length - 1];
+    messages = [
+      ...initialMessages,
+      {
+        ...currentMessage,
+        content: [
+          { type: "text", text: currentMessage.content },
+          {
+            type: "image_url",
+            image_url: imageUrl,
+          },
+        ],
+      },
+    ];
+  }
+
   let max_tokens = 1024;
 
   const isPremium = await redisClient.get(`premium:${sub}`);
