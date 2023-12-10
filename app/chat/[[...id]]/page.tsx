@@ -243,6 +243,11 @@ export default function Chat() {
                             src={URL.createObjectURL(acceptedFiles[0])}
                             alt={"images"}
                             className={"w-full h-24 object-contain rounded-lg"}
+                            onLoad={() =>
+                              URL.revokeObjectURL(
+                                URL.createObjectURL(acceptedFiles[0]),
+                              )
+                            }
                           />
                         </div>
                       )}
