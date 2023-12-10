@@ -214,44 +214,38 @@ export default function Chat() {
                         }
                       }}
                     />
-                    <div className={"flex"}>
-                      {acceptedFiles.length > 0 &&
-                        (uploadStatus === "loading" ||
-                          (uploadStatus === "idle" && imageUrl)) && (
-                          <div className={"h-24 w-fit relative"}>
-                            {imageUrl ? (
-                              <button
-                                onClick={() => {
-                                  setImageUrl(null);
-                                }}
-                                className={
-                                  "absolute top-1 right-1 text-gray-800 hover:text-red-500"
-                                }
-                              >
-                                <XCircleIcon className={"w-5 h-5"} />
-                              </button>
-                            ) : (
-                              <div
-                                className={
-                                  "absolute top-1 right-1 text-gray-800"
-                                }
-                              >
-                                <CloudArrowUpIcon
-                                  className={"w-5 h-5 animate-bounce"}
-                                />
-                              </div>
-                            )}
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img
-                              src={URL.createObjectURL(acceptedFiles[0])}
-                              alt={"images"}
+                    {acceptedFiles.length > 0 &&
+                      (uploadStatus === "loading" ||
+                        (uploadStatus === "idle" && imageUrl)) && (
+                        <div className={"h-24 w-fit relative"}>
+                          {imageUrl ? (
+                            <button
+                              onClick={() => {
+                                setImageUrl(null);
+                              }}
                               className={
-                                "w-full h-24 object-contain rounded-lg"
+                                "absolute top-1 right-1 text-gray-800 hover:text-red-500"
                               }
-                            />
-                          </div>
-                        )}
-                    </div>
+                            >
+                              <XCircleIcon className={"w-5 h-5"} />
+                            </button>
+                          ) : (
+                            <div
+                              className={"absolute top-1 right-1 text-gray-800"}
+                            >
+                              <CloudArrowUpIcon
+                                className={"w-5 h-5 animate-bounce"}
+                              />
+                            </div>
+                          )}
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={URL.createObjectURL(acceptedFiles[0])}
+                            alt={"images"}
+                            className={"w-full h-24 object-contain rounded-lg"}
+                          />
+                        </div>
+                      )}
                   </div>
                 )}
                 {isGPT4 && (
@@ -321,9 +315,7 @@ export default function Chat() {
           <div
             className={`w-full h-full flex flex-col items-center justify-center text-xl md:text-2xl lg:text-3xl pb-40 gap-3 text-gray-800`}
           >
-            <div className={"p-3 border rounded-full"}>
-              <Image src={"/favicon.svg"} alt={""} height={40} width={40} />
-            </div>
+            <Image src={"/favicon.svg"} alt={""} height={40} width={40} />
             <div>abandon.ai</div>
           </div>
         )}
