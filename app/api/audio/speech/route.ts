@@ -1,10 +1,12 @@
 import OpenAI from "openai";
-import calculateHash from "@/app/utils/calculateHash";
 import s3Client from "@/app/utils/s3Client";
 import { HeadObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
 import { NextRequest, NextResponse } from "next/server";
 import { getSession } from "@auth0/nextjs-auth0";
 import redisClient from "@/app/utils/redisClient";
+import { CID } from "multiformats/cid";
+import * as json from "multiformats/codecs/json";
+import { sha256 } from "multiformats/hashes/sha2";
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   // @ts-ignore
@@ -22,29 +24,29 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   let { model, input, voice, response_format, speed } = await req.json();
 
-  const hash = await calculateHash(
-    JSON.stringify({
-      model,
-      input,
-      voice,
-      response_format,
-      speed,
-    }),
-  );
+  const bytes = json.encode({
+    model,
+    input,
+    voice,
+    response_format,
+    speed,
+  });
+  const hash = await sha256.digest(bytes);
+  const cid = CID.create(1, json.code, hash);
 
   try {
     await s3Client.send(
       new HeadObjectCommand({
         Bucket: "abandonai-prod",
-        Key: `audio/${hash}.mp3`,
+        Key: `audio/${cid}.mp3`,
       }),
     );
     return NextResponse.json({
       cache: true,
-      source: `https://s3.abandon.ai/audio/${hash}.mp3`,
+      source: `https://s3.abandon.ai/audio/${cid}.mp3`,
     });
   } catch (e) {
-    console.log("NoSuchKey:", `audio/${hash}.mp3`);
+    console.log("NoSuchKey:", `audio/${cid}.mp3`);
   }
 
   try {
@@ -73,7 +75,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         s3Client.send(
           new PutObjectCommand({
             Bucket: "abandonai-prod",
-            Key: `audio/${hash}.mp3`,
+            Key: `audio/${cid}.mp3`,
             Body: buffer,
             ContentType: "audio/mpeg",
           }),
@@ -81,7 +83,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         s3Client.send(
           new PutObjectCommand({
             Bucket: "abandonai-prod",
-            Key: `audio/${hash}.json`,
+            Key: `audio/${cid}.json`,
             Body: jsonBuffer,
             ContentType: "application/json",
           }),
@@ -91,7 +93,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       console.log(e);
     }
     return NextResponse.json({
-      source: `https://s3.abandon.ai/audio/${hash}.mp3`,
+      source: `https://s3.abandon.ai/audio/${cid}.mp3`,
     });
   } catch (e) {
     return NextResponse.json(
