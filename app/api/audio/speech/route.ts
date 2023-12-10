@@ -83,7 +83,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         s3Client.send(
           new PutObjectCommand({
             Bucket: "abandonai-prod",
-            Key: `audio/${cid}.json`,
+            Key: `audio/${cid}`,
             Body: jsonBuffer,
             ContentType: "application/json",
           }),
