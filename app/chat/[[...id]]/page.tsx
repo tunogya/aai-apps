@@ -19,9 +19,8 @@ import dysortid from "@/app/utils/dysortid";
 import {
   ArrowDownTrayIcon,
   ArrowUpIcon,
-  CloudArrowUpIcon,
   PaperClipIcon,
-  XCircleIcon,
+  TrashIcon,
 } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import { useDropzone } from "react-dropzone";
@@ -42,68 +41,72 @@ export default function Chat() {
     fetch(url).then((res) => res.json()),
   );
   const inputRef = useRef(null);
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [model, setModel] = useLocalStorage("chat-model", "gpt-3.5-turbo");
-  const { messages, input, handleInputChange, handleSubmit, isLoading, stop } =
-    useChat({
-      api: "/api/chat",
+  const [files, setFiles] = useState<
+    {
+      imageUrl: {
+        url: string;
+      };
+    }[]
+  >([]);
+  const {
+    messages,
+    input,
+    handleInputChange,
+    handleSubmit,
+    isLoading,
+    stop,
+    setInput,
+  } = useChat({
+    api: "/api/chat",
+    id: currentChatId,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: {
       id: currentChatId,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: {
-        id: currentChatId,
-        model: model,
-        functions: functions,
-        imageUrl: imageUrl,
-      },
-      initialMessages: data ? data?.item?.messages : [],
-      experimental_onFunctionCall: functionCallHandler,
-      onError: (error) => {
-        console.log(error);
-      },
-      onFinish: () => {
-        setImageUrl(null);
-      },
-    });
+      model: model,
+      functions: functions,
+    },
+    initialMessages: data ? data?.item?.messages : [],
+    experimental_onFunctionCall: functionCallHandler,
+    onError: (error) => {
+      console.log(error);
+    },
+    onFinish: () => {
+      // setImageUrl(null);
+    },
+  });
   const isGPT4 = model.startsWith("gpt-4");
   const router = useRouter();
-  const [uploadStatus, setUploadStatus] = useState("idle");
   const onDropAccepted = useCallback(async (acceptedFiles: any) => {
-    setUploadStatus("loading");
-    const formData = new FormData();
-    formData.append("file", acceptedFiles[0]);
-    try {
-      const res = await fetch(`/api/files`, {
-        method: "POST",
-        body: formData,
-      }).then((res) => res.json());
-      setUploadStatus("idle");
-      setImageUrl(res.url);
-    } catch (e) {
-      setUploadStatus("error");
+    for (const item of acceptedFiles) {
+      const reader = new FileReader();
+      reader.readAsDataURL(item);
+      reader.onload = async () => {
+        const imageUrl = reader.result as string;
+        setFiles((prev) => [
+          ...prev,
+          {
+            imageUrl: {
+              url: imageUrl,
+            },
+          },
+        ]);
+      };
     }
   }, []);
-  const {
-    getRootProps,
-    getInputProps,
-    isDragActive,
-    open,
-    acceptedFiles,
-    isDragAccept,
-    isDragReject,
-  } = useDropzone({
+  const { getRootProps, isDragActive, open } = useDropzone({
     onDropAccepted,
     noClick: true,
+    noKeyboard: true,
+    autoFocus: false,
     noDrag: !isGPT4,
     accept: {
       "image/*": [],
     },
-    maxFiles: 1,
     maxSize: 5 * 1024 * 1024,
   });
-
-  console.log(messages);
 
   useEffect(() => {
     if (!params?.id?.[0] && currentChatId) {
@@ -222,43 +225,36 @@ export default function Chat() {
                         }
                       }}
                     />
-                    {acceptedFiles.length > 0 &&
-                      (uploadStatus === "loading" ||
-                        (uploadStatus === "idle" && imageUrl)) && (
-                        <div className={"h-24 w-fit relative"}>
-                          {imageUrl ? (
+                    {files.length > 0 && (
+                      <div
+                        className={"max-h-24 flex gap-1 w-full overflow-auto"}
+                      >
+                        {files.map((item, index) => (
+                          <div className={"w-fit relative group"} key={index}>
                             <button
                               onClick={() => {
-                                setImageUrl(null);
+                                setFiles(files.filter((_, i) => i !== index));
                               }}
                               className={
-                                "absolute top-1 right-1 text-gray-800 hover:text-red-500"
+                                "absolute w-full h-full group-hover:visible invisible flex justify-center items-center bg-red-200 bg-opacity-80 rounded-lg"
                               }
                             >
-                              <XCircleIcon className={"w-5 h-5"} />
-                            </button>
-                          ) : (
-                            <div
-                              className={"absolute top-1 right-1 text-gray-800"}
-                            >
-                              <CloudArrowUpIcon
-                                className={"w-5 h-5 animate-bounce"}
+                              <TrashIcon
+                                className={"w-5 h-5 text-red-500 stroke-2"}
                               />
-                            </div>
-                          )}
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
-                            src={URL.createObjectURL(acceptedFiles[0])}
-                            alt={"images"}
-                            className={"w-full h-24 object-contain rounded-lg"}
-                            onLoad={() =>
-                              URL.revokeObjectURL(
-                                URL.createObjectURL(acceptedFiles[0]),
-                              )
-                            }
-                          />
-                        </div>
-                      )}
+                            </button>
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={item.imageUrl.url}
+                              alt={"images"}
+                              className={
+                                "w-full max-h-24 object-contain rounded-lg"
+                              }
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 )}
                 {isGPT4 && (

@@ -30,27 +30,43 @@ export async function POST(req: NextRequest): Promise<Response> {
   const { user } = await getSession();
   const sub = user.sub;
 
-  let { messages, model, id, functions, imageUrl } = await req.json();
-  // handler for image
-  if (imageUrl) {
-    // only gpt-4-vision-preview is supported
-    model = "gpt-4-vision-preview";
+  let { messages, model, id, functions } = await req.json();
+
+  // 如果 content 是json字符串，说明是图片
+  try {
     const initialMessages = messages.slice(0, -1);
     const currentMessage = messages[messages.length - 1];
+    const content = currentMessage.content;
+    const json = JSON.parse(content);
+
+    model = "gpt-4-vision-preview";
+
     messages = [
       ...initialMessages,
       {
         ...currentMessage,
-        content: [
-          { type: "text", text: currentMessage.content },
-          {
-            type: "image_url",
-            image_url: imageUrl,
-          },
-        ],
+        content: json,
       },
     ];
+    // @dev gpt-4-vision-preview do not support functions, https://platform.openai.com/docs/guides/vision
+    //
+    //  messages=[
+    //     {
+    //       "role": "user",
+    //       "content": [
+    //         {"type": "text", "text": "What’s in this image?"},
+    //         {
+    //           "type": "image_url",
+    //           "image_url": {
+    //             "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg",
+    //           },
+    //         },
+    //       ],
+    //     }
+    //   ],
     functions = undefined;
+  } catch (e) {
+    console.log(e);
   }
 
   let max_tokens = 1024;
