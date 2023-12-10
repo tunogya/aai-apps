@@ -50,6 +50,7 @@ export async function POST(req: NextRequest): Promise<Response> {
         ],
       },
     ];
+    functions = undefined;
   }
 
   let max_tokens = 1024;
@@ -148,7 +149,7 @@ export async function POST(req: NextRequest): Promise<Response> {
       temperature: 0.7,
       stream: true,
       max_tokens,
-      functions: functions,
+      functions,
     });
     const data = new experimental_StreamData();
     const stream = OpenAIStream(res, {
@@ -220,7 +221,8 @@ export async function POST(req: NextRequest): Promise<Response> {
   } catch (e) {
     return NextResponse.json(
       {
-        message: "Internal Server Error",
+        error: "Internal Server Error",
+        message: e,
       },
       {
         status: 500,

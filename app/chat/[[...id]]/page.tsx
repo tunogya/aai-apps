@@ -59,6 +59,12 @@ export default function Chat() {
       },
       initialMessages: data ? data?.item?.messages : [],
       experimental_onFunctionCall: functionCallHandler,
+      onError: (error) => {
+        console.log(error);
+      },
+      onFinish: () => {
+        setImageUrl(null);
+      },
     });
   const isGPT4 = model.startsWith("gpt-4");
   const router = useRouter();
@@ -97,6 +103,8 @@ export default function Chat() {
     maxSize: 5 * 1024 * 1024,
   });
 
+  console.log(messages);
+
   useEffect(() => {
     if (!params?.id?.[0] && currentChatId) {
       router.replace(`/chat/${currentChatId}`);
@@ -108,10 +116,10 @@ export default function Chat() {
       return "Generating...";
     }
     const lastMessage = messages[messages.length - 1];
-    if (lastMessage.role === "assistant" && !lastMessage.content) {
+    if (lastMessage?.role === "assistant" && !lastMessage?.content) {
       return `Prepare ${lastMessage.name}...`;
     }
-    if (lastMessage.role === "function") {
+    if (lastMessage?.role === "function") {
       return `Running ${lastMessage.name}...`;
     }
     return "Generating...";
