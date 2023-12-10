@@ -24,7 +24,7 @@ const menu = [
   },
   {
     path: "https://github.com/tunogya/abandonai-app/issues",
-    name: "Feedback",
+    name: "Issues",
     prefetch: false,
     target: "_blank",
   },
@@ -52,7 +52,7 @@ const CoreNav = () => {
             scroll={false}
             className={`text-sm font-semibold hover:bg-gray-50 w-full p-2 rounded flex items-center ${
               path.includes(item.path) ? `text-[#0066FF]` : "text-gray-700"
-            }`}
+            } ${item.target === "_blank" ? "underline italic" : ""}`}
           >
             {item.name}
             {item.target === "_blank" && (
