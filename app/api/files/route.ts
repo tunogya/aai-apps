@@ -1,13 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getSession } from "@auth0/nextjs-auth0/edge";
+import { getSession } from "@auth0/nextjs-auth0";
 import redisClient from "@/app/utils/redisClient";
 import s3Client from "@/app/utils/s3Client";
 import { HeadObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
 import { sha256 } from "multiformats/hashes/sha2";
 import { CID } from "multiformats/cid";
 import * as raw from "multiformats/codecs/raw";
-
-export const runtime = "edge";
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   // @ts-ignore
@@ -55,6 +53,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       }),
     );
     return NextResponse.json({
+      cache: true,
       url,
     });
   } catch (e) {
