@@ -194,9 +194,9 @@ export default function Chat() {
           />
         ) : (
           <div
-            className={`w-full h-full flex flex-col items-center justify-center text-2xl md:text-3xl font-semibold pb-40 gap-3 text-gray-800`}
+            className={`w-full h-full flex flex-col items-center justify-center text-xl md:text-2xl lg:text-3xl pb-40 gap-3 text-gray-800`}
           >
-            <div className={"p-4 border rounded-full"}>
+            <div className={"p-3 border rounded-full"}>
               <Image src={"/favicon.svg"} alt={""} height={40} width={40} />
             </div>
             <div>abandon.ai</div>
