@@ -6,6 +6,8 @@ import dynamic from "next/dynamic";
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
   PlusIcon,
 } from "@heroicons/react/24/outline";
 import Skeleton from "react-loading-skeleton";
@@ -44,34 +46,48 @@ const SecondaryNav = () => {
   return (
     <div className={"relative z-10"}>
       <div
-        className={
-          "absolute right-[-80px] top-[0] flex w-[72px] h-[52px] md:h-[60px] items-center"
-        }
+        className={`absolute h-[100vh] ${
+          hidden ? "right-[-96px]" : "right-0"
+        } top-[0]`}
       >
-        <button
-          onClick={() => setHidden(!hidden)}
-          className={`${
-            hidden ? "" : "bg-gray-100"
-          } hover:bg-gray-100 rounded-full p-2 cursor-pointer h-9 w-9 text-gray-800`}
-        >
-          {hidden ? (
-            <ArrowRightIcon className={"w-5 h-5 stroke-1.5"} />
-          ) : (
-            <ArrowLeftIcon className={"w-5 h-5 stroke-1.5"} />
-          )}
-        </button>
         {hidden && (
-          <Link
-            href={`/chat`}
-            prefetch
-            className={`hover:bg-gray-100 rounded-full p-2 cursor-pointer h-9 w-9 text-gray-800 hidden md:block`}
-          >
-            <PlusIcon className={"w-5 h-5 stroke-2"} />
-          </Link>
+          <div className={"w-24 px-3 py-3 border border-white"}>
+            <Link
+              href={`/chat`}
+              prefetch
+              className={`hover:bg-gray-100 bg-gray-50 p-3 cursor-pointer w-fit rounded-full text-gray-800 hidden md:block`}
+            >
+              <PlusIcon className={"w-4 h-4 stroke-2"} />
+            </Link>
+          </div>
         )}
+        <div className={"h-full absolute top-0 left-0 flex items-center px-2"}>
+          <button
+            onClick={() => setHidden(!hidden)}
+            className={`py-2 cursor-pointer text-gray-400 ${
+              hidden ? "" : "bg-gray-100"
+            } hover:bg-gray-100 rounded-lg`}
+          >
+            {hidden ? (
+              <ChevronRightIcon className={"w-4 h-4"} />
+            ) : (
+              <ChevronLeftIcon className={"w-4 h-4"} />
+            )}
+          </button>
+        </div>
       </div>
-      <Transition show={!hidden}>
-        <div className={`w-[300px] shrink-0 h-full border-r bg-white`}>
+      <Transition
+        enter="ease-out duration-75"
+        enterFrom="w-0"
+        enterTo="w-[300px]"
+        leave="ease-in duration-150"
+        leaveFrom="w-[300px]"
+        leaveTo="w-0"
+        show={!hidden}
+        appear={true}
+        className={"overflow-hidden border-r"}
+      >
+        <div className={`w-[300px] shrink-0 h-full bg-white`}>
           <Link
             href={`/chat`}
             prefetch
