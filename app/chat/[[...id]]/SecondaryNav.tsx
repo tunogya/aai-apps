@@ -64,9 +64,9 @@ const SecondaryNav = () => {
         <div className={"h-full absolute top-0 left-0 flex items-center px-2"}>
           <button
             onClick={() => setHidden(!hidden)}
-            className={`py-2 cursor-pointer text-gray-400 ${
-              hidden ? "" : "bg-gray-200"
-            } hover:bg-gray-100 rounded-lg`}
+            className={`py-2 cursor-pointer text-[#0066FF] ${
+              hidden ? "bg-gray-100" : "bg-gray-200"
+            } hover:bg-gray-200 rounded-lg`}
           >
             {hidden ? (
               <ChevronRightIcon className={"w-4 h-4"} />
