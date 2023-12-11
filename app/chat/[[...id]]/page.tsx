@@ -71,6 +71,7 @@ export default function Chat() {
     },
     onFinish: () => {
       setFiles([]);
+      setText("");
     },
   });
   const isGPT4 = model.startsWith("gpt-4");
