@@ -31,7 +31,7 @@ export async function POST(req: NextRequest): Promise<Response> {
   const sub = user.sub;
 
   let { messages, model, id, functions } = await req.json();
-  // 如果 content 是json字符串，说明是图片
+  let isVision = false;
   try {
     const initialMessages = messages.slice(0, -1);
     const currentMessage = messages[messages.length - 1];
@@ -39,7 +39,7 @@ export async function POST(req: NextRequest): Promise<Response> {
     const json = JSON.parse(content);
 
     model = "gpt-4-vision-preview";
-
+    isVision = true;
     messages = [
       ...initialMessages,
       {
@@ -151,11 +151,20 @@ export async function POST(req: NextRequest): Promise<Response> {
   const openai = new OpenAI();
 
   const list_append: Array<Message> = [];
-  list_append.push({
-    ...messages[messages.length - 1],
-    id: dysortid(),
-    createdAt: new Date(),
-  });
+  if (isVision) {
+    list_append.push({
+      id: dysortid(),
+      createdAt: new Date(),
+      content: JSON.stringify(messages[messages.length - 1].content),
+      role: messages[messages.length - 1].role,
+    });
+  } else {
+    list_append.push({
+      ...messages[messages.length - 1],
+      id: dysortid(),
+      createdAt: new Date(),
+    });
+  }
 
   try {
     const res = await openai.chat.completions.create({
@@ -191,21 +200,11 @@ export async function POST(req: NextRequest): Promise<Response> {
         }
       },
       async onFinal(completion) {
-        let title = "NaN";
-        try {
-          const contentArray = JSON.parse(messages[0]?.content);
-          for (let i = 0; i < contentArray.length; i++) {
-            if (contentArray[i].type === "text") {
-              if (contentArray[i].text) {
-                title = contentArray[i].text.slice(0, 40);
-                break;
-              }
-            }
-          }
-        } catch (e) {
-          if (messages[0]?.content) {
-            title = messages[0]?.content.slice(0, 40);
-          }
+        let title;
+        if (isVision) {
+          title = JSON.stringify(messages[0]?.content).slice(0, 40);
+        } else {
+          title = messages[0]?.content.slice(0, 40);
         }
 
         await sqsClient.send(

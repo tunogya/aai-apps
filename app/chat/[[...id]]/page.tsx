@@ -53,7 +53,7 @@ export default function Chat() {
     }[]
   >([]);
   const [text, setText] = useState("");
-  const { messages, input, handleSubmit, isLoading, stop, setInput } = useChat({
+  const { messages, handleSubmit, isLoading, stop, setInput } = useChat({
     api: "/api/chat",
     id: currentChatId,
     headers: {
@@ -158,8 +158,6 @@ export default function Chat() {
       setInput(text);
     }
   }, [text, files]);
-
-  console.log(input);
 
   const hasUploaded = useMemo(() => {
     return files.every((item) => item.imageUrl);
