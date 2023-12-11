@@ -51,11 +51,11 @@ const SecondaryNav = () => {
         } top-[0]`}
       >
         {hidden && (
-          <div className={"w-24 px-3 py-3 border border-transparent"}>
+          <div className={"w-24 p-3"}>
             <Link
               href={`/chat`}
               prefetch
-              className={`hover:bg-gray-100 bg-gray-50 p-3 cursor-pointer w-fit rounded-full text-gray-800 hidden md:block`}
+              className={`w-fit hover:bg-gray-100 p-3 cursor-pointer rounded-full text-gray-800 hidden md:block border`}
             >
               <PlusIcon className={"w-4 h-4 stroke-2"} />
             </Link>
@@ -64,9 +64,9 @@ const SecondaryNav = () => {
         <div className={"h-full absolute top-0 left-0 flex items-center px-2"}>
           <button
             onClick={() => setHidden(!hidden)}
-            className={`py-2 cursor-pointer text-[#0066FF] ${
-              hidden ? "bg-gray-100" : "bg-gray-200"
-            } hover:bg-gray-200 rounded-lg`}
+            className={`py-2 cursor-pointer text-gray-800 ${
+              hidden ? "" : "bg-gray-50"
+            } hover:bg-gray-100 rounded-lg border`}
           >
             {hidden ? (
               <ChevronRightIcon className={"w-4 h-4"} />
