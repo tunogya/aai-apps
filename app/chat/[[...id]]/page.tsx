@@ -82,20 +82,20 @@ export default function Chat() {
   });
   const isGPT4 = model.startsWith("gpt-4");
   const router = useRouter();
-  const onDropAccepted = useCallback(async (acceptedFiles: any) => {
+  const onDropAccepted = useCallback(async (acceptedFiles: File[]) => {
     for (const item of acceptedFiles) {
       const reader = new FileReader();
       reader.readAsDataURL(item);
       reader.onload = async () => {
         const imageUrl = reader.result as string;
-        const buffer = Buffer.from(item, "base64");
+        const buffer = await item.arrayBuffer();
         const uint8Array = new Uint8Array(buffer);
         const hash = await sha256.digest(uint8Array);
-        const cid = CID.create(1, raw.code, hash);
+        const cid = CID.create(1, raw.code, hash).toString();
         setFiles((prev) => [
           ...prev,
           {
-            cid: cid.toString(),
+            cid: cid,
             base64Url: imageUrl,
             imageUrl: undefined,
           },
@@ -103,14 +103,29 @@ export default function Chat() {
         // upload image to s3, use formData
         const formData = new FormData();
         formData.append("file", item);
-        const res = await fetch(`/api/files`, {
-          method: "POST",
-          body: formData,
-        }).then((res) => res.json());
-        // const url = res.url;
+        try {
+          const res = await fetch(`/api/files`, {
+            method: "POST",
+            body: formData,
+          }).then((res) => res.json());
+          setFiles((prev) =>
+            prev.map((item) => {
+              if (item.cid === cid) {
+                return {
+                  ...item,
+                  imageUrl: res.url,
+                };
+              }
+              return item;
+            }),
+          );
+        } catch (e) {
+          console.log(e);
+        }
       };
     }
   }, []);
+  console.log(files);
   const { getRootProps, isDragActive, open } = useDropzone({
     onDropAccepted,
     noClick: true,

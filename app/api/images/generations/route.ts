@@ -81,7 +81,7 @@ export async function POST(req: NextRequest): Promise<Response> {
       const buffer = Buffer.from(image, "base64");
       const uint8Array = new Uint8Array(buffer);
       const hash = await sha256.digest(uint8Array);
-      const cid = CID.create(1, raw.code, hash);
+      const cid = CID.create(1, raw.code, hash).toString();
 
       const jsonBuffer = Buffer.from(JSON.stringify(data));
       await Promise.all([

@@ -40,7 +40,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const buffer = await file.arrayBuffer();
   const uint8Array = new Uint8Array(buffer);
   const hash = await sha256.digest(uint8Array);
-  const cid = CID.create(1, raw.code, hash);
+  const cid = CID.create(1, raw.code, hash).toString();
 
   const url = `https://s3.abandon.ai/files/${cid}`;
 
