@@ -31,7 +31,6 @@ export async function POST(req: NextRequest): Promise<Response> {
   const sub = user.sub;
 
   let { messages, model, id, functions } = await req.json();
-
   // 如果 content 是json字符串，说明是图片
   try {
     const initialMessages = messages.slice(0, -1);
@@ -192,6 +191,23 @@ export async function POST(req: NextRequest): Promise<Response> {
         }
       },
       async onFinal(completion) {
+        let title = "NaN";
+        try {
+          const contentArray = JSON.parse(messages[0]?.content);
+          for (let i = 0; i < contentArray.length; i++) {
+            if (contentArray[i].type === "text") {
+              if (contentArray[i].text) {
+                title = contentArray[i].text.slice(0, 40);
+                break;
+              }
+            }
+          }
+        } catch (e) {
+          if (messages[0]?.content) {
+            title = messages[0]?.content.slice(0, 40);
+          }
+        }
+
         await sqsClient.send(
           new SendMessageBatchCommand({
             QueueUrl: process.env.AI_DB_UPDATE_SQS_FIFO_URL,
@@ -213,7 +229,7 @@ export async function POST(req: NextRequest): Promise<Response> {
                     ":empty_list": [],
                     ":messages": list_append,
                     ":updated": Math.floor(Date.now() / 1000),
-                    ":title": messages[0]?.content?.slice(0, 40) || "Title",
+                    ":title": title,
                   },
                   UpdateExpression:
                     "SET #messages = list_append(if_not_exists(#messages, :empty_list), :messages), #updated = :updated, #title = :title",

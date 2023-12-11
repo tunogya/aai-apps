@@ -25,6 +25,9 @@ import {
 import Image from "next/image";
 import { useDropzone } from "react-dropzone";
 import { Transition } from "@headlessui/react";
+import { sha256 } from "multiformats/hashes/sha2";
+import { CID } from "multiformats/cid";
+import * as raw from "multiformats/codecs/raw";
 
 const MessageBox = dynamic(() => import("@/app/chat/[[...id]]/MessageBox"));
 
@@ -44,9 +47,9 @@ export default function Chat() {
   const [model, setModel] = useLocalStorage("chat-model", "gpt-3.5-turbo");
   const [files, setFiles] = useState<
     {
-      imageUrl: {
-        url: string;
-      };
+      cid: string;
+      base64Url: string;
+      imageUrl?: string;
     }[]
   >([]);
   const {
@@ -85,14 +88,26 @@ export default function Chat() {
       reader.readAsDataURL(item);
       reader.onload = async () => {
         const imageUrl = reader.result as string;
+        const buffer = Buffer.from(item, "base64");
+        const uint8Array = new Uint8Array(buffer);
+        const hash = await sha256.digest(uint8Array);
+        const cid = CID.create(1, raw.code, hash);
         setFiles((prev) => [
           ...prev,
           {
-            imageUrl: {
-              url: imageUrl,
-            },
+            cid: cid.toString(),
+            base64Url: imageUrl,
+            imageUrl: undefined,
           },
         ]);
+        // upload image to s3, use formData
+        const formData = new FormData();
+        formData.append("file", item);
+        const res = await fetch(`/api/files`, {
+          method: "POST",
+          body: formData,
+        }).then((res) => res.json());
+        // const url = res.url;
       };
     }
   }, []);
@@ -245,7 +260,7 @@ export default function Chat() {
                             </button>
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
-                              src={item.imageUrl.url}
+                              src={item.base64Url}
                               alt={"images"}
                               className={
                                 "w-full max-h-24 object-contain rounded-lg"
