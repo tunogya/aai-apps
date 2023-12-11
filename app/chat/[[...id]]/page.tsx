@@ -52,15 +52,8 @@ export default function Chat() {
       imageUrl?: string;
     }[]
   >([]);
-  const {
-    messages,
-    input,
-    handleInputChange,
-    handleSubmit,
-    isLoading,
-    stop,
-    setInput,
-  } = useChat({
+  const [text, setText] = useState("");
+  const { messages, input, handleSubmit, isLoading, stop, setInput } = useChat({
     api: "/api/chat",
     id: currentChatId,
     headers: {
@@ -77,7 +70,7 @@ export default function Chat() {
       console.log(error);
     },
     onFinish: () => {
-      // setImageUrl(null);
+      setFiles([]);
     },
   });
   const isGPT4 = model.startsWith("gpt-4");
@@ -125,7 +118,6 @@ export default function Chat() {
       };
     }
   }, []);
-  console.log(files);
   const { getRootProps, isDragActive, open } = useDropzone({
     onDropAccepted,
     noClick: true,
@@ -143,6 +135,35 @@ export default function Chat() {
       router.replace(`/chat/${currentChatId}`);
     }
   }, [params, currentChatId, router]);
+
+  useEffect(() => {
+    if (files.length > 0) {
+      const content = [];
+      if (text) {
+        content.push({
+          type: "text",
+          text: text,
+        });
+      }
+      for (const item of files) {
+        if (item.imageUrl) {
+          content.push({
+            type: "image_url",
+            image_url: item.imageUrl,
+          });
+        }
+      }
+      setInput(JSON.stringify(content));
+    } else {
+      setInput(text);
+    }
+  }, [text, files]);
+
+  console.log(input);
+
+  const hasUploaded = useMemo(() => {
+    return files.every((item) => item.imageUrl);
+  }, [files]);
 
   const tips = useMemo(() => {
     if (!isLoading) {
@@ -219,7 +240,7 @@ export default function Chat() {
                 ) : (
                   <div className={"w-full flex flex-col gap-2"}>
                     <textarea
-                      value={input}
+                      value={text}
                       className={
                         "w-full outline-none text-sm md:text-base focus:outline-none focus:bg-transparent max-h-52 min-h-6 overflow-y-auto resize-none"
                       }
@@ -229,7 +250,7 @@ export default function Chat() {
                       onChange={(e) => {
                         e.target.style.height = "auto";
                         e.target.style.height = e.target.scrollHeight + "px";
-                        handleInputChange(e);
+                        setText(e.target.value);
                       }}
                       placeholder={
                         isGPT4 ? "Message GPT-4 ..." : "Message GPT-3.5 ..."
@@ -260,7 +281,12 @@ export default function Chat() {
                         className={"max-h-24 flex gap-1 w-full overflow-auto"}
                       >
                         {files.map((item, index) => (
-                          <div className={"w-fit relative group"} key={index}>
+                          <div
+                            className={`w-fit relative group ${
+                              item?.imageUrl ? "" : "animate-pulse scale-75"
+                            }`}
+                            key={index}
+                          >
                             <button
                               onClick={() => {
                                 setFiles(files.filter((_, i) => i !== index));
@@ -297,8 +323,9 @@ export default function Chat() {
                 )}
                 <button
                   type={isLoading ? "button" : "submit"}
+                  disabled={!hasUploaded}
                   onClick={isLoading ? stop : undefined}
-                  className={`h-6 w-6 items-center hidden md:flex justify-center rounded`}
+                  className={`h-6 w-6 items-center hidden md:flex justify-center rounded disabled:opacity-50`}
                 >
                   {isLoading ? (
                     <StopIcon className={"w-6 h-6 stroke-2"} />
@@ -326,9 +353,10 @@ export default function Chat() {
                 ) : (
                   <button
                     type="submit"
+                    disabled={!hasUploaded}
                     className={`p-2 ${
                       isGPT4 ? "bg-[#AB68FF]" : "bg-gray-800"
-                    } rounded-full text-white`}
+                    } rounded-full text-white disabled:opacity-50`}
                   >
                     <ArrowUpIcon className={"w-4 h-4 stroke-2"} />
                   </button>
