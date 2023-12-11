@@ -8,8 +8,8 @@ import {
   ClipboardIcon,
   CloudArrowDownIcon,
   ExclamationTriangleIcon,
-  PauseCircleIcon,
   MusicalNoteIcon,
+  PauseCircleIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
 import copy from "copy-to-clipboard";
@@ -40,6 +40,18 @@ const MessageBox: FC<{
   );
   const audio = useRef(new Audio());
   const [url, setUrl] = useState("");
+  const content = useMemo(() => {
+    try {
+      return JSON.parse(message.content);
+    } catch (e) {
+      return [
+        {
+          type: "text",
+          text: message.content,
+        },
+      ];
+    }
+  }, [message.content]);
 
   useEffect(() => {
     audio.current.addEventListener("playing", () => {
@@ -215,11 +227,40 @@ const MessageBox: FC<{
               </button>
             </div>
           </div>
-          <Markdown content={message.content} isLoading={false} />
+          {content?.map((item: any, index: number) => (
+            <ShowContent item={item} key={index} />
+          ))}
         </div>
       </div>
     </div>
   );
+};
+
+const ShowContent: FC<{
+  item: {
+    type: string;
+    text?: string;
+    image_url?: string;
+  };
+}> = ({ item }) => {
+  if (item.type === "text" && item.text) {
+    return <Markdown content={item.text} isLoading={false} />;
+  }
+
+  if (item.type === "image_url" && item.image_url) {
+    return (
+      <Link href={item.image_url} target={"_blank"}>
+        <img
+          src={item.image_url}
+          alt={""}
+          width={"full"}
+          className={"rounded-lg"}
+        />
+      </Link>
+    );
+  }
+
+  return null;
 };
 
 export default MessageBox;
