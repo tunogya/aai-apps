@@ -51,7 +51,7 @@ const SecondaryNav = () => {
         } top-[0]`}
       >
         {hidden && (
-          <div className={"w-24 px-3 py-3 border border-white"}>
+          <div className={"w-24 px-3 py-3 border border-transparent"}>
             <Link
               href={`/chat`}
               prefetch
@@ -65,7 +65,7 @@ const SecondaryNav = () => {
           <button
             onClick={() => setHidden(!hidden)}
             className={`py-2 cursor-pointer text-gray-400 ${
-              hidden ? "" : "bg-gray-100"
+              hidden ? "" : "bg-gray-200"
             } hover:bg-gray-100 rounded-lg`}
           >
             {hidden ? (

@@ -184,7 +184,7 @@ export default function Chat() {
         <div
           className={"p-2 md:pb-4 w-full md:px-8 xl:px-20 flex justify-center"}
         >
-          <div className={"flex w-full max-w-3xl pl-10 md:pl-0"}>
+          <div className={"flex w-full max-w-3xl"}>
             <div className={"w-full flex gap-2"}>
               <div
                 className={`border ${
