@@ -61,7 +61,11 @@ const SecondaryNav = () => {
             </Link>
           </div>
         )}
-        <div className={"h-full absolute top-0 left-0 flex items-center px-2"}>
+        <div
+          className={
+            "h-[calc(100vh-160px)] absolute top-0 left-0 flex items-center px-2 my-20"
+          }
+        >
           <button
             onClick={() => setHidden(!hidden)}
             className={`py-2 cursor-pointer text-gray-800 ${
