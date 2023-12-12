@@ -67,7 +67,8 @@ export default function Chat() {
     initialMessages: data ? data?.item?.messages : [],
     experimental_onFunctionCall: functionCallHandler,
     onError: (error) => {
-      console.log(error);
+      setFiles([]);
+      setText("");
     },
     onFinish: () => {
       setFiles([]);
