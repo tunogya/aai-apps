@@ -255,7 +255,7 @@ export default function Chat() {
                       placeholder={
                         useGPT4
                           ? useVision
-                            ? "Message GPT-4 Vision"
+                            ? "Message GPT-4 Vision (You can't use any other functions in this mode)"
                             : "Message GPT-4"
                           : "Message GPT-3.5"
                       }
