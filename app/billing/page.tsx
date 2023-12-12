@@ -1,6 +1,5 @@
 import React from "react";
 import dynamic from "next/dynamic";
-import Link from "next/link";
 import Skeleton from "react-loading-skeleton";
 
 const Subscription = dynamic(() => import("@/app/billing/Subscription"), {

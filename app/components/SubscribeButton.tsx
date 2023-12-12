@@ -4,7 +4,8 @@ import { useRouter } from "next/navigation";
 
 export const SubscribeButton: FC<{
   className?: string;
-}> = ({ className }) => {
+  price: string;
+}> = ({ className, price }) => {
   const router = useRouter();
   const [status, setStatus] = useState("idle");
 
@@ -19,7 +20,7 @@ export const SubscribeButton: FC<{
             body: JSON.stringify({
               line_items: [
                 {
-                  price: "price_1OAAdIFPpv8QfieYpQX1p21d",
+                  price: price,
                   quantity: 1,
                 },
               ],

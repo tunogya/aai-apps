@@ -162,11 +162,13 @@ const CSR = () => {
               </div>
             </div>
             <div className={"text-start w-full pt-20 font-medium"}>
+              <li>For all users</li>
               <li>1 Premium account</li>
               <li>Cancel anytime</li>
             </div>
             <div className={"w-full pt-16"}>
               <SubscribeButton
+                price={"price_1OAAdIFPpv8QfieYpQX1p21d"}
                 className={
                   "flex items-center gap-2 bg-pink-300 text-gray-800 px-4 py-3 rounded-full font-semibold cursor-pointer w-full justify-center"
                 }
@@ -188,20 +190,22 @@ const CSR = () => {
             }
           >
             <div className={"flex justify-between w-full"}>
-              <div className={"text-2xl font-medium"}>Pay As You Go</div>
+              <div className={"text-2xl font-medium"}>Premium Standard</div>
               <div className={"flex flex-col items-center"}>
-                <div className={"text-lg font-bold"}>$1.00</div>
-                <div className={"text-[10px]"}>PER DAY</div>
+                <div className={"text-lg font-bold"}>¥25.00</div>
+                <div className={"text-[10px]"}>PER MONTH</div>
               </div>
             </div>
             <div className={"text-start w-full pt-20 font-medium"}>
-              <li>Pay only for what you use</li>
-              <li>Recharge is permanently valid</li>
+              <li>For users in China</li>
+              <li>1 Premium account</li>
+              <li>Cancel anytime</li>
             </div>
             <div className={"w-full pt-16"}>
-              <TopUpButton
+              <SubscribeButton
+                price={"price_1OMY3OFPpv8QfieYllRGM9yi"}
                 className={
-                  "flex items-center gap-2 bg-gray-300 text-gray-800 px-4 py-3 rounded-full font-semibold cursor-pointer w-full justify-center"
+                  "flex items-center gap-2 bg-red-500 text-white px-4 py-3 rounded-full font-semibold cursor-pointer w-full justify-center"
                 }
               />
             </div>
