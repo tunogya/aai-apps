@@ -4,20 +4,20 @@ import React, { useMemo, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import dynamic from "next/dynamic";
 import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
   PlusIcon,
 } from "@heroicons/react/24/outline";
 import Skeleton from "react-loading-skeleton";
 import { Transition } from "@headlessui/react";
+import { useHover } from "@uidotdev/usehooks";
 
 const SecondaryNavItem = dynamic(
   () => import("@/app/chat/[[...id]]/SecondaryNavItem"),
 );
 
 const SecondaryNav = () => {
+  const [ref, hovering] = useHover();
   const getKey = (pageIndex: number, previousPageData: any) => {
     if (previousPageData && !previousPageData.nextCursor) return null;
     if (pageIndex === 0) return `/api/conversation?limit=20`;
@@ -67,6 +67,7 @@ const SecondaryNav = () => {
           }
         >
           <button
+            ref={ref}
             onClick={() => setHidden(!hidden)}
             className={`py-2 cursor-pointer text-gray-800 ${
               hidden ? "" : "bg-gray-50"
@@ -91,7 +92,11 @@ const SecondaryNav = () => {
         appear={true}
         className={"overflow-hidden border-r"}
       >
-        <div className={`w-[300px] shrink-0 h-full bg-white`}>
+        <div
+          className={`w-[300px] shrink-0 h-full ${
+            hovering || hidden ? "bg-gray-50" : "bg-white"
+          }`}
+        >
           <Link
             href={`/chat`}
             prefetch
