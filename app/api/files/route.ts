@@ -21,15 +21,27 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     });
   }
 
-  const formData = await req.formData();
-
-  const file = formData.get("file") as File;
-
-  if (!file) {
+  if (!req.body) {
     return NextResponse.json(
       {
         error: "file required",
-        message: "Please select a file to upload.",
+        message: "Please use form data, file: {file}",
+      },
+      {
+        status: 400,
+      },
+    );
+  }
+
+  let file;
+  try {
+    const formData = await req.formData();
+    file = formData.get("file") as File;
+  } catch (e) {
+    return NextResponse.json(
+      {
+        error: "file required",
+        message: "Please use form data, file: {file}",
       },
       {
         status: 400,
@@ -64,7 +76,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     new PutObjectCommand({
       Bucket: "abandonai-prod",
       Key: `files/${cid}`,
-      Body: file,
+      Body: Buffer.from(buffer),
       ContentType: file.type,
     }),
   );
