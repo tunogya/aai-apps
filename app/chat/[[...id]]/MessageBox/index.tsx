@@ -9,8 +9,8 @@ const MessageBox: FC<{
   messages: Message[];
   currentChatId: string;
   isLoading: boolean;
-  isGPT4: boolean;
-}> = ({ messages, currentChatId, isLoading, isGPT4 }) => {
+  useGPT4: boolean;
+}> = ({ messages, currentChatId, isLoading, useGPT4 }) => {
   const { user } = useUser();
 
   return (
@@ -25,7 +25,7 @@ const MessageBox: FC<{
                 isLast={index === messages.length - 1}
                 currentChatId={currentChatId}
                 isLoading={isLoading}
-                isGPT4={isGPT4}
+                isGPT4={useGPT4}
               />
             )}
             {message.role === "user" && (
@@ -42,7 +42,7 @@ const MessageBox: FC<{
                 isLast={index === messages.length - 1}
                 index={index}
                 isLoading={isLoading}
-                isGPT4={isGPT4}
+                isGPT4={useGPT4}
               />
             )}
           </Fragment>

@@ -74,7 +74,8 @@ export default function Chat() {
       setText("");
     },
   });
-  const isGPT4 = model.startsWith("gpt-4");
+  const useGPT4 = model.startsWith("gpt-4");
+  const useVision = model === "gpt-4-vision-preview";
   const router = useRouter();
   const onDropAccepted = useCallback(async (acceptedFiles: File[]) => {
     for (const item of acceptedFiles) {
@@ -124,7 +125,7 @@ export default function Chat() {
     noClick: true,
     noKeyboard: true,
     autoFocus: false,
-    noDrag: !isGPT4,
+    noDrag: !useVision,
     accept: {
       "image/*": [],
     },
@@ -223,7 +224,7 @@ export default function Chat() {
             <div className={"w-full flex gap-2"}>
               <div
                 className={`border ${
-                  isGPT4
+                  useGPT4
                     ? "border-[#AB68FF] ring-[#AB68FF] ring-1"
                     : "border-gray-200"
                 } flex rounded md:rounded w-full px-3 py-1.5 md:py-3 md:px-5 text-gray-800 bg-white items-end gap-3`}
@@ -244,7 +245,7 @@ export default function Chat() {
                         "w-full outline-none text-sm md:text-base focus:outline-none focus:bg-transparent max-h-52 min-h-6 overflow-y-auto resize-none"
                       }
                       ref={inputRef}
-                      maxLength={isGPT4 ? undefined : 2048}
+                      maxLength={useGPT4 ? undefined : 2048}
                       rows={1}
                       onChange={(e) => {
                         e.target.style.height = "auto";
@@ -252,7 +253,7 @@ export default function Chat() {
                         setText(e.target.value);
                       }}
                       placeholder={
-                        isGPT4 ? "Message GPT-4 ..." : "Message GPT-3.5 ..."
+                        useGPT4 ? "Message GPT-4" : "Message GPT-3.5"
                       }
                       onKeyDown={async (e) => {
                         if (e.key === "Enter" && !e.shiftKey) {
@@ -312,7 +313,7 @@ export default function Chat() {
                     )}
                   </div>
                 )}
-                {isGPT4 && (
+                {useVision && (
                   <button
                     onClick={open}
                     className={`h-6 w-6 items-center flex justify-center`}
@@ -331,7 +332,7 @@ export default function Chat() {
                   ) : (
                     <ArrowUpIcon
                       className={`w-6 h-6 stroke-2 p-1 text-white rounded ${
-                        isGPT4 ? "bg-[#AB68FF]" : "bg-gray-800"
+                        useGPT4 ? "bg-[#AB68FF]" : "bg-gray-800"
                       } `}
                     />
                   )}
@@ -354,7 +355,7 @@ export default function Chat() {
                     type="submit"
                     disabled={!hasUploaded}
                     className={`p-2 ${
-                      isGPT4 ? "bg-[#AB68FF]" : "bg-gray-800"
+                      useGPT4 ? "bg-[#AB68FF]" : "bg-gray-800"
                     } rounded-full text-white disabled:opacity-50`}
                   >
                     <ArrowUpIcon className={"w-4 h-4 stroke-2"} />
@@ -375,7 +376,7 @@ export default function Chat() {
             messages={messages}
             currentChatId={currentChatId}
             isLoading={isLoading}
-            isGPT4={isGPT4}
+            useGPT4={useGPT4}
           />
         ) : (
           <div
