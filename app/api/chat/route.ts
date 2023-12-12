@@ -31,42 +31,34 @@ export async function POST(req: NextRequest): Promise<Response> {
   const sub = user.sub;
 
   let { messages, model, id, functions } = await req.json();
-  let isVision = false;
-  try {
-    const initialMessages = messages.slice(0, -1);
-    const currentMessage = messages[messages.length - 1];
-    const content = currentMessage.content;
-    const json = JSON.parse(content);
 
-    model = "gpt-4-vision-preview";
-    isVision = true;
-    messages = [
-      ...initialMessages,
-      {
-        ...currentMessage,
-        content: json,
-      },
-    ];
-    // @dev gpt-4-vision-preview do not support functions, https://platform.openai.com/docs/guides/vision
-    //
-    //  messages=[
-    //     {
-    //       "role": "user",
-    //       "content": [
-    //         {"type": "text", "text": "What’s in this image?"},
-    //         {
-    //           "type": "image_url",
-    //           "image_url": {
-    //             "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg",
-    //           },
-    //         },
-    //       ],
-    //     }
-    //   ],
-    functions = undefined;
-  } catch (e) {
-    console.log(e);
+  // get title before json parse messages content
+  let title = messages[0]?.content.slice(0, 40);
+  const useVision = model === "gpt-4-vision-preview";
+  // prepare list_append before json parse messages content
+  const list_append: Array<Message> = [];
+  list_append.push({
+    ...messages[messages.length - 1],
+    id: dysortid(),
+    createdAt: new Date(),
+  });
+  // json parse messages content, if (useVision === true)
+  if (useVision) {
+    for (let i = 0; i < messages.length; i++) {
+      const item = messages[i];
+      try {
+        messages[i] = {
+          ...item,
+          content: JSON.parse(item.content),
+        };
+      } catch (e) {
+        messages[i] = item;
+      }
+    }
   }
+
+  // only handle the last 8 messages
+  messages?.slice(-8);
 
   let max_tokens = 1024;
 
@@ -112,9 +104,7 @@ export async function POST(req: NextRequest): Promise<Response> {
         },
       );
     }
-
     max_tokens = 4096;
-    messages?.slice(-8);
   } else {
     if (!isPremium) {
       const ratelimit = new Ratelimit({
@@ -144,27 +134,9 @@ export async function POST(req: NextRequest): Promise<Response> {
         );
       }
     }
-
-    messages?.slice(-8);
   }
 
   const openai = new OpenAI();
-
-  const list_append: Array<Message> = [];
-  if (isVision) {
-    list_append.push({
-      id: dysortid(),
-      createdAt: new Date(),
-      content: JSON.stringify(messages[messages.length - 1].content),
-      role: messages[messages.length - 1].role,
-    });
-  } else {
-    list_append.push({
-      ...messages[messages.length - 1],
-      id: dysortid(),
-      createdAt: new Date(),
-    });
-  }
 
   try {
     const res = await openai.chat.completions.create({
@@ -200,13 +172,6 @@ export async function POST(req: NextRequest): Promise<Response> {
         }
       },
       async onFinal(completion) {
-        let title;
-        if (isVision) {
-          title = JSON.stringify(messages[0]?.content).slice(0, 40);
-        } else {
-          title = messages[0]?.content.slice(0, 40);
-        }
-
         await sqsClient.send(
           new SendMessageBatchCommand({
             QueueUrl: process.env.AI_DB_UPDATE_SQS_FIFO_URL,
