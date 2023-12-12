@@ -70,7 +70,7 @@ const SecondaryNav = () => {
             ref={ref}
             onClick={() => setHidden(!hidden)}
             className={`py-2 cursor-pointer text-gray-800 ${
-              hidden ? "" : "bg-gray-50"
+              hidden ? "bg-white" : "bg-gray-50"
             } hover:bg-gray-100 rounded-lg border`}
           >
             {hidden ? (
