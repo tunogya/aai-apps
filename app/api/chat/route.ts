@@ -55,6 +55,7 @@ export async function POST(req: NextRequest): Promise<Response> {
         messages[i] = item;
       }
     }
+    functions = undefined;
   }
 
   // only handle the last 8 messages
