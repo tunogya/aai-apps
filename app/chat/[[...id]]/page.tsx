@@ -253,7 +253,11 @@ export default function Chat() {
                         setText(e.target.value);
                       }}
                       placeholder={
-                        useGPT4 ? "Message GPT-4" : "Message GPT-3.5"
+                        useGPT4
+                          ? useVision
+                            ? "Message GPT-4 Vision"
+                            : "Message GPT-4"
+                          : "Message GPT-3.5"
                       }
                       onKeyDown={async (e) => {
                         if (e.key === "Enter" && !e.shiftKey) {
