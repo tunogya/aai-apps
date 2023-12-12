@@ -44,7 +44,11 @@ const SecondaryNav = () => {
   const [hidden, setHidden] = useState(true);
 
   return (
-    <div className={"relative z-10"}>
+    <div
+      className={`relative z-10 ${
+        hovering || hidden ? "bg-gray-50" : "bg-white"
+      }`}
+    >
       <div
         className={`absolute h-[100vh] ${
           hidden ? "right-[-96px]" : "right-0"
@@ -92,11 +96,7 @@ const SecondaryNav = () => {
         appear={true}
         className={"overflow-hidden border-r"}
       >
-        <div
-          className={`w-[300px] shrink-0 h-full ${
-            hovering || hidden ? "bg-gray-50" : "bg-white"
-          }`}
-        >
+        <div className={`w-[300px] shrink-0 h-full`}>
           <Link
             href={`/chat`}
             prefetch
