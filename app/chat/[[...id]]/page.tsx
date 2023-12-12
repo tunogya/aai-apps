@@ -316,9 +316,11 @@ export default function Chat() {
                 {useVision && (
                   <button
                     onClick={open}
-                    className={`h-6 w-6 items-center flex justify-center`}
+                    className={`h-5 w-5 md:h-6 md:w-6 items-center flex justify-center`}
                   >
-                    <PaperClipIcon className={"w-5 h-5 text-gray-600"} />
+                    <PaperClipIcon
+                      className={"w-4 h-4 md:w-5 md:h-5 text-gray-600"}
+                    />
                   </button>
                 )}
                 <button
@@ -387,7 +389,7 @@ export default function Chat() {
           </div>
         )}
       </div>
-      <div className={"absolute z-50 bottom-0 bg-white w-full md:hidden"}>
+      <div className={"absolute z-40 bottom-0 bg-white w-full md:hidden"}>
         <MobileDrawer />
       </div>
     </div>

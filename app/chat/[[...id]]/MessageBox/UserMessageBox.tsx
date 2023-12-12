@@ -249,14 +249,12 @@ const ShowContent: FC<{
 
   if (item.type === "image_url" && item.image_url) {
     return (
-      <Link href={item.image_url} target={"_blank"}>
-        <img
-          src={item.image_url}
-          alt={""}
-          width={"full"}
-          className={"rounded-lg"}
-        />
-      </Link>
+      <img
+        src={item.image_url}
+        alt={""}
+        width={"full"}
+        className={"rounded-lg"}
+      />
     );
   }
 
