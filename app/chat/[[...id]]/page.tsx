@@ -342,7 +342,7 @@ export default function Chat() {
               </div>
               <div
                 className={
-                  "flex w-9 h-9 items-center justify-center shrink-0 md:hidden"
+                  "flex h-9 items-center justify-center shrink-0 md:hidden"
                 }
               >
                 {isLoading ? (
