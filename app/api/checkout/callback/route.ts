@@ -33,34 +33,29 @@ const POST = async (req: Request) => {
         for (const lineItem of lineItems.data) {
           const { price } = lineItem;
           if (price?.id === "price_1OMrgVFPpv8QfieYVVAnoRJt") {
-            try {
-              const customerInfo = await stripeClient.customers.retrieve(
-                customer as string,
-              );
-              // @ts-ignore
-              const premium_standard_expire_date = customerInfo?.metadata
-                ?.premium_standard_expire_date
-                ? new Date(
-                    // @ts-ignore
-                    customerInfo?.metadata?.premium_standard_expire_date,
-                  ).toISOString()
-                : new Date().toISOString();
-              const new_premium_standard_expire_date = new Date(
-                premium_standard_expire_date,
-              ).setDate(new Date(premium_standard_expire_date).getDate() + 31);
-              await stripeClient.customers.update(customer as string, {
-                metadata: {
+            const customerInfo = await stripeClient.customers.retrieve(
+              customer as string,
+            );
+            // @ts-ignore
+            const premium_standard_expired = customerInfo?.metadata
+              ?.premium_standard_expired
+              ? new Date(
                   // @ts-ignore
-                  ...(customerInfo?.metadata || {}),
-                  premium_standard_expire_date: new Date(
-                    new_premium_standard_expire_date,
-                  ).toISOString(),
-                },
-              });
-              console.log("Customer metadata updated successfully");
-            } catch (error) {
-              console.log("Failed to update customer metadata:", error);
-            }
+                  customerInfo?.metadata?.premium_standard_expired,
+                ).toISOString()
+              : new Date().toISOString();
+            const new_premium_standard_expired = new Date(
+              premium_standard_expired,
+            ).setDate(new Date(premium_standard_expired).getDate() + 31);
+            await stripeClient.customers.update(customer as string, {
+              metadata: {
+                // @ts-ignore
+                ...(customerInfo?.metadata || {}),
+                premium_standard_expired: new Date(
+                  new_premium_standard_expired,
+                ).toISOString(),
+              },
+            });
           }
         }
       }
