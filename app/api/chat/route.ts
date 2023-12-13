@@ -110,7 +110,7 @@ export async function POST(req: NextRequest): Promise<Response> {
     if (!isPremium) {
       const ratelimit = new Ratelimit({
         redis: redisClient,
-        limiter: Ratelimit.slidingWindow(100, "1 h"),
+        limiter: Ratelimit.slidingWindow(50, "1 h"),
         analytics: true,
         prefix: "ratelimit:/api/chat:gpt-3.5",
         ephemeralCache: cache,
