@@ -170,7 +170,7 @@ const CSR = () => {
             <div className={"w-full pt-16"}>
               <CheckoutButton
                 title={"Buy 1 month with Alipay"}
-                price={"price_1OMqvWFPpv8QfieY0AdXpAsx"}
+                price={"price_1OMrgVFPpv8QfieYVVAnoRJt"}
                 className={
                   "flex items-center gap-2 bg-pink-300 text-gray-800 px-4 py-3 rounded-full font-semibold cursor-pointer w-full justify-center"
                 }
