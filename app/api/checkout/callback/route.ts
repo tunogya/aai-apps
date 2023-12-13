@@ -36,24 +36,29 @@ const POST = async (req: Request) => {
             const customerInfo = await stripeClient.customers.retrieve(
               customer as string,
             );
-            // @ts-ignore
-            const premium_standard_expired = customerInfo?.metadata
-              ?.premium_standard_expired
-              ? new Date(
-                  // @ts-ignore
-                  customerInfo?.metadata?.premium_standard_expired,
-                ).toISOString()
-              : new Date().toISOString();
+            let old_premium_standard_expired = new Date();
+            if (
+              // @ts-ignore
+              customerInfo?.metadata?.premium_standard_expired &&
+              new Date() <
+                // @ts-ignore
+                new Date(customerInfo.metadata.premium_standard_expired)
+            ) {
+              old_premium_standard_expired = new Date(
+                // @ts-ignore
+                customerInfo.metadata.premium_standard_expired,
+              );
+            }
             const new_premium_standard_expired = new Date(
-              premium_standard_expired,
-            ).setDate(new Date(premium_standard_expired).getDate() + 31);
+              old_premium_standard_expired.setDate(
+                old_premium_standard_expired.getDate() + 31,
+              ),
+            ).toISOString();
             await stripeClient.customers.update(customer as string, {
               metadata: {
                 // @ts-ignore
                 ...(customerInfo?.metadata || {}),
-                premium_standard_expired: new Date(
-                  new_premium_standard_expired,
-                ).toISOString(),
+                premium_standard_expired: new_premium_standard_expired,
               },
             });
           }
