@@ -5,7 +5,6 @@ import { CheckCircleIcon } from "@heroicons/react/24/solid";
 import { MinusSmallIcon } from "@heroicons/react/24/outline";
 import SubscribeButton from "@/app/components/SubscribeButton";
 import Link from "next/link";
-import TopUpButton from "@/app/components/TopUpButton";
 import CheckoutButton from "@/app/components/CheckoutButton";
 
 const CSR = () => {

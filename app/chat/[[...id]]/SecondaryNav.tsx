@@ -4,6 +4,7 @@ import React, { useMemo, useState } from "react";
 import useSWRInfinite from "swr/infinite";
 import dynamic from "next/dynamic";
 import {
+  ArrowRightOnRectangleIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
   PlusIcon,
@@ -11,6 +12,11 @@ import {
 import Skeleton from "react-loading-skeleton";
 import { Transition } from "@headlessui/react";
 import { useHover } from "@uidotdev/usehooks";
+import { useUser } from "@auth0/nextjs-auth0/client";
+import CheckoutButton from "@/app/components/CheckoutButton";
+import ManageBillingButton from "@/app/components/ManageBillingButton";
+import useSWR from "swr";
+import ModelSwitch from "@/app/components/ModelSwitch";
 
 const SecondaryNavItem = dynamic(
   () => import("@/app/chat/[[...id]]/SecondaryNavItem"),
@@ -18,6 +24,7 @@ const SecondaryNavItem = dynamic(
 
 const SecondaryNav = () => {
   const [ref, hovering] = useHover();
+  const { user } = useUser();
   const getKey = (pageIndex: number, previousPageData: any) => {
     if (previousPageData && !previousPageData.nextCursor) return null;
     if (pageIndex === 0) return `/api/conversation?limit=20`;
@@ -30,6 +37,11 @@ const SecondaryNav = () => {
     {
       refreshInterval: 3_000,
     },
+  );
+
+  const { data: customerData, isLoading: isLoadingCustomer } = useSWR(
+    "/api/customer",
+    (url) => fetch(url).then((res) => res.json()),
   );
 
   const reducedData = useMemo(() => {
@@ -96,7 +108,7 @@ const SecondaryNav = () => {
         appear={true}
         className={"overflow-hidden border-r"}
       >
-        <div className={`w-[300px] shrink-0 h-full`}>
+        <div className={`w-[300px] shrink-0`}>
           <Link
             href={`/chat`}
             prefetch
@@ -128,6 +140,60 @@ const SecondaryNav = () => {
                 {isLoading ? "Loading..." : "Load More"}
               </button>
             ) : null}
+            <div className={"h-[180px]"}></div>
+          </div>
+        </div>
+        <div
+          className={
+            "md:hidden bg-white border-t border-r absolute bottom-0 left-0 w-full p-2 space-y-2 shrink-0 overflow-hidden"
+          }
+        >
+          {isLoadingCustomer ? (
+            <Skeleton className={"h-10"} />
+          ) : (
+            <>
+              <div className={"border-b flex justify-center items-center pb-2"}>
+                <ModelSwitch />
+              </div>
+              {customerData?.customer?.metadata?.premium_standard_expired && (
+                <div
+                  className={`text-gray-800 text-md text-xs whitespace-nowrap`}
+                >
+                  {customerData?.subscription?.name || "N/A"} (Expired:{" "}
+                  {new Date(
+                    customerData?.customer?.metadata?.premium_standard_expired,
+                  ).toLocaleDateString()}
+                  )
+                </div>
+              )}
+              {customerData?.subscription?.isPremium ? (
+                <ManageBillingButton
+                  className={
+                    "bg-black p-2 text-white rounded w-full font-semibold shrink-0 whitespace-nowrap"
+                  }
+                />
+              ) : (
+                <CheckoutButton
+                  price={"price_1OMrgVFPpv8QfieYVVAnoRJt"}
+                  title={"Buy 1 month with Alipay"}
+                  className={
+                    "bg-[#0066FF] p-2 text-white rounded w-full font-semibold shrink-0 whitespace-nowrap"
+                  }
+                />
+              )}
+            </>
+          )}
+          <div
+            className={
+              "flex items-center justify-between space-x-1 border-t pt-2"
+            }
+          >
+            <div className={"text-md text-gray-800 truncate"}>
+              {user?.email}
+            </div>
+            <a href={"/api/auth/logout"}>
+              <ArrowRightOnRectangleIcon className={"w-4 h-4 stroke-2"} />
+            </a>
           </div>
         </div>
       </Transition>

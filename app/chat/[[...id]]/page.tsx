@@ -13,13 +13,13 @@ import useSWR from "swr";
 import { StopIcon } from "@heroicons/react/24/solid";
 import { useLocalStorage } from "@uidotdev/usehooks";
 import { functions, functionCallHandler } from "@/app/utils/functions";
-import MobileDrawer from "@/app/chat/[[...id]]/MobileDrawer";
 import dynamic from "next/dynamic";
 import dysortid from "@/app/utils/dysortid";
 import {
   ArrowDownTrayIcon,
   ArrowUpIcon,
   PaperClipIcon,
+  PlusIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
 import Image from "next/image";
@@ -28,6 +28,7 @@ import { Transition } from "@headlessui/react";
 import { sha256 } from "multiformats/hashes/sha2";
 import { CID } from "multiformats/cid";
 import * as raw from "multiformats/codecs/raw";
+import Link from "next/link";
 
 const MessageBox = dynamic(() => import("@/app/chat/[[...id]]/MessageBox"));
 
@@ -357,7 +358,7 @@ export default function Chat() {
                   >
                     <StopIcon className={"w-4 h-4 stroke-2"} />
                   </button>
-                ) : (
+                ) : text ? (
                   <button
                     type="submit"
                     disabled={!hasUploaded}
@@ -367,6 +368,16 @@ export default function Chat() {
                   >
                     <ArrowUpIcon className={"w-4 h-4 stroke-2"} />
                   </button>
+                ) : (
+                  <Link
+                    href={`/chat/${dysortid()}`}
+                    type="submit"
+                    className={`p-2 ${
+                      useGPT4 ? "bg-[#AB68FF]" : "bg-gray-800"
+                    } rounded-full text-white disabled:opacity-50`}
+                  >
+                    <PlusIcon className={"w-4 h-4 stroke-2"} />
+                  </Link>
                 )}
               </div>
             </div>
@@ -375,7 +386,7 @@ export default function Chat() {
       </form>
       <div
         className={
-          "h-[calc(100vh-85px)] md:h-[calc(100vh-134px)] w-full overflow-y-auto relative"
+          "h-[calc(100vh-52px)] md:h-[calc(100vh-134px)] w-full overflow-y-auto relative"
         }
       >
         {messages.length > 0 ? (
@@ -393,9 +404,6 @@ export default function Chat() {
             <div>abandon.ai</div>
           </div>
         )}
-      </div>
-      <div className={"absolute z-40 bottom-0 bg-white w-full md:hidden"}>
-        <MobileDrawer />
       </div>
     </div>
   );

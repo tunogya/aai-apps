@@ -32,7 +32,7 @@ const Subscription = () => {
         <div>Current plan:</div>
         <div
           className={`w-60 ${
-            data?.subscription?.isPremium ? "text-[#AB68FF]" : ""
+            data?.subscription?.isPremium ? "text-[#AB68FF]" : "text-gray-800"
           }`}
         >
           {isLoading ? (
