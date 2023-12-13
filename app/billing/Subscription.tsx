@@ -21,7 +21,6 @@ const Subscription = () => {
   const { data, isLoading } = useSWR("/api/customer", (url) =>
     fetch(url).then((res) => res.json()),
   );
-  console.log(data);
 
   return (
     <div className={"space-y-2"}>
@@ -87,14 +86,6 @@ const Subscription = () => {
               />
             </>
           )}
-          {/*TODO*/}
-          <CheckoutButton
-            title={"Test Alipay"}
-            price={"price_1OMrgVFPpv8QfieYVVAnoRJt"}
-            className={
-              "border-2 border-blue-500 text-blue-500 px-4 py-3 rounded-md text-sm font-semibold hover:opacity-80"
-            }
-          />
         </div>
       )}
     </div>
