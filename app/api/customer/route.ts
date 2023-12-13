@@ -44,7 +44,6 @@ const GET = async (req: NextRequest) => {
       subscription: {
         name: "Premium Standard",
         isPremium: true,
-        expired: premium_standard_expired,
       },
     });
   }

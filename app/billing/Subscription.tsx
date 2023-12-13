@@ -43,6 +43,15 @@ const Subscription = () => {
           )}
         </div>
       </div>
+      {data?.customer?.metadata?.premium_standard_expired && (
+        <div className={"text-md text-gray-800 text-xs"}>
+          (Expired:{" "}
+          {new Date(
+            data?.customer?.metadata?.premium_standard_expired,
+          ).toLocaleDateString()}
+          )
+        </div>
+      )}
       <div className={"text-gray-600 text-sm max-w-screen-md py-2"}>
         {data?.subscription?.isPremium
           ? "Enjoy ad-free ChatGPT, Assistants, and more. Cancel anytime."
