@@ -4,6 +4,7 @@ import useSWR from "swr";
 import Skeleton from "react-loading-skeleton";
 import dynamic from "next/dynamic";
 import SubscribeButton from "@/app/components/SubscribeButton";
+import CheckoutButton from "@/app/components/CheckoutButton";
 
 const ManageBillingButton = dynamic(
   () => import("@/app/components/ManageBillingButton"),
@@ -46,19 +47,36 @@ const Subscription = () => {
           ? "Enjoy ad-free ChatGPT, Assistants, and more. Cancel anytime."
           : "You can upgrade to Premium to enjoy ad-free, GPT4, DALL·E 3, and more. Cancel anytime."}
       </div>
-      <div className={"flex space-x-4 items-center"}>
-        <ManageBillingButton
-          className={
-            "bg-gray-100 text-gray-800 px-4 py-3 rounded-md text-sm font-semibold hover:shadow"
-          }
-        />
-        <SubscribeButton
-          price={"price_1OMY3OFPpv8QfieYllRGM9yi"}
-          className={
-            "px-4 py-2 border-2 border-[#0066FF] rounded-full font-medium text-sm text-[#0066FF]"
-          }
-        />
-      </div>
+      {isLoading ? (
+        <div className={"w-72 h-11"}>
+          <Skeleton className={"w-full h-full"} />
+        </div>
+      ) : (
+        <div className={"flex space-x-4 items-center"}>
+          {data?.subscription?.isPremium ? (
+            <ManageBillingButton
+              className={
+                "bg-gray-800 text-white px-4 py-3 rounded-md text-sm font-semibold hover:opacity-80"
+              }
+            />
+          ) : (
+            <>
+              <SubscribeButton
+                price={"price_1OMY3OFPpv8QfieYllRGM9yi"}
+                className={
+                  "bg-blue-500 text-white px-4 py-3 rounded-md text-sm font-semibold hover:opacity-80"
+                }
+              />
+              <CheckoutButton
+                price={""}
+                className={
+                  "border-2 border-blue-500 text-blue-500 px-4 py-3 rounded-md text-sm font-semibold hover:opacity-80"
+                }
+              />
+            </>
+          )}
+        </div>
+      )}
     </div>
   );
 };
