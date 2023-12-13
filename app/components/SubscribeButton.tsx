@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 export const SubscribeButton: FC<{
   className?: string;
   price: string;
-}> = ({ className, price }) => {
+  title: string;
+}> = ({ className, price, title }) => {
   const router = useRouter();
   const [status, setStatus] = useState("idle");
 
@@ -50,7 +51,7 @@ export const SubscribeButton: FC<{
         }
       }}
     >
-      {status === "idle" && "Subscribe with Credit Card"}
+      {status === "idle" && title}
       {status === "loading" && "Loading..."}
       {status === "success" && "Waiting..."}
       {status === "error" && "Error"}

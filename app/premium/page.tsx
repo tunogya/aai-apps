@@ -6,6 +6,7 @@ import { MinusSmallIcon } from "@heroicons/react/24/outline";
 import SubscribeButton from "@/app/components/SubscribeButton";
 import Link from "next/link";
 import TopUpButton from "@/app/components/TopUpButton";
+import CheckoutButton from "@/app/components/CheckoutButton";
 
 const CSR = () => {
   return (
@@ -157,18 +158,19 @@ const CSR = () => {
             <div className={"flex justify-between w-full"}>
               <div className={"text-2xl font-medium"}>Premium Standard</div>
               <div className={"flex flex-col items-center"}>
-                <div className={"text-lg font-bold"}>$20.00</div>
-                <div className={"text-[10px]"}>PER MONTH</div>
+                <div className={"text-lg font-bold"}>¥30.00</div>
+                <div className={"text-[10px]"}>1 MONTH</div>
               </div>
             </div>
             <div className={"text-start w-full pt-20 font-medium"}>
-              <li>For all users</li>
-              <li>1 Premium account</li>
-              <li>Cancel anytime</li>
+              <li>One-time payment</li>
+              <li>Premium account x1</li>
+              <li>Pay as you go, you can use Alipay!</li>
             </div>
             <div className={"w-full pt-16"}>
-              <SubscribeButton
-                price={"price_1OAAdIFPpv8QfieYpQX1p21d"}
+              <CheckoutButton
+                title={"Buy 1 month with Alipay"}
+                price={"price_1OMqvWFPpv8QfieY0AdXpAsx"}
                 className={
                   "flex items-center gap-2 bg-pink-300 text-gray-800 px-4 py-3 rounded-full font-semibold cursor-pointer w-full justify-center"
                 }
@@ -186,7 +188,7 @@ const CSR = () => {
           </div>
           <div
             className={
-              "p-4 border-4 border-gray-300 w-96 flex flex-col items-center rounded-lg"
+              "p-4 border-4 border-[#0066FF] w-96 flex flex-col items-center rounded-lg"
             }
           >
             <div className={"flex justify-between w-full"}>
@@ -197,15 +199,16 @@ const CSR = () => {
               </div>
             </div>
             <div className={"text-start w-full pt-20 font-medium"}>
-              <li>For users in China</li>
-              <li>1 Premium account</li>
-              <li>Cancel anytime</li>
+              <li>Automatic renewal</li>
+              <li>Premium account x1</li>
+              <li>Need credit card, cancel anytime</li>
             </div>
             <div className={"w-full pt-16"}>
               <SubscribeButton
+                title={"Auto-subscribe"}
                 price={"price_1OMY3OFPpv8QfieYllRGM9yi"}
                 className={
-                  "flex items-center gap-2 bg-red-500 text-white px-4 py-3 rounded-full font-semibold cursor-pointer w-full justify-center"
+                  "flex items-center gap-2 bg-[#0066FF] text-white px-4 py-3 rounded-full font-semibold cursor-pointer w-full justify-center"
                 }
               />
             </div>

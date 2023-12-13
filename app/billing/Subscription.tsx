@@ -62,12 +62,14 @@ const Subscription = () => {
           ) : (
             <>
               <SubscribeButton
+                title={"Subscribe with Credit Card"}
                 price={"price_1OMY3OFPpv8QfieYllRGM9yi"}
                 className={
                   "bg-blue-500 text-white px-4 py-3 rounded-md text-sm font-semibold hover:opacity-80"
                 }
               />
               <CheckoutButton
+                title={"Buy 1 month with Alipay"}
                 price={"price_1OMqvWFPpv8QfieY0AdXpAsx"}
                 className={
                   "border-2 border-blue-500 text-blue-500 px-4 py-3 rounded-md text-sm font-semibold hover:opacity-80"
@@ -75,6 +77,14 @@ const Subscription = () => {
               />
             </>
           )}
+          {/*TODO*/}
+          <CheckoutButton
+            title={"Test Alipay"}
+            price={"price_1OMqvWFPpv8QfieY0AdXpAsx"}
+            className={
+              "border-2 border-blue-500 text-blue-500 px-4 py-3 rounded-md text-sm font-semibold hover:opacity-80"
+            }
+          />
         </div>
       )}
     </div>

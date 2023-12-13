@@ -32,7 +32,7 @@ const POST = async (req: Request) => {
           await stripeClient.checkout.sessions.listLineItems(id);
         for (const lineItem of lineItems.data) {
           const { price, amount_subtotal, currency } = lineItem;
-          if (price?.id === "price_1NtMGxFPpv8QfieYD2d3FSwe") {
+          if (price?.id === "") {
             await stripeClient.customers.createBalanceTransaction(
               customer as string,
               {

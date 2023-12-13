@@ -2,10 +2,11 @@
 import React, { FC, useState } from "react";
 import { useRouter } from "next/navigation";
 
-export const SubscribeButton: FC<{
+export const CheckoutButton: FC<{
   className?: string;
   price: string;
-}> = ({ className, price }) => {
+  title: string;
+}> = ({ className, price, title }) => {
   const router = useRouter();
   const [status, setStatus] = useState("idle");
 
@@ -50,7 +51,7 @@ export const SubscribeButton: FC<{
         }
       }}
     >
-      {status === "idle" && "Buy 1 month with Alipay"}
+      {status === "idle" && title}
       {status === "loading" && "Loading..."}
       {status === "success" && "Waiting..."}
       {status === "error" && "Error"}
@@ -58,4 +59,4 @@ export const SubscribeButton: FC<{
   );
 };
 
-export default SubscribeButton;
+export default CheckoutButton;
