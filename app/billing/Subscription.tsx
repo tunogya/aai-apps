@@ -68,7 +68,7 @@ const Subscription = () => {
                 }
               />
               <CheckoutButton
-                price={""}
+                price={"price_1OMqvWFPpv8QfieY0AdXpAsx"}
                 className={
                   "border-2 border-blue-500 text-blue-500 px-4 py-3 rounded-md text-sm font-semibold hover:opacity-80"
                 }
