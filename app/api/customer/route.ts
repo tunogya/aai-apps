@@ -30,6 +30,25 @@ const GET = async (req: NextRequest) => {
   }
   const customer = customers.data[0];
 
+  const premium_standard_expired = customer.metadata?.premium_standard_expired;
+
+  if (
+    premium_standard_expired &&
+    new Date(premium_standard_expired) > new Date()
+  ) {
+    await redisClient.set(`premium:${user.sub}`, true, {
+      ex: 86400,
+    });
+    return NextResponse.json({
+      customer: customer,
+      subscription: {
+        name: "Premium Standard",
+        isPremium: true,
+        expired: premium_standard_expired,
+      },
+    });
+  }
+
   const subscriptions = await stripeClient.subscriptions.list({
     customer: customer.id,
     status: "active",
