@@ -102,7 +102,6 @@ export async function POST(req: NextRequest): Promise<Response> {
         },
       );
     }
-    max_tokens = 4096;
   } else {
     if (!isPremium) {
       const ratelimit = new Ratelimit({
@@ -152,7 +151,7 @@ export async function POST(req: NextRequest): Promise<Response> {
         messages,
         temperature: 0.7,
         stream: true,
-        max_tokens,
+        max_tokens: 2048,
         functions,
       });
     }
