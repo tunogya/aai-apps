@@ -14,7 +14,6 @@ import { Transition } from "@headlessui/react";
 import { useHover } from "@uidotdev/usehooks";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import CheckoutButton from "@/app/components/CheckoutButton";
-import ManageBillingButton from "@/app/components/ManageBillingButton";
 import useSWR from "swr";
 import ModelSwitch from "@/app/components/ModelSwitch";
 
@@ -145,16 +144,18 @@ const SecondaryNav = () => {
         </div>
         <div
           className={
-            "md:hidden bg-white border-t border-r absolute bottom-0 left-0 w-full px-2 py-1 pb-2 space-y-2 shrink-0 overflow-hidden"
+            "md:hidden bg-white border-t border-r absolute bottom-0 left-0 w-full px-2 py-1 pb-1 space-y-1 shrink-0 overflow-hidden"
           }
         >
           {isLoadingCustomer ? (
-            <Skeleton className={"h-10"} />
+            <Skeleton className={"h-10 mb-1"} />
           ) : (
             <>
               {customerData?.subscription?.isPremium && (
                 <div
-                  className={"border-b flex justify-center items-center pb-1"}
+                  className={
+                    "border-b flex justify-center items-center pb-1 mb-1"
+                  }
                 >
                   <ModelSwitch />
                 </div>
@@ -171,11 +172,15 @@ const SecondaryNav = () => {
                 </div>
               )}
               {customerData?.subscription?.isPremium ? (
-                <ManageBillingButton
-                  className={
-                    "bg-black p-2 text-white rounded w-full font-semibold shrink-0 whitespace-nowrap"
-                  }
-                />
+                <Link href={"/billing"}>
+                  <div
+                    className={
+                      "bg-black px-3 py-2 text-white rounded w-full font-semibold shrink-0 whitespace-nowrap text-center"
+                    }
+                  >
+                    Manage Billing
+                  </div>
+                </Link>
               ) : (
                 <CheckoutButton
                   price={"price_1OMrgVFPpv8QfieYVVAnoRJt"}
@@ -189,10 +194,10 @@ const SecondaryNav = () => {
           )}
           <div
             className={
-              "flex items-center justify-between space-x-1 border-t pt-2"
+              "flex items-center justify-between space-x-1 border-t pt-1"
             }
           >
-            <div className={"text-md text-gray-800 truncate"}>
+            <div className={"text-sm text-gray-800 truncate"}>
               {user?.email}
             </div>
             <a href={"/api/auth/logout"}>
