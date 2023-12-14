@@ -13,7 +13,6 @@ import Skeleton from "react-loading-skeleton";
 import { Transition } from "@headlessui/react";
 import { useHover } from "@uidotdev/usehooks";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import CheckoutButton from "@/app/components/CheckoutButton";
 import useSWR from "swr";
 import ModelSwitch from "@/app/components/ModelSwitch";
 

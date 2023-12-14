@@ -17,6 +17,12 @@ const menu = [
     target: undefined,
   },
   {
+    path: "/premium",
+    name: "Pricing",
+    prefetch: true,
+    target: undefined,
+  },
+  {
     path: "/billing",
     name: "Billing",
     prefetch: true,
