@@ -22,8 +22,6 @@ const sqsClient = new SQSClient({
 
 export const runtime = "edge";
 
-const cache = new Map();
-
 // @ts-ignore
 export async function POST(req: NextRequest): Promise<Response> {
   // @ts-ignore
@@ -85,7 +83,6 @@ export async function POST(req: NextRequest): Promise<Response> {
       limiter: Ratelimit.slidingWindow(50, "3 h"),
       analytics: true,
       prefix: "ratelimit:/api/chat:gpt-4",
-      ephemeralCache: cache,
     });
     const { success, limit, reset, remaining } = await ratelimit.limit(sub);
     if (!success) {
@@ -113,7 +110,6 @@ export async function POST(req: NextRequest): Promise<Response> {
         limiter: Ratelimit.slidingWindow(50, "1 h"),
         analytics: true,
         prefix: "ratelimit:/api/chat:gpt-3.5",
-        ephemeralCache: cache,
       });
       const { success, limit, reset, remaining } = await ratelimit.limit(sub);
       if (!success) {
