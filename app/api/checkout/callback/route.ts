@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import stripeClient from "@/app/utils/stripeClient";
 import redisClient from "@/app/utils/redisClient";
+import * as process from "process";
 
 const POST = async (req: Request) => {
   let event: Stripe.Event;
@@ -71,8 +72,11 @@ const POST = async (req: Request) => {
                   JSON.stringify({
                     customer: customerInfo,
                     subscription: {
-                      name: "Premium Standard",
                       isPremium: true,
+                      product: process.env.PREMIUM_STANDARD_PRODUCT,
+                      current_period_start: new Date().getTime() / 1000,
+                      current_period_end:
+                        new Date(new_premium_standard_expired).getTime() / 1000,
                     },
                   }),
                   {
@@ -122,8 +126,11 @@ const POST = async (req: Request) => {
                   JSON.stringify({
                     customer: customerInfo,
                     subscription: {
-                      name: "Premium Pro",
                       isPremium: true,
+                      product: process.env.PREMIUM_PRO_PRODUCT,
+                      current_period_start: new Date().getTime() / 1000,
+                      current_period_end:
+                        new Date(new_premium_pro_expired).getTime() / 1000,
                     },
                   }),
                   {
@@ -172,8 +179,11 @@ const POST = async (req: Request) => {
                   JSON.stringify({
                     customer: customerInfo,
                     subscription: {
-                      name: "Premium Max",
                       isPremium: true,
+                      product: process.env.PREMIUM_MAX_PRODUCT,
+                      current_period_start: new Date().getTime() / 1000,
+                      current_period_end:
+                        new Date(new_premium_max_expired).getTime() / 1000,
                     },
                   }),
                   {

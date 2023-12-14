@@ -3,6 +3,7 @@ import { getSession } from "@auth0/nextjs-auth0";
 import stripeClient from "@/app/utils/stripeClient";
 import redisClient from "@/app/utils/redisClient";
 import Stripe from "stripe";
+import * as process from "process";
 
 const GET = async (req: NextRequest) => {
   // @ts-ignore
@@ -39,7 +40,7 @@ const GET = async (req: NextRequest) => {
     return NextResponse.json({
       customer: customer,
       subscription: {
-        name: "AbandonAI Free",
+        product: "AbandonAI Free",
         isPremium: false,
       },
     });
@@ -54,8 +55,9 @@ const GET = async (req: NextRequest) => {
     const data = {
       customer: customer,
       subscription: {
-        name: "Premium Max",
         isPremium: true,
+        product: process.env.PREMIUM_MAX_PRODUCT,
+        current_period_end: new Date(premium_max_expired).getTime() / 1000,
       },
     };
     await redisClient.set(`premium:${user.sub}`, JSON.stringify(data), {
@@ -68,8 +70,9 @@ const GET = async (req: NextRequest) => {
     const data = {
       customer: customer,
       subscription: {
-        name: "Premium Pro",
         isPremium: true,
+        product: process.env.PREMIUM_PRO_PRODUCT,
+        current_period_end: new Date(premium_pro_expired).getTime() / 1000,
       },
     };
     await redisClient.set(`premium:${user.sub}`, JSON.stringify(data), {
@@ -85,8 +88,9 @@ const GET = async (req: NextRequest) => {
     const data = {
       customer: customer,
       subscription: {
-        name: "Premium Standard",
         isPremium: true,
+        product: process.env.PREMIUM_STANDARD_PRODUCT,
+        current_period_end: new Date(premium_standard_expired).getTime() / 1000,
       },
     };
     await redisClient.set(`premium:${user.sub}`, JSON.stringify(data), {
@@ -114,8 +118,7 @@ const GET = async (req: NextRequest) => {
     const data = {
       customer: customer,
       subscription: {
-        status: subscription.status,
-        // "prod_xxx"
+        isPremium: subscription.status === "active",
         product: subscription.items.data[0].plan.product,
         current_period_start: subscription.current_period_start,
         current_period_end: subscription.current_period_end,
@@ -129,7 +132,7 @@ const GET = async (req: NextRequest) => {
     return NextResponse.json({
       customer: customer,
       subscription: {
-        name: "AbandonAI Free",
+        product: "AbandonAI Free",
         isPremium: false,
       },
     });
