@@ -31,21 +31,52 @@ const GET = async (req: NextRequest) => {
   const customer = customers.data[0];
 
   const premium_standard_expired = customer.metadata?.premium_standard_expired;
+  const premium_pro_expired = customer.metadata?.premium_pro_expired;
+  const premium_max_expired = customer.metadata?.premium_max_expired;
+
+  if (premium_max_expired && new Date(premium_max_expired) > new Date()) {
+    const data = {
+      customer: customer,
+      subscription: {
+        name: "Premium Max",
+        isPremium: true,
+      },
+    };
+    await redisClient.set(`premium:${user.sub}`, JSON.stringify(data), {
+      exat: new Date(premium_max_expired).getTime() / 1000,
+    });
+    return NextResponse.json(data);
+  }
+
+  if (premium_pro_expired && new Date(premium_pro_expired) > new Date()) {
+    const data = {
+      customer: customer,
+      subscription: {
+        name: "Premium Pro",
+        isPremium: true,
+      },
+    };
+    await redisClient.set(`premium:${user.sub}`, JSON.stringify(data), {
+      exat: new Date(premium_pro_expired).getTime() / 1000,
+    });
+    return NextResponse.json(data);
+  }
 
   if (
     premium_standard_expired &&
     new Date(premium_standard_expired) > new Date()
   ) {
-    await redisClient.set(`premium:${user.sub}`, true, {
-      ex: 86400,
-    });
-    return NextResponse.json({
+    const data = {
       customer: customer,
       subscription: {
         name: "Premium Standard",
         isPremium: true,
       },
+    };
+    await redisClient.set(`premium:${user.sub}`, JSON.stringify(data), {
+      exat: new Date(premium_pro_expired).getTime() / 1000,
     });
+    return NextResponse.json(data);
   }
 
   const subscriptions = await stripeClient.subscriptions.list({
@@ -60,16 +91,17 @@ const GET = async (req: NextRequest) => {
       ),
     )
   ) {
-    await redisClient.set(`premium:${user.sub}`, true, {
-      ex: 86400,
-    });
-    return NextResponse.json({
+    const data = {
       customer: customer,
       subscription: {
         name: "Premium Standard",
         isPremium: true,
       },
+    };
+    await redisClient.set(`premium:${user.sub}`, JSON.stringify(data), {
+      ex: 86400,
     });
+    return NextResponse.json(data);
   } else {
     await redisClient.set(`premium:${user.sub}`, false, {
       ex: 86400,

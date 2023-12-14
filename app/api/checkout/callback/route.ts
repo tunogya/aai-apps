@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import stripeClient from "@/app/utils/stripeClient";
+import redisClient from "@/app/utils/redisClient";
 
 const POST = async (req: Request) => {
   let event: Stripe.Event;
@@ -61,6 +62,28 @@ const POST = async (req: Request) => {
                 premium_standard_expired: new_premium_standard_expired,
               },
             });
+            // @ts-ignore
+            if (customerInfo?.metadata?.id) {
+              await redisClient
+                .set(
+                  // @ts-ignore
+                  `premium:${customerInfo?.metadata?.id}`,
+                  JSON.stringify({
+                    customer: customerInfo,
+                    subscription: {
+                      name: "Premium Standard",
+                      isPremium: true,
+                    },
+                  }),
+                  {
+                    exat:
+                      new Date(new_premium_standard_expired).getTime() / 1000,
+                  },
+                )
+                .catch(() => {
+                  console.log("redis error");
+                });
+            }
           } else if (price?.id === process.env.ONETIME_PREMIUM_PRO_PRICE) {
             const customerInfo = await stripeClient.customers.retrieve(
               customer as string,
@@ -90,6 +113,27 @@ const POST = async (req: Request) => {
                 premium_pro_expired: new_premium_pro_expired,
               },
             });
+            // @ts-ignore
+            if (customerInfo?.metadata?.id) {
+              await redisClient
+                .set(
+                  // @ts-ignore
+                  `premium:${customerInfo?.metadata?.id}`,
+                  JSON.stringify({
+                    customer: customerInfo,
+                    subscription: {
+                      name: "Premium Pro",
+                      isPremium: true,
+                    },
+                  }),
+                  {
+                    exat: new Date(new_premium_pro_expired).getTime() / 1000,
+                  },
+                )
+                .catch(() => {
+                  console.log("redis error");
+                });
+            }
           } else if (price?.id === process.env.ONETIME_PREMIUM_MAX_PRICE) {
             const customerInfo = await stripeClient.customers.retrieve(
               customer as string,
@@ -119,6 +163,27 @@ const POST = async (req: Request) => {
                 premium_max_expired: new_premium_max_expired,
               },
             });
+            // @ts-ignore
+            if (customerInfo?.metadata?.id) {
+              await redisClient
+                .set(
+                  // @ts-ignore
+                  `premium:${customerInfo?.metadata?.id}`,
+                  JSON.stringify({
+                    customer: customerInfo,
+                    subscription: {
+                      name: "Premium Max",
+                      isPremium: true,
+                    },
+                  }),
+                  {
+                    exat: new Date(new_premium_max_expired).getTime() / 1000,
+                  },
+                )
+                .catch(() => {
+                  console.log("redis error");
+                });
+            }
           }
         }
       }
