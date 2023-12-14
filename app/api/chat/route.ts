@@ -82,7 +82,7 @@ export async function POST(req: NextRequest): Promise<Response> {
     }
     const ratelimit = new Ratelimit({
       redis: redisClient,
-      limiter: Ratelimit.slidingWindow(50, "1 h"),
+      limiter: Ratelimit.slidingWindow(50, "3 h"),
       analytics: true,
       prefix: "ratelimit:/api/chat:gpt-4",
       ephemeralCache: cache,
