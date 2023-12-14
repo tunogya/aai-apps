@@ -159,17 +159,6 @@ const SecondaryNav = () => {
                   <ModelSwitch />
                 </div>
               )}
-              {customerData?.customer?.metadata?.premium_standard_expired && (
-                <div
-                  className={`text-gray-800 text-md text-xs whitespace-nowrap`}
-                >
-                  {customerData?.subscription?.name || "N/A"} (Expired:{" "}
-                  {new Date(
-                    customerData?.customer?.metadata?.premium_standard_expired,
-                  ).toLocaleDateString()}
-                  )
-                </div>
-              )}
               {customerData?.subscription?.isPremium ? (
                 <Link href={"/billing"}>
                   <div
