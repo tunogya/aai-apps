@@ -58,8 +58,8 @@ export async function POST(req: NextRequest): Promise<Response> {
     functions = undefined;
   }
 
-  // only handle the last 8 messages
-  messages?.slice(-8);
+  // only handle the last 6 messages
+  messages?.slice(-6);
 
   let max_tokens = 1024;
 
