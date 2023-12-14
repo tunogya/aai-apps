@@ -61,7 +61,15 @@ export async function POST(req: NextRequest): Promise<Response> {
 
   let max_tokens = 1024;
 
-  const isPremium = await redisClient.get(`premium:${sub}`);
+  let isPremium, product;
+  try {
+    const premiumInfo = await redisClient.get(`premium:${sub}`);
+    // @ts-ignore
+    isPremium = premiumInfo?.subscription?.isPremium;
+  } catch (e) {
+    isPremium = false;
+    product = null;
+  }
 
   if (model?.startsWith("gpt-4")) {
     if (!isPremium) {

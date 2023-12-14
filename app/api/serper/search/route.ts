@@ -10,7 +10,15 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const { user } = await getSession();
   const sub = user.sub;
 
-  const isPremium = await redisClient.get(`premium:${sub}`);
+  let isPremium, product;
+  try {
+    const premiumInfo = await redisClient.get(`premium:${sub}`);
+    // @ts-ignore
+    isPremium = premiumInfo?.subscription?.isPremium;
+  } catch (e) {
+    isPremium = false;
+    product = null;
+  }
 
   if (!isPremium) {
     return NextResponse.json(
