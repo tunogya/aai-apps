@@ -32,7 +32,7 @@ const POST = async (req: Request) => {
           await stripeClient.checkout.sessions.listLineItems(id);
         for (const lineItem of lineItems.data) {
           const { price } = lineItem;
-          if (price?.id === "price_1OMrgVFPpv8QfieYVVAnoRJt") {
+          if (price?.id === process.env.ONETIME_PREMIUM_STANDARD_PRICE) {
             const customerInfo = await stripeClient.customers.retrieve(
               customer as string,
             );
@@ -59,6 +59,64 @@ const POST = async (req: Request) => {
                 // @ts-ignore
                 ...(customerInfo?.metadata || {}),
                 premium_standard_expired: new_premium_standard_expired,
+              },
+            });
+          } else if (price?.id === process.env.ONETIME_PREMIUM_PRO_PRICE) {
+            const customerInfo = await stripeClient.customers.retrieve(
+              customer as string,
+            );
+            let old_premium_pro_expired = new Date();
+            if (
+              // @ts-ignore
+              customerInfo?.metadata?.premium_pro_expired &&
+              new Date() <
+                // @ts-ignore
+                new Date(customerInfo.metadata.premium_pro_expired)
+            ) {
+              old_premium_pro_expired = new Date(
+                // @ts-ignore
+                customerInfo.metadata.premium_pro_expired,
+              );
+            }
+            const new_premium_pro_expired = new Date(
+              old_premium_pro_expired.setDate(
+                old_premium_pro_expired.getDate() + 31,
+              ),
+            ).toISOString();
+            await stripeClient.customers.update(customer as string, {
+              metadata: {
+                // @ts-ignore
+                ...(customerInfo?.metadata || {}),
+                premium_pro_expired: new_premium_pro_expired,
+              },
+            });
+          } else if (price?.id === process.env.ONETIME_PREMIUM_MAX_PRICE) {
+            const customerInfo = await stripeClient.customers.retrieve(
+              customer as string,
+            );
+            let old_premium_max_expired = new Date();
+            if (
+              // @ts-ignore
+              customerInfo?.metadata?.premium_max_expired &&
+              new Date() <
+                // @ts-ignore
+                new Date(customerInfo.metadata.premium_max_expired)
+            ) {
+              old_premium_max_expired = new Date(
+                // @ts-ignore
+                customerInfo.metadata.premium_max_expired,
+              );
+            }
+            const new_premium_max_expired = new Date(
+              old_premium_max_expired.setDate(
+                old_premium_max_expired.getDate() + 31,
+              ),
+            ).toISOString();
+            await stripeClient.customers.update(customer as string, {
+              metadata: {
+                // @ts-ignore
+                ...(customerInfo?.metadata || {}),
+                premium_max_expired: new_premium_max_expired,
               },
             });
           }
