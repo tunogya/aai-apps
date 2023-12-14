@@ -148,7 +148,7 @@ const SecondaryNav = () => {
           }
         >
           {isLoadingCustomer ? (
-            <Skeleton className={"h-10 mb-1"} />
+            <Skeleton className={"h-10"} />
           ) : (
             <>
               {customerData?.subscription?.isPremium && (
@@ -182,13 +182,15 @@ const SecondaryNav = () => {
                   </div>
                 </Link>
               ) : (
-                <CheckoutButton
-                  price={"price_1OMrgVFPpv8QfieYVVAnoRJt"}
-                  title={"Buy 1 month with Alipay"}
-                  className={
-                    "bg-[#0066FF] p-2 text-white rounded w-full font-semibold shrink-0 whitespace-nowrap"
-                  }
-                />
+                <Link href={"/premium"} target={"_blank"}>
+                  <div
+                    className={
+                      "bg-black px-3 py-2 text-white rounded w-full font-semibold shrink-0 whitespace-nowrap text-center"
+                    }
+                  >
+                    Get Premium (GPT-4)
+                  </div>
+                </Link>
               )}
             </>
           )}
