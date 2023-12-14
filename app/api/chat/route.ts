@@ -136,14 +136,27 @@ export async function POST(req: NextRequest): Promise<Response> {
   const openai = new OpenAI();
 
   try {
-    const res = await openai.chat.completions.create({
-      model,
-      messages,
-      temperature: 0.7,
-      stream: true,
-      max_tokens,
-      functions,
-    });
+    let res;
+    try {
+      res = await openai.chat.completions.create({
+        model,
+        messages,
+        temperature: 0.7,
+        stream: true,
+        max_tokens,
+        functions,
+      });
+    } catch (e) {
+      res = await openai.chat.completions.create({
+        model: "gpt-3.5-turbo",
+        messages,
+        temperature: 0.7,
+        stream: true,
+        max_tokens,
+        functions,
+      });
+    }
+
     const data = new experimental_StreamData();
     const stream = OpenAIStream(res, {
       experimental_onFunctionCall: async () => {},
