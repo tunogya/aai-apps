@@ -108,12 +108,12 @@ const SecondaryNav = () => {
         appear={true}
         className={"overflow-hidden border-r"}
       >
-        <div className={`w-[300px] shrink-0`}>
+        <div className={`w-[300px] shrink-0 pt-2 md:pt-0`}>
           <Link
             href={`/chat`}
             prefetch
             className={
-              "flex items-center border hover:bg-gray-50 p-3 rounded cursor-pointer select-none m-2 text-gray-800"
+              "hidden md:flex items-center border hover:bg-gray-50 p-3 rounded cursor-pointer select-none m-2 text-gray-800"
             }
           >
             <div className={"p-1"}>
@@ -145,16 +145,20 @@ const SecondaryNav = () => {
         </div>
         <div
           className={
-            "md:hidden bg-white border-t border-r absolute bottom-0 left-0 w-full p-2 space-y-2 shrink-0 overflow-hidden"
+            "md:hidden bg-white border-t border-r absolute bottom-0 left-0 w-full px-2 py-1 pb-2 space-y-2 shrink-0 overflow-hidden"
           }
         >
           {isLoadingCustomer ? (
             <Skeleton className={"h-10"} />
           ) : (
             <>
-              <div className={"border-b flex justify-center items-center pb-2"}>
-                <ModelSwitch />
-              </div>
+              {customerData?.subscription?.isPremium && (
+                <div
+                  className={"border-b flex justify-center items-center pb-1"}
+                >
+                  <ModelSwitch />
+                </div>
+              )}
               {customerData?.customer?.metadata?.premium_standard_expired && (
                 <div
                   className={`text-gray-800 text-md text-xs whitespace-nowrap`}

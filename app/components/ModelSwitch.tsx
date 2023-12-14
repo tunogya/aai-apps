@@ -27,7 +27,7 @@ const ModelSwitch = () => {
   return (
     <div className={"gap-1 flex items-center"}>
       {useGPT4 && (
-        <div className={"border rounded-lg px-2 h-8 flex items-center"}>
+        <div className={"border rounded-lg px-2 h-6 md:h-8 flex items-center"}>
           <button
             className={`text-sm md:font-semibold rounded-lg flex items-center gap-2 justify-between ${
               useVision ? "text-[#AB68FF]" : "text-gray-800"
@@ -50,7 +50,7 @@ const ModelSwitch = () => {
       )}
       {data?.subscription?.isPremium && (
         <div
-          className={`text-sm md:font-semibold md:hover:bg-gray-100 rounded-lg flex items-center gap-2 px-2 py-1.5 select-none justify-between ${
+          className={`text-sm md:font-semibold md:hover:bg-gray-100 rounded-lg flex items-center gap-2 px-2 py-1 md:py-1.5 select-none justify-between ${
             !data?.subscription?.isPremium
               ? "cursor-not-allowed"
               : "cursor-pointer"
@@ -64,7 +64,7 @@ const ModelSwitch = () => {
           }}
         >
           <div
-            className={`whitespace-nowrap text-sm font-medium ${
+            className={`whitespace-nowrap text-xs md:text-sm font-medium ${
               useGPT4 ? "text-[#AB68FF]" : "text-gray-800"
             }`}
           >
