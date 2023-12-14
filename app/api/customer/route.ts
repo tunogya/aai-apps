@@ -2,10 +2,26 @@ import { NextRequest, NextResponse } from "next/server";
 import { getSession } from "@auth0/nextjs-auth0";
 import stripeClient from "@/app/utils/stripeClient";
 import redisClient from "@/app/utils/redisClient";
+import Stripe from "stripe";
 
 const GET = async (req: NextRequest) => {
   // @ts-ignore
   const { user } = await getSession();
+
+  // get data from cache, if exists, must be premium user
+  const isPremium = await redisClient.get(`premium:${user.sub}`);
+  // @ts-ignore
+  if (isPremium?.subscription) {
+    try {
+      return NextResponse.json({
+        ...isPremium,
+        cache: true,
+      });
+    } catch (e) {
+      console.log("cache error", e);
+    }
+  }
+
   const customers = await stripeClient.customers.list({
     email: user.email,
   });
@@ -84,28 +100,32 @@ const GET = async (req: NextRequest) => {
     status: "active",
   });
 
-  if (
-    subscriptions.data.some((sub) =>
-      sub.items.data.some(
-        (item) => item.plan.product === process.env.PREMIUM_STANDARD_PRODUCT,
-      ),
-    )
-  ) {
+  const filter_subscriptions = subscriptions.data.filter((sub) => {
+    return sub.items.data.some(
+      (item) =>
+        item.plan.product === process.env.PREMIUM_STANDARD_PRODUCT ||
+        item.plan.product === process.env.PREMIUM_PRO_PRODUCT ||
+        item.plan.product === process.env.PREMIUM_MAX_PRODUCT,
+    );
+  });
+
+  if (filter_subscriptions.length > 0) {
+    const subscription = filter_subscriptions[0] as Stripe.Subscription;
     const data = {
       customer: customer,
       subscription: {
-        name: "Premium Standard",
-        isPremium: true,
+        status: subscription.status,
+        // "prod_xxx"
+        product: subscription.items.data[0].plan.product,
+        current_period_start: subscription.current_period_start,
+        current_period_end: subscription.current_period_end,
       },
     };
     await redisClient.set(`premium:${user.sub}`, JSON.stringify(data), {
-      ex: 86400,
+      exat: subscription.current_period_end,
     });
     return NextResponse.json(data);
   } else {
-    await redisClient.set(`premium:${user.sub}`, false, {
-      ex: 86400,
-    });
     return NextResponse.json({
       customer: customer,
       subscription: {

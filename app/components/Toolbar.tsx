@@ -21,6 +21,7 @@ const Toolbar: FC<{ border?: boolean; children?: React.ReactNode }> = (
   const { data, isLoading } = useSWR("/api/customer", (url) =>
     fetch(url).then((res) => res.json()),
   );
+  console.log(data);
 
   return (
     <div
