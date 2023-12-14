@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSession } from "@auth0/nextjs-auth0";
 import stripeClient from "@/app/utils/stripeClient";
+import dysortid from "@/app/utils/dysortid";
 
 const POST = async (req: NextRequest) => {
   // @ts-ignore
@@ -23,7 +24,7 @@ const POST = async (req: NextRequest) => {
   }
   const session = await stripeClient.billingPortal.sessions.create({
     customer: customer,
-    return_url: req.nextUrl.origin + "/billing",
+    return_url: req.nextUrl.origin + `/chat/${dysortid()}`,
   });
   return NextResponse.json({
     session: session,

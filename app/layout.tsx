@@ -54,6 +54,7 @@ export default function RootLayout(props: { children: ReactNode }) {
           <Script
             src={"https://www.googletagmanager.com/gtag/js?id=G-HT9Q8GW970"}
           />
+          <Script async src={"https://js.stripe.com/v3/pricing-table.js"} />
           <Script id="google-tag-manager" strategy="afterInteractive">
             {`
                 window.dataLayer = window.dataLayer || [];

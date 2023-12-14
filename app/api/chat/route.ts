@@ -102,11 +102,13 @@ export async function POST(req: NextRequest): Promise<Response> {
         },
       );
     }
+
+    max_tokens = 2048;
   } else {
     if (!isPremium) {
       const ratelimit = new Ratelimit({
         redis: redisClient,
-        limiter: Ratelimit.slidingWindow(50, "1 h"),
+        limiter: Ratelimit.slidingWindow(5, "1 h"),
         analytics: true,
         prefix: "ratelimit:/api/chat:gpt-3.5",
       });
