@@ -78,8 +78,12 @@ const POST = async (req: Request) => {
                       },
                     }),
                     {
-                      exat:
-                        new Date(new_premium_standard_expired).getTime() / 1000,
+                      exat: Number(
+                        (
+                          new Date(new_premium_standard_expired).getTime() /
+                          1000
+                        ).toFixed(0),
+                      ),
                     },
                   )
                   .catch(() => {
@@ -124,7 +128,11 @@ const POST = async (req: Request) => {
                       },
                     }),
                     {
-                      exat: new Date(new_premium_pro_expired).getTime() / 1000,
+                      exat: Number(
+                        (
+                          new Date(new_premium_pro_expired).getTime() / 1000
+                        ).toFixed(0),
+                      ),
                     },
                   )
                   .catch(() => {
@@ -167,7 +175,11 @@ const POST = async (req: Request) => {
                       },
                     }),
                     {
-                      exat: new Date(new_premium_max_expired).getTime() / 1000,
+                      exat: Number(
+                        (
+                          new Date(new_premium_max_expired).getTime() / 1000
+                        ).toFixed(0),
+                      ),
                     },
                   )
                   .catch(() => {
