@@ -43,14 +43,11 @@ const POST = async (req: Request) => {
             if (price?.id === process.env.ONETIME_PREMIUM_STANDARD_PRICE) {
               let old_premium_standard_expired = new Date();
               if (
-                // @ts-ignore
                 customer?.metadata?.premium_standard_expired &&
                 new Date() <
-                  // @ts-ignore
                   new Date(customer.metadata.premium_standard_expired)
               ) {
                 old_premium_standard_expired = new Date(
-                  // @ts-ignore
                   customer.metadata.premium_standard_expired,
                 );
               }
@@ -61,16 +58,13 @@ const POST = async (req: Request) => {
               ).toISOString();
               await stripeClient.customers.update(customer.id as string, {
                 metadata: {
-                  // @ts-ignore
                   ...(customer?.metadata || {}),
                   premium_standard_expired: new_premium_standard_expired,
                 },
               });
-              // @ts-ignore
               if (customer?.metadata?.id) {
                 await redisClient
                   .set(
-                    // @ts-ignore
                     `premium:${customer?.metadata?.id}`,
                     JSON.stringify({
                       customer: customer,
@@ -97,14 +91,10 @@ const POST = async (req: Request) => {
             } else if (price?.id === process.env.ONETIME_PREMIUM_PRO_PRICE) {
               let old_premium_pro_expired = new Date();
               if (
-                // @ts-ignore
-                customer?.metadata?.premium_pro_expired &&
-                new Date() <
-                  // @ts-ignore
-                  new Date(customer.metadata.premium_pro_expired)
+                customer.metadata?.premium_pro_expired &&
+                new Date() < new Date(customer.metadata.premium_pro_expired)
               ) {
                 old_premium_pro_expired = new Date(
-                  // @ts-ignore
                   customer.metadata.premium_pro_expired,
                 );
               }
@@ -115,16 +105,13 @@ const POST = async (req: Request) => {
               ).toISOString();
               await stripeClient.customers.update(customer.id as string, {
                 metadata: {
-                  // @ts-ignore
-                  ...(customer?.metadata || {}),
+                  ...(customer.metadata || {}),
                   premium_pro_expired: new_premium_pro_expired,
                 },
               });
-              // @ts-ignore
-              if (customer?.metadata?.id) {
+              if (customer.metadata?.id) {
                 await redisClient
                   .set(
-                    // @ts-ignore
                     `premium:${customer?.metadata?.id}`,
                     JSON.stringify({
                       customer: customer,
@@ -147,15 +134,11 @@ const POST = async (req: Request) => {
             } else if (price?.id === process.env.ONETIME_PREMIUM_MAX_PRICE) {
               let old_premium_max_expired = new Date();
               if (
-                // @ts-ignore
                 customer?.metadata?.premium_max_expired &&
-                new Date() <
-                  // @ts-ignore
-                  new Date(customer.metadata.premium_max_expired)
+                new Date() < new Date(customer.metadata.premium_max_expired)
               ) {
                 old_premium_max_expired = new Date(
-                  // @ts-ignore
-                  customerInfo.metadata.premium_max_expired,
+                  customer.metadata.premium_max_expired,
                 );
               }
               const new_premium_max_expired = new Date(
@@ -165,17 +148,14 @@ const POST = async (req: Request) => {
               ).toISOString();
               await stripeClient.customers.update(customer.id as string, {
                 metadata: {
-                  // @ts-ignore
-                  ...(customerInfo?.metadata || {}),
+                  ...(customer.metadata || {}),
                   premium_max_expired: new_premium_max_expired,
                 },
               });
-              // @ts-ignore
-              if (customerInfo?.metadata?.id) {
+              if (customer.metadata?.id) {
                 await redisClient
                   .set(
-                    // @ts-ignore
-                    `premium:${customerInfo?.metadata?.id}`,
+                    `premium:${customer.metadata.id}`,
                     JSON.stringify({
                       customer: customer,
                       subscription: {
