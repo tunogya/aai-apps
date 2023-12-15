@@ -30,6 +30,7 @@ import { sha256 } from "multiformats/hashes/sha2";
 import { CID } from "multiformats/cid";
 import * as raw from "multiformats/codecs/raw";
 import Link from "next/link";
+import ErrorMessageBox from "@/app/chat/[[...id]]/MessageBox/ErrorMessageBox";
 
 const MessageBox = dynamic(() => import("@/app/chat/[[...id]]/MessageBox"));
 
@@ -395,28 +396,7 @@ export default function Chat() {
           "h-[calc(100vh-52px)] md:h-[calc(100vh-134px)] w-full overflow-y-auto relative"
         }
       >
-        {error && (
-          <div className={"flex items-center justify-center w-full border-t"}>
-            <div
-              className={
-                "p-2 text-sm text-gray-500 border-2 border-red-500 m-2 space-y-4 rounded max-w-3xl w-full"
-              }
-            >
-              <div>{error}</div>
-              <div>
-                <Link href={"/premium"}>
-                  <div
-                    className={
-                      "bg-gradient-to-tr from-[#AB68FF] to-[#0066FF] p-2 text-white rounded space-x-1 flex"
-                    }
-                  >
-                    ✨ Upgrade to Premium membership and enjoy the conversation.
-                  </div>
-                </Link>
-              </div>
-            </div>
-          </div>
-        )}
+        {error && <ErrorMessageBox error={error} />}
         {messages.length > 0 ? (
           <MessageBox
             messages={messages}
