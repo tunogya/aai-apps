@@ -36,16 +36,14 @@ export async function POST(req: NextRequest): Promise<Response> {
     return new Response(
       JSON.stringify({
         error: "limit reached",
-        message: "Sorry, you have reached the limit. Please try again later.",
+        message: {
+          limit,
+          reset,
+          remaining,
+        },
       }),
       {
         status: 429,
-        headers: {
-          "Content-Type": "application/json",
-          "x-ratelimit-limit-requests": `${limit}`,
-          "x-ratelimit-remaining-requests": `${remaining}`,
-          "x-ratelimit-reset-requests": `${reset}`,
-        },
       },
     );
   }

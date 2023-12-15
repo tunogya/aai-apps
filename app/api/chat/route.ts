@@ -90,12 +90,6 @@ export async function POST(req: NextRequest): Promise<Response> {
       }),
       {
         status: 429,
-        headers: {
-          "Content-Type": "application/json",
-          "x-ratelimit-limit-requests": `${limit}`,
-          "x-ratelimit-remaining-requests": `${remaining}`,
-          "x-ratelimit-reset-requests": `${reset}`,
-        },
       },
     );
   }
