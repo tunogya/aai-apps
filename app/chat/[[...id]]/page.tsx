@@ -53,6 +53,7 @@ export default function Chat() {
       imageUrl?: string;
     }[]
   >([]);
+  const [error, setError] = useState("");
   const [text, setText] = useState("");
   const { messages, handleSubmit, isLoading, stop, setInput } = useChat({
     api: "/api/chat",
@@ -70,11 +71,13 @@ export default function Chat() {
     onError: (error) => {
       setFiles([]);
       setText("");
-      console.log(error);
+      // @ts-ignore
+      setError(error.toString());
     },
     onFinish: () => {
       setFiles([]);
       setText("");
+      setError("");
     },
   });
   const useGPT4 = model.startsWith("gpt-4");
@@ -391,6 +394,28 @@ export default function Chat() {
           "h-[calc(100vh-52px)] md:h-[calc(100vh-134px)] w-full overflow-y-auto relative"
         }
       >
+        {error && (
+          <div className={"flex items-center justify-center w-full border-t"}>
+            <div
+              className={
+                "p-2 text-sm text-gray-500 border-2 border-red-500 m-2 space-y-4 rounded max-w-3xl w-full"
+              }
+            >
+              <div>{error}</div>
+              <div>
+                <Link href={"/premium"}>
+                  <div
+                    className={
+                      "bg-gradient-to-tr from-[#AB68FF] to-[#0066FF] p-2 text-white rounded space-x-1 flex underline"
+                    }
+                  >
+                    Upgrade to Premium membership and enjoy the conversation.
+                  </div>
+                </Link>
+              </div>
+            </div>
+          </div>
+        )}
         {messages.length > 0 ? (
           <MessageBox
             messages={messages}

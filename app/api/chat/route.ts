@@ -81,10 +81,11 @@ export async function POST(req: NextRequest): Promise<Response> {
   if (!success) {
     return new Response(
       JSON.stringify({
-        error: "limit reached",
-        message: {
+        error: 429,
+        message: "ratelimit reached",
+        ratelimit: {
           limit,
-          reset,
+          reset: new Date(reset).toLocaleString(),
           remaining,
         },
       }),
