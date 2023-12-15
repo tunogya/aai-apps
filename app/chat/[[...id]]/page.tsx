@@ -70,6 +70,7 @@ export default function Chat() {
     onError: (error) => {
       setFiles([]);
       setText("");
+      console.log(error);
     },
     onFinish: () => {
       setFiles([]);

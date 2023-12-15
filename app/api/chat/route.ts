@@ -82,7 +82,11 @@ export async function POST(req: NextRequest): Promise<Response> {
     return new Response(
       JSON.stringify({
         error: "limit reached",
-        message: "Sorry, you have reached the limit. Please try again later.",
+        message: {
+          limit,
+          reset,
+          remaining,
+        },
       }),
       {
         status: 429,
