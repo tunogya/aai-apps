@@ -8,16 +8,13 @@ const POST = async (req: NextRequest) => {
   // @ts-ignore
   const { user } = await getSession();
   const sub = user.sub;
-  // get from cache first, TODO
   let customer_id;
-  try {
-    const premiumInfo = await redisClient.get(`premium:${sub}`);
+  const premiumInfo = await redisClient.get(`premium:${sub}`);
+  // @ts-ignore
+  if (premiumInfo && premiumInfo?.customer?.id) {
     // @ts-ignore
-    if (premiumInfo?.customer?.id) {
-      // @ts-ignore
-      customer_id = premiumInfo?.customer?.id;
-    }
-  } catch (e) {
+    customer_id = premiumInfo?.customer?.id;
+  } else {
     const customers = await stripeClient.customers.list({
       email: user.email,
     });
@@ -34,13 +31,20 @@ const POST = async (req: NextRequest) => {
       customer_id = customers.data[0].id;
     }
   }
-  const session = await stripeClient.billingPortal.sessions.create({
-    customer: customer_id,
-    return_url: req.nextUrl.origin + `/chat/${dysortid()}`,
-  });
-  return NextResponse.json({
-    session: session,
-  });
+  try {
+    const session = await stripeClient.billingPortal.sessions.create({
+      customer: customer_id,
+      return_url: req.nextUrl.origin + `/chat/${dysortid()}`,
+    });
+    return NextResponse.json({
+      session: session,
+    });
+  } catch (e) {
+    return NextResponse.json({
+      error: "something went wrong",
+      message: e,
+    });
+  }
 };
 
 export { POST };
