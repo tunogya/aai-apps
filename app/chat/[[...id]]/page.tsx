@@ -218,6 +218,8 @@ export default function Chat() {
       </Transition>
       <form
         onSubmit={(e) => {
+          setText("");
+          setFiles([]);
           handleSubmit(e);
           if (inputRef.current) {
             // @ts-ignore
@@ -272,6 +274,8 @@ export default function Chat() {
                         if (e.key === "Enter" && !e.shiftKey) {
                           if (e.nativeEvent.isComposing) return;
                           e.preventDefault();
+                          setText("");
+                          setFiles([]);
                           handleSubmit(e as any);
                           if (inputRef.current) {
                             // @ts-ignore
