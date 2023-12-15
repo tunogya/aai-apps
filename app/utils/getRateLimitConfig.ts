@@ -51,7 +51,7 @@ const getRateLimitConfig = (prefix: string, product: string) => {
       } else {
         // AbandonAI Free
         tokens = 5;
-        window = "1 h";
+        window = "15 m";
         content_window = 1024;
         break;
       }
