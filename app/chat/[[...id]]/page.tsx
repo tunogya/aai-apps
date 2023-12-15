@@ -17,6 +17,7 @@ import dynamic from "next/dynamic";
 import dysortid from "@/app/utils/dysortid";
 import {
   ArrowDownTrayIcon,
+  ArrowRightIcon,
   ArrowUpIcon,
   PaperClipIcon,
   PlusIcon,
@@ -406,10 +407,10 @@ export default function Chat() {
                 <Link href={"/premium"}>
                   <div
                     className={
-                      "bg-gradient-to-tr from-[#AB68FF] to-[#0066FF] p-2 text-white rounded space-x-1 flex underline"
+                      "bg-gradient-to-tr from-[#AB68FF] to-[#0066FF] p-2 text-white rounded space-x-1 flex"
                     }
                   >
-                    Upgrade to Premium membership and enjoy the conversation.
+                    ✨ Upgrade to Premium membership and enjoy the conversation.
                   </div>
                 </Link>
               </div>
