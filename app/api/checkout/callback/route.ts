@@ -31,10 +31,10 @@ const POST = async (req: Request) => {
       const { id, customer_email, livemode } = checkoutSessionCompleted;
       if (livemode && customer_email) {
         // get customer info by email
-        const customerInfo = await stripeClient.customers.list({
+        const customers = await stripeClient.customers.list({
           email: customer_email,
         });
-        const customer = customerInfo?.data?.[0]?.id;
+        const customer = customers?.data?.[0] as Stripe.Customer;
         if (customer) {
           const lineItems =
             await stripeClient.checkout.sessions.listLineItems(id);
@@ -44,14 +44,14 @@ const POST = async (req: Request) => {
               let old_premium_standard_expired = new Date();
               if (
                 // @ts-ignore
-                customerInfo?.metadata?.premium_standard_expired &&
+                customer?.metadata?.premium_standard_expired &&
                 new Date() <
                   // @ts-ignore
-                  new Date(customerInfo.metadata.premium_standard_expired)
+                  new Date(customer.metadata.premium_standard_expired)
               ) {
                 old_premium_standard_expired = new Date(
                   // @ts-ignore
-                  customerInfo.metadata.premium_standard_expired,
+                  customer.metadata.premium_standard_expired,
                 );
               }
               const new_premium_standard_expired = new Date(
@@ -59,21 +59,21 @@ const POST = async (req: Request) => {
                   old_premium_standard_expired.getDate() + 31,
                 ),
               ).toISOString();
-              await stripeClient.customers.update(customer as string, {
+              await stripeClient.customers.update(customer.id as string, {
                 metadata: {
                   // @ts-ignore
-                  ...(customerInfo?.metadata || {}),
+                  ...(customer?.metadata || {}),
                   premium_standard_expired: new_premium_standard_expired,
                 },
               });
               // @ts-ignore
-              if (customerInfo?.metadata?.id) {
+              if (customer?.metadata?.id) {
                 await redisClient
                   .set(
                     // @ts-ignore
-                    `premium:${customerInfo?.metadata?.id}`,
+                    `premium:${customer?.metadata?.id}`,
                     JSON.stringify({
-                      customer: customerInfo,
+                      customer: customer,
                       subscription: {
                         isPremium: true,
                         product: process.env.PREMIUM_STANDARD_PRODUCT,
@@ -91,22 +91,21 @@ const POST = async (req: Request) => {
                   .catch(() => {
                     console.log("redis error");
                   });
+              } else {
+                console.log("customer id not found");
               }
             } else if (price?.id === process.env.ONETIME_PREMIUM_PRO_PRICE) {
-              const customerInfo = await stripeClient.customers.retrieve(
-                customer as string,
-              );
               let old_premium_pro_expired = new Date();
               if (
                 // @ts-ignore
-                customerInfo?.metadata?.premium_pro_expired &&
+                customer?.metadata?.premium_pro_expired &&
                 new Date() <
                   // @ts-ignore
-                  new Date(customerInfo.metadata.premium_pro_expired)
+                  new Date(customer.metadata.premium_pro_expired)
               ) {
                 old_premium_pro_expired = new Date(
                   // @ts-ignore
-                  customerInfo.metadata.premium_pro_expired,
+                  customer.metadata.premium_pro_expired,
                 );
               }
               const new_premium_pro_expired = new Date(
@@ -114,21 +113,21 @@ const POST = async (req: Request) => {
                   old_premium_pro_expired.getDate() + 31,
                 ),
               ).toISOString();
-              await stripeClient.customers.update(customer as string, {
+              await stripeClient.customers.update(customer.id as string, {
                 metadata: {
                   // @ts-ignore
-                  ...(customerInfo?.metadata || {}),
+                  ...(customer?.metadata || {}),
                   premium_pro_expired: new_premium_pro_expired,
                 },
               });
               // @ts-ignore
-              if (customerInfo?.metadata?.id) {
+              if (customer?.metadata?.id) {
                 await redisClient
                   .set(
                     // @ts-ignore
-                    `premium:${customerInfo?.metadata?.id}`,
+                    `premium:${customer?.metadata?.id}`,
                     JSON.stringify({
-                      customer: customerInfo,
+                      customer: customer,
                       subscription: {
                         isPremium: true,
                         product: process.env.PREMIUM_PRO_PRODUCT,
@@ -146,16 +145,13 @@ const POST = async (req: Request) => {
                   });
               }
             } else if (price?.id === process.env.ONETIME_PREMIUM_MAX_PRICE) {
-              const customerInfo = await stripeClient.customers.retrieve(
-                customer as string,
-              );
               let old_premium_max_expired = new Date();
               if (
                 // @ts-ignore
-                customerInfo?.metadata?.premium_max_expired &&
+                customer?.metadata?.premium_max_expired &&
                 new Date() <
                   // @ts-ignore
-                  new Date(customerInfo.metadata.premium_max_expired)
+                  new Date(customer.metadata.premium_max_expired)
               ) {
                 old_premium_max_expired = new Date(
                   // @ts-ignore
@@ -167,7 +163,7 @@ const POST = async (req: Request) => {
                   old_premium_max_expired.getDate() + 31,
                 ),
               ).toISOString();
-              await stripeClient.customers.update(customer as string, {
+              await stripeClient.customers.update(customer.id as string, {
                 metadata: {
                   // @ts-ignore
                   ...(customerInfo?.metadata || {}),
@@ -181,7 +177,7 @@ const POST = async (req: Request) => {
                     // @ts-ignore
                     `premium:${customerInfo?.metadata?.id}`,
                     JSON.stringify({
-                      customer: customerInfo,
+                      customer: customer,
                       subscription: {
                         isPremium: true,
                         product: process.env.PREMIUM_MAX_PRODUCT,
