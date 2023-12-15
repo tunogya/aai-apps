@@ -82,7 +82,6 @@ const getRateLimitConfig = (prefix: string, product: string) => {
   const ratelimit = new Ratelimit({
     redis: redisClient,
     limiter: Ratelimit.slidingWindow(tokens, window),
-    analytics: true,
     prefix: "ratelimit:/api/chat:gpt-4",
   });
   return {
