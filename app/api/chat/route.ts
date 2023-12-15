@@ -10,8 +10,7 @@ import { getSession } from "@auth0/nextjs-auth0/edge";
 import { NextRequest, NextResponse } from "next/server";
 import dysortid from "@/app/utils/dysortid";
 import redisClient from "@/app/utils/redisClient";
-import { Ratelimit } from "@upstash/ratelimit";
-import getRateLimit from "@/app/utils/getRateLimit";
+import getRateLimitConfig from "@/app/utils/getRateLimitConfig";
 
 const sqsClient = new SQSClient({
   region: "ap-northeast-1",
@@ -70,13 +69,14 @@ export async function POST(req: NextRequest): Promise<Response> {
       premiumInfo?.subscription?.product
     : "AbandonAI Free";
 
-  const user_limit = getRateLimit("ratelimit:/api/chat:gpt-4", product);
-  const ratelimit = new Ratelimit({
-    redis: redisClient,
-    limiter: Ratelimit.slidingWindow(user_limit.tokens, user_limit.window),
-    analytics: true,
-    prefix: "ratelimit:/api/chat:gpt-4",
-  });
+  let prefix;
+  if (model.startsWith("gpt-4")) {
+    prefix = "ratelimit:/api/chat:gpt-4";
+  } else {
+    prefix = "ratelimit:/api/chat:gpt-3.5";
+  }
+  const { ratelimit, content_window } = getRateLimitConfig(prefix, product);
+
   const { success, limit, reset, remaining } = await ratelimit.limit(sub);
   if (!success) {
     return new Response(
@@ -95,9 +95,7 @@ export async function POST(req: NextRequest): Promise<Response> {
       },
     );
   }
-
-  max_tokens = user_limit.content_window;
-
+  max_tokens = content_window;
   const openai = new OpenAI();
 
   try {

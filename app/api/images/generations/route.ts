@@ -8,6 +8,7 @@ import { Ratelimit } from "@upstash/ratelimit";
 import { sha256 } from "multiformats/hashes/sha2";
 import { CID } from "multiformats/cid";
 import * as raw from "multiformats/codecs/raw";
+import getRateLimitConfig from "@/app/utils/getRateLimitConfig";
 
 export const runtime = "edge";
 
@@ -27,28 +28,9 @@ export async function POST(req: NextRequest): Promise<Response> {
       premiumInfo?.subscription?.product
     : "AbandonAI Free";
 
-  if (!isPremium) {
-    return new Response(
-      JSON.stringify({
-        error: "premium required",
-        message: "Sorry, you need a Premium subscription to use this.",
-      }),
-      {
-        status: 200,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      },
-    );
-  }
+  const prefix = "ratelimit:/api/images/generations:dalle3";
+  const { ratelimit } = getRateLimitConfig(prefix, product);
 
-  const ratelimit = new Ratelimit({
-    redis: redisClient,
-    limiter: Ratelimit.slidingWindow(1, "1 m"),
-    analytics: true,
-    prefix: "ratelimit:/api/images/generations:dalle3",
-    ephemeralCache: cache,
-  });
   const { success, limit, reset, remaining } = await ratelimit.limit(sub);
   if (!success) {
     return new Response(

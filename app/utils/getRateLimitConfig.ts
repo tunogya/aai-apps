@@ -1,8 +1,13 @@
+import { Ratelimit } from "@upstash/ratelimit";
+import redisClient from "@/app/utils/redisClient";
+
 type Unit = "ms" | "s" | "m" | "h" | "d";
 type Duration = `${number} ${Unit}` | `${number}${Unit}`;
 
-const getRateLimit = (prefix: string, product: string) => {
-  let tokens: number, window: Duration, content_window: number;
+const getRateLimitConfig = (prefix: string, product: string) => {
+  let tokens: number,
+    window: Duration,
+    content_window: number = 0;
   switch (prefix) {
     case "ratelimit:/api/chat:gpt-4":
       if (product === process.env.PREMIUM_STANDARD_PRODUCT) {
@@ -50,17 +55,40 @@ const getRateLimit = (prefix: string, product: string) => {
         content_window = 1024;
         break;
       }
+    case "ratelimit:/api/images/generations:dalle3":
+      if (product === process.env.PREMIUM_STANDARD_PRODUCT) {
+        tokens = 10;
+        window = "1 h";
+        break;
+      } else if (product === process.env.PREMIUM_PRO_PRODUCT) {
+        tokens = 20;
+        window = "1 h";
+        break;
+      } else if (product === process.env.PREMIUM_MAX_PRODUCT) {
+        tokens = 40;
+        window = "1 h";
+        break;
+      } else {
+        // AbandonAI Free
+        tokens = 0;
+        window = "1 h";
+        break;
+      }
     default:
       tokens = 0;
       window = "3 h";
-      content_window = 0;
       break;
   }
+  const ratelimit = new Ratelimit({
+    redis: redisClient,
+    limiter: Ratelimit.slidingWindow(tokens, window),
+    analytics: true,
+    prefix: "ratelimit:/api/chat:gpt-4",
+  });
   return {
-    tokens,
-    window,
+    ratelimit,
     content_window,
   };
 };
 
-export default getRateLimit;
+export default getRateLimitConfig;
