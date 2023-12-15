@@ -94,7 +94,7 @@ const GET = async (req: NextRequest) => {
       },
     };
     await redisClient.set(`premium:${user.sub}`, JSON.stringify(data), {
-      exat: new Date(premium_pro_expired).getTime() / 1000,
+      exat: new Date(premium_standard_expired).getTime() / 1000,
     });
     return NextResponse.json(data);
   }
