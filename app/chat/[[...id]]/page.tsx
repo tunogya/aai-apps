@@ -410,20 +410,18 @@ export default function Chat() {
           />
         ) : (
           <div
-            className={`w-full h-full flex flex-col items-center justify-center text-xl md:text-2xl lg:text-3xl pb-40 gap-3 text-gray-800`}
+            className={`w-full h-full flex flex-col items-center justify-center text-xl md:text-2xl lg:text-3xl gap-3 text-gray-800`}
           >
             <Image src={"/favicon.svg"} alt={""} height={40} width={40} />
             <div>abandon.ai</div>
-            {model.startsWith("gpt-4-vision") && (
-              <div
-                className={
-                  "text-xs max-w-md text-center absolute bottom-4 text-gray-500 border px-2 py-1 border-[#0066FF]"
-                }
-              >
-                Tips: When using GPT-4 with Vision, you will not be able to use
-                functions such as browsing and drawing.
-              </div>
-            )}
+            <div
+              className={`text-xs max-w-md text-center text-gray-500 border px-2 py-1 my-20 ${
+                model.startsWith("gpt-4-vision") ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              Tips: When using GPT-4 with Vision, you will not be able to use
+              functions such as browsing and drawing.
+            </div>
           </div>
         )}
       </div>
