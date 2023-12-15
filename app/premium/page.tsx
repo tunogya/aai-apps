@@ -1,8 +1,6 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
-import dysortid from "@/app/utils/dysortid";
 import useSWR from "swr";
 
 const CSR = () => {
@@ -34,14 +32,33 @@ const CSR = () => {
   }
 
   return (
-    <div className={"w-full h-full p-2 md:p-4 relative"}>
-      <div
-        className={"p-2 md:p-8 md:border rounded-lg space-y-4 xl:space-y-16"}
-      >
+    <div
+      className={
+        "w-full h-full md:h-[calc(100vh-60px)] p-2 md:p-4 relative flex flex-col space-y-4 overflow-y-auto"
+      }
+    >
+      <div className={"p-2 md:p-8 md:border rounded-lg space-y-4 xl:space-y-8"}>
         <div className={"text-2xl xl:text-3xl font-semibold text-center"}>
           Affordable plans for any situation
         </div>
-        <div>
+        <div className={"flex w-full justify-center space-x-2 items-center"}>
+          <div className={"text-sm font-semibold"}>
+            Your current plan:{" "}
+            {data?.subscription?.product.startsWith("prod")
+              ? "Premium"
+              : "Free"}
+          </div>
+          {data?.subscription?.current_period_end && (
+            <div className={"text-xs"}>
+              (Expired:{" "}
+              {new Date(
+                data?.subscription?.current_period_end * 1000,
+              ).toLocaleDateString()}
+              )
+            </div>
+          )}
+        </div>
+        <div className={"pt-8"}>
           {/* @ts-ignore */}
           <stripe-pricing-table
             publishable-key="pk_live_51MagF9FPpv8QfieYNE5ZeIQQTIFXZxdRHKyHo8xmWXkYKnYyXKoaxh6BEs5JuNIpgAWU5FNt7d5gyhRrVsxFtqxL00vTDy0spV"
@@ -50,11 +67,6 @@ const CSR = () => {
           />
         </div>
       </div>
-      <Link href={`/chat/${dysortid()}`}>
-        <div className={"text-center absolute bottom-4 w-full underline"}>
-          Back
-        </div>
-      </Link>
     </div>
   );
 };
