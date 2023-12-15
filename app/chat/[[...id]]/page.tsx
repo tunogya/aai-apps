@@ -415,7 +415,7 @@ export default function Chat() {
             <Image src={"/favicon.svg"} alt={""} height={40} width={40} />
             <div>abandon.ai</div>
             <div
-              className={`text-xs max-w-md text-center text-gray-500 border px-2 py-1 my-20 ${
+              className={`text-xs max-w-md text-center text-gray-500 border px-2 py-1 my-20 mx-4 ${
                 model.startsWith("gpt-4-vision") ? "opacity-100" : "opacity-0"
               }`}
             >
