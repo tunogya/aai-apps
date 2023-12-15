@@ -100,6 +100,14 @@ export async function POST(req: NextRequest): Promise<Response> {
   try {
     let res;
     try {
+      // Priority model
+      if (model.startsWith("gpt-3.5")) {
+        // 16k tokens
+        model = "gpt-3.5-turbo-1106";
+      } else if (model.startsWith("gpt-4")) {
+        // 128k tokens
+        model = "gpt-4-1106-preview";
+      }
       res = await openai.chat.completions.create({
         model,
         messages,
@@ -109,8 +117,18 @@ export async function POST(req: NextRequest): Promise<Response> {
         functions,
       });
     } catch (e) {
+      // Backup model
+      if (model.startsWith("gpt-3")) {
+        // 4k tokens
+        model = "gpt-3.5-turbo";
+        max_tokens = 1024;
+      } else if (model.startsWith("gpt-4")) {
+        // 8k tokens
+        model = "gpt-4";
+        max_tokens = 2048;
+      }
       res = await openai.chat.completions.create({
-        model: "gpt-3.5-turbo-1106",
+        model,
         messages,
         temperature: 0.7,
         stream: true,
