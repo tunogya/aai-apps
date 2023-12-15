@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import stripeClient from "@/app/utils/stripeClient";
+import redisClient from "@/app/utils/redisClient";
 import * as process from "process";
 
 const POST = async (req: Request) => {
@@ -61,6 +62,32 @@ const POST = async (req: Request) => {
                   premium_standard_expired: new_premium_standard_expired,
                 },
               });
+              if (customer?.metadata?.id) {
+                await redisClient
+                  .set(
+                    `premium:${customer?.metadata?.id}`,
+                    JSON.stringify({
+                      customer: customer,
+                      subscription: {
+                        isPremium: true,
+                        product: process.env.PREMIUM_STANDARD_PRODUCT,
+                        current_period_start: new Date().getTime() / 1000,
+                        current_period_end:
+                          new Date(new_premium_standard_expired).getTime() /
+                          1000,
+                      },
+                    }),
+                    {
+                      exat:
+                        new Date(new_premium_standard_expired).getTime() / 1000,
+                    },
+                  )
+                  .catch(() => {
+                    console.log("redis error");
+                  });
+              } else {
+                console.log("customer id not found");
+              }
             } else if (price?.id === process.env.ONETIME_PREMIUM_PRO_PRICE) {
               let old_premium_pro_expired = new Date();
               if (
@@ -82,6 +109,28 @@ const POST = async (req: Request) => {
                   premium_pro_expired: new_premium_pro_expired,
                 },
               });
+              if (customer.metadata?.id) {
+                await redisClient
+                  .set(
+                    `premium:${customer?.metadata?.id}`,
+                    JSON.stringify({
+                      customer: customer,
+                      subscription: {
+                        isPremium: true,
+                        product: process.env.PREMIUM_PRO_PRODUCT,
+                        current_period_start: new Date().getTime() / 1000,
+                        current_period_end:
+                          new Date(new_premium_pro_expired).getTime() / 1000,
+                      },
+                    }),
+                    {
+                      exat: new Date(new_premium_pro_expired).getTime() / 1000,
+                    },
+                  )
+                  .catch(() => {
+                    console.log("redis error");
+                  });
+              }
             } else if (price?.id === process.env.ONETIME_PREMIUM_MAX_PRICE) {
               let old_premium_max_expired = new Date();
               if (
@@ -103,6 +152,28 @@ const POST = async (req: Request) => {
                   premium_max_expired: new_premium_max_expired,
                 },
               });
+              if (customer.metadata?.id) {
+                await redisClient
+                  .set(
+                    `premium:${customer.metadata.id}`,
+                    JSON.stringify({
+                      customer: customer,
+                      subscription: {
+                        isPremium: true,
+                        product: process.env.PREMIUM_MAX_PRODUCT,
+                        current_period_start: new Date().getTime() / 1000,
+                        current_period_end:
+                          new Date(new_premium_max_expired).getTime() / 1000,
+                      },
+                    }),
+                    {
+                      exat: new Date(new_premium_max_expired).getTime() / 1000,
+                    },
+                  )
+                  .catch(() => {
+                    console.log("redis error");
+                  });
+              }
             }
           }
         } else {
