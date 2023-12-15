@@ -42,7 +42,20 @@ const MessageBox: FC<{
   const [url, setUrl] = useState("");
   const content = useMemo(() => {
     try {
-      return JSON.parse(message.content);
+      const parseContent = JSON.parse(message.content);
+      if (
+        Array.isArray(parseContent) &&
+        parseContent.length > 0 &&
+        parseContent[0]?.type
+      ) {
+        return parseContent;
+      }
+      return [
+        {
+          type: "text",
+          text: message.content,
+        },
+      ];
     } catch (e) {
       return [
         {
@@ -227,9 +240,10 @@ const MessageBox: FC<{
               </button>
             </div>
           </div>
-          {content?.map((item: any, index: number) => (
-            <ShowContent item={item} key={index} />
-          ))}
+          {content &&
+            content?.map((item: any, index: number) => (
+              <ShowContent item={item} key={index} />
+            ))}
         </div>
       </div>
     </div>
