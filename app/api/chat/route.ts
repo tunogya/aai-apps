@@ -11,6 +11,7 @@ import { NextRequest, NextResponse } from "next/server";
 import dysortid from "@/app/utils/dysortid";
 import redisClient from "@/app/utils/redisClient";
 import { Ratelimit } from "@upstash/ratelimit";
+import getRateLimit from "@/app/utils/getRateLimit";
 
 const sqsClient = new SQSClient({
   region: "ap-northeast-1",
@@ -59,7 +60,7 @@ export async function POST(req: NextRequest): Promise<Response> {
   // only handle the last 6 messages
   messages?.slice(-6);
 
-  let max_tokens = 1024;
+  let max_tokens;
 
   const premiumInfo = await redisClient.get(`premium:${sub}`);
   // @ts-ignore
@@ -69,76 +70,33 @@ export async function POST(req: NextRequest): Promise<Response> {
       premiumInfo?.subscription?.product
     : "AbandonAI Free";
 
-  if (model?.startsWith("gpt-4")) {
-    if (!isPremium) {
-      return new Response(
-        JSON.stringify({
-          error: "premium required",
-          message: "Sorry, you need a Premium subscription to use this.",
-        }),
-        {
-          status: 403,
-          headers: {
-            "Content-Type": "application/json",
-          },
+  const user_limit = getRateLimit("ratelimit:/api/chat:gpt-4", product);
+  const ratelimit = new Ratelimit({
+    redis: redisClient,
+    limiter: Ratelimit.slidingWindow(user_limit.tokens, user_limit.window),
+    analytics: true,
+    prefix: "ratelimit:/api/chat:gpt-4",
+  });
+  const { success, limit, reset, remaining } = await ratelimit.limit(sub);
+  if (!success) {
+    return new Response(
+      JSON.stringify({
+        error: "limit reached",
+        message: "Sorry, you have reached the limit. Please try again later.",
+      }),
+      {
+        status: 429,
+        headers: {
+          "Content-Type": "application/json",
+          "x-ratelimit-limit-requests": `${limit}`,
+          "x-ratelimit-remaining-requests": `${remaining}`,
+          "x-ratelimit-reset-requests": `${reset}`,
         },
-      );
-    }
-    const ratelimit = new Ratelimit({
-      redis: redisClient,
-      limiter: Ratelimit.slidingWindow(50, "3 h"),
-      analytics: true,
-      prefix: "ratelimit:/api/chat:gpt-4",
-    });
-    const { success, limit, reset, remaining } = await ratelimit.limit(sub);
-    if (!success) {
-      return new Response(
-        JSON.stringify({
-          error: "limit reached",
-          message: "Sorry, you have reached the limit. Please try again later.",
-        }),
-        {
-          status: 429,
-          headers: {
-            "Content-Type": "application/json",
-            "x-ratelimit-limit-requests": `${limit}`,
-            "x-ratelimit-remaining-requests": `${remaining}`,
-            "x-ratelimit-reset-requests": `${reset}`,
-          },
-        },
-      );
-    }
-
-    max_tokens = 2048;
-  } else {
-    if (!isPremium) {
-      const ratelimit = new Ratelimit({
-        redis: redisClient,
-        limiter: Ratelimit.slidingWindow(5, "1 h"),
-        analytics: true,
-        prefix: "ratelimit:/api/chat:gpt-3.5",
-      });
-      const { success, limit, reset, remaining } = await ratelimit.limit(sub);
-      if (!success) {
-        return new Response(
-          JSON.stringify({
-            error: "limit reached",
-            message:
-              "Sorry, you have reached the limit. Please try again later.",
-          }),
-          {
-            status: 429,
-            headers: {
-              "Content-Type": "application/json",
-              "x-ratelimit-limit-requests": `${limit}`,
-              "x-ratelimit-remaining-requests": `${remaining}`,
-              "x-ratelimit-reset-requests": `${reset}`,
-            },
-          },
-        );
-      }
-    }
+      },
+    );
   }
+
+  max_tokens = user_limit.content_window;
 
   const openai = new OpenAI();
 
