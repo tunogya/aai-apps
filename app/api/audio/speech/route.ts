@@ -13,15 +13,13 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const { user } = await getSession();
   const sub = user.sub;
 
-  let isPremium, product;
-  try {
-    const premiumInfo = await redisClient.get(`premium:${sub}`);
-    // @ts-ignore
-    isPremium = premiumInfo?.subscription?.isPremium;
-  } catch (e) {
-    isPremium = false;
-    product = null;
-  }
+  const premiumInfo = await redisClient.get(`premium:${sub}`);
+  // @ts-ignore
+  const isPremium = premiumInfo?.subscription?.isPremium || false;
+  const product = isPremium
+    ? // @ts-ignore
+      premiumInfo?.subscription?.product
+    : "AbandonAI Free";
 
   if (!isPremium) {
     return NextResponse.json({
