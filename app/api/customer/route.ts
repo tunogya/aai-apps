@@ -12,7 +12,7 @@ const GET = async (req: NextRequest) => {
   // get data from cache, if exists, must be premium user
   const cache = await redisClient.get(`premium:${user.sub}`);
   // @ts-ignore
-  if (cache?.subscription?.name) {
+  if (cache?.subscription?.type) {
     try {
       return NextResponse.json({
         ...cache,
@@ -56,8 +56,9 @@ const GET = async (req: NextRequest) => {
       customer: customer,
       subscription: {
         isPremium: true,
+        type: "one-time",
         name: "AbandonAI Premium Max",
-        product: process.env.PREMIUM_MAX_PRODUCT,
+        product: process.env.NEXT_PUBLIC_PREMIUM_MAX_PRODUCT,
         current_period_end: new Date(premium_max_expired).getTime() / 1000,
       },
     };
@@ -72,6 +73,7 @@ const GET = async (req: NextRequest) => {
       customer: customer,
       subscription: {
         isPremium: true,
+        type: "one-time",
         name: "AbandonAI Premium Pro",
         product: process.env.PREMIUM_PRO_PRODUCT,
         current_period_end: new Date(premium_pro_expired).getTime() / 1000,
@@ -91,6 +93,7 @@ const GET = async (req: NextRequest) => {
       customer: customer,
       subscription: {
         isPremium: true,
+        type: "one-time",
         name: "AbandonAI Premium Standard",
         product: process.env.PREMIUM_STANDARD_PRODUCT,
         current_period_end: new Date(premium_standard_expired).getTime() / 1000,
@@ -112,7 +115,7 @@ const GET = async (req: NextRequest) => {
       (item) =>
         item.plan.product === process.env.PREMIUM_STANDARD_PRODUCT ||
         item.plan.product === process.env.PREMIUM_PRO_PRODUCT ||
-        item.plan.product === process.env.PREMIUM_MAX_PRODUCT,
+        item.plan.product === process.env.NEXT_PUBLIC_PREMIUM_MAX_PRODUCT,
     );
   });
 
@@ -123,6 +126,7 @@ const GET = async (req: NextRequest) => {
       subscription: {
         isPremium: subscription.status === "active",
         product: subscription.items.data[0].plan.product,
+        type: "subscription",
         current_period_start: subscription.current_period_start,
         current_period_end: subscription.current_period_end,
       },
@@ -137,6 +141,7 @@ const GET = async (req: NextRequest) => {
       subscription: {
         product: null,
         name: "AbandonAI Free",
+        type: "free",
         isPremium: false,
       },
     });

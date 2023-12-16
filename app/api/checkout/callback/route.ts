@@ -28,35 +28,54 @@ const POST = async (req: Request) => {
     if (event.type === "checkout.session.completed") {
       const checkoutSessionCompleted = event.data
         .object as Stripe.Checkout.Session;
-      const { id, customer_email, livemode } = checkoutSessionCompleted;
+      const {
+        id,
+        customer_email,
+        customer: customerId,
+        livemode,
+      } = checkoutSessionCompleted;
       if (livemode && customer_email) {
-        // get customer info by email
-        const customers = await stripeClient.customers.list({
-          email: customer_email,
-        });
-        const customer = customers?.data?.[0] as Stripe.Customer;
+        let customer;
+        if (customer_email) {
+          const customers = await stripeClient.customers.list({
+            email: customer_email,
+          });
+          customer = customers?.data?.[0] as Stripe.Customer;
+        }
+        if (customerId) {
+          customer = await stripeClient.customers.retrieve(
+            customerId as string,
+          );
+        }
         if (customer) {
           const lineItems =
             await stripeClient.checkout.sessions.listLineItems(id);
           for (const lineItem of lineItems.data) {
             const { price } = lineItem;
-            if (price?.id === process.env.ONETIME_PREMIUM_STANDARD_PRICE) {
+            if (
+              price?.id ===
+              process.env.NEXT_PUBLIC_ONETIME_PREMIUM_STANDARD_PRICE
+            ) {
               await updateCustomerSubscription(
                 process.env.PREMIUM_STANDARD_PRODUCT!,
                 "AbandonAI Premium Standard",
                 "premium_standard_expired",
                 customer,
               );
-            } else if (price?.id === process.env.ONETIME_PREMIUM_PRO_PRICE) {
+            } else if (
+              price?.id === process.env.NEXT_PUBLIC_ONETIME_PREMIUM_PRO_PRICE
+            ) {
               await updateCustomerSubscription(
                 process.env.PREMIUM_PRO_PRODUCT!,
                 "AbandonAI Premium Pro",
                 "premium_pro_expired",
                 customer,
               );
-            } else if (price?.id === process.env.ONETIME_PREMIUM_MAX_PRICE) {
+            } else if (
+              price?.id === process.env.NEXT_PUBLIC_ONETIME_PREMIUM_MAX_PRICE
+            ) {
               await updateCustomerSubscription(
-                process.env.PREMIUM_MAX_PRODUCT!,
+                process.env.NEXT_PUBLIC_PREMIUM_MAX_PRODUCT!,
                 "AbandonAI Premium Max",
                 "premium_max_expired",
                 customer,
@@ -104,11 +123,12 @@ async function updateCustomerSubscription(
   productId: string,
   productName: string,
   metadataKey: string,
-  customer: Stripe.Customer,
+  customer: Stripe.Customer | Stripe.DeletedCustomer,
 ) {
   const oldExpiredDate = new Date(
     Math.max(
-      new Date(customer.metadata?.[metadataKey] || 0).getTime(),
+      // @ts-ignore
+      new Date(customer?.metadata?.[metadataKey] || 0).getTime(),
       new Date().getTime(),
     ),
   );
@@ -119,15 +139,17 @@ async function updateCustomerSubscription(
 
   await stripeClient.customers.update(customer.id, {
     metadata: {
-      ...(customer.metadata || {}),
+      // @ts-ignore
+      ...(customer?.metadata || {}),
       [metadataKey]: newExpiredDate_str,
     },
   });
-
-  if (customer.metadata?.id) {
+  // @ts-ignore
+  if (customer?.metadata?.id) {
     await redisClient
       .set(
-        `premium:${customer.metadata.id}`,
+        // @ts-ignore
+        `premium:${customer?.metadata.id}`,
         JSON.stringify({
           customer: customer,
           subscription: {

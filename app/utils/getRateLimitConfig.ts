@@ -10,17 +10,17 @@ const getRateLimitConfig = (prefix: string, product: string | null) => {
     content_window: number = 0;
   switch (prefix) {
     case "ratelimit:/api/chat:gpt-4":
-      if (product === process.env.PREMIUM_STANDARD_PRODUCT) {
+      if (product === process.env.NEXT_PUBLIC_PREMIUM_STANDARD_PRODUCT) {
         tokens = 50;
         window = "12 h";
         content_window = 2048;
         break;
-      } else if (product === process.env.PREMIUM_PRO_PRODUCT) {
+      } else if (product === process.env.NEXT_PUBLIC_PREMIUM_PRO_PRODUCT) {
         tokens = 50;
         window = "6 h";
         content_window = 4096;
         break;
-      } else if (product === process.env.PREMIUM_MAX_PRODUCT) {
+      } else if (product === process.env.NEXT_PUBLIC_PREMIUM_MAX_PRODUCT) {
         tokens = 50;
         window = "3 h";
         content_window = 4096;
@@ -33,17 +33,17 @@ const getRateLimitConfig = (prefix: string, product: string | null) => {
         break;
       }
     case "ratelimit:/api/chat:gpt-3.5":
-      if (product === process.env.PREMIUM_STANDARD_PRODUCT) {
+      if (product === process.env.NEXT_PUBLIC_PREMIUM_STANDARD_PRODUCT) {
         tokens = 50;
         window = "1 h";
         content_window = 2048;
         break;
-      } else if (product === process.env.PREMIUM_PRO_PRODUCT) {
+      } else if (product === process.env.NEXT_PUBLIC_PREMIUM_PRO_PRODUCT) {
         tokens = 100;
         window = "1 h";
         content_window = 4096;
         break;
-      } else if (product === process.env.PREMIUM_MAX_PRODUCT) {
+      } else if (product === process.env.NEXT_PUBLIC_PREMIUM_MAX_PRODUCT) {
         tokens = 200;
         window = "1 h";
         content_window = 4096;
@@ -56,15 +56,15 @@ const getRateLimitConfig = (prefix: string, product: string | null) => {
         break;
       }
     case "ratelimit:/api/images/generations:dalle3":
-      if (product === process.env.PREMIUM_STANDARD_PRODUCT) {
+      if (product === process.env.NEXT_PUBLIC_PREMIUM_STANDARD_PRODUCT) {
         tokens = 10;
         window = "1 h";
         break;
-      } else if (product === process.env.PREMIUM_PRO_PRODUCT) {
+      } else if (product === process.env.NEXT_PUBLIC_PREMIUM_PRO_PRODUCT) {
         tokens = 20;
         window = "1 h";
         break;
-      } else if (product === process.env.PREMIUM_MAX_PRODUCT) {
+      } else if (product === process.env.NEXT_PUBLIC_PREMIUM_MAX_PRODUCT) {
         tokens = 40;
         window = "1 h";
         break;
