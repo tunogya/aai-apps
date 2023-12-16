@@ -43,10 +43,7 @@ const CSR = () => {
         </div>
         <div className={"flex w-full justify-center space-x-2 items-center"}>
           <div className={"text-sm font-semibold"}>
-            Your current plan:{" "}
-            {data?.subscription?.product.startsWith("prod")
-              ? "Premium"
-              : "Free"}
+            Current plan: {data?.subscription?.name}
           </div>
           {data?.subscription?.current_period_end && (
             <div className={"text-xs"}>

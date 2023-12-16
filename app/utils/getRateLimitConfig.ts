@@ -4,7 +4,7 @@ import redisClient from "@/app/utils/redisClient";
 type Unit = "ms" | "s" | "m" | "h" | "d";
 type Duration = `${number} ${Unit}` | `${number}${Unit}`;
 
-const getRateLimitConfig = (prefix: string, product: string) => {
+const getRateLimitConfig = (prefix: string, product: string | null) => {
   let tokens: number,
     window: Duration,
     content_window: number = 0;

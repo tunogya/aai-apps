@@ -10,12 +10,12 @@ const GET = async (req: NextRequest) => {
   const { user } = await getSession();
 
   // get data from cache, if exists, must be premium user
-  const isPremium = await redisClient.get(`premium:${user.sub}`);
+  const cache = await redisClient.get(`premium:${user.sub}`);
   // @ts-ignore
-  if (isPremium?.subscription) {
+  if (cache?.subscription?.name) {
     try {
       return NextResponse.json({
-        ...isPremium,
+        ...cache,
         cache: true,
       });
     } catch (e) {

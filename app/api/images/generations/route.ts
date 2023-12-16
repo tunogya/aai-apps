@@ -20,13 +20,9 @@ export async function POST(req: NextRequest): Promise<Response> {
   const { user } = await getSession();
   const sub = user.sub;
 
-  const premiumInfo = await redisClient.get(`premium:${sub}`);
+  const cache = await redisClient.get(`premium:${sub}`);
   // @ts-ignore
-  const isPremium = premiumInfo?.subscription?.isPremium || false;
-  const product = isPremium
-    ? // @ts-ignore
-      premiumInfo?.subscription?.product
-    : "AbandonAI Free";
+  const product = cache?.subscription?.product || null;
 
   const prefix = "ratelimit:/api/images/generations:dalle3";
   const { ratelimit } = getRateLimitConfig(prefix, product);
