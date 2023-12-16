@@ -195,6 +195,25 @@ const POST = async (req: Request) => {
           );
         }
       }
+    } else if (
+      event.type === "customer.subscription.deleted" ||
+      event.type === "customer.subscription.updated" ||
+      event.type === "customer.subscription.paused" ||
+      event.type === "customer.subscription.created" ||
+      event.type === "customer.subscription.resumed"
+    ) {
+      const { customer: customer_id } = event.data
+        .object as Stripe.Subscription;
+      const customer = await stripeClient.customers.retrieve(
+        customer_id as string,
+      );
+      // @ts-ignore
+      if (customer?.metadata?.id) {
+        // @ts-ignore
+        await redisClient.del(`premium:${customer.metadata.id}`);
+      } else {
+        console.log("customer id not found");
+      }
     }
   } catch (e) {
     console.log(e);
