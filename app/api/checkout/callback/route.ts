@@ -50,14 +50,14 @@ const POST = async (req: Request) => {
             } else if (price?.id === process.env.ONETIME_PREMIUM_PRO_PRICE) {
               await updateCustomerSubscription(
                 process.env.PREMIUM_PRO_PRODUCT!,
-                "AbandonAI Pro Standard",
+                "AbandonAI Premium Pro",
                 "premium_pro_expired",
                 customer,
               );
             } else if (price?.id === process.env.ONETIME_PREMIUM_MAX_PRICE) {
               await updateCustomerSubscription(
                 process.env.PREMIUM_MAX_PRODUCT!,
-                "AbandonAI Max Standard",
+                "AbandonAI Premium Max",
                 "premium_max_expired",
                 customer,
               );
