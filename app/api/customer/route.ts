@@ -56,12 +56,13 @@ const GET = async (req: NextRequest) => {
       customer: customer,
       subscription: {
         isPremium: true,
+        name: "AbandonAI Premium Max",
         product: process.env.PREMIUM_MAX_PRODUCT,
         current_period_end: new Date(premium_max_expired).getTime() / 1000,
       },
     };
     await redisClient.set(`premium:${user.sub}`, JSON.stringify(data), {
-      exat: Number((new Date(premium_max_expired).getTime() / 1000).toFixed(0)),
+      exat: Math.floor(new Date(premium_max_expired).getTime() / 1000),
     });
     return NextResponse.json(data);
   }
@@ -71,12 +72,13 @@ const GET = async (req: NextRequest) => {
       customer: customer,
       subscription: {
         isPremium: true,
+        name: "AbandonAI Premium Pro",
         product: process.env.PREMIUM_PRO_PRODUCT,
         current_period_end: new Date(premium_pro_expired).getTime() / 1000,
       },
     };
     await redisClient.set(`premium:${user.sub}`, JSON.stringify(data), {
-      exat: Number((new Date(premium_pro_expired).getTime() / 1000).toFixed(0)),
+      exat: Math.floor(new Date(premium_pro_expired).getTime() / 1000),
     });
     return NextResponse.json(data);
   }
@@ -89,14 +91,13 @@ const GET = async (req: NextRequest) => {
       customer: customer,
       subscription: {
         isPremium: true,
+        name: "AbandonAI Premium Standard",
         product: process.env.PREMIUM_STANDARD_PRODUCT,
         current_period_end: new Date(premium_standard_expired).getTime() / 1000,
       },
     };
     await redisClient.set(`premium:${user.sub}`, JSON.stringify(data), {
-      exat: Number(
-        (new Date(premium_standard_expired).getTime() / 1000).toFixed(0),
-      ),
+      exat: Math.floor(new Date(premium_standard_expired).getTime() / 1000),
     });
     return NextResponse.json(data);
   }
@@ -127,14 +128,15 @@ const GET = async (req: NextRequest) => {
       },
     };
     await redisClient.set(`premium:${user.sub}`, JSON.stringify(data), {
-      exat: subscription.current_period_end,
+      exat: Math.floor(subscription.current_period_end),
     });
     return NextResponse.json(data);
   } else {
     return NextResponse.json({
       customer: customer,
       subscription: {
-        product: "AbandonAI Free",
+        product: null,
+        name: "AbandonAI Free",
         isPremium: false,
       },
     });

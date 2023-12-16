@@ -43,18 +43,21 @@ const POST = async (req: Request) => {
             if (price?.id === process.env.ONETIME_PREMIUM_STANDARD_PRICE) {
               await updateCustomerSubscription(
                 process.env.PREMIUM_STANDARD_PRODUCT!,
+                "AbandonAI Premium Standard",
                 "premium_standard_expired",
                 customer,
               );
             } else if (price?.id === process.env.ONETIME_PREMIUM_PRO_PRICE) {
               await updateCustomerSubscription(
                 process.env.PREMIUM_PRO_PRODUCT!,
+                "AbandonAI Pro Standard",
                 "premium_pro_expired",
                 customer,
               );
             } else if (price?.id === process.env.ONETIME_PREMIUM_MAX_PRICE) {
               await updateCustomerSubscription(
                 process.env.PREMIUM_MAX_PRODUCT!,
+                "AbandonAI Max Standard",
                 "premium_max_expired",
                 customer,
               );
@@ -99,6 +102,7 @@ const POST = async (req: Request) => {
 
 async function updateCustomerSubscription(
   productId: string,
+  productName: string,
   metadataKey: string,
   customer: Stripe.Customer,
 ) {
@@ -128,6 +132,7 @@ async function updateCustomerSubscription(
           customer: customer,
           subscription: {
             isPremium: true,
+            name: productName,
             product: productId,
             current_period_start: new Date().getTime() / 1000,
             current_period_end: new Date(newExpiredDate_str).getTime() / 1000,
