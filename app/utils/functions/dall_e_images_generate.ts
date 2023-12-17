@@ -15,7 +15,7 @@ export const dall_e_images_generate: ChatCompletionCreateParams.Function = {
         type: "string",
         description: "The DALL-E model to use",
         enum: ["dall-e-2", "dall-e-3"],
-        default: "dall-e-2",
+        default: "dall-e-3",
       },
       n: {
         type: "integer",
