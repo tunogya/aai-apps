@@ -17,7 +17,6 @@ import dynamic from "next/dynamic";
 import dysortid from "@/app/utils/dysortid";
 import {
   ArrowDownTrayIcon,
-  ArrowRightIcon,
   ArrowUpIcon,
   PaperClipIcon,
   PlusIcon,
