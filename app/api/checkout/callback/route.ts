@@ -32,62 +32,56 @@ const POST = async (req: Request) => {
         id,
         customer_email,
         customer: customerId,
-        livemode,
       } = checkoutSessionCompleted;
-      if (livemode) {
-        let customer;
-        if (customer_email) {
-          const customers = await stripeClient.customers.list({
-            email: customer_email,
-          });
-          customer = customers?.data?.[0] as Stripe.Customer;
-        }
-        if (customerId) {
-          customer = await stripeClient.customers.retrieve(
-            customerId as string,
-          );
-        }
-        if (customer) {
-          const lineItems =
-            await stripeClient.checkout.sessions.listLineItems(id);
-          for (const lineItem of lineItems.data) {
-            const { price } = lineItem;
-            if (
-              price?.id ===
-              process.env.NEXT_PUBLIC_ONETIME_PREMIUM_STANDARD_PRICE
-            ) {
-              await updateCustomerSubscription(
-                process.env.PREMIUM_STANDARD_PRODUCT!,
-                "AbandonAI Premium Standard",
-                "premium_standard_expired",
-                customer,
-              );
-            } else if (
-              price?.id === process.env.NEXT_PUBLIC_ONETIME_PREMIUM_PRO_PRICE
-            ) {
-              await updateCustomerSubscription(
-                process.env.PREMIUM_PRO_PRODUCT!,
-                "AbandonAI Premium Pro",
-                "premium_pro_expired",
-                customer,
-              );
-            } else if (
-              price?.id === process.env.NEXT_PUBLIC_ONETIME_PREMIUM_MAX_PRICE
-            ) {
-              await updateCustomerSubscription(
-                process.env.NEXT_PUBLIC_PREMIUM_MAX_PRODUCT!,
-                "AbandonAI Premium Max",
-                "premium_max_expired",
-                customer,
-              );
-            }
+      let customer;
+      if (customer_email) {
+        const customers = await stripeClient.customers.list({
+          email: customer_email,
+        });
+        customer = customers?.data?.[0] as Stripe.Customer;
+      }
+      if (customerId) {
+        customer = await stripeClient.customers.retrieve(customerId as string);
+      }
+      if (customer) {
+        const lineItems =
+          await stripeClient.checkout.sessions.listLineItems(id);
+        for (const lineItem of lineItems.data) {
+          const { price } = lineItem;
+          if (
+            price?.id === process.env.NEXT_PUBLIC_ONETIME_PREMIUM_STANDARD_PRICE
+          ) {
+            await updateCustomerSubscription(
+              process.env.PREMIUM_STANDARD_PRODUCT!,
+              "AbandonAI Premium Standard",
+              "premium_standard_expired",
+              customer,
+            );
+          } else if (
+            price?.id === process.env.NEXT_PUBLIC_ONETIME_PREMIUM_PRO_PRICE
+          ) {
+            await updateCustomerSubscription(
+              process.env.PREMIUM_PRO_PRODUCT!,
+              "AbandonAI Premium Pro",
+              "premium_pro_expired",
+              customer,
+            );
+          } else if (
+            price?.id === process.env.NEXT_PUBLIC_ONETIME_PREMIUM_MAX_PRICE
+          ) {
+            await updateCustomerSubscription(
+              process.env.NEXT_PUBLIC_PREMIUM_MAX_PRODUCT!,
+              "AbandonAI Premium Max",
+              "premium_max_expired",
+              customer,
+            );
           }
-        } else {
-          return NextResponse.json(
-            { message: "404 customer not found" },
-            { status: 200 },
-          );
         }
+      } else {
+        return NextResponse.json(
+          { message: "404 customer not found" },
+          { status: 200 },
+        );
       }
     } else if (
       event.type === "customer.subscription.deleted" ||
