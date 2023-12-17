@@ -6,21 +6,20 @@ import useSWR from "swr";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 
 const ModelSwitch = () => {
-  const [model, setModel] = useLocalStorage("chat-model", "gpt-3.5-turbo");
+  const [model, setModel] = useLocalStorage("chat-model", "gpt-3.5");
   const { data, isLoading } = useSWR("/api/customer", (url) =>
     fetch(url).then((res) => res.json()),
   );
 
   const useGPT4 = model.startsWith("gpt-4");
-  const useVision = model === "gpt-4-vision-preview";
+  const useVision = model === "gpt-4-vision";
 
   useEffect(() => {
     if (
-      !isLoading &&
-      !data?.subscription?.isPremium &&
-      model.startsWith("gpt-4")
+      (!isLoading && !data?.subscription?.isPremium) ||
+      (model !== "gpt-3.5" && model !== "gpt-4" && model !== "gpt-4-vision")
     ) {
-      setModel("gpt-3.5-turbo");
+      setModel("gpt-3.5");
     }
   }, [isLoading, data, model]);
 
@@ -34,9 +33,9 @@ const ModelSwitch = () => {
             }`}
             onClick={() => {
               if (useVision) {
-                setModel("gpt-4-1106-preview");
+                setModel("gpt-4");
               } else {
-                setModel("gpt-4-vision-preview");
+                setModel("gpt-4-vision");
               }
             }}
           >
@@ -58,9 +57,9 @@ const ModelSwitch = () => {
           }`}
           onClick={() => {
             if (useGPT4) {
-              setModel("gpt-3.5-turbo");
+              setModel("gpt-3.5");
             } else {
-              setModel("gpt-4-1106-preview");
+              setModel("gpt-4");
             }
           }}
         >

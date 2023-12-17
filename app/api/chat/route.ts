@@ -32,7 +32,7 @@ export async function POST(req: NextRequest): Promise<Response> {
 
   // get title before json parse messages content
   let title = messages[0]?.content.slice(0, 40);
-  const useVision = model === "gpt-4-vision-preview";
+  const useVision = model === "gpt-4-vision";
   // prepare list_append before json parse messages content
   const list_append: Array<Message> = [];
   list_append.push({
@@ -98,12 +98,15 @@ export async function POST(req: NextRequest): Promise<Response> {
     let res;
     try {
       // Priority model
-      if (model.startsWith("gpt-3.5")) {
+      if (model === "gpt-3.5") {
         // 16k tokens
         model = "gpt-3.5-turbo-1106";
-      } else if (model.startsWith("gpt-4")) {
+      } else if (model === "gpt-4") {
         // 128k tokens
         model = "gpt-4-1106-preview";
+      } else if (model === "gpt-4-vision") {
+        // 128k tokens
+        model = "gpt-4-vision-preview";
       }
       res = await openai.chat.completions.create({
         model,
@@ -115,13 +118,17 @@ export async function POST(req: NextRequest): Promise<Response> {
       });
     } catch (e) {
       // Backup model
-      if (model.startsWith("gpt-3")) {
+      if (model === "gpt-3") {
         // 4k tokens
         model = "gpt-3.5-turbo";
         max_tokens = 1024;
-      } else if (model.startsWith("gpt-4")) {
+      } else if (model === "gpt-4") {
         // 8k tokens
         model = "gpt-4";
+        max_tokens = 2048;
+      } else if (model === "gpt-4-vision") {
+        // 8k tokens
+        model = "gpt-4-vision-preview";
         max_tokens = 2048;
       }
       res = await openai.chat.completions.create({

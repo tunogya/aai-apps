@@ -415,11 +415,11 @@ export default function Chat() {
             <Image src={"/favicon.svg"} alt={""} height={40} width={40} />
             <div>abandon.ai</div>
             <div
-              className={`text-xs max-w-md text-center text-gray-500 border px-2 py-1 my-20 mx-4 ${
-                model.startsWith("gpt-4-vision") ? "opacity-100" : "opacity-0"
+              className={`text-xs max-w-md text-center text-white bg-red-500 px-2 py-1 my-20 mx-4 ${
+                model === "gpt-4-vision" ? "opacity-100" : "opacity-0"
               }`}
             >
-              Tips: When using GPT-4 with Vision, you will not be able to use
+              When using GPT-4 with Vision, you will not be able to use
               functions such as browsing and drawing.
             </div>
           </div>
