@@ -11,8 +11,6 @@ import getRateLimitConfig from "@/app/utils/getRateLimitConfig";
 
 export const runtime = "edge";
 
-const cache = new Map();
-
 // @ts-ignore
 export async function POST(req: NextRequest): Promise<Response> {
   // @ts-ignore
@@ -44,31 +42,19 @@ export async function POST(req: NextRequest): Promise<Response> {
     );
   }
 
-  let { prompt, size } = await req.json();
+  let { prompt, size, model, n } = await req.json();
 
   const openai = new OpenAI();
 
   try {
-    let data;
-    try {
-      data = await openai.images.generate({
-        prompt,
-        n: 1,
-        size,
-        model: "dall-e-3",
-        response_format: "b64_json",
-        user: sub,
-      });
-    } catch (e) {
-      data = await openai.images.generate({
-        prompt,
-        n: 1,
-        size: "1024x1024",
-        model: "dall-e-2",
-        response_format: "b64_json",
-        user: sub,
-      });
-    }
+    const data = await openai.images.generate({
+      prompt,
+      n,
+      size,
+      model,
+      response_format: "b64_json",
+      user: sub,
+    });
 
     const image = data.data[0].b64_json;
     const revised_prompt = data.data[0].revised_prompt;
@@ -110,17 +96,17 @@ export async function POST(req: NextRequest): Promise<Response> {
     }
     return NextResponse.json(
       {
-        message: "Internal Server Error",
+        error: "Internal Server Error",
       },
       {
         status: 500,
       },
     );
   } catch (e) {
-    console.log(e);
     return NextResponse.json(
       {
-        message: "Internal Server Error",
+        error: "Internal Server Error",
+        message: e,
       },
       {
         status: 500,

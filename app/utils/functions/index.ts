@@ -5,9 +5,9 @@ import {
   eval_code_in_browser_handler,
 } from "./eval_code_in_browser";
 import {
-  dall_e_3_images_generate,
-  dall_e_3_images_generate_handler,
-} from "@/app/utils/functions/dall_e_3_images_generate";
+  dall_e_images_generate,
+  dall_e_images_generate_handler,
+} from "@/app/utils/functions/dall_e_images_generate";
 import {
   serper_google_search,
   serper_google_search_handler,
@@ -20,14 +20,14 @@ import dysortid from "@/app/utils/dysortid";
 
 const functions: ChatCompletionCreateParams.Function[] = [
   eval_code_in_browser,
-  dall_e_3_images_generate,
+  dall_e_images_generate,
   serper_google_search,
   fetch_function,
 ];
 
 const functionHandlerMap: Record<string, any> = {
   eval_code_in_browser: eval_code_in_browser_handler,
-  dall_e_3_images_generate: dall_e_3_images_generate_handler,
+  dall_e_images_generate: dall_e_images_generate_handler,
   serper_google_search: serper_google_search_handler,
   fetch_function: fetch_function_handler,
 };
