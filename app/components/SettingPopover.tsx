@@ -1,7 +1,7 @@
 "use client";
 import { Popover, Transition } from "@headlessui/react";
 import React, { Fragment } from "react";
-import { Cog8ToothIcon } from "@heroicons/react/24/solid";
+import { Cog8ToothIcon } from "@heroicons/react/24/outline";
 import { PowerIcon } from "@heroicons/react/24/outline";
 
 const SettingPopover = () => {
@@ -12,7 +12,7 @@ const SettingPopover = () => {
           "hover:bg-gray-100 p-2 rounded-full text-gray-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
         }
       >
-        <Cog8ToothIcon className={"w-5 h-5 stroke-2"} />
+        <Cog8ToothIcon className={"w-5 h-5 stroke-1.5"} />
       </Popover.Button>
       <Transition
         as={Fragment}
@@ -34,7 +34,7 @@ const SettingPopover = () => {
                 "hover:bg-gray-100 w-full py-1 px-2 font-semibold text-start flex items-center space-x-2 rounded text-[#0066FF] hover:text-gray-800"
               }
             >
-              <PowerIcon className={"w-4 h-4 stroke-2"} />
+              <PowerIcon className={"w-4 h-4 stroke-1.5"} />
               <div>Logout</div>
             </div>
           </a>

@@ -3,7 +3,7 @@ import { Switch } from "@headlessui/react";
 import React, { useEffect } from "react";
 import { useLocalStorage } from "@uidotdev/usehooks";
 import useSWR from "swr";
-import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 
 const ModelSwitch = () => {
   const [model, setModel] = useLocalStorage("chat-model", "gpt-3.5");
@@ -40,9 +40,9 @@ const ModelSwitch = () => {
             }}
           >
             {useVision ? (
-              <EyeIcon className={"w-4 h-4"} />
+              <EyeIcon className={"w-4 h-4 stroke-1.5"} />
             ) : (
-              <EyeSlashIcon className={"w-4 h-4"} />
+              <EyeSlashIcon className={"w-4 h-4 stroke-1.5"} />
             )}
             Vision
           </button>
