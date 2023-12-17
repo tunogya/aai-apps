@@ -4,7 +4,6 @@ import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSession } from "@auth0/nextjs-auth0/edge";
 import { NextRequest, NextResponse } from "next/server";
 import redisClient from "@/app/utils/redisClient";
-import { Ratelimit } from "@upstash/ratelimit";
 import { sha256 } from "multiformats/hashes/sha2";
 import { CID } from "multiformats/cid";
 import * as raw from "multiformats/codecs/raw";
@@ -50,14 +49,27 @@ export async function POST(req: NextRequest): Promise<Response> {
   const openai = new OpenAI();
 
   try {
-    const data = await openai.images.generate({
-      prompt,
-      n: 1,
-      size,
-      model: "dall-e-3",
-      response_format: "b64_json",
-      user: sub,
-    });
+    let data;
+    try {
+      data = await openai.images.generate({
+        prompt,
+        n: 1,
+        size,
+        model: "dall-e-3",
+        response_format: "b64_json",
+        user: sub,
+      });
+    } catch (e) {
+      data = await openai.images.generate({
+        prompt,
+        n: 1,
+        size: "1024x1024",
+        model: "dall-e-2",
+        response_format: "b64_json",
+        user: sub,
+      });
+    }
+
     const image = data.data[0].b64_json;
     const revised_prompt = data.data[0].revised_prompt;
     if (image) {
