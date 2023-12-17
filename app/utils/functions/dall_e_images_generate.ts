@@ -9,26 +9,28 @@ export const dall_e_images_generate: ChatCompletionCreateParams.Function = {
     properties: {
       prompt: {
         type: "string",
-        description: "The prompt to generate images for",
+        description: "The prompt to generate images for.",
       },
       model: {
         type: "string",
-        description: "The DALL-E model to use",
+        description:
+          "The DALL-E model to use. When 'dall-e-3' has error, can try 'dall-e-2'",
         enum: ["dall-e-2", "dall-e-3"],
         default: "dall-e-3",
       },
       n: {
         type: "integer",
         description:
-          "The number of images to generate. when model is 'dall-e-3', n must be 1; otherwise (1 <= n <= 4)",
+          "The number of images to generate. When model is 'dall-e-3', n must be 1. Otherwise, n must be between 1 and 4.",
         minimum: 1,
         maximum: 4,
         default: 1,
       },
       size: {
         type: "string",
-        description: "The size of the generated images",
-        enum: ["1024x1024", "1024×1792", "1792×1024"],
+        description:
+          "The size of the generated images. When model is 'dall-e-3', size must be (1024x1024, 1024x1792, 1792x1024); otherwise (1024x1024, 256x256, 512x512)",
+        enum: ["1024x1024", "256x256", "512x512", "1024×1792", "1792×1024"],
         default: "1024x1024",
       },
     },
