@@ -2,6 +2,8 @@
 import React, { FC } from "react";
 import { Message } from "ai";
 import { CodeBracketIcon } from "@heroicons/react/24/outline";
+import { Disclosure } from "@headlessui/react";
+import CodePreview from "@/app/components/CodePreview";
 
 const MessageBox: FC<{
   message: Message;
@@ -25,12 +27,18 @@ const MessageBox: FC<{
           </div>
         </div>
         <div className={"space-y-2 w-full overflow-x-hidden"}>
-          <button
-            disabled={isLoading && isLast}
-            className={"bg-gray-200 px-3 h-6 md:h-8 rounded-md text-sm"}
-          >
-            {isLoading && isLast ? "Running..." : message.name}
-          </button>
+          <Disclosure>
+            <Disclosure.Button
+              className={"bg-gray-100 px-3 h-6 md:h-8 rounded-md text-sm"}
+            >
+              {message.name}
+            </Disclosure.Button>
+            <Disclosure.Panel className="text-gray-500">
+              <CodePreview rest={""} match={"json"}>
+                {message.content}
+              </CodePreview>
+            </Disclosure.Panel>
+          </Disclosure>
         </div>
       </div>
     </div>

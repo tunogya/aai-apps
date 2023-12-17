@@ -2,7 +2,7 @@ import { ChatCompletionCreateParams } from "openai/resources/chat";
 import { FunctionCall, Message } from "ai";
 
 export const fetch_function: ChatCompletionCreateParams.Function = {
-  name: "fetch",
+  name: "fetch_function",
   description: "Fetch data from the internet.",
   parameters: {
     type: "object",
@@ -20,10 +20,14 @@ export const fetch_function: ChatCompletionCreateParams.Function = {
       headers: {
         type: "object",
         description: "The headers to send with the request.",
+        default: {
+          "Content-Type": "application/json",
+        },
       },
       body: {
         type: "string",
         description: "The body of the request.",
+        default: "{}",
       },
     },
     required: ["input"],

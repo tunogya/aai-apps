@@ -15,7 +15,7 @@ import {
 import {
   fetch_function,
   fetch_function_handler,
-} from "@/app/utils/functions/fetch";
+} from "@/app/utils/functions/fetch_function";
 import dysortid from "@/app/utils/dysortid";
 
 const functions: ChatCompletionCreateParams.Function[] = [
