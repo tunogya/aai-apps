@@ -34,7 +34,7 @@ const POST = async (req: Request) => {
         customer: customerId,
         livemode,
       } = checkoutSessionCompleted;
-      if (livemode && customer_email) {
+      if (livemode) {
         let customer;
         if (customer_email) {
           const customers = await stripeClient.customers.list({
