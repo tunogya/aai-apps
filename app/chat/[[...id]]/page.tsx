@@ -83,7 +83,7 @@ export default function Chat() {
     },
   });
   const useGPT4 = model.startsWith("gpt-4");
-  const useVision = model === "gpt-4-vision-preview";
+  const useVision = model === "gpt-4-vision";
   const router = useRouter();
   const onDropAccepted = useCallback(async (acceptedFiles: File[]) => {
     for (const item of acceptedFiles) {
