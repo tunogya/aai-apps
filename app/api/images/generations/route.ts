@@ -42,14 +42,14 @@ export async function POST(req: NextRequest): Promise<Response> {
     );
   }
 
-  let { prompt, size, model, n } = await req.json();
+  let { prompt, size, model } = await req.json();
 
   const openai = new OpenAI();
 
   try {
     const data = await openai.images.generate({
       prompt,
-      n,
+      n: 1,
       size,
       model,
       response_format: "b64_json",

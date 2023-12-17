@@ -18,14 +18,6 @@ export const dall_e_images_generate: ChatCompletionCreateParams.Function = {
         enum: ["dall-e-2", "dall-e-3"],
         default: "dall-e-3",
       },
-      n: {
-        type: "integer",
-        description:
-          "The number of images to generate. When model is 'dall-e-3', n must be 1. Otherwise, n must be between 1 and 4.",
-        minimum: 1,
-        maximum: 4,
-        default: 1,
-      },
       size: {
         type: "string",
         description:
@@ -48,7 +40,6 @@ export const dall_e_images_generate_handler = async (
       prompt: string;
       size: string;
       model: string;
-      n: number;
     } = JSON.parse(functionCall.arguments);
     try {
       const data = await fetch(`/api/images/generations`, {
@@ -60,7 +51,6 @@ export const dall_e_images_generate_handler = async (
           prompt: parsedFunctionCallArguments.prompt,
           size: parsedFunctionCallArguments.size,
           model: parsedFunctionCallArguments.model,
-          n: parsedFunctionCallArguments.n,
         }),
       }).then((res) => res.json());
       return JSON.stringify(data);
