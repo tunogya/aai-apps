@@ -45,6 +45,7 @@ const ModelSwitch = () => {
             ) : (
               <EyeSlashIcon className={"w-4 h-4"} />
             )}
+            Vision
           </button>
         </div>
       )}
