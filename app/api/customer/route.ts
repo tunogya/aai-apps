@@ -136,6 +136,7 @@ const GET = async (req: NextRequest) => {
     });
     return NextResponse.json(data);
   } else {
+    await redisClient.del(`premium:${user.sub}`);
     return NextResponse.json({
       customer: customer,
       subscription: {
