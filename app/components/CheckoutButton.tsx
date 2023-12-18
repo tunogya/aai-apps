@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 
 export const CheckoutButton: FC<{
   className?: string;
-  price: string;
+  price: string | null;
   title: string;
 }> = ({ className, price, title }) => {
   const router = useRouter();
@@ -13,6 +13,7 @@ export const CheckoutButton: FC<{
   return (
     <button
       className={`${className || ""}`}
+      disabled={!price}
       onClick={async () => {
         try {
           setStatus("loading");

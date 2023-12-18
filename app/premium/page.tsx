@@ -18,16 +18,16 @@ const CSR = () => {
   const [category] = useState({
     "One-time": [
       {
-        name: "AbandonAI Premium Standard",
-        priceId: process.env.NEXT_PUBLIC_ONETIME_PREMIUM_STANDARD_PRICE,
-        price: "30",
-        button: "Pay",
+        recommended: false,
+        name: "AbandonAI Free",
+        priceId: process.env.NEXT_PUBLIC_ONETIME_FREE_PRICE,
+        productId: process.env.NEXT_PUBLIC_FREE_PRODUCT,
+        price: "0",
+        button: "Free",
         type: "one-time",
-        productId: process.env.NEXT_PUBLIC_PREMIUM_STANDARD_PRODUCT,
         features: [
-          "GPT-4: Up to 50 messages per 12-hour",
-          "DALL·E 3: Up to 10 draws per hour",
-          "Browse, create, and use Assistants",
+          "GPT-3.5: Up to 5 messages per 15-min",
+          "Code interpreter, Fetch urls",
         ],
       },
       {
@@ -60,16 +60,16 @@ const CSR = () => {
     ],
     Monthly: [
       {
-        name: "AbandonAI Premium Standard",
-        priceId: process.env.NEXT_PUBLIC_MONTHLY_PREMIUM_STANDARD_PRICE,
-        productId: process.env.NEXT_PUBLIC_PREMIUM_STANDARD_PRODUCT,
-        price: "25",
-        button: "Subscribe",
+        recommended: false,
+        name: "AbandonAI Free",
+        priceId: process.env.NEXT_PUBLIC_MONTHLY_FREE_PRICE,
+        productId: process.env.NEXT_PUBLIC_FREE_PRODUCT,
+        price: "0",
+        button: "Free",
         type: "subscribe",
         features: [
-          "GPT-4: Up to 50 messages per 12-hour",
-          "DALL·E 3: Up to 10 draws per hour",
-          "Browse, create, and use Assistants",
+          "GPT-3.5: Up to 5 messages per 15-min",
+          "Code interpreter, Fetch urls",
         ],
       },
       {
@@ -211,7 +211,7 @@ const CSR = () => {
                           >
                             CN¥{item.price}
                           </div>
-                          {item.button === "Pay" ? (
+                          {item.type === "one-time" ? (
                             <CheckoutButton
                               price={item.priceId!}
                               title={
@@ -221,7 +221,7 @@ const CSR = () => {
                                   : item.button
                               }
                               className={
-                                "w-full bg-[#0066FF] text-white py-3 rounded-lg"
+                                "w-full bg-[#0066FF] text-white py-3 rounded-lg disabled:bg-gray-300 disabled:cursor-default"
                               }
                             />
                           ) : (
@@ -229,7 +229,7 @@ const CSR = () => {
                               price={item.priceId!}
                               title={item.button}
                               className={
-                                "w-full bg-[#0066FF] text-white py-3 rounded-lg"
+                                "w-full bg-[#0066FF] text-white py-3 rounded-lg disabled:bg-gray-300 disabled:cursor-default"
                               }
                             />
                           )}
