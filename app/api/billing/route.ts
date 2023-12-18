@@ -15,6 +15,12 @@ const POST = async (req: NextRequest) => {
     // @ts-ignore
     customer_id = premiumInfo?.customer?.id;
   } else {
+    if (!user.email) {
+      return NextResponse.json({
+        error: "email required",
+        message: "Please use email to login.",
+      });
+    }
     const customers = await stripeClient.customers.list({
       email: user.email,
     });
