@@ -23,6 +23,13 @@ const GET = async (req: NextRequest) => {
     }
   }
 
+  if (!user.email) {
+    return NextResponse.json({
+      error: "email required",
+      message: "Please use email to login.",
+    });
+  }
+
   const customers = await stripeClient.customers.list({
     email: user.email,
   });
