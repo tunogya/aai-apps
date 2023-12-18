@@ -12,7 +12,18 @@ const Modal: FC<{
   const addTgBot = async () => {
     setStatus("loading");
     try {
-      await fetch(`/api/assistants/${assistantId}/accounts`, {
+      await fetch(`https://api.telegram.org/bot${token}/setWebhook`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          url: `https://app.abandon.ai/api/bot/${token}`,
+          max_connections: 100,
+          drop_pending_updates: true,
+        }),
+      });
+      await fetch(`/api/assistants/${assistantId}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -23,11 +34,9 @@ const Modal: FC<{
             "#telegram": "telegram",
           },
           ExpressionAttributeValues: {
-            ":telegram": {
-              token: token,
-              webhook: `https://app.abandon.ai/api/bot/${token}`,
-            },
+            ":telegram": token,
           },
+          ConditionExpression: "attribute_exists(PK)",
         }),
       }).then((res) => res.json());
       setStatus("success");
@@ -49,7 +58,7 @@ const Modal: FC<{
           "text-sm text-[#0066FF] font-medium disabled:cursor-auto disabled:opacity-50"
         }
       >
-        Add
+        Update
       </button>
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog
@@ -89,12 +98,12 @@ const Modal: FC<{
 
                   <div className={"space-y-4 h-fit mt-4"}>
                     <div className={"space-y-2 text-gray-800"}>
-                      <div className={"font-medium"}>Token*</div>
+                      <div className={"font-semibold text-sm"}>Token</div>
                       <input
                         maxLength={256}
                         value={token}
                         onChange={(e) => setToken(e.target.value)}
-                        placeholder={"Enter a user friendly name."}
+                        placeholder={"Enter telegram bot token"}
                         className={
                           "border text-sm overflow-x-scroll  w-full h-7 px-2 py-1 rounded focus:outline-[#0066FF]"
                         }
@@ -104,6 +113,7 @@ const Modal: FC<{
                   <div className={"mt-10 flex justify-end gap-2"}>
                     <button
                       onClick={addTgBot}
+                      disabled={!token}
                       className={
                         "bg-[#0066FF] text-white rounded-lg px-3 py-1.5 text-sm disabled:opacity-50"
                       }

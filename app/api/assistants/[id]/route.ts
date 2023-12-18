@@ -26,6 +26,7 @@ const GET = async (req: NextRequest, { params }: any) => {
     return NextResponse.json(
       {
         error: "something went wrong",
+        message: e,
       },
       {
         status: 500,
@@ -34,7 +35,7 @@ const GET = async (req: NextRequest, { params }: any) => {
   }
 };
 
-const PATCH = async (req: NextRequest, { params }: any) => {
+const PUT = async (req: NextRequest, { params }: any) => {
   const session = await getSession();
   const sub = session?.user.sub;
   const { name, description, instructions, metadata, model } = await req.json();
@@ -51,7 +52,7 @@ const PATCH = async (req: NextRequest, { params }: any) => {
     const item = {
       ...newAssistant,
       PK: `USER#${sub}`,
-      SK: `ASST#${newAssistant.id}`,
+      SK: `ASST#${params.id}`,
     };
     const result = await sqsClient.send(
       new SendMessageCommand({
@@ -78,6 +79,58 @@ const PATCH = async (req: NextRequest, { params }: any) => {
     return NextResponse.json(
       {
         error: "something went wrong",
+        message: e,
+      },
+      {
+        status: 500,
+      },
+    );
+  }
+};
+
+const PATCH = async (req: NextRequest, { params }: any) => {
+  const session = await getSession();
+  const sub = session?.user.sub;
+  const {
+    UpdateExpression,
+    ExpressionAttributeNames,
+    ExpressionAttributeValues,
+    ConditionExpression,
+  } = await req.json();
+
+  try {
+    const result = await sqsClient.send(
+      new SendMessageCommand({
+        QueueUrl: process.env.AI_DB_UPDATE_SQS_FIFO_URL,
+        MessageBody: JSON.stringify({
+          TableName: "abandonai-prod",
+          Key: {
+            PK: `USER#${sub}`,
+            SK: `ASST#${params.id}`,
+          },
+          UpdateExpression: UpdateExpression || undefined,
+          ExpressionAttributeNames: ExpressionAttributeNames || undefined,
+          ExpressionAttributeValues: ExpressionAttributeValues || undefined,
+          ConditionExpression: ConditionExpression || undefined,
+        }),
+        MessageAttributes: {
+          Command: {
+            DataType: "String",
+            StringValue: "UpdateCommand",
+          },
+        },
+        MessageGroupId: params.id,
+      }),
+    );
+    return NextResponse.json({
+      updated: true,
+      message: result,
+    });
+  } catch (e) {
+    return NextResponse.json(
+      {
+        error: "something went wrong",
+        message: e,
       },
       {
         status: 500,
@@ -132,6 +185,7 @@ const DELETE = async (req: NextRequest, { params }: any) => {
     return NextResponse.json(
       {
         error: "something went wrong",
+        message: e,
       },
       {
         status: 500,
@@ -140,4 +194,4 @@ const DELETE = async (req: NextRequest, { params }: any) => {
   }
 };
 
-export { GET, PATCH, DELETE };
+export { GET, PUT, DELETE, PATCH };

@@ -40,8 +40,8 @@ const Modal: FC<{
   const update = async () => {
     setStatus("loading");
     try {
-      await fetch(`/api/assistants/${assistantId}`, {
-        method: "PATCH",
+      await fetch(`/api/assistants`, {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
@@ -118,14 +118,13 @@ const Modal: FC<{
                         "text-gray-400 hover:text-gray-800 rounded px-3 py-1.5 text-sm flex items-center space-x-1"
                       }
                     >
-                      <ArrowUturnLeftIcon className={"w-4 h-4 stroke-2"} />
-                      <div>Recovery</div>
+                      <ArrowUturnLeftIcon className={"w-4 h-4"} />
                     </button>
                   </Dialog.Title>
 
                   <div className={"space-y-4 h-fit mt-4"}>
                     <div className={"space-y-2 text-gray-800"}>
-                      <div className={"font-medium"}>Name*</div>
+                      <div className={"font-semibold text-sm"}>Name</div>
                       <input
                         maxLength={256}
                         value={updateParams?.name || ""}
@@ -142,7 +141,7 @@ const Modal: FC<{
                       />
                     </div>
                     <div className={"space-y-2 text-gray-800"}>
-                      <div className={"font-medium"}>Voice</div>
+                      <div className={"font-normal text-sm"}>Voice</div>
                       <Listbox
                         // @ts-ignore
                         value={updateParams?.metadata?.voice || "-"}
@@ -191,7 +190,7 @@ const Modal: FC<{
                       </Listbox>
                     </div>
                     <div className={"space-y-2 text-gray-800"}>
-                      <div className={"font-medium"}>Model*</div>
+                      <div className={"font-semibold text-sm"}>Model</div>
                       <Listbox
                         value={updateParams.model}
                         onChange={(m) =>
@@ -232,7 +231,7 @@ const Modal: FC<{
                       </Listbox>
                     </div>
                     <div className={"space-y-2 text-gray-800"}>
-                      <div className={"font-medium"}>Description</div>
+                      <div className={"font-normal text-sm"}>Description</div>
                       <textarea
                         maxLength={512}
                         value={updateParams?.description || ""}
@@ -249,7 +248,7 @@ const Modal: FC<{
                       />
                     </div>
                     <div className={"space-y-2 text-gray-800"}>
-                      <div className={"font-medium"}>Instructions</div>
+                      <div className={"font-normal text-sm"}>Instructions</div>
                       <textarea
                         maxLength={32768}
                         value={updateParams?.instructions || ""}
