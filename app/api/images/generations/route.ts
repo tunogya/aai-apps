@@ -42,7 +42,7 @@ export async function POST(req: NextRequest): Promise<Response> {
     );
   }
 
-  let { prompt, size, model } = await req.json();
+  let { prompt, size } = await req.json();
 
   const openai = new OpenAI();
 
@@ -51,7 +51,7 @@ export async function POST(req: NextRequest): Promise<Response> {
       prompt,
       n: 1,
       size,
-      model,
+      model: "dall-e-3",
       response_format: "b64_json",
       user: sub,
     });
