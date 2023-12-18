@@ -7,6 +7,13 @@ const POST = async (req: NextRequest) => {
   const { user } = await getSession();
   const { line_items, mode, success_url, cancel_url, allow_promotion_codes } =
     await req.json();
+
+  if (!user.email) {
+    return NextResponse.json({
+      error: "email required",
+      message: "Please use email to login.",
+    });
+  }
   const customers = await stripeClient.customers.list({
     email: user.email,
   });
@@ -37,7 +44,8 @@ const POST = async (req: NextRequest) => {
     });
   } catch (err: any) {
     return NextResponse.json({
-      error: err.message,
+      error: "Something went wrong",
+      message: err.message,
     });
   }
 };
