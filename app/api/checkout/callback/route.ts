@@ -52,7 +52,7 @@ const POST = async (req: Request) => {
             price?.id === process.env.NEXT_PUBLIC_ONETIME_PREMIUM_STANDARD_PRICE
           ) {
             await updateCustomerSubscription(
-              process.env.PREMIUM_STANDARD_PRODUCT!,
+              process.env.NEXT_PUBLIC_PREMIUM_STANDARD_PRODUCT!,
               "AbandonAI Premium Standard",
               "premium_standard_expired",
               customer,

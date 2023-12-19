@@ -82,7 +82,7 @@ const GET = async (req: NextRequest) => {
         isPremium: true,
         type: "one-time",
         name: "AbandonAI Premium Pro",
-        product: process.env.PREMIUM_PRO_PRODUCT,
+        product: process.env.NEXT_PUBLIC_PREMIUM_PRO_PRODUCT,
         current_period_end: new Date(premium_pro_expired).getTime() / 1000,
       },
     };
@@ -102,7 +102,7 @@ const GET = async (req: NextRequest) => {
         isPremium: true,
         type: "one-time",
         name: "AbandonAI Premium Standard",
-        product: process.env.PREMIUM_STANDARD_PRODUCT,
+        product: process.env.NEXT_PUBLIC_PREMIUM_STANDARD_PRODUCT,
         current_period_end: new Date(premium_standard_expired).getTime() / 1000,
       },
     };
@@ -120,8 +120,9 @@ const GET = async (req: NextRequest) => {
   const filter_subscriptions = subscriptions.data.filter((sub) => {
     return sub.items.data.some(
       (item) =>
-        item.plan.product === process.env.PREMIUM_STANDARD_PRODUCT ||
-        item.plan.product === process.env.PREMIUM_PRO_PRODUCT ||
+        item.plan.product ===
+          process.env.NEXT_PUBLIC_PREMIUM_STANDARD_PRODUCT ||
+        item.plan.product === process.env.NEXT_PUBLIC_PREMIUM_PRO_PRODUCT ||
         item.plan.product === process.env.NEXT_PUBLIC_PREMIUM_MAX_PRODUCT,
     );
   });
