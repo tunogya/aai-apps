@@ -166,44 +166,70 @@ export async function POST(req: NextRequest): Promise<Response> {
         }
       },
       async onFinal(completion) {
-        await sqsClient.send(
-          new SendMessageBatchCommand({
-            QueueUrl: process.env.AI_DB_UPDATE_SQS_FIFO_URL,
-            Entries: [
-              {
-                Id: `chat_${id}_${new Date().getTime()}`,
-                MessageBody: JSON.stringify({
-                  TableName: "abandonai-prod",
-                  Key: {
-                    PK: `USER#${sub}`,
-                    SK: `CHAT2#${id}`,
+        await Promise.all([
+          sqsClient.send(
+            new SendMessageBatchCommand({
+              QueueUrl: process.env.AI_DB_UPDATE_SQS_FIFO_URL,
+              Entries: [
+                {
+                  Id: `chat_${id}_${new Date().getTime()}`,
+                  MessageBody: JSON.stringify({
+                    TableName: "abandonai-prod",
+                    Key: {
+                      PK: `USER#${sub}`,
+                      SK: `CHAT2#${id}`,
+                    },
+                    ExpressionAttributeNames: {
+                      "#messages": "messages",
+                      "#updated": "updated",
+                      "#title": "title",
+                    },
+                    ExpressionAttributeValues: {
+                      ":empty_list": [],
+                      ":messages": list_append,
+                      ":updated": Math.floor(Date.now() / 1000),
+                      ":title": title,
+                    },
+                    UpdateExpression:
+                      "SET #messages = list_append(if_not_exists(#messages, :empty_list), :messages), #updated = :updated, #title = :title",
+                  }),
+                  MessageAttributes: {
+                    Command: {
+                      DataType: "String",
+                      StringValue: "UpdateCommand",
+                    },
                   },
-                  ExpressionAttributeNames: {
-                    "#messages": "messages",
-                    "#updated": "updated",
-                    "#title": "title",
-                  },
-                  ExpressionAttributeValues: {
-                    ":empty_list": [],
-                    ":messages": list_append,
-                    ":updated": Math.floor(Date.now() / 1000),
-                    ":title": title,
-                  },
-                  UpdateExpression:
-                    "SET #messages = list_append(if_not_exists(#messages, :empty_list), :messages), #updated = :updated, #title = :title",
-                }),
-                MessageAttributes: {
-                  Command: {
-                    DataType: "String",
-                    StringValue: "UpdateCommand",
-                  },
+                  MessageGroupId: `chat_${id}`,
                 },
-                MessageGroupId: `chat_${id}`,
-              },
-            ],
-          }),
-        );
-        await data.close();
+              ],
+            }),
+          ),
+          sqsClient.send(
+            new SendMessageBatchCommand({
+              QueueUrl: process.env.AI_CHARGES_CREATE_SQS_FIFO_URL,
+              Entries: [
+                {
+                  Id: `charges_create_${id}_${new Date().getTime()}`,
+                  MessageBody: JSON.stringify({
+                    prompt: messages.map((m: any) => m.content).join("\n"),
+                    completion: completion,
+                    model: model,
+                    user: sub,
+                    created: new Date().toISOString(),
+                  }),
+                  MessageAttributes: {
+                    Type: {
+                      DataType: "String",
+                      StringValue: "gpt",
+                    },
+                  },
+                  MessageGroupId: `charges_create`,
+                },
+              ],
+            }),
+          ),
+          data.close(),
+        ]);
       },
       experimental_streamData: true,
     });
