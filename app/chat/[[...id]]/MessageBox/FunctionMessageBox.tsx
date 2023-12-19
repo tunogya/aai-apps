@@ -3,7 +3,15 @@ import React, { FC } from "react";
 import { Message } from "ai";
 import { CodeBracketIcon } from "@heroicons/react/24/outline";
 import { Disclosure } from "@headlessui/react";
-import CodePreview from "@/app/components/CodePreview";
+import dynamic from "next/dynamic";
+import Skeleton from "react-loading-skeleton";
+
+const Markdown = dynamic(
+  () => import("@/app/chat/[[...id]]/MessageBox/Markdown"),
+  {
+    loading: () => <Skeleton count={5} height={"28px"} />,
+  },
+);
 
 const MessageBox: FC<{
   message: Message;
@@ -34,9 +42,10 @@ const MessageBox: FC<{
               {message.name}
             </Disclosure.Button>
             <Disclosure.Panel className="text-gray-500">
-              <CodePreview rest={""} match={"json"}>
-                {message.content}
-              </CodePreview>
+              <Markdown
+                content={message.content}
+                isLoading={isLoading && isLast}
+              />
             </Disclosure.Panel>
           </Disclosure>
         </div>
