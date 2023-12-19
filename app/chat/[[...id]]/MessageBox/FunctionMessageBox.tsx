@@ -1,5 +1,5 @@
 "use client";
-import React, { FC } from "react";
+import React, { FC, useMemo } from "react";
 import { Message } from "ai";
 import { CodeBracketIcon } from "@heroicons/react/24/outline";
 import { Disclosure } from "@headlessui/react";
@@ -20,6 +20,16 @@ const MessageBox: FC<{
   isLoading: boolean;
   isLast: boolean;
 }> = ({ message, isGPT4, isLoading, isLast }) => {
+  const markdownCode = useMemo(() => {
+    const jsonStr = message.content;
+    try {
+      const jsonObj = JSON.parse(jsonStr);
+      return "```json\n" + JSON.stringify(jsonObj, null, 2) + "\n```";
+    } catch (e) {
+      return jsonStr;
+    }
+  }, [message.content]);
+
   return (
     <div
       className={`flex border-t p-3 md:p-8 bg-gray-50 items-center justify-center group`}
@@ -43,7 +53,7 @@ const MessageBox: FC<{
             </Disclosure.Button>
             <Disclosure.Panel className="text-gray-500">
               <Markdown
-                content={message.content}
+                content={markdownCode}
                 isLoading={isLoading && isLast}
               />
             </Disclosure.Panel>
