@@ -1,29 +1,4 @@
-"use client";
-import moment from "moment";
-import React, { FC, useEffect, useMemo, useRef, useState } from "react";
-import {
-  ArrowPathIcon,
-  CheckIcon,
-  ClipboardIcon,
-  CloudArrowDownIcon,
-  ExclamationTriangleIcon,
-  PauseCircleIcon,
-  MusicalNoteIcon,
-  TrashIcon,
-} from "@heroicons/react/24/outline";
-import copy from "copy-to-clipboard";
-import { Message } from "ai";
-import dynamic from "next/dynamic";
-import Skeleton from "react-loading-skeleton";
-import Link from "next/link";
-import { useSessionStorage } from "@uidotdev/usehooks";
-
-const Markdown = dynamic(
-  () => import("@/app/chat/[[...id]]/MessageBox/Markdown"),
-  {
-    loading: () => <Skeleton count={5} height={"28px"} />,
-  },
-);
+import React, { FC } from "react";
 
 const MessageBox: FC<{
   error: string;
@@ -54,17 +29,6 @@ const MessageBox: FC<{
         </div>
         <div className={"flex flex-col md:space-y-2 w-full overflow-x-hidden"}>
           <div>{error}</div>
-          <div>
-            <Link href={"/premium"}>
-              <div
-                className={
-                  "bg-gradient-to-tr from-[#AB68FF] to-[#0066FF] p-2 text-white rounded w-fit px-3"
-                }
-              >
-                ✨ Upgrade to Premium membership and enjoy the conversation.
-              </div>
-            </Link>
-          </div>
         </div>
       </div>
     </div>

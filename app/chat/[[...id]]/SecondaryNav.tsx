@@ -159,7 +159,7 @@ const SecondaryNav = () => {
                   <ModelSwitch />
                 </div>
               )}
-              {customerData?.subscription?.isPremium ? (
+              {customerData?.subscription?.isPremium && (
                 <Link href={"/billing"}>
                   <div
                     className={
@@ -167,16 +167,6 @@ const SecondaryNav = () => {
                     }
                   >
                     Manage Billing
-                  </div>
-                </Link>
-              ) : (
-                <Link href={"/premium"} target={"_blank"}>
-                  <div
-                    className={
-                      "bg-black px-3 py-2 text-white rounded w-full font-semibold shrink-0 whitespace-nowrap text-center"
-                    }
-                  >
-                    Get Premium (GPT-4)
                   </div>
                 </Link>
               )}
