@@ -8,7 +8,7 @@ const Detail = dynamic(() => import("@/app/assistants/([id])/[id]/Detail"));
 const Overview = dynamic(() => import("@/app/assistants/([id])/[id]/Overview"));
 const Events = dynamic(() => import("@/app/assistants/([id])/[id]/Events"));
 const MorePopover = dynamic(
-  () => import("@/app/assistants/([id])/[id]/MorePopover"),
+  () => import("@/app/assistants/([id])/[id]/Overview/MorePopover"),
 );
 
 const CSRPage = () => {

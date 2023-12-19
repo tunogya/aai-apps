@@ -1,9 +1,9 @@
 "use client";
 
-import AddTgBotModal from "@/app/assistants/([id])/[id]/AddTgBotModal";
+import AddTgBotModal from "@/app/assistants/([id])/[id]/Overview/AddTgBotModal";
 import useSWR from "swr";
 import { FC } from "react";
-import TgBotInfo from "@/app/assistants/([id])/[id]/TgBotInfo";
+import TgBotInfo from "@/app/assistants/([id])/[id]/Overview/TgBotInfo";
 import Skeleton from "react-loading-skeleton";
 
 const CSRPage: FC<{

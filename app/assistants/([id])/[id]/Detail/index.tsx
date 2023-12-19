@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import Skeleton from "react-loading-skeleton";
 import dynamic from "next/dynamic";
 const UpdateDetailModal = dynamic(
-  () => import("@/app/assistants/([id])/[id]/UpdateDetailModal"),
+  () => import("@/app/assistants/([id])/[id]/Detail/UpdateDetailModal"),
 );
 
 const CSRPage = () => {
