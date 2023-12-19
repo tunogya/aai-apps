@@ -1,6 +1,6 @@
 "use client";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import React, { FC } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { CheckIcon, ClipboardIcon } from "@heroicons/react/24/outline";
 import copy from "copy-to-clipboard";
 
@@ -10,6 +10,19 @@ const CodePreview: FC<{
   match: any;
 }> = ({ children, rest, match }: any) => {
   const [state, setState] = React.useState(false);
+  const [content, setContent] = useState(children);
+
+  useEffect(() => {
+    if (typeof content === "string") {
+      try {
+        const json = JSON.parse(content);
+        setContent(JSON.stringify(json, null, 2));
+      } catch (e) {
+        setContent(content);
+      }
+    }
+  }, [content]);
+
   return (
     <div className={"relative w-full"}>
       <div className={"absolute right-3 top-3 flex items-center gap-2"}>
@@ -39,7 +52,7 @@ const CodePreview: FC<{
           backgroundColor: "#f3f4f6",
         }}
       >
-        {String(children).replace(/\n$/, "")}
+        {content}
       </SyntaxHighlighter>
     </div>
   );
