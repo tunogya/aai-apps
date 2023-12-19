@@ -19,7 +19,11 @@ const TgBotInfo: FC<{
         .then((res) => res.json())
         .then((res) => res?.result),
   );
-  const { data: webhookInfo, mutate: mutateWebhook } = useSWR(
+  const {
+    data: webhookInfo,
+    mutate: mutateWebhook,
+    isLoading: isWebhookInfoLoading,
+  } = useSWR(
     token ? `https://api.telegram.org/bot${token}/getWebhookInfo` : undefined,
     (url) =>
       fetch(url)
@@ -63,7 +67,11 @@ const TgBotInfo: FC<{
   return (
     <div className={"space-y-2"}>
       <div className={"pt-3 flex items-center"}>
-        {isWebhookOk ? (
+        {isWebhookInfoLoading ? (
+          <div className={"h-6 w-6"}>
+            <Skeleton className={"w-full h-full"} circle={true} />
+          </div>
+        ) : isWebhookOk ? (
           <ShieldCheckIcon className={"w-5 h-5 text-[#0066FF]"} />
         ) : (
           <ShieldExclamationIcon className={"w-5 h-5 text-red-500"} />
@@ -89,16 +97,22 @@ const TgBotInfo: FC<{
           )}
         </Link>
       </div>
-      <button
-        className={"border border-gray-300 rounded-md px-2 py-1 text-xs"}
-        onClick={setWebhook}
-        disabled={status === "loading"}
-      >
-        {status === "idle" && "Reset webhook"}
-        {status === "loading" && "Resetting webhook..."}
-        {status === "success" && "Rested webhook!"}
-        {status === "error" && "Reset webhook error!"}
-      </button>
+      {isWebhookInfoLoading ? (
+        <div className={"h-full w-20"}>
+          <Skeleton className={"w-full h-full"} />
+        </div>
+      ) : (
+        <button
+          className={"border border-gray-300 rounded-md px-2 py-1 text-xs"}
+          onClick={setWebhook}
+          disabled={status === "loading"}
+        >
+          {status === "idle" && "Reset webhook"}
+          {status === "loading" && "Resetting webhook..."}
+          {status === "success" && "Rested webhook!"}
+          {status === "error" && "Reset webhook error!"}
+        </button>
+      )}
     </div>
   );
 };
