@@ -206,7 +206,7 @@ export async function POST(req: NextRequest): Promise<Response> {
                     .toISOString()
                     .slice(0, 8)
                     .replaceAll("-", "")}`,
-                  SK: `USER#${sub}`,
+                  SK: `EMAIL#${user.email}`,
                 },
                 UpdateExpression: `ADD billing :total_cost, prompt_tokens :prompt_tokens, completion_tokens :completion_tokens`,
                 ExpressionAttributeValues: {
