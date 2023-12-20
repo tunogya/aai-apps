@@ -73,7 +73,13 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       }),
     );
 
-    return NextResponse.json(data);
+    return NextResponse.json(data, {
+      headers: {
+        "Cache-Control": "public, s-maxage=1",
+        "CDN-Cache-Control": "public, s-maxage=60",
+        "Vercel-CDN-Cache-Control": "public, s-maxage=3600",
+      },
+    });
   } catch (e) {
     console.log(e);
     return NextResponse.json(

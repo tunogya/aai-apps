@@ -40,9 +40,18 @@ const GET = async (req: NextRequest, { params }: any) => {
         `USER#${sub}:CHAT2#${params.id}`,
         JSON.stringify(Item),
       );
-      return NextResponse.json({
-        item: Item,
-      });
+      return NextResponse.json(
+        {
+          item: Item,
+        },
+        {
+          headers: {
+            "Cache-Control": "public, s-maxage=1",
+            "CDN-Cache-Control": "public, s-maxage=60",
+            "Vercel-CDN-Cache-Control": "public, s-maxage=3600",
+          },
+        },
+      );
     } else {
       return NextResponse.json(
         {

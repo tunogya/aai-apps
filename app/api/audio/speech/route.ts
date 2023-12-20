@@ -126,9 +126,18 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     } catch (e) {
       console.log(e);
     }
-    return NextResponse.json({
-      url: `https://s3.abandon.ai/audio/${cid}.mp3`,
-    });
+    return NextResponse.json(
+      {
+        url: `https://s3.abandon.ai/audio/${cid}.mp3`,
+      },
+      {
+        headers: {
+          "Cache-Control": "public, s-maxage=1",
+          "CDN-Cache-Control": "public, s-maxage=60",
+          "Vercel-CDN-Cache-Control": "public, s-maxage=3600",
+        },
+      },
+    );
   } catch (e) {
     return NextResponse.json(
       {

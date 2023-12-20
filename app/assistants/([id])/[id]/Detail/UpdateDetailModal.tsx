@@ -53,7 +53,7 @@ const Modal: FC<{
           metadata: updateParams?.metadata || {},
         }),
       }).then((res) => res.json());
-      setStatus("success");
+      setStatus("idle");
       setIsOpen(false);
       callback();
     } catch (e) {
@@ -280,7 +280,6 @@ const Modal: FC<{
                       {status === "loading" && "Updating"}
                       {status === "idle" && "Update"}
                       {status === "error" && "Error"}
-                      {status === "success" && "Updated!"}
                     </button>
                   </div>
                 </Dialog.Panel>

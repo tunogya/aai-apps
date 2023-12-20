@@ -34,11 +34,20 @@ const GET = async (req: NextRequest) => {
           : undefined,
       }),
     );
-    return NextResponse.json({
-      items: Items,
-      count: Count,
-      nextCursor: LastEvaluatedKey?.SK.replace("ASST#", "") || undefined,
-    });
+    return NextResponse.json(
+      {
+        items: Items,
+        count: Count,
+        nextCursor: LastEvaluatedKey?.SK.replace("ASST#", "") || undefined,
+      },
+      {
+        headers: {
+          "Cache-Control": "public, s-maxage=1",
+          "CDN-Cache-Control": "public, s-maxage=60",
+          "Vercel-CDN-Cache-Control": "public, s-maxage=3600",
+        },
+      },
+    );
   } catch (e) {
     return NextResponse.json(
       {

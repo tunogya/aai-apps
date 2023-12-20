@@ -14,20 +14,38 @@ const GET = async (req: NextRequest) => {
   // @ts-ignore
   if (cache?.subscription?.type) {
     try {
-      return NextResponse.json({
-        ...cache,
-        cache: true,
-      });
+      return NextResponse.json(
+        {
+          ...cache,
+          cache: true,
+        },
+        {
+          headers: {
+            "Cache-Control": "public, s-maxage=1",
+            "CDN-Cache-Control": "public, s-maxage=60",
+            "Vercel-CDN-Cache-Control": "public, s-maxage=3600",
+          },
+        },
+      );
     } catch (e) {
       console.log("cache error", e);
     }
   }
 
   if (!user.email) {
-    return NextResponse.json({
-      error: "email required",
-      message: "Please use email to login.",
-    });
+    return NextResponse.json(
+      {
+        error: "email required",
+        message: "Please use email to login.",
+      },
+      {
+        headers: {
+          "Cache-Control": "public, s-maxage=1",
+          "CDN-Cache-Control": "public, s-maxage=60",
+          "Vercel-CDN-Cache-Control": "public, s-maxage=3600",
+        },
+      },
+    );
   }
 
   const customers = await stripeClient.customers.list({
@@ -44,13 +62,22 @@ const GET = async (req: NextRequest) => {
     await redisClient.set(`premium:${user.sub}`, false, {
       ex: 86400,
     });
-    return NextResponse.json({
-      customer: customer,
-      subscription: {
-        product: "AbandonAI Free",
-        isPremium: false,
+    return NextResponse.json(
+      {
+        customer: customer,
+        subscription: {
+          product: "AbandonAI Free",
+          isPremium: false,
+        },
       },
-    });
+      {
+        headers: {
+          "Cache-Control": "public, s-maxage=1",
+          "CDN-Cache-Control": "public, s-maxage=60",
+          "Vercel-CDN-Cache-Control": "public, s-maxage=3600",
+        },
+      },
+    );
   }
   const customer = customers.data[0];
 
@@ -72,7 +99,13 @@ const GET = async (req: NextRequest) => {
     await redisClient.set(`premium:${user.sub}`, JSON.stringify(data), {
       exat: Math.floor(new Date(premium_max_expired).getTime() / 1000),
     });
-    return NextResponse.json(data);
+    return NextResponse.json(data, {
+      headers: {
+        "Cache-Control": "public, s-maxage=1",
+        "CDN-Cache-Control": "public, s-maxage=60",
+        "Vercel-CDN-Cache-Control": "public, s-maxage=3600",
+      },
+    });
   }
 
   if (premium_pro_expired && new Date(premium_pro_expired) > new Date()) {
@@ -89,7 +122,13 @@ const GET = async (req: NextRequest) => {
     await redisClient.set(`premium:${user.sub}`, JSON.stringify(data), {
       exat: Math.floor(new Date(premium_pro_expired).getTime() / 1000),
     });
-    return NextResponse.json(data);
+    return NextResponse.json(data, {
+      headers: {
+        "Cache-Control": "public, s-maxage=1",
+        "CDN-Cache-Control": "public, s-maxage=60",
+        "Vercel-CDN-Cache-Control": "public, s-maxage=3600",
+      },
+    });
   }
 
   if (
@@ -109,7 +148,13 @@ const GET = async (req: NextRequest) => {
     await redisClient.set(`premium:${user.sub}`, JSON.stringify(data), {
       exat: Math.floor(new Date(premium_standard_expired).getTime() / 1000),
     });
-    return NextResponse.json(data);
+    return NextResponse.json(data, {
+      headers: {
+        "Cache-Control": "public, s-maxage=1",
+        "CDN-Cache-Control": "public, s-maxage=60",
+        "Vercel-CDN-Cache-Control": "public, s-maxage=3600",
+      },
+    });
   }
 
   const subscriptions = await stripeClient.subscriptions.list({
@@ -145,15 +190,24 @@ const GET = async (req: NextRequest) => {
     return NextResponse.json(data);
   } else {
     await redisClient.del(`premium:${user.sub}`);
-    return NextResponse.json({
-      customer: customer,
-      subscription: {
-        product: null,
-        name: "AbandonAI Free",
-        type: "free",
-        isPremium: false,
+    return NextResponse.json(
+      {
+        customer: customer,
+        subscription: {
+          product: null,
+          name: "AbandonAI Free",
+          type: "free",
+          isPremium: false,
+        },
       },
-    });
+      {
+        headers: {
+          "Cache-Control": "public, s-maxage=1",
+          "CDN-Cache-Control": "public, s-maxage=60",
+          "Vercel-CDN-Cache-Control": "public, s-maxage=3600",
+        },
+      },
+    );
   }
 };
 

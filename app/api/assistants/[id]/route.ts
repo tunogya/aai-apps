@@ -52,9 +52,18 @@ const GET = async (req: NextRequest, { params }: any) => {
       if (Item?.telegram) {
         await redisClient.set(`${Item?.telegram}:assistant_id`, params?.id);
       }
-      return NextResponse.json({
-        item: Item,
-      });
+      return NextResponse.json(
+        {
+          item: Item,
+        },
+        {
+          headers: {
+            "Cache-Control": "public, s-maxage=1",
+            "CDN-Cache-Control": "public, s-maxage=60",
+            "Vercel-CDN-Cache-Control": "public, s-maxage=3600",
+          },
+        },
+      );
     } else {
       return NextResponse.json(
         {

@@ -11,5 +11,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     model: "text-moderation-latest",
   });
 
-  return NextResponse.json(results?.[0]);
+  return NextResponse.json(results?.[0], {
+    headers: {
+      "Cache-Control": "public, s-maxage=1",
+      "CDN-Cache-Control": "public, s-maxage=60",
+      "Vercel-CDN-Cache-Control": "public, s-maxage=3600",
+    },
+  });
 }
