@@ -11,7 +11,7 @@ import dysortid from "@/app/utils/dysortid";
 import redisClient from "@/app/utils/redisClient";
 import getRateLimitConfig from "@/app/utils/getRateLimitConfig";
 import ddbDocClient from "@/app/utils/ddbDocClient";
-import { PutCommand, UpdateCommand } from "@aws-sdk/lib-dynamodb";
+import { UpdateCommand } from "@aws-sdk/lib-dynamodb";
 
 export const runtime = "edge";
 
