@@ -1,9 +1,11 @@
 import { getSession } from "@auth0/nextjs-auth0";
 import { NextRequest, NextResponse } from "next/server";
 import ddbDocClient from "@/app/utils/ddbDocClient";
-import { GetCommand } from "@aws-sdk/lib-dynamodb";
-import sqsClient from "@/app/utils/sqsClient";
-import { SendMessageCommand } from "@aws-sdk/client-sqs";
+import {
+  DeleteCommand,
+  GetCommand,
+  UpdateCommand,
+} from "@aws-sdk/lib-dynamodb";
 
 const GET = async (req: NextRequest, { params }: any) => {
   const session = await getSession();
@@ -37,28 +39,17 @@ const DELETE = async (req: NextRequest, { params }: any) => {
   const session = await getSession();
   const sub = session?.user.sub;
   try {
-    const result = await sqsClient.send(
-      new SendMessageCommand({
-        QueueUrl: process.env.AI_DB_UPDATE_SQS_FIFO_URL,
-        MessageBody: JSON.stringify({
-          TableName: "abandonai-prod",
-          Key: {
-            PK: `USER#${sub}`,
-            SK: `CHAT2#${params?.id}`,
-          },
-        }),
-        MessageAttributes: {
-          Command: {
-            DataType: "String",
-            StringValue: "DeleteCommand",
-          },
+    await ddbDocClient.send(
+      new DeleteCommand({
+        TableName: "abandonai-prod",
+        Key: {
+          PK: `USER#${sub}`,
+          SK: `CHAT2#${params?.id}`,
         },
-        MessageGroupId: `chat_${params.id}`,
       }),
     );
     return NextResponse.json({
       delete: true,
-      message: result,
     });
   } catch (e) {
     return NextResponse.json(
@@ -82,32 +73,21 @@ const PATCH = async (req: NextRequest, { params }: any) => {
     ConditionExpression,
   } = await req.json();
   try {
-    const result = await sqsClient.send(
-      new SendMessageCommand({
-        QueueUrl: process.env.AI_DB_UPDATE_SQS_FIFO_URL,
-        MessageBody: JSON.stringify({
-          TableName: "abandonai-prod",
-          Key: {
-            PK: `USER#${sub}`,
-            SK: `CHAT2#${params?.id}`,
-          },
-          UpdateExpression: UpdateExpression || undefined,
-          ExpressionAttributeNames: ExpressionAttributeNames || undefined,
-          ExpressionAttributeValues: ExpressionAttributeValues || undefined,
-          ConditionExpression: ConditionExpression || undefined,
-        }),
-        MessageAttributes: {
-          Command: {
-            DataType: "String",
-            StringValue: "UpdateCommand",
-          },
+    await ddbDocClient.send(
+      new UpdateCommand({
+        TableName: "abandonai-prod",
+        Key: {
+          PK: `USER#${sub}`,
+          SK: `CHAT2#${params?.id}`,
         },
-        MessageGroupId: `chat_${params.id}`,
+        UpdateExpression: UpdateExpression || undefined,
+        ExpressionAttributeNames: ExpressionAttributeNames || undefined,
+        ExpressionAttributeValues: ExpressionAttributeValues || undefined,
+        ConditionExpression: ConditionExpression || undefined,
       }),
     );
     return NextResponse.json({
       updated: true,
-      message: result,
     });
   } catch (e) {
     return NextResponse.json(

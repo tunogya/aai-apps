@@ -5,20 +5,13 @@ import {
   Message,
 } from "ai";
 import OpenAI from "openai";
-import { SendMessageBatchCommand, SQSClient } from "@aws-sdk/client-sqs";
 import { getSession } from "@auth0/nextjs-auth0/edge";
 import { NextRequest, NextResponse } from "next/server";
 import dysortid from "@/app/utils/dysortid";
 import redisClient from "@/app/utils/redisClient";
 import getRateLimitConfig from "@/app/utils/getRateLimitConfig";
-
-const sqsClient = new SQSClient({
-  region: "ap-northeast-1",
-  credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
-  },
-});
+import ddbDocClient from "@/app/utils/ddbDocClient";
+import { UpdateCommand } from "@aws-sdk/lib-dynamodb";
 
 export const runtime = "edge";
 
@@ -166,70 +159,37 @@ export async function POST(req: NextRequest): Promise<Response> {
         }
       },
       async onFinal(completion) {
-        await Promise.all([
-          sqsClient.send(
-            new SendMessageBatchCommand({
-              QueueUrl: process.env.AI_DB_UPDATE_SQS_FIFO_URL,
-              Entries: [
-                {
-                  Id: `chat_${id}_${new Date().getTime()}`,
-                  MessageBody: JSON.stringify({
-                    TableName: "abandonai-prod",
-                    Key: {
-                      PK: `USER#${sub}`,
-                      SK: `CHAT2#${id}`,
-                    },
-                    ExpressionAttributeNames: {
-                      "#messages": "messages",
-                      "#updated": "updated",
-                      "#title": "title",
-                    },
-                    ExpressionAttributeValues: {
-                      ":empty_list": [],
-                      ":messages": list_append,
-                      ":updated": Math.floor(Date.now() / 1000),
-                      ":title": title,
-                    },
-                    UpdateExpression:
-                      "SET #messages = list_append(if_not_exists(#messages, :empty_list), :messages), #updated = :updated, #title = :title",
-                  }),
-                  MessageAttributes: {
-                    Command: {
-                      DataType: "String",
-                      StringValue: "UpdateCommand",
-                    },
-                  },
-                  MessageGroupId: `chat_${id}`,
-                },
-              ],
-            }),
-          ),
-          sqsClient.send(
-            new SendMessageBatchCommand({
-              QueueUrl: process.env.AI_CHARGES_CREATE_SQS_FIFO_URL,
-              Entries: [
-                {
-                  Id: `charges_create_${id}_${new Date().getTime()}`,
-                  MessageBody: JSON.stringify({
-                    prompt: messages.map((m: any) => m.content).join("\n"),
-                    completion: completion,
-                    model: model,
-                    user: sub,
-                    created: new Date().toISOString(),
-                  }),
-                  MessageAttributes: {
-                    Type: {
-                      DataType: "String",
-                      StringValue: "gpt",
-                    },
-                  },
-                  MessageGroupId: `charges_create`,
-                },
-              ],
-            }),
-          ),
-          data.close(),
-        ]);
+        await data.close();
+        await ddbDocClient.send(
+          new UpdateCommand({
+            TableName: "abandonai-prod",
+            Key: {
+              PK: `USER#${sub}`,
+              SK: `CHAT2#${id}`,
+            },
+            ExpressionAttributeNames: {
+              "#messages": "messages",
+              "#updated": "updated",
+              "#title": "title",
+            },
+            ExpressionAttributeValues: {
+              ":empty_list": [],
+              ":messages": list_append.map((m) => ({
+                ...m,
+                createdAt: m.createdAt?.toISOString(),
+              })),
+              ":updated": Math.floor(Date.now() / 1000),
+              ":title": title,
+            },
+            UpdateExpression:
+              "SET #messages = list_append(if_not_exists(#messages, :empty_list), :messages), #updated = :updated, #title = :title",
+          }),
+        );
+        //        prompt: messages.map((m: any) => m.content).join("\n"),
+        //                     completion: completion,
+        //                     model: model,
+        //                     user: sub,
+        //                     created: new Date().toISOString(),
       },
       experimental_streamData: true,
     });

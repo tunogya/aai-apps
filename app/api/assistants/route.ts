@@ -1,9 +1,7 @@
 import { getSession } from "@auth0/nextjs-auth0";
 import { NextRequest, NextResponse } from "next/server";
 import ddbDocClient from "@/app/utils/ddbDocClient";
-import { QueryCommand } from "@aws-sdk/lib-dynamodb";
-import sqsClient from "@/app/utils/sqsClient";
-import { SendMessageCommand } from "@aws-sdk/client-sqs";
+import { PutCommand, QueryCommand } from "@aws-sdk/lib-dynamodb";
 import OpenAI from "openai";
 
 const GET = async (req: NextRequest) => {
@@ -69,28 +67,17 @@ const POST = async (req: NextRequest) => {
       PK: `USER#${sub}`,
       SK: `ASST#${newAssistant.id}`,
     };
-    const result = await sqsClient.send(
-      new SendMessageCommand({
-        QueueUrl: process.env.AI_DB_UPDATE_SQS_FIFO_URL,
-        MessageBody: JSON.stringify({
-          TableName: "abandonai-prod",
-          Item: item,
-          ConditionExpression:
-            "attribute_not_exists(PK) AND attribute_not_exists(SK)",
-        }),
-        MessageAttributes: {
-          Command: {
-            DataType: "String",
-            StringValue: "PutCommand",
-          },
-        },
-        MessageGroupId: newAssistant.id,
+    await ddbDocClient.send(
+      new PutCommand({
+        TableName: "abandonai-prod",
+        Item: item,
+        ConditionExpression:
+          "attribute_not_exists(PK) AND attribute_not_exists(SK)",
       }),
     );
     return NextResponse.json({
       success: true,
       item,
-      message: result,
     });
   } catch (e) {
     return NextResponse.json({

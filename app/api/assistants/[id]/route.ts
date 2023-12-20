@@ -1,13 +1,14 @@
 import { getSession } from "@auth0/nextjs-auth0";
 import { NextRequest, NextResponse } from "next/server";
 import ddbDocClient from "@/app/utils/ddbDocClient";
-import { GetCommand } from "@aws-sdk/lib-dynamodb";
-import OpenAI from "openai";
-import sqsClient from "@/app/utils/sqsClient";
 import {
-  SendMessageBatchCommand,
-  SendMessageCommand,
-} from "@aws-sdk/client-sqs";
+  BatchWriteCommand,
+  DeleteCommand,
+  GetCommand,
+  PutCommand,
+  UpdateCommand,
+} from "@aws-sdk/lib-dynamodb";
+import OpenAI from "openai";
 import dysortid from "@/app/utils/dysortid";
 
 const GET = async (req: NextRequest, { params }: any) => {
@@ -59,51 +60,33 @@ const PUT = async (req: NextRequest, { params }: any) => {
       SK: `ASST#${params.id}`,
     };
     const uniqueId = dysortid();
-    const result = await sqsClient.send(
-      new SendMessageBatchCommand({
-        QueueUrl: process.env.AI_DB_UPDATE_SQS_FIFO_URL,
-        Entries: [
-          {
-            Id: `asst_${params.id}_${uniqueId}`,
-            MessageBody: JSON.stringify({
-              TableName: "abandonai-prod",
-              Item: item,
-            }),
-            MessageAttributes: {
-              Command: {
-                DataType: "String",
-                StringValue: "PutCommand",
+    await ddbDocClient.send(
+      new BatchWriteCommand({
+        RequestItems: {
+          "abandonai-prod": [
+            {
+              PutRequest: {
+                Item: item,
               },
             },
-            MessageGroupId: params.id,
-          },
-          {
-            Id: `asst_${params.id}_event_${uniqueId}`,
-            MessageBody: JSON.stringify({
-              TableName: "abandonai-prod",
-              Item: {
-                PK: `ASST#${params.id}`,
-                SK: `EVENT#${uniqueId}`,
-                createdAt: new Date(),
-                data: item,
-                type: "assistant.put",
-              },
-            }),
-            MessageAttributes: {
-              Command: {
-                DataType: "String",
-                StringValue: "PutCommand",
+            {
+              PutRequest: {
+                Item: {
+                  PK: `ASST#${params.id}`,
+                  SK: `EVENT#${uniqueId}`,
+                  createdAt: new Date(),
+                  data: item,
+                  type: "assistant.put",
+                },
               },
             },
-            MessageGroupId: params.id,
-          },
-        ],
+          ],
+        },
       }),
     );
     return NextResponse.json({
       updated: true,
       item,
-      message: result,
     });
   } catch (e) {
     return NextResponse.json(
@@ -130,62 +113,38 @@ const PATCH = async (req: NextRequest, { params }: any) => {
 
   try {
     const uniqueId = dysortid();
-    const result = await sqsClient.send(
-      new SendMessageBatchCommand({
-        QueueUrl: process.env.AI_DB_UPDATE_SQS_FIFO_URL,
-        Entries: [
-          {
-            Id: `asst_${params.id}_${uniqueId}`,
-            MessageBody: JSON.stringify({
-              TableName: "abandonai-prod",
-              Key: {
-                PK: `USER#${sub}`,
-                SK: `ASST#${params.id}`,
-              },
-              UpdateExpression: UpdateExpression || undefined,
-              ExpressionAttributeNames: ExpressionAttributeNames || undefined,
-              ExpressionAttributeValues: ExpressionAttributeValues || undefined,
-              ConditionExpression: ConditionExpression || undefined,
-            }),
-            MessageAttributes: {
-              Command: {
-                DataType: "String",
-                StringValue: "UpdateCommand",
-              },
-            },
-            MessageGroupId: params.id,
+    await ddbDocClient.send(
+      new UpdateCommand({
+        TableName: "abandonai-prod",
+        Key: {
+          PK: `USER#${sub}`,
+          SK: `ASST#${params.id}`,
+        },
+        UpdateExpression: UpdateExpression || undefined,
+        ExpressionAttributeNames: ExpressionAttributeNames || undefined,
+        ExpressionAttributeValues: ExpressionAttributeValues || undefined,
+        ConditionExpression: ConditionExpression || undefined,
+      }),
+    );
+    await ddbDocClient.send(
+      new PutCommand({
+        TableName: "abandonai-prod",
+        Item: {
+          PK: `ASST#${params.id}`,
+          SK: `EVENT#${uniqueId}`,
+          createdAt: new Date(),
+          data: {
+            UpdateExpression,
+            ExpressionAttributeNames,
+            ExpressionAttributeValues,
+            ConditionExpression,
           },
-          {
-            Id: `asst_${params.id}_event_${uniqueId}`,
-            MessageBody: JSON.stringify({
-              TableName: "abandonai-prod",
-              Item: {
-                PK: `ASST#${params.id}`,
-                SK: `EVENT#${uniqueId}`,
-                createdAt: new Date(),
-                data: {
-                  UpdateExpression,
-                  ExpressionAttributeNames,
-                  ExpressionAttributeValues,
-                  ConditionExpression,
-                },
-                type: "assistant.patch",
-              },
-            }),
-            MessageAttributes: {
-              Command: {
-                DataType: "String",
-                StringValue: "PutCommand",
-              },
-            },
-            MessageGroupId: params.id,
-          },
-        ],
+          type: "assistant.patch",
+        },
       }),
     );
     return NextResponse.json({
       updated: true,
-      message: result,
     });
   } catch (e) {
     return NextResponse.json(
@@ -207,29 +166,18 @@ const DELETE = async (req: NextRequest, { params }: any) => {
     const openai = new OpenAI();
     const response = await openai.beta.assistants.del(params.id);
     if (response?.deleted) {
-      const result = await sqsClient.send(
-        new SendMessageCommand({
-          QueueUrl: process.env.AI_DB_UPDATE_SQS_FIFO_URL,
-          MessageBody: JSON.stringify({
-            TableName: "abandonai-prod",
-            Key: {
-              PK: `USER#${sub}`,
-              SK: `ASST#${params?.id}`,
-            },
-          }),
-          MessageAttributes: {
-            Command: {
-              DataType: "String",
-              StringValue: "DeleteCommand",
-            },
+      await ddbDocClient.send(
+        new DeleteCommand({
+          TableName: "abandonai-prod",
+          Key: {
+            PK: `USER#${sub}`,
+            SK: `ASST#${params?.id}`,
           },
-          MessageGroupId: params.id,
         }),
       );
       return NextResponse.json({
         id: params?.id,
         deleted: true,
-        message: result,
       });
     } else {
       return NextResponse.json(
