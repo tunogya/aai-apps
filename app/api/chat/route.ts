@@ -216,6 +216,9 @@ export async function POST(req: NextRequest): Promise<Response> {
                 },
               }),
             );
+          })
+          .catch((e) => {
+            console.log("Unable to create charge", e);
           });
       },
       experimental_streamData: true,
