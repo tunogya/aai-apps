@@ -185,17 +185,14 @@ export async function POST(req: NextRequest): Promise<Response> {
               "SET #messages = list_append(if_not_exists(#messages, :empty_list), :messages), #updated = :updated, #title = :title",
           }),
         );
-        fetch(
-          "https://you3n2nta2.execute-api.ap-northeast-1.amazonaws.com/tiktoken",
-          {
-            method: "POST",
-            body: JSON.stringify({
-              prompt: messages.map((m: any) => m.content).join("\n"),
-              completion: completion,
-              model: model,
-            }),
-          },
-        )
+        fetch("https://api.abandon.ai/tiktoken", {
+          method: "POST",
+          body: JSON.stringify({
+            prompt: messages.map((m: any) => m.content).join("\n"),
+            completion: completion,
+            model: model,
+          }),
+        })
           .then((res) => res.json())
           .then(({ cost, usage }) => {
             ddbDocClient.send(
