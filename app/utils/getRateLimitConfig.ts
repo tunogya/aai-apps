@@ -11,17 +11,17 @@ const getRateLimitConfig = (prefix: string, product: string | null) => {
   switch (prefix) {
     case "ratelimit:/api/chat:gpt-4":
       if (product === process.env.NEXT_PUBLIC_PREMIUM_STANDARD_PRODUCT) {
-        tokens = 50;
+        tokens = 25;
         window = "12 h";
         content_window = 2048;
         break;
       } else if (product === process.env.NEXT_PUBLIC_PREMIUM_PRO_PRODUCT) {
-        tokens = 50;
+        tokens = 25;
         window = "6 h";
         content_window = 4096;
         break;
       } else if (product === process.env.NEXT_PUBLIC_PREMIUM_MAX_PRODUCT) {
-        tokens = 50;
+        tokens = 25;
         window = "3 h";
         content_window = 4096;
         break;
