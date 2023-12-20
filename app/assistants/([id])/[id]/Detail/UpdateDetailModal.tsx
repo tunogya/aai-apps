@@ -29,8 +29,8 @@ const Modal: FC<{
   const [status, setStatus] = useState("idle");
   const [updateParams, setUpdateParams] = useState<{
     name: string;
-    description: string;
-    instructions: string;
+    description: string | null;
+    instructions: string | null;
     model: string;
     metadata: {
       voice: string;
@@ -40,16 +40,16 @@ const Modal: FC<{
   const update = async () => {
     setStatus("loading");
     try {
-      await fetch(`/api/assistants`, {
-        method: "POST",
+      await fetch(`/api/assistants/${assistantId}`, {
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: updateParams?.name?.trim(),
-          description: updateParams?.description?.trim() || undefined,
-          instructions: updateParams?.instructions?.trim() || undefined,
-          model: updateParams?.model?.toLowerCase() || "gpt-4-1106-preview",
+          name: updateParams?.name?.trim() || null,
+          description: updateParams?.description?.trim() || null,
+          instructions: updateParams?.instructions?.trim() || null,
+          model: updateParams?.model?.toLowerCase() || null,
           metadata: updateParams?.metadata || {},
         }),
       }).then((res) => res.json());

@@ -29,14 +29,9 @@ const Modal: FC<{
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          UpdateExpression: `SET #telegram = :telegram`,
-          ExpressionAttributeNames: {
-            "#telegram": "telegram",
+          metadata: {
+            telegram: token,
           },
-          ExpressionAttributeValues: {
-            ":telegram": token,
-          },
-          ConditionExpression: "attribute_exists(PK)",
         }),
       }).then((res) => res.json());
       setStatus("success");

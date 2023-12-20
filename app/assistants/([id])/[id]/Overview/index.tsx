@@ -24,8 +24,10 @@ const CSRPage: FC<{
           <AddTgBotModal assistantId={assistantId} callback={mutate} />
         </div>
         {isLoading && <Skeleton className={"h-6"} count={3} />}
-        {data?.item?.telegram && <TgBotInfo token={data.item.telegram} />}
-        {!data?.item?.telegram && !isLoading && (
+        {data?.item?.metadata?.telegram && (
+          <TgBotInfo token={data.item.metadata.telegram} />
+        )}
+        {!data?.item?.metadata?.telegram && !isLoading && (
           <div className={"pt-3 text-sm text-gray-500"}>NaN</div>
         )}
       </div>

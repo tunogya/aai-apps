@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
+import redisClient from "@/app/utils/redisClient";
 
-const POST = async (req: NextRequest) => {
+const POST = async (req: NextRequest, { params }: any) => {
   const body = await req.json();
   console.log(body);
   // {
@@ -52,6 +53,17 @@ const POST = async (req: NextRequest) => {
   //     }
   //   }
   // }
+
+  // 获取当前机器人的 token
+  const token = params.id;
+  // 通过机器人的 token 获取 assistant_id
+  const assistant_id = await redisClient.get(`${token}:assistant_id`);
+  if (!assistant_id) {
+    return NextResponse.json(
+      { message: "assistant_id not found" },
+      { status: 404 },
+    );
+  }
 
   return NextResponse.json(
     {

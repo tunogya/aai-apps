@@ -5,8 +5,6 @@ import {
   BatchWriteCommand,
   DeleteCommand,
   GetCommand,
-  PutCommand,
-  UpdateCommand,
 } from "@aws-sdk/lib-dynamodb";
 import OpenAI from "openai";
 import dysortid from "@/app/utils/dysortid";
@@ -21,6 +19,11 @@ const GET = async (req: NextRequest, { params }: any) => {
     try {
       const cache = await redisClient.get(`USER#${sub}:ASST#${params.id}`);
       if (cache) {
+        // @ts-ignore
+        if (cache?.telegram) {
+          // @ts-ignore
+          await redisClient.set(`${cache?.telegram}:assistant_id`, params?.id);
+        }
         return NextResponse.json({
           item: cache,
           cache: true,
@@ -45,6 +48,10 @@ const GET = async (req: NextRequest, { params }: any) => {
         `USER#${sub}:ASST#${params.id}`,
         JSON.stringify(Item),
       );
+      // If have telegram account, need to update in redis
+      if (Item?.telegram) {
+        await redisClient.set(`${Item?.telegram}:assistant_id`, params?.id);
+      }
       return NextResponse.json({
         item: Item,
       });
@@ -71,19 +78,24 @@ const GET = async (req: NextRequest, { params }: any) => {
   }
 };
 
-const PUT = async (req: NextRequest, { params }: any) => {
+const PATCH = async (req: NextRequest, { params }: any) => {
   const session = await getSession();
   const sub = session?.user.sub;
   const { name, description, instructions, metadata, model } = await req.json();
 
   try {
     const openai = new OpenAI();
+    const cache = await redisClient.get(`USER#${sub}:ASST#${params.id}`);
     const newAssistant = await openai.beta.assistants.update(params.id, {
       name,
       description,
       instructions,
       model,
-      metadata,
+      metadata: {
+        // @ts-ignore
+        ...(cache?.metadata || {}),
+        ...metadata,
+      },
     });
     const item = {
       ...newAssistant,
@@ -106,7 +118,6 @@ const PUT = async (req: NextRequest, { params }: any) => {
                   Item: {
                     PK: `ASST#${params.id}`,
                     SK: `EVENT#${uniqueId}`,
-                    createdAt: new Date(),
                     data: item,
                     type: "assistant.put",
                   },
@@ -135,67 +146,6 @@ const PUT = async (req: NextRequest, { params }: any) => {
   }
 };
 
-const PATCH = async (req: NextRequest, { params }: any) => {
-  const session = await getSession();
-  const sub = session?.user.sub;
-  const {
-    UpdateExpression,
-    ExpressionAttributeNames,
-    ExpressionAttributeValues,
-    ConditionExpression,
-  } = await req.json();
-
-  try {
-    const uniqueId = dysortid();
-    await Promise.all([
-      ddbDocClient.send(
-        new UpdateCommand({
-          TableName: "abandonai-prod",
-          Key: {
-            PK: `USER#${sub}`,
-            SK: `ASST#${params.id}`,
-          },
-          UpdateExpression: UpdateExpression || undefined,
-          ExpressionAttributeNames: ExpressionAttributeNames || undefined,
-          ExpressionAttributeValues: ExpressionAttributeValues || undefined,
-          ConditionExpression: ConditionExpression || undefined,
-        }),
-      ),
-      redisClient.del(`USER#${sub}:ASST#${params.id}`),
-      ddbDocClient.send(
-        new PutCommand({
-          TableName: "abandonai-prod",
-          Item: {
-            PK: `ASST#${params.id}`,
-            SK: `EVENT#${uniqueId}`,
-            createdAt: new Date(),
-            data: {
-              UpdateExpression,
-              ExpressionAttributeNames,
-              ExpressionAttributeValues,
-              ConditionExpression,
-            },
-            type: "assistant.patch",
-          },
-        }),
-      ),
-    ]);
-    return NextResponse.json({
-      updated: true,
-    });
-  } catch (e) {
-    return NextResponse.json(
-      {
-        error: "something went wrong",
-        message: e,
-      },
-      {
-        status: 500,
-      },
-    );
-  }
-};
-
 const DELETE = async (req: NextRequest, { params }: any) => {
   const session = await getSession();
   const sub = session?.user.sub;
@@ -203,6 +153,12 @@ const DELETE = async (req: NextRequest, { params }: any) => {
     const openai = new OpenAI();
     const response = await openai.beta.assistants.del(params.id);
     if (response?.deleted) {
+      const cache = redisClient.get(`USER#${sub}:ASST#${params.id}`);
+      // @ts-ignore
+      if (cache.telegram) {
+        // @ts-ignore
+        await redisClient.del(`${cache.telegram}:assistant_id`);
+      }
       await Promise.all([
         ddbDocClient.send(
           new DeleteCommand({
@@ -243,4 +199,4 @@ const DELETE = async (req: NextRequest, { params }: any) => {
   }
 };
 
-export { GET, PUT, DELETE, PATCH };
+export { GET, PATCH, DELETE };
