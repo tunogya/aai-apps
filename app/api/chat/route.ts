@@ -160,6 +160,31 @@ export async function POST(req: NextRequest): Promise<Response> {
       },
       onFinal(completion) {
         data.close();
+        ddbDocClient.send(
+          new UpdateCommand({
+            TableName: "abandonai-prod",
+            Key: {
+              PK: `USER#${sub}`,
+              SK: `CHAT2#${id}`,
+            },
+            ExpressionAttributeNames: {
+              "#messages": "messages",
+              "#updated": "updated",
+              "#title": "title",
+            },
+            ExpressionAttributeValues: {
+              ":empty_list": [],
+              ":messages": list_append.map((m) => ({
+                ...m,
+                createdAt: m.createdAt?.toISOString(),
+              })),
+              ":updated": Math.floor(Date.now() / 1000),
+              ":title": title,
+            },
+            UpdateExpression:
+              "SET #messages = list_append(if_not_exists(#messages, :empty_list), :messages), #updated = :updated, #title = :title",
+          }),
+        );
         fetch(
           "https://you3n2nta2.execute-api.ap-northeast-1.amazonaws.com/tiktoken",
           {
@@ -173,31 +198,6 @@ export async function POST(req: NextRequest): Promise<Response> {
         )
           .then((res) => res.json())
           .then(({ cost, usage }) => {
-            ddbDocClient.send(
-              new UpdateCommand({
-                TableName: "abandonai-prod",
-                Key: {
-                  PK: `USER#${sub}`,
-                  SK: `CHAT2#${id}`,
-                },
-                ExpressionAttributeNames: {
-                  "#messages": "messages",
-                  "#updated": "updated",
-                  "#title": "title",
-                },
-                ExpressionAttributeValues: {
-                  ":empty_list": [],
-                  ":messages": list_append.map((m) => ({
-                    ...m,
-                    createdAt: m.createdAt?.toISOString(),
-                  })),
-                  ":updated": Math.floor(Date.now() / 1000),
-                  ":title": title,
-                },
-                UpdateExpression:
-                  "SET #messages = list_append(if_not_exists(#messages, :empty_list), :messages), #updated = :updated, #title = :title",
-              }),
-            );
             ddbDocClient.send(
               new UpdateCommand({
                 TableName: "abandonai-prod",
