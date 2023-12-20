@@ -11,7 +11,7 @@ import dysortid from "@/app/utils/dysortid";
 import redisClient from "@/app/utils/redisClient";
 import getRateLimitConfig from "@/app/utils/getRateLimitConfig";
 import ddbDocClient from "@/app/utils/ddbDocClient";
-import { UpdateCommand } from "@aws-sdk/lib-dynamodb";
+import { PutCommand, UpdateCommand } from "@aws-sdk/lib-dynamodb";
 
 export const runtime = "edge";
 
@@ -158,38 +158,65 @@ export async function POST(req: NextRequest): Promise<Response> {
           });
         }
       },
-      async onFinal(completion) {
-        await data.close();
-        await ddbDocClient.send(
-          new UpdateCommand({
-            TableName: "abandonai-prod",
-            Key: {
-              PK: `USER#${sub}`,
-              SK: `CHAT2#${id}`,
-            },
-            ExpressionAttributeNames: {
-              "#messages": "messages",
-              "#updated": "updated",
-              "#title": "title",
-            },
-            ExpressionAttributeValues: {
-              ":empty_list": [],
-              ":messages": list_append.map((m) => ({
-                ...m,
-                createdAt: m.createdAt?.toISOString(),
-              })),
-              ":updated": Math.floor(Date.now() / 1000),
-              ":title": title,
-            },
-            UpdateExpression:
-              "SET #messages = list_append(if_not_exists(#messages, :empty_list), :messages), #updated = :updated, #title = :title",
-          }),
-        );
-        //        prompt: messages.map((m: any) => m.content).join("\n"),
-        //                     completion: completion,
-        //                     model: model,
-        //                     user: sub,
-        //                     created: new Date().toISOString(),
+      onFinal(completion) {
+        data.close();
+        fetch(
+          "https://you3n2nta2.execute-api.ap-northeast-1.amazonaws.com/tiktoken",
+          {
+            method: "POST",
+            body: JSON.stringify({
+              prompt: messages.map((m: any) => m.content).join("\n"),
+              completion: completion,
+              model: model,
+            }),
+          },
+        )
+          .then((res) => res.json())
+          .then(({ cost, usage }) => {
+            ddbDocClient.send(
+              new UpdateCommand({
+                TableName: "abandonai-prod",
+                Key: {
+                  PK: `USER#${sub}`,
+                  SK: `CHAT2#${id}`,
+                },
+                ExpressionAttributeNames: {
+                  "#messages": "messages",
+                  "#updated": "updated",
+                  "#title": "title",
+                },
+                ExpressionAttributeValues: {
+                  ":empty_list": [],
+                  ":messages": list_append.map((m) => ({
+                    ...m,
+                    createdAt: m.createdAt?.toISOString(),
+                  })),
+                  ":updated": Math.floor(Date.now() / 1000),
+                  ":title": title,
+                },
+                UpdateExpression:
+                  "SET #messages = list_append(if_not_exists(#messages, :empty_list), :messages), #updated = :updated, #title = :title",
+              }),
+            );
+            ddbDocClient.send(
+              new UpdateCommand({
+                TableName: "abandonai-prod",
+                Key: {
+                  PK: `CHARGES#${new Date()
+                    .toISOString()
+                    .slice(0, 8)
+                    .replaceAll("-", "")}`,
+                  SK: `USER#${sub}`,
+                },
+                UpdateExpression: `ADD billing :total_cost, prompt_tokens :prompt_tokens, completion_tokens :completion_tokens`,
+                ExpressionAttributeValues: {
+                  ":total_cost": cost?.total_cost || 0,
+                  ":prompt_tokens": usage?.prompt_tokens || 0,
+                  ":completion_tokens": usage?.completion_tokens || 0,
+                },
+              }),
+            );
+          });
       },
       experimental_streamData: true,
     });
