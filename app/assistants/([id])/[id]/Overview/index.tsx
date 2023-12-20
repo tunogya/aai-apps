@@ -1,6 +1,6 @@
 "use client";
 
-import AddTgBotModal from "@/app/assistants/([id])/[id]/Overview/AddTgBotModal";
+import AddTelegramModal from "@/app/assistants/([id])/[id]/Overview/AddTelegramModal";
 import useSWR from "swr";
 import { FC } from "react";
 import TelegramInfo from "@/app/assistants/([id])/[id]/Overview/TelegramInfo";
@@ -21,7 +21,7 @@ const CSRPage: FC<{
           className={"flex justify-between items-center pb-3 border-b w-full"}
         >
           <div className={"font-semibold text-gray-800"}>Telegram</div>
-          <AddTgBotModal assistantId={assistantId} callback={mutate} />
+          <AddTelegramModal assistantId={assistantId} callback={mutate} />
         </div>
         {isLoading && <Skeleton className={"h-6"} count={3} />}
         {data?.item?.metadata?.telegram && (

@@ -148,7 +148,7 @@ const TelegramInfo: FC<{
           )}
         </div>
       )}
-      <div className={"text-gray-500 text-sm"}>
+      <div className={"text-gray-500 text-xs"}>
         When your bot is not working properly, you can try restarting it.
       </div>
     </div>
