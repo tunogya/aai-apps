@@ -3,23 +3,26 @@ import { FunctionCall, Message } from "ai";
 
 export const dall_e_images_generate: ChatCompletionCreateParams.Function = {
   name: "dall_e_images_generate",
-  description: "Generate images using DALL-E",
+  description: "Generate images using DALL-E 3",
   parameters: {
     type: "object",
     properties: {
       prompt: {
         type: "string",
-        description: "The prompt to generate images for.",
+        description:
+          "A text description of the desired image(s). The maximum length is 4000 characters.",
       },
       size: {
         type: "string",
-        description: "The size of the generated images.",
+        description:
+          "The size of the generated images. Must be one of 1024x1024, 1792x1024, or 1024x1792.",
         enum: ["1024x1024", "1024×1792", "1792×1024"],
         default: "1024x1024",
       },
       quality: {
         type: "string",
-        description: "The quality of the generated images.",
+        description:
+          "The quality of the image that will be generated. hd creates images with finer details and greater consistency across the image.",
         enum: ["standard", "hd"],
         default: "standard",
       },
