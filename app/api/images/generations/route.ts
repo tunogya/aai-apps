@@ -10,7 +10,6 @@ import * as raw from "multiformats/codecs/raw";
 import getRateLimitConfig from "@/app/utils/getRateLimitConfig";
 import ddbDocClient from "@/app/utils/ddbDocClient";
 import { UpdateCommand } from "@aws-sdk/lib-dynamodb";
-import { ImageGenerateParams } from "openai/src/resources/images";
 
 export const runtime = "edge";
 
@@ -59,7 +58,7 @@ export async function POST(req: NextRequest): Promise<Response> {
       user: sub,
       quality,
       response_format: "b64_json",
-    } as ImageGenerateParams);
+    });
 
     let cost;
     let baseRatio = 2;
