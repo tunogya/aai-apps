@@ -50,9 +50,12 @@ export const fetch_function_handler = async (
         method: parsedFunctionCallArguments.method,
         headers: parsedFunctionCallArguments.headers,
         body: parsedFunctionCallArguments.body,
-      }).then((res) => res.text());
+      }).then((res) => res.json());
     } catch (e) {
-      return `An error occurred during eval: ${e}`;
+      return JSON.stringify({
+        error: "Something went wrong. Please try again late",
+        message: e,
+      });
     }
   } else {
     return `No arguments provided.`;

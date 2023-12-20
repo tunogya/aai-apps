@@ -17,6 +17,12 @@ export const dall_e_images_generate: ChatCompletionCreateParams.Function = {
         enum: ["1024x1024", "1024×1792", "1792×1024"],
         default: "1024x1024",
       },
+      quality: {
+        type: "string",
+        description: "The quality of the generated images.",
+        enum: ["standard", "hd"],
+        default: "standard",
+      },
     },
     required: ["prompt"],
   },
@@ -31,6 +37,7 @@ export const dall_e_images_generate_handler = async (
     const parsedFunctionCallArguments: {
       prompt: string;
       size: string;
+      quality: string;
     } = JSON.parse(functionCall.arguments);
     try {
       const data = await fetch(`/api/images/generations`, {
@@ -41,11 +48,15 @@ export const dall_e_images_generate_handler = async (
         body: JSON.stringify({
           prompt: parsedFunctionCallArguments.prompt,
           size: parsedFunctionCallArguments.size,
+          quality: parsedFunctionCallArguments.quality,
         }),
       }).then((res) => res.json());
       return JSON.stringify(data);
     } catch (e) {
-      return `An error occurred during eval: ${e}`;
+      return JSON.stringify({
+        error: "Something went wrong. Please try again late",
+        message: e,
+      });
     }
   } else {
     return `No arguments provided.`;

@@ -8,6 +8,8 @@ import { sha256 } from "multiformats/hashes/sha2";
 import { CID } from "multiformats/cid";
 import * as raw from "multiformats/codecs/raw";
 import getRateLimitConfig from "@/app/utils/getRateLimitConfig";
+import ddbDocClient from "@/app/utils/ddbDocClient";
+import { UpdateCommand } from "@aws-sdk/lib-dynamodb";
 
 export const runtime = "edge";
 
@@ -42,19 +44,37 @@ export async function POST(req: NextRequest): Promise<Response> {
     );
   }
 
-  let { prompt, size } = await req.json();
+  let { prompt, size, quality } = await req.json();
 
   const openai = new OpenAI();
 
   try {
+    const model = "dall-e-3";
     const data = await openai.images.generate({
       prompt,
       n: 1,
       size,
-      model: "dall-e-3",
+      model,
       response_format: "b64_json",
       user: sub,
+      quality,
     });
+
+    let cost = 0;
+    let baseRatio = 2;
+    if (quality === "standard") {
+      if (size === "1024x1024") {
+        cost = 0.04 * baseRatio;
+      } else if (size === "1792x1024" || size === "1024x1792") {
+        cost = 0.08 * baseRatio;
+      }
+    } else if (quality === "hd") {
+      if (size === "1024x1024") {
+        cost = 0.08 * baseRatio;
+      } else if (size === "1792x1024" || size === "1024x1792") {
+        cost = 0.12 * baseRatio;
+      }
+    }
 
     const image = data.data[0].b64_json;
     const revised_prompt = data.data[0].revised_prompt;
@@ -80,6 +100,27 @@ export async function POST(req: NextRequest): Promise<Response> {
             Key: `images/${cid}.json`,
             Body: jsonBuffer,
             ContentType: "application/json",
+          }),
+        ),
+        ddbDocClient.send(
+          new UpdateCommand({
+            TableName: "abandonai-prod",
+            Key: {
+              PK: `CHARGES#${new Date()
+                .toISOString()
+                .slice(0, 8)
+                .replaceAll("-", "")}`,
+              SK: `EMAIL#${user.email}`,
+            },
+            UpdateExpression: `ADD billing :cost, #model_count :count, #model_cost :cost`,
+            ExpressionAttributeValues: {
+              ":cost": cost,
+              ":count": 1,
+            },
+            ExpressionAttributeNames: {
+              "#model_count": `${model}_count`,
+              "#model_cost": `${model}_cost`,
+            },
           }),
         ),
       ]);

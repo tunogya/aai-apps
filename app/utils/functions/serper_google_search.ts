@@ -44,7 +44,10 @@ export const serper_google_search_handler = async (
       }).then((res) => res.json());
       return JSON.stringify(data);
     } catch (e) {
-      return `An error occurred during eval: ${e}`;
+      return JSON.stringify({
+        error: "Something went wrong. Please try again late",
+        message: e,
+      });
     }
   } else {
     return `No arguments provided.`;

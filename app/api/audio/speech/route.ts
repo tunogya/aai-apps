@@ -7,6 +7,8 @@ import redisClient from "@/app/utils/redisClient";
 import { CID } from "multiformats/cid";
 import * as json from "multiformats/codecs/json";
 import { sha256 } from "multiformats/hashes/sha2";
+import ddbDocClient from "@/app/utils/ddbDocClient";
+import { UpdateCommand } from "@aws-sdk/lib-dynamodb";
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   // @ts-ignore
@@ -73,6 +75,15 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
           speed,
         }),
       );
+
+      let cost,
+        baseRatio = 2;
+      if (model === "tts-1") {
+        cost = (0.015 * input.length * baseRatio) / 1000;
+      } else if (model === "tts-1-hd") {
+        cost = (0.03 * input.length * baseRatio) / 1000;
+      }
+
       await Promise.all([
         s3Client.send(
           new PutObjectCommand({
@@ -88,6 +99,27 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
             Key: `audio/${cid}`,
             Body: jsonBuffer,
             ContentType: "application/json",
+          }),
+        ),
+        ddbDocClient.send(
+          new UpdateCommand({
+            TableName: "abandonai-prod",
+            Key: {
+              PK: `CHARGES#${new Date()
+                .toISOString()
+                .slice(0, 8)
+                .replaceAll("-", "")}`,
+              SK: `EMAIL#${user.email}`,
+            },
+            UpdateExpression: `ADD billing :cost, #model_count :count, #model_cost :cost`,
+            ExpressionAttributeValues: {
+              ":cost": cost || 0,
+              ":count": 1,
+            },
+            ExpressionAttributeNames: {
+              "#model_count": `${model}_count`,
+              "#model_cost": `${model}_cost`,
+            },
           }),
         ),
       ]);

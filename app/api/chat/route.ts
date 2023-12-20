@@ -211,11 +211,18 @@ export async function POST(req: NextRequest): Promise<Response> {
                   .replaceAll("-", "")}`,
                 SK: `EMAIL#${user.email}`,
               },
-              UpdateExpression: `ADD billing :total_cost, prompt_tokens :prompt_tokens, completion_tokens :completion_tokens`,
+              UpdateExpression: `ADD billing :cost, #prompt_tokens :prompt_tokens, prompt_tokens :prompt_tokens, #completion_tokens :completion_tokens, completion_tokens :completion_tokens, #model_count :count, #model_cost :cost`,
               ExpressionAttributeValues: {
-                ":total_cost": cost?.total_cost || 0,
+                ":cost": cost?.total_cost || 0,
                 ":prompt_tokens": usage?.prompt_tokens || 0,
                 ":completion_tokens": usage?.completion_tokens || 0,
+                ":count": 1,
+              },
+              ExpressionAttributeNames: {
+                "#model_count": `${model}_count`,
+                "#model_cost": `${model}_cost`,
+                "#prompt_tokens": `${model}_prompt_tokens`,
+                "#completion_tokens": `${model}_completion_tokens`,
               },
             }),
           );

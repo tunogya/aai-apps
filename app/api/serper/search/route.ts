@@ -1,6 +1,8 @@
 import { getSession } from "@auth0/nextjs-auth0/edge";
 import { NextRequest, NextResponse } from "next/server";
 import redisClient from "@/app/utils/redisClient";
+import ddbDocClient from "@/app/utils/ddbDocClient";
+import { UpdateCommand } from "@aws-sdk/lib-dynamodb";
 
 export const runtime = "edge";
 
@@ -40,6 +42,37 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         num,
       }),
     }).then((res) => res.json());
+
+    let cost,
+      baseRatio = 2;
+    if (num > 10) {
+      cost = 0.001 * 2 * baseRatio;
+    } else {
+      cost = 0.001 * baseRatio;
+    }
+
+    await ddbDocClient.send(
+      new UpdateCommand({
+        TableName: "abandonai-prod",
+        Key: {
+          PK: `CHARGES#${new Date()
+            .toISOString()
+            .slice(0, 8)
+            .replaceAll("-", "")}`,
+          SK: `EMAIL#${user.email}`,
+        },
+        UpdateExpression: `ADD billing :cost, #model_count :count, #model_cost :cost`,
+        ExpressionAttributeValues: {
+          ":cost": cost,
+          ":count": 1,
+        },
+        ExpressionAttributeNames: {
+          "#model_count": `search_count`,
+          "#model_cost": `search_cost`,
+        },
+      }),
+    );
+
     return NextResponse.json(data);
   } catch (e) {
     console.log(e);

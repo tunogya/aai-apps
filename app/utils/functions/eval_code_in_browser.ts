@@ -30,7 +30,10 @@ export const eval_code_in_browser_handler = async (
     try {
       return `${eval(parsedFunctionCallArguments.code)}`;
     } catch (e) {
-      return `An error occurred during eval: ${e}`;
+      return JSON.stringify({
+        error: "Something went wrong. Please try again late",
+        message: e,
+      });
     }
   } else {
     return `No arguments provided.`;
