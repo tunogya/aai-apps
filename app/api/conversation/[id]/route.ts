@@ -6,11 +6,25 @@ import {
   GetCommand,
   UpdateCommand,
 } from "@aws-sdk/lib-dynamodb";
+import redisClient from "@/app/utils/redisClient";
 
 const GET = async (req: NextRequest, { params }: any) => {
   const session = await getSession();
   const sub = session?.user.sub;
   try {
+    // Check Redis
+    try {
+      const cache = await redisClient.get(`USER#${sub}:CHAT2#${params?.id}`);
+      if (cache) {
+        return NextResponse.json({
+          item: cache,
+          cache: true,
+        });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+    // Check DynamoDB
     const { Item } = await ddbDocClient.send(
       new GetCommand({
         TableName: "abandonai-prod",
@@ -20,9 +34,25 @@ const GET = async (req: NextRequest, { params }: any) => {
         },
       }),
     );
-    return NextResponse.json({
-      item: Item,
-    });
+    if (Item) {
+      // Add to Redis
+      await redisClient.set(
+        `USER#${sub}:CHAT2#${params.id}`,
+        JSON.stringify(Item),
+      );
+      return NextResponse.json({
+        item: Item,
+      });
+    } else {
+      return NextResponse.json(
+        {
+          item: null,
+        },
+        {
+          status: 404,
+        },
+      );
+    }
   } catch (e) {
     return NextResponse.json(
       {
@@ -39,15 +69,18 @@ const DELETE = async (req: NextRequest, { params }: any) => {
   const session = await getSession();
   const sub = session?.user.sub;
   try {
-    await ddbDocClient.send(
-      new DeleteCommand({
-        TableName: "abandonai-prod",
-        Key: {
-          PK: `USER#${sub}`,
-          SK: `CHAT2#${params?.id}`,
-        },
-      }),
-    );
+    await Promise.all([
+      ddbDocClient.send(
+        new DeleteCommand({
+          TableName: "abandonai-prod",
+          Key: {
+            PK: `USER#${sub}`,
+            SK: `CHAT2#${params?.id}`,
+          },
+        }),
+      ),
+      redisClient.del(`USER#${sub}:CHAT2#${params.id}`),
+    ]);
     return NextResponse.json({
       delete: true,
     });
@@ -73,19 +106,22 @@ const PATCH = async (req: NextRequest, { params }: any) => {
     ConditionExpression,
   } = await req.json();
   try {
-    await ddbDocClient.send(
-      new UpdateCommand({
-        TableName: "abandonai-prod",
-        Key: {
-          PK: `USER#${sub}`,
-          SK: `CHAT2#${params?.id}`,
-        },
-        UpdateExpression: UpdateExpression || undefined,
-        ExpressionAttributeNames: ExpressionAttributeNames || undefined,
-        ExpressionAttributeValues: ExpressionAttributeValues || undefined,
-        ConditionExpression: ConditionExpression || undefined,
-      }),
-    );
+    await Promise.all([
+      ddbDocClient.send(
+        new UpdateCommand({
+          TableName: "abandonai-prod",
+          Key: {
+            PK: `USER#${sub}`,
+            SK: `CHAT2#${params?.id}`,
+          },
+          UpdateExpression: UpdateExpression || undefined,
+          ExpressionAttributeNames: ExpressionAttributeNames || undefined,
+          ExpressionAttributeValues: ExpressionAttributeValues || undefined,
+          ConditionExpression: ConditionExpression || undefined,
+        }),
+      ),
+      redisClient.del(`USER#${sub}:CHAT2#${params.id}`),
+    ]);
     return NextResponse.json({
       updated: true,
     });

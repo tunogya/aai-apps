@@ -3,7 +3,9 @@ import { NextRequest, NextResponse } from "next/server";
 import ddbDocClient from "@/app/utils/ddbDocClient";
 import { PutCommand, QueryCommand } from "@aws-sdk/lib-dynamodb";
 import OpenAI from "openai";
+import redisClient from "@/app/utils/redisClient";
 
+// No need to use Redis
 const GET = async (req: NextRequest) => {
   const session = await getSession();
   const sub = session?.user.sub;
@@ -67,6 +69,13 @@ const POST = async (req: NextRequest) => {
       PK: `USER#${sub}`,
       SK: `ASST#${newAssistant.id}`,
     };
+
+    // Add to Redis
+    await redisClient.set(
+      `USER#${sub}:ASST#${newAssistant.id}`,
+      JSON.stringify(item),
+    );
+
     await ddbDocClient.send(
       new PutCommand({
         TableName: "abandonai-prod",

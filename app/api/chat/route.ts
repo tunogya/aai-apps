@@ -159,32 +159,35 @@ export async function POST(req: NextRequest): Promise<Response> {
         }
       },
       async onFinal(completion) {
-        await data.close();
-        await ddbDocClient.send(
-          new UpdateCommand({
-            TableName: "abandonai-prod",
-            Key: {
-              PK: `USER#${sub}`,
-              SK: `CHAT2#${id}`,
-            },
-            ExpressionAttributeNames: {
-              "#messages": "messages",
-              "#updated": "updated",
-              "#title": "title",
-            },
-            ExpressionAttributeValues: {
-              ":empty_list": [],
-              ":messages": list_append.map((m) => ({
-                ...m,
-                createdAt: m.createdAt?.toISOString(),
-              })),
-              ":updated": Math.floor(Date.now() / 1000),
-              ":title": title,
-            },
-            UpdateExpression:
-              "SET #messages = list_append(if_not_exists(#messages, :empty_list), :messages), #updated = :updated, #title = :title",
-          }),
-        );
+        await Promise.all([
+          data.close(),
+          ddbDocClient.send(
+            new UpdateCommand({
+              TableName: "abandonai-prod",
+              Key: {
+                PK: `USER#${sub}`,
+                SK: `CHAT2#${id}`,
+              },
+              ExpressionAttributeNames: {
+                "#messages": "messages",
+                "#updated": "updated",
+                "#title": "title",
+              },
+              ExpressionAttributeValues: {
+                ":empty_list": [],
+                ":messages": list_append.map((m) => ({
+                  ...m,
+                  createdAt: m.createdAt?.toISOString(),
+                })),
+                ":updated": Math.floor(Date.now() / 1000),
+                ":title": title,
+              },
+              UpdateExpression:
+                "SET #messages = list_append(if_not_exists(#messages, :empty_list), :messages), #updated = :updated, #title = :title",
+            }),
+          ),
+          redisClient.del(`USER#${sub}:CHAT2#${id}`),
+        ]);
         const { cost, usage } = await fetch("https://api.abandon.ai/tiktoken", {
           method: "POST",
           body: JSON.stringify({

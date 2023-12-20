@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import ddbDocClient from "@/app/utils/ddbDocClient";
 import { QueryCommand } from "@aws-sdk/lib-dynamodb";
 
+// No need to use Redis
 const GET = async (req: NextRequest) => {
   const session = await getSession();
   const sub = session?.user.sub;
