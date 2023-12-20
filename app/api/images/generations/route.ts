@@ -60,19 +60,20 @@ export async function POST(req: NextRequest): Promise<Response> {
       quality,
     });
 
-    let cost = 0;
+    let cost;
     let baseRatio = 2;
-    if (quality === "standard") {
-      if (size === "1024x1024") {
-        cost = 0.04 * baseRatio;
-      } else if (size === "1792x1024" || size === "1024x1792") {
+
+    if (quality === "hd") {
+      if (size === "1792x1024" || size === "1024x1792") {
+        cost = 0.12 * baseRatio;
+      } else {
         cost = 0.08 * baseRatio;
       }
-    } else if (quality === "hd") {
-      if (size === "1024x1024") {
+    } else {
+      if (size === "1792x1024" || size === "1024x1792") {
         cost = 0.08 * baseRatio;
-      } else if (size === "1792x1024" || size === "1024x1792") {
-        cost = 0.12 * baseRatio;
+      } else {
+        cost = 0.04 * baseRatio;
       }
     }
 

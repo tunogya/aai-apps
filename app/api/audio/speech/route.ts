@@ -78,10 +78,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
       let cost,
         baseRatio = 2;
-      if (model === "tts-1") {
-        cost = (0.015 * input.length * baseRatio) / 1000;
-      } else if (model === "tts-1-hd") {
+      if (model === "tts-1-hd") {
         cost = (0.03 * input.length * baseRatio) / 1000;
+      } else {
+        cost = (0.015 * input.length * baseRatio) / 1000;
       }
 
       await Promise.all([
