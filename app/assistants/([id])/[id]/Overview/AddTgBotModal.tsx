@@ -9,7 +9,7 @@ const Modal: FC<{
   const [status, setStatus] = useState("idle");
   const [token, setToken] = useState("");
 
-  const addTgBot = async () => {
+  const updateTelegramToken = async (token: string) => {
     setStatus("loading");
     try {
       await fetch(`https://api.telegram.org/bot${token}/setWebhook`, {
@@ -107,7 +107,7 @@ const Modal: FC<{
                   </div>
                   <div className={"mt-10 flex justify-end gap-2"}>
                     <button
-                      onClick={addTgBot}
+                      onClick={() => updateTelegramToken(token)}
                       disabled={!token}
                       className={
                         "bg-[#0066FF] text-white rounded-lg px-3 py-1.5 text-sm disabled:opacity-50"

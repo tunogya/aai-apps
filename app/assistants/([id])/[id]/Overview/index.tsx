@@ -3,7 +3,7 @@
 import AddTgBotModal from "@/app/assistants/([id])/[id]/Overview/AddTgBotModal";
 import useSWR from "swr";
 import { FC } from "react";
-import TgBotInfo from "@/app/assistants/([id])/[id]/Overview/TgBotInfo";
+import TelegramInfo from "@/app/assistants/([id])/[id]/Overview/TelegramInfo";
 import Skeleton from "react-loading-skeleton";
 
 const CSRPage: FC<{
@@ -25,7 +25,7 @@ const CSRPage: FC<{
         </div>
         {isLoading && <Skeleton className={"h-6"} count={3} />}
         {data?.item?.metadata?.telegram && (
-          <TgBotInfo token={data.item.metadata.telegram} />
+          <TelegramInfo token={data.item.metadata.telegram} />
         )}
         {!data?.item?.metadata?.telegram && !isLoading && (
           <div className={"pt-3 text-sm text-gray-500"}>NaN</div>

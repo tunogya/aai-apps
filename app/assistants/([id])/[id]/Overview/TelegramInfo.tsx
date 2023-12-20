@@ -9,7 +9,7 @@ import {
 } from "@heroicons/react/24/solid";
 import Skeleton from "react-loading-skeleton";
 
-const TgBotInfo: FC<{
+const TelegramInfo: FC<{
   token: string;
 }> = ({ token }) => {
   const { data: me, isLoading: isMeLoading } = useSWR(
@@ -32,7 +32,7 @@ const TgBotInfo: FC<{
   );
   const [status, setStatus] = useState("idle");
 
-  const setWebhook = async () => {
+  const setWebhook = async (url: string) => {
     setStatus("loading");
     try {
       await fetch(`https://api.telegram.org/bot${token}/setWebhook`, {
@@ -41,16 +41,13 @@ const TgBotInfo: FC<{
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          url: `https://app.abandon.ai/api/bot/${token}`,
+          url: url,
           max_connections: 100,
           drop_pending_updates: true,
         }),
       });
-      setStatus("success");
       await mutateWebhook();
-      setTimeout(() => {
-        setStatus("idle");
-      }, 3000);
+      setStatus("idle");
     } catch (e) {
       setStatus("error");
       setTimeout(() => {
@@ -102,19 +99,60 @@ const TgBotInfo: FC<{
           <Skeleton className={"w-full h-full"} />
         </div>
       ) : (
-        <button
-          className={"border border-gray-300 rounded-md px-2 py-1 text-xs"}
-          onClick={setWebhook}
-          disabled={status === "loading"}
-        >
-          {status === "idle" && "Reset webhook"}
-          {status === "loading" && "Resetting webhook..."}
-          {status === "success" && "Rested webhook!"}
-          {status === "error" && "Reset webhook error!"}
-        </button>
+        <div className={"flex items-center gap-2"}>
+          {isWebhookOk ? (
+            <>
+              <button
+                className={
+                  "border border-gray-300 rounded-md px-2 py-1 text-xs hover:shadow"
+                }
+                onClick={async () => {
+                  await setWebhook(``);
+                  await new Promise((resolve) => setTimeout(resolve, 1000));
+                  await setWebhook(`https://app.abandon.ai/api/bot/${token}`);
+                }}
+                disabled={status === "loading"}
+              >
+                {status === "idle" && "Restart"}
+                {status === "loading" && "Sleep..."}
+                {status === "error" && "Shutdown error!"}
+              </button>
+              {status !== "loading" && (
+                <button
+                  className={
+                    "border border-gray-300 rounded-md px-2 py-1 text-xs hover:shadow"
+                  }
+                  onClick={() => setWebhook(``)}
+                  disabled={status === "loading"}
+                >
+                  {status === "idle" && "Shutdown"}
+                  {status === "loading" && "Sleep..."}
+                  {status === "error" && "Shutdown error!"}
+                </button>
+              )}
+            </>
+          ) : (
+            <button
+              className={
+                "border border-gray-300 rounded-md px-2 py-1 text-xs hover:shadow"
+              }
+              onClick={() =>
+                setWebhook(`https://app.abandon.ai/api/bot/${token}`)
+              }
+              disabled={status === "loading"}
+            >
+              {status === "idle" && "Wake up"}
+              {status === "loading" && "Connect..."}
+              {status === "error" && "Wake up error!"}
+            </button>
+          )}
+        </div>
       )}
+      <div className={"text-gray-500 text-sm"}>
+        When your bot is not working properly, you can try restarting it.
+      </div>
     </div>
   );
 };
 
-export default TgBotInfo;
+export default TelegramInfo;
