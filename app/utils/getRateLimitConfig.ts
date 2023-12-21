@@ -18,12 +18,12 @@ const getRateLimitConfig = (prefix: string, product: string | null) => {
       } else if (product === process.env.NEXT_PUBLIC_PREMIUM_PRO_PRODUCT) {
         tokens = 25;
         window = "6 h";
-        content_window = 4096;
+        content_window = 2048;
         break;
       } else if (product === process.env.NEXT_PUBLIC_PREMIUM_MAX_PRODUCT) {
         tokens = 25;
         window = "3 h";
-        content_window = 4096;
+        content_window = 2048;
         break;
       } else {
         // AbandonAI Free
