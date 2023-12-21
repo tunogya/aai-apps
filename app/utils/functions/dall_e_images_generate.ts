@@ -23,7 +23,8 @@ export const dall_e_images_generate: ChatCompletionCreateParams.Function = {
         type: "string",
         description:
           "The quality of the image that will be generated. hd creates images with finer details and greater consistency across the image.",
-        enum: ["standard", "hd"],
+        enum: ["standard"],
+        // enum: ["standard", "hd"],
         default: "standard",
       },
     },
