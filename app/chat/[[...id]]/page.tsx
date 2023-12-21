@@ -254,8 +254,7 @@ export default function Chat() {
                         "w-full outline-none text-sm md:text-base focus:outline-none focus:bg-transparent max-h-52 min-h-6 overflow-y-auto resize-none"
                       }
                       ref={inputRef}
-                      // TODO for premium user, free user is 1024
-                      maxLength={useGPT4 ? 4096 : 2048}
+                      maxLength={useGPT4 ? 2048 : 1024}
                       rows={1}
                       onChange={(e) => {
                         e.target.style.height = "auto";
