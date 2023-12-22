@@ -4,7 +4,7 @@ import { FunctionCall, Message } from "ai";
 export const eval_code_in_browser: ChatCompletionCreateParams.Function = {
   name: "eval_code_in_browser",
   description:
-    "Use eval to execute JavaScript code in the browser and make API requests using the eval fetch method.",
+    "Use eval to execute JavaScript code in the browser. You can make API requests using the fetch method.",
   parameters: {
     type: "object",
     properties: {
@@ -29,7 +29,12 @@ export const eval_code_in_browser_handler = async (
       functionCall.arguments,
     );
     try {
-      const result = await eval(parsedFunctionCallArguments.code);
+      let result = await eval(parsedFunctionCallArguments.code);
+      try {
+        result = JSON.stringify(result);
+      } catch (e) {
+        console.log(e);
+      }
       return `${result}`;
     } catch (e) {
       return JSON.stringify({
