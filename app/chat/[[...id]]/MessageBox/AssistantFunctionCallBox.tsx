@@ -1,7 +1,10 @@
 "use client";
 import React, { FC, useMemo } from "react";
 import { Message } from "ai";
-import { ChevronDownIcon } from "@heroicons/react/24/outline";
+import {
+  ChevronDownIcon,
+  PhoneArrowUpRightIcon,
+} from "@heroicons/react/24/outline";
 import { Disclosure } from "@headlessui/react";
 import dynamic from "next/dynamic";
 import Skeleton from "react-loading-skeleton";
@@ -61,7 +64,8 @@ const MessageBox: FC<{
                     "bg-gray-100 px-3 h-6 md:h-8 rounded-md text-sm flex items-center justify-between gap-2 border"
                   }
                 >
-                  <div>Function call arguments ({message.name})</div>
+                  <PhoneArrowUpRightIcon className={"h-4 w-4"} />
+                  <div>{message.name}</div>
                   <ChevronDownIcon
                     className={`h-4 w-4 text-gray-800 ${
                       open ? "" : "rotate-180 transform"
