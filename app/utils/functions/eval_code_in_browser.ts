@@ -28,7 +28,8 @@ export const eval_code_in_browser_handler = async (
       functionCall.arguments,
     );
     try {
-      return `${eval(parsedFunctionCallArguments.code)}`;
+      const result = await eval(parsedFunctionCallArguments.code);
+      return `${result}`;
     } catch (e) {
       return JSON.stringify({
         error: "Something went wrong. Please try again late",
