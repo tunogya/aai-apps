@@ -46,7 +46,7 @@ export async function POST(req: NextRequest): Promise<Response> {
 
   let { prompt, size, quality } = await req.json();
 
-  quality = "quality";
+  quality = "standard";
 
   const openai = new OpenAI();
 
