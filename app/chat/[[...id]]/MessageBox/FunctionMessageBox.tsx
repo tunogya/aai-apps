@@ -1,7 +1,7 @@
 "use client";
 import React, { FC, useMemo } from "react";
 import { Message } from "ai";
-import { CodeBracketIcon } from "@heroicons/react/24/outline";
+import { ChevronDownIcon, CodeBracketIcon } from "@heroicons/react/24/outline";
 import { Disclosure } from "@headlessui/react";
 import dynamic from "next/dynamic";
 import Skeleton from "react-loading-skeleton";
@@ -46,17 +46,28 @@ const MessageBox: FC<{
         </div>
         <div className={"space-y-2 w-full overflow-x-hidden"}>
           <Disclosure>
-            <Disclosure.Button
-              className={"bg-gray-100 px-3 h-6 md:h-8 rounded-md text-sm"}
-            >
-              Function call response ({message.name})
-            </Disclosure.Button>
-            <Disclosure.Panel className="text-gray-500">
-              <Markdown
-                content={markdownCode}
-                isLoading={isLoading && isLast}
-              />
-            </Disclosure.Panel>
+            {({ open }) => (
+              <>
+                <Disclosure.Button
+                  className={
+                    "bg-gray-100 px-3 h-6 md:h-8 rounded-md text-sm flex items-center justify-between gap-2 border"
+                  }
+                >
+                  <div>Function call response ({message.name})</div>
+                  <ChevronDownIcon
+                    className={`h-4 w-4 text-gray-800 ${
+                      open ? "" : "rotate-180 transform"
+                    }`}
+                  />
+                </Disclosure.Button>
+                <Disclosure.Panel className="text-gray-500">
+                  <Markdown
+                    content={markdownCode}
+                    isLoading={isLoading && isLast}
+                  />
+                </Disclosure.Panel>
+              </>
+            )}
           </Disclosure>
         </div>
       </div>
