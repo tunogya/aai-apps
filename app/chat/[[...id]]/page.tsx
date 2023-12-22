@@ -154,6 +154,9 @@ export default function Chat() {
           history: history.items.map((item: any) => item.title),
         }),
       }).then((res) => res.json()),
+    {
+      refreshInterval: 300_000,
+    },
   );
 
   useEffect(() => {
