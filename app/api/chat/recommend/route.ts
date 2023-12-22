@@ -20,20 +20,7 @@ export async function POST(req: NextRequest): Promise<Response> {
 
   const { success, limit, remaining, reset } = await ratelimit.limit(sub);
   if (!success) {
-    return new Response(
-      JSON.stringify({
-        error: 429,
-        message: "ratelimit reached",
-        ratelimit: {
-          limit,
-          reset: new Date(reset).toLocaleString(),
-          remaining,
-        },
-      }),
-      {
-        status: 429,
-      },
-    );
+    return NextResponse.json([]);
   }
 
   const { history } = await req.json();
