@@ -21,9 +21,7 @@ const MessageBox: FC<{
   message: Message;
   index: number;
   isGPT4: boolean;
-  isLoading: boolean;
-  isLast: boolean;
-}> = ({ message, isGPT4, isLoading, isLast }) => {
+}> = ({ message, isGPT4 }) => {
   const markdownCode = useMemo(() => {
     const jsonStr = message.content;
     try {
@@ -66,10 +64,7 @@ const MessageBox: FC<{
                   />
                 </Disclosure.Button>
                 <Disclosure.Panel className="text-gray-500">
-                  <Markdown
-                    content={markdownCode}
-                    isLoading={isLoading && isLast}
-                  />
+                  <Markdown content={markdownCode} isLoading={false} />
                 </Disclosure.Panel>
               </>
             )}

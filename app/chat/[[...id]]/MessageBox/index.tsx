@@ -34,8 +34,6 @@ const MessageBox: FC<{
                   message={message}
                   index={index}
                   isGPT4={useGPT4}
-                  isLoading={isLoading}
-                  isLast={index === messages.length - 1}
                 />
               ))}
             {message.role === "user" && (
@@ -49,9 +47,7 @@ const MessageBox: FC<{
             {message.role === "function" && (
               <FunctionMessageBox
                 message={message}
-                isLast={index === messages.length - 1}
                 index={index}
-                isLoading={isLoading}
                 isGPT4={useGPT4}
               />
             )}
