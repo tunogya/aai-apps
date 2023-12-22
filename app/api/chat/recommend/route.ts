@@ -5,7 +5,6 @@ import * as json from "multiformats/codecs/json";
 import { sha256 } from "multiformats/hashes/sha2";
 import { CID } from "multiformats/cid";
 import redisClient from "@/app/utils/redisClient";
-import getRateLimitConfig from "@/app/utils/getRateLimitConfig";
 
 export const runtime = "edge";
 
