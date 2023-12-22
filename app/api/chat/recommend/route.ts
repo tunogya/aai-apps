@@ -15,14 +15,6 @@ export async function POST(req: NextRequest): Promise<Response> {
   const { user } = await getSession();
   const sub = user.sub;
 
-  const prefix = "ratelimit:/api/chat/recommend";
-  const { ratelimit, content_window } = getRateLimitConfig(prefix, null);
-
-  const { success, limit, remaining, reset } = await ratelimit.limit(sub);
-  if (!success) {
-    return NextResponse.json([]);
-  }
-
   const { history } = await req.json();
 
   const bytes = json.encode(history);
