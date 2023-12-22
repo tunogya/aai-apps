@@ -4,6 +4,7 @@ import UserMessageBox from "@/app/chat/[[...id]]/MessageBox/UserMessageBox";
 import FunctionMessageBox from "@/app/chat/[[...id]]/MessageBox/FunctionMessageBox";
 import { Message } from "ai";
 import { useUser } from "@auth0/nextjs-auth0/client";
+import AssistantFunctionCallBox from "@/app/chat/[[...id]]/MessageBox/AssistantFunctionCallBox";
 
 const MessageBox: FC<{
   messages: Message[];
@@ -18,16 +19,25 @@ const MessageBox: FC<{
       {messages
         .map((message, index) => (
           <Fragment key={index}>
-            {message.role === "assistant" && !!message.content && (
-              <AssistantMessageBox
-                message={message}
-                index={index}
-                isLast={index === messages.length - 1}
-                currentChatId={currentChatId}
-                isLoading={isLoading}
-                isGPT4={useGPT4}
-              />
-            )}
+            {message.role === "assistant" &&
+              (message.content ? (
+                <AssistantMessageBox
+                  message={message}
+                  index={index}
+                  isLast={index === messages.length - 1}
+                  currentChatId={currentChatId}
+                  isLoading={isLoading}
+                  isGPT4={useGPT4}
+                />
+              ) : (
+                <AssistantFunctionCallBox
+                  message={message}
+                  index={index}
+                  isGPT4={useGPT4}
+                  isLoading={isLoading}
+                  isLast={index === messages.length - 1}
+                />
+              ))}
             {message.role === "user" && (
               <UserMessageBox
                 message={message}

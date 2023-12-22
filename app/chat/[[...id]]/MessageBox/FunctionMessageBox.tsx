@@ -49,7 +49,7 @@ const MessageBox: FC<{
             <Disclosure.Button
               className={"bg-gray-100 px-3 h-6 md:h-8 rounded-md text-sm"}
             >
-              {message.name}
+              Function call response ({message.name})
             </Disclosure.Button>
             <Disclosure.Panel className="text-gray-500">
               <Markdown

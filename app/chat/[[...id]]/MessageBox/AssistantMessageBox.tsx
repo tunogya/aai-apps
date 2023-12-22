@@ -178,7 +178,9 @@ const MessageBox: FC<{
               </button>
               <button
                 onClick={() => {
-                  copy(message.content);
+                  copy(
+                    message.content || JSON.stringify(message.function_call),
+                  );
                   setState(true);
                   setTimeout(() => {
                     setState(false);
@@ -223,7 +225,10 @@ const MessageBox: FC<{
               </button>
             </div>
           </div>
-          <Markdown content={message.content} isLoading={isLoading && isLast} />
+          <Markdown
+            content={message.content || JSON.stringify(message.function_call)}
+            isLoading={isLoading && isLast}
+          />
         </div>
       </div>
     </div>
