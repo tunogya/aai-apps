@@ -1,5 +1,4 @@
 import OpenAI from "openai";
-import { getSession } from "@auth0/nextjs-auth0/edge";
 import { NextRequest, NextResponse } from "next/server";
 import * as json from "multiformats/codecs/json";
 import { sha256 } from "multiformats/hashes/sha2";
@@ -10,10 +9,6 @@ export const runtime = "edge";
 
 // @ts-ignore
 export async function POST(req: NextRequest): Promise<Response> {
-  // @ts-ignore
-  const { user } = await getSession();
-  const sub = user.sub;
-
   const { history } = await req.json();
 
   const bytes = json.encode(history);
