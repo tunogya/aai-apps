@@ -30,6 +30,7 @@ import { CID } from "multiformats/cid";
 import * as raw from "multiformats/codecs/raw";
 import Link from "next/link";
 import ErrorMessageBox from "@/app/chat/[[...id]]/MessageBox/ErrorMessageBox";
+import Skeleton from "react-loading-skeleton";
 
 const MessageBox = dynamic(() => import("@/app/chat/[[...id]]/MessageBox"));
 
@@ -138,6 +139,22 @@ export default function Chat() {
     },
     maxSize: 5 * 1024 * 1024,
   });
+  const { data: history } = useSWR("/api/conversation?limit=20", (url) =>
+    fetch(url).then((res) => res.json()),
+  );
+  const { data: choices } = useSWR(
+    history ? `/api/chat/recommend` : undefined,
+    (url) =>
+      fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          history: history.items.map((item: any) => item.title),
+        }),
+      }).then((res) => res.json()),
+  );
 
   useEffect(() => {
     if (!params?.id?.[0] && currentChatId) {
@@ -408,17 +425,30 @@ export default function Chat() {
           />
         ) : (
           <div
-            className={`w-full h-full flex flex-col items-center justify-center text-xl md:text-2xl lg:text-3xl gap-3 text-gray-800`}
+            className={`w-full h-full flex flex-col items-center justify-center text-xl md:text-2xl lg:text-3xl gap-3 text-gray-800 px-4`}
           >
             <Image src={"/favicon.svg"} alt={""} height={40} width={40} />
             <div>abandon.ai</div>
-            <div
-              className={`text-xs max-w-md text-center text-white bg-red-500 px-2 py-1 my-20 mx-4 ${
-                model === "gpt-4-vision" ? "opacity-100" : "opacity-0"
-              }`}
-            >
-              When using GPT-4 with Vision, you will not be able to use
-              functions such as browsing and drawing.
+            <div className={"mt-20 space-y-1 w-full max-w-3xl h-[240px]"}>
+              {choices ? (
+                choices?.slice(0, 4).map((c: any, index: number) => (
+                  <button
+                    key={index}
+                    className={
+                      "text-sm bg-gray-50 p-4 rounded cursor-pointer w-full"
+                    }
+                    onClick={() => {
+                      if (c?.content) {
+                        setText(c.content);
+                      }
+                    }}
+                  >
+                    {c?.content || ""}
+                  </button>
+                ))
+              ) : (
+                <Skeleton count={4} height={"52px"} />
+              )}
             </div>
           </div>
         )}
