@@ -429,27 +429,34 @@ export default function Chat() {
           >
             <Image src={"/favicon.svg"} alt={""} height={40} width={40} />
             <div>abandon.ai</div>
-            <div className={"mt-20 space-y-1 w-full max-w-3xl h-[240px]"}>
-              {choices ? (
-                choices?.slice(0, 4).map((c: any, index: number) => (
-                  <button
-                    key={index}
-                    className={
-                      "text-sm bg-gray-50 p-4 rounded cursor-pointer w-full"
-                    }
-                    onClick={() => {
-                      if (c?.content) {
-                        setText(c.content);
+            <Transition
+              show={!!choices}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0 scale-95"
+              enterTo="opacity-100 scale-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100 scale-100"
+              leaveTo="opacity-0 scale-95"
+            >
+              <div className={"mt-10 space-y-2 w-full max-w-3xl"}>
+                {choices &&
+                  choices?.map((c: any, index: number) => (
+                    <button
+                      key={index}
+                      className={
+                        "text-sm bg-gray-50 border p-4 rounded-lg cursor-pointer w-full"
                       }
-                    }}
-                  >
-                    {c?.content || ""}
-                  </button>
-                ))
-              ) : (
-                <Skeleton count={4} height={"52px"} />
-              )}
-            </div>
+                      onClick={() => {
+                        if (c?.content) {
+                          setText(c.content);
+                        }
+                      }}
+                    >
+                      {c?.content || ""}
+                    </button>
+                  ))}
+              </div>
+            </Transition>
           </div>
         )}
       </div>

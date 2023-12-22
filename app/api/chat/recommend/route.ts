@@ -5,6 +5,7 @@ import * as json from "multiformats/codecs/json";
 import { sha256 } from "multiformats/hashes/sha2";
 import { CID } from "multiformats/cid";
 import redisClient from "@/app/utils/redisClient";
+import getRateLimitConfig from "@/app/utils/getRateLimitConfig";
 
 export const runtime = "edge";
 
@@ -14,11 +15,28 @@ export async function POST(req: NextRequest): Promise<Response> {
   const { user } = await getSession();
   const sub = user.sub;
 
-  let { history } = await req.json();
+  const prefix = "ratelimit:/api/chat/recommend";
+  const { ratelimit, content_window } = getRateLimitConfig(prefix, null);
 
-  if (!history || history.length === 0) {
-    return NextResponse.json([]);
+  const { success, limit, remaining, reset } = await ratelimit.limit(sub);
+  if (!success) {
+    return new Response(
+      JSON.stringify({
+        error: 429,
+        message: "ratelimit reached",
+        ratelimit: {
+          limit,
+          reset: new Date(reset).toLocaleString(),
+          remaining,
+        },
+      }),
+      {
+        status: 429,
+      },
+    );
   }
+
+  const { history } = await req.json();
 
   const bytes = json.encode(history);
   const hash = await sha256.digest(bytes);
@@ -34,7 +52,7 @@ export async function POST(req: NextRequest): Promise<Response> {
     try {
       const openai = new OpenAI();
       const res = await openai.chat.completions.create({
-        model: "gpt-4-1106-preview",
+        model: "gpt-3.5-turbo-1106",
         messages: [
           {
             role: "system",
@@ -57,9 +75,15 @@ export async function POST(req: NextRequest): Promise<Response> {
       const jsonStr = res.choices[0].message.content;
       try {
         const resJson = JSON.parse(jsonStr || "[]")?.questions || [];
-        await redisClient.set(`recommend:${cid}`, resJson, {
-          ex: 86400,
-        });
+        if (history && history.length > 0) {
+          await redisClient.set(`recommend:${cid}`, resJson, {
+            ex: 86400,
+          });
+        } else {
+          await redisClient.set(`recommend:${cid}`, resJson, {
+            ex: 3 * 60,
+          });
+        }
         return NextResponse.json(resJson);
       } catch (e) {
         return NextResponse.json([]);

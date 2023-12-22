@@ -74,6 +74,10 @@ const getRateLimitConfig = (prefix: string, product: string | null) => {
         window = "1 h";
         break;
       }
+    case "ratelimit:/api/chat/recommend":
+      tokens = 10;
+      window = "30 m";
+      break;
     default:
       tokens = 0;
       window = "3 h";
