@@ -53,17 +53,11 @@ export async function POST(req: NextRequest): Promise<Response> {
       });
       const jsonStr = res.choices[0].message.content;
       try {
-        const resJson = JSON.parse(jsonStr || "[]")?.questions || [];
-        if (history && history.length > 0) {
-          await redisClient.set(`recommend:${cid}`, resJson, {
-            ex: 86400,
-          });
-        } else {
-          await redisClient.set(`recommend:${cid}`, resJson, {
-            ex: 3 * 60,
-          });
-        }
-        return NextResponse.json(resJson);
+        const object = JSON.parse(jsonStr || "[]")?.questions || [];
+        await redisClient.set(`recommend:${cid}`, object, {
+          ex: 5 * 60,
+        });
+        return NextResponse.json(object);
       } catch (e) {
         return NextResponse.json([]);
       }
