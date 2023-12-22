@@ -3,7 +3,8 @@ import { FunctionCall, Message } from "ai";
 
 export const eval_code_in_browser: ChatCompletionCreateParams.Function = {
   name: "eval_code_in_browser",
-  description: "Execute javascript code in the browser with eval().",
+  description:
+    "Use eval to execute JavaScript code in the browser and make API requests using the eval fetch method.",
   parameters: {
     type: "object",
     properties: {
