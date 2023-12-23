@@ -447,7 +447,7 @@ export default function Chat() {
                     <button
                       key={index}
                       className={
-                        "text-sm bg-gray-50 border p-4 rounded-lg cursor-pointer w-full"
+                        "text-sm bg-gray-50 border p-4 rounded-lg cursor-pointer w-full hover:shadow"
                       }
                       onClick={() => {
                         if (c?.content) {
