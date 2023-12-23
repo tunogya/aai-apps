@@ -3,10 +3,6 @@
 import { FC, useState } from "react";
 import useSWR from "swr";
 import Link from "next/link";
-import {
-  ShieldCheckIcon,
-  ShieldExclamationIcon,
-} from "@heroicons/react/24/solid";
 import Skeleton from "react-loading-skeleton";
 
 const TelegramInfo: FC<{
@@ -68,10 +64,16 @@ const TelegramInfo: FC<{
           <div className={"h-6 w-6"}>
             <Skeleton className={"w-full h-full"} circle={true} />
           </div>
-        ) : isWebhookOk ? (
-          <ShieldCheckIcon className={"w-5 h-5 text-[#0066FF]"} />
         ) : (
-          <ShieldExclamationIcon className={"w-5 h-5 text-red-500"} />
+          <div
+            className={`h-3 w-3 rounded-full ${
+              status === "loading"
+                ? "bg-yellow-300"
+                : isWebhookOk
+                ? "bg-green-500"
+                : "bg-red-500"
+            } m-1`}
+          />
         )}
         <div className={"font-semibold text-gray-800 h-6 mx-1"}>
           {me?.first_name || (
