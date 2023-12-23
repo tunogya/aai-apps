@@ -12,7 +12,7 @@ const TailwindIndicator = dynamic(
   () => import("@/app/components/TailwindIndicator"),
 );
 
-const title = "AbandonAI";
+const title = "abandon.ai";
 const description =
   "AbandonAI is a free-to-use AI system. It can help you with coding, drawing and more. All in one place.";
 
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   description,
   viewport:
     "width=device-width, viewport-fit=cover, initial-scale=1, shrink-to-fit=no,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no",
-  applicationName: "AbandonAI",
+  applicationName: "abandon.ai",
   metadataBase: new URL(process.env.AUTH0_BASE_URL!),
   themeColor: "#fff",
   openGraph: {
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   },
   manifest: "/manifest.json",
   appleWebApp: {
-    title: "AbandonAI",
+    title: "abandon.ai",
   },
 };
 

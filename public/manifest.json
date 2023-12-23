@@ -1,5 +1,5 @@
 {
-  "name": "AbandonAI",
+  "name": "abandon.ai",
   "id": "ai.abandon.abandonai",
   "launch_handler": "",
   "shortcuts": [
@@ -25,7 +25,7 @@
     {"origin": "*.abandon.ai"}
   ],
   "handle_links": "preferred",
-  "short_name": "AbandonAI",
+  "short_name": "abandon.ai",
   "categories": ["utilities"],
   "description": "Powered by OpenAI.",
   "icons": [
