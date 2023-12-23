@@ -56,7 +56,7 @@ const CSRPage = () => {
                   : "border-transparent text-gray-500"
               } pb-3`}
             >
-              Events
+              Events & Logs
             </button>
           </div>
           <MorePopover />
