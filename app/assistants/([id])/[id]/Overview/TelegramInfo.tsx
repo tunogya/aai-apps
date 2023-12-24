@@ -159,7 +159,7 @@ const TelegramInfo: FC<{
               .fromNow()}
             ,
           </div>
-          <div>"{webhookInfo?.last_error_message}",</div>
+          <div>{webhookInfo?.last_error_message},</div>
           <div>pending update count: {webhookInfo?.pending_update_count}</div>
         </div>
       )}
