@@ -6,7 +6,7 @@ import { SendMessageCommand } from "@aws-sdk/client-sqs";
 
 const POST = async (req: NextRequest, { params }: any) => {
   const body = await req.json();
-
+  console.log(body);
   const token = params.id;
   // Check assistant_id
   const assistant_id = await redisClient.get(`${token}:assistant_id`);
