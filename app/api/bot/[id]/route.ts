@@ -54,6 +54,7 @@ const POST = async (req: NextRequest, { params }: any) => {
           DataType: "String",
         },
       },
+      MessageDeduplicationId: `${thread_id}`,
       MessageGroupId: `${assistant_id}`,
     }),
   );

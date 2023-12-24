@@ -4,6 +4,7 @@ import { FC, useState } from "react";
 import useSWR from "swr";
 import Link from "next/link";
 import Skeleton from "react-loading-skeleton";
+import moment from "moment/moment";
 
 const TelegramInfo: FC<{
   token: string;
@@ -150,9 +151,18 @@ const TelegramInfo: FC<{
           )}
         </div>
       )}
-      <div className={"text-gray-500 text-xs"}>
-        When your bot is not working properly, you can try restarting it.
-      </div>
+      {webhookInfo?.last_error_message && (
+        <div className={"text-gray-500 text-xs flex gap-1"}>
+          <div>{webhookInfo?.last_error_message}</div>
+          <div>
+            (
+            {moment(webhookInfo.last_error_date * 1000)
+              .startOf("second")
+              .fromNow()}
+            )
+          </div>
+        </div>
+      )}
     </div>
   );
 };
