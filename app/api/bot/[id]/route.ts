@@ -6,7 +6,6 @@ import { SendMessageCommand } from "@aws-sdk/client-sqs";
 
 const POST = async (req: NextRequest, { params }: any) => {
   const body = await req.json();
-  console.log(body);
   const token = params.id;
   // Check assistant_id
   const assistant_id = await redisClient.get(`${token}:assistant_id`);
@@ -26,7 +25,7 @@ const POST = async (req: NextRequest, { params }: any) => {
   );
 
   // Create new thread
-  if (!thread_id) {
+  if (!thread_id || body?.message?.text?.trim() === "/start") {
     const { id } = await openai.beta.threads.create();
     thread_id = id;
     await redisClient.set(

@@ -151,7 +151,7 @@ const TelegramInfo: FC<{
           )}
         </div>
       )}
-      {webhookInfo?.last_error_date && (
+      {webhookInfo?.pending_update_count > 0 && (
         <div className={"text-gray-500 text-xs flex gap-1"}>
           <div>
             {moment(webhookInfo?.last_error_date * 1000)
