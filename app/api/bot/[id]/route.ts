@@ -7,6 +7,16 @@ import { SendMessageCommand } from "@aws-sdk/client-sqs";
 const POST = async (req: NextRequest, { params }: any) => {
   const body = await req.json();
   const token = params.id;
+
+  // do not process groups, bots and old messages(24h)
+  if (
+    body?.message?.chat?.id < 0 ||
+    body?.message?.from?.is_bot ||
+    body?.message?.date < Math.floor(new Date().getTime() / 1000) - 24 * 60 * 60
+  ) {
+    return NextResponse.json({});
+  }
+
   // Check assistant_id
   const assistant_id = await redisClient.get(`${token}:assistant_id`);
   if (!assistant_id) {
