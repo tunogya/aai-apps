@@ -25,7 +25,7 @@ const SettingPopover = () => {
       >
         <Popover.Panel
           className={
-            "absolute mt-1 right-0 w-60 rounded border shadow z-50 bg-white p-2"
+            "absolute mt-1 right-0 w-40 rounded border shadow z-50 bg-white p-2"
           }
         >
           <a href={"/api/auth/logout"}>
