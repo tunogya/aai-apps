@@ -53,7 +53,7 @@ const Modal: FC<{
           "text-sm text-[#0066FF] font-medium disabled:cursor-auto disabled:opacity-50"
         }
       >
-        Update
+        Edit
       </button>
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog

@@ -1,62 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import redisClient from "@/app/utils/redisClient";
+import OpenAI from "openai";
 
 const POST = async (req: NextRequest, { params }: any) => {
   const body = await req.json();
-  console.log(body);
-  // {
-  //   update_id: 56707101,
-  //   message: {
-  //     message_id: 19,
-  //     from: {
-  //       id: 2130493951,
-  //       is_bot: false,
-  //       first_name: 'Tom',
-  //       username: 'tunogya',
-  //       language_code: 'zh-hans'
-  //     },
-  //     chat: {
-  //       id: 2130493951,
-  //       first_name: 'Tom',
-  //       username: 'tunogya',
-  //       type: 'private'
-  //     },
-  //     date: 1701514816,
-  //     text: 'Hello'
-  //   }
-  // }
 
-  // {
-  //   update_id: 56707102,
-  //   message: {
-  //     message_id: 20,
-  //     from: {
-  //       id: 2130493951,
-  //       is_bot: false,
-  //       first_name: 'Tom',
-  //       username: 'tunogya',
-  //       language_code: 'zh-hans'
-  //     },
-  //     chat: {
-  //       id: 2130493951,
-  //       first_name: 'Tom',
-  //       username: 'tunogya',
-  //       type: 'private'
-  //     },
-  //     date: 1701515016,
-  //     voice: {
-  //       duration: 3,
-  //       mime_type: 'audio/ogg',
-  //       file_id: 'AwACAgUAAxkBAAMUZWsPCKlWz3vNnR-sP2mhFHwPe8UAAsUNAALPjVhXCLadXiKW2GQzBA',
-  //       file_unique_id: 'AgADxQ0AAs-NWFc',
-  //       file_size: 9747
-  //     }
-  //   }
-  // }
-
-  // 获取当前机器人的 token
   const token = params.id;
-  // 通过机器人的 token 获取 assistant_id
   const assistant_id = await redisClient.get(`${token}:assistant_id`);
   if (!assistant_id) {
     return NextResponse.json(
@@ -64,15 +13,28 @@ const POST = async (req: NextRequest, { params }: any) => {
       { status: 404 },
     );
   }
+  const openai = new OpenAI();
+  const from_id = body?.message?.from?.id;
 
-  return NextResponse.json(
-    {
-      message: "hello",
-    },
-    {
-      status: 200,
-    },
+  let thread_id = await redisClient.get(
+    `${assistant_id}:telegram:${from_id}:thread_id`,
   );
+
+  if (!thread_id) {
+    const { id } = await openai.beta.threads.create();
+    thread_id = id;
+    await redisClient.set(
+      `${assistant_id}:telegram:${from_id}:thread_id`,
+      thread_id,
+    );
+  }
+
+  await openai.beta.threads.messages.create(thread_id as string, {
+    role: "user",
+    content: JSON.stringify(body),
+  });
+
+  return NextResponse.json({});
 };
 
 export { POST };
