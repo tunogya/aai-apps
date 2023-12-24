@@ -54,6 +54,7 @@ const POST = async (req: NextRequest, { params }: any) => {
           DataType: "String",
         },
       },
+      MessageGroupId: `${assistant_id}`,
     }),
   );
 
