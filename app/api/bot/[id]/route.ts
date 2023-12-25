@@ -59,7 +59,7 @@ const POST = async (req: NextRequest, { params }: any) => {
       }),
       MessageAttributes: {
         intent: {
-          StringValue: "run",
+          StringValue: "threads.runs.create",
           DataType: "String",
         },
         from: {
