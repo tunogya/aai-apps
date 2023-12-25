@@ -17,12 +17,14 @@ const GET = async (req: NextRequest, { params }: any) => {
   try {
     // Check Redis
     try {
-      const cache = await redisClient.get(`USER#${sub}:ASST#${params.id}`);
+      // get asst info by assistant id
+      const cache = await redisClient.get(`ASST#${params.id}`);
       if (cache) {
         // @ts-ignore
         if (cache?.telegram) {
+          // cache telegram token => assistant id
           // @ts-ignore
-          await redisClient.set(`${cache?.telegram}:assistant_id`, params?.id);
+          await redisClient.set(`ASST_ID#${cache?.telegram}`, params?.id);
         }
         return NextResponse.json({
           item: cache,
@@ -44,13 +46,10 @@ const GET = async (req: NextRequest, { params }: any) => {
     );
     if (Item) {
       // Add to Redis
-      await redisClient.set(
-        `USER#${sub}:ASST#${params.id}`,
-        JSON.stringify(Item),
-      );
+      await redisClient.set(`ASST#${params.id}`, JSON.stringify(Item));
       // If have telegram account, need to update in redis
       if (Item?.telegram) {
-        await redisClient.set(`${Item?.telegram}:assistant_id`, params?.id);
+        await redisClient.set(`ASST_ID#${Item?.telegram}`, params?.id);
       }
       return NextResponse.json(
         {
@@ -94,7 +93,7 @@ const PATCH = async (req: NextRequest, { params }: any) => {
 
   try {
     const openai = new OpenAI();
-    const cache = await redisClient.get(`USER#${sub}:ASST#${params.id}`);
+    const cache = await redisClient.get(`ASST#${params.id}`);
     const newAssistant = await openai.beta.assistants.update(params.id, {
       name,
       description,
@@ -136,7 +135,7 @@ const PATCH = async (req: NextRequest, { params }: any) => {
           },
         }),
       ),
-      redisClient.set(`USER#${sub}:ASST#${params.id}`, JSON.stringify(item)),
+      redisClient.set(`ASST#${params.id}`, JSON.stringify(item)),
     ]);
     return NextResponse.json({
       updated: true,
@@ -162,12 +161,7 @@ const DELETE = async (req: NextRequest, { params }: any) => {
     const openai = new OpenAI();
     const response = await openai.beta.assistants.del(params.id);
     if (response?.deleted) {
-      const cache = redisClient.get(`USER#${sub}:ASST#${params.id}`);
-      // @ts-ignore
-      if (cache.telegram) {
-        // @ts-ignore
-        await redisClient.del(`${cache.telegram}:assistant_id`);
-      }
+      const cache = redisClient.get(`ASST#${params.id}`);
       await Promise.all([
         ddbDocClient.send(
           new DeleteCommand({
@@ -178,7 +172,9 @@ const DELETE = async (req: NextRequest, { params }: any) => {
             },
           }),
         ),
-        redisClient.del(`USER#${sub}:ASST#${params.id}`),
+        redisClient.del(`ASST#${params.id}`),
+        // @ts-ignore
+        redisClient.del(`ASST_ID#${cache?.telegram || ""}`),
       ]);
       return NextResponse.json({
         id: params.id,

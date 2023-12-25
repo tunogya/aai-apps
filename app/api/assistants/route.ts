@@ -80,10 +80,7 @@ const POST = async (req: NextRequest) => {
     };
 
     // Add to Redis
-    await redisClient.set(
-      `USER#${sub}:ASST#${newAssistant.id}`,
-      JSON.stringify(item),
-    );
+    await redisClient.set(`ASST#${newAssistant.id}`, JSON.stringify(item));
 
     await ddbDocClient.send(
       new PutCommand({
