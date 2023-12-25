@@ -27,11 +27,11 @@ const POST = async (req: NextRequest, { params }: any) => {
   }
 
   const openai = new OpenAI();
-  const from_id = body?.message?.from?.id;
+  const chat_id = body?.message?.chat?.id;
 
   // Check thread, if not exist, create
   let thread_id = await redisClient.get(
-    `${assistant_id}:telegram:${from_id}:thread_id`,
+    `${assistant_id}:telegram:${chat_id}:thread_id`,
   );
 
   // Create new thread
@@ -39,7 +39,7 @@ const POST = async (req: NextRequest, { params }: any) => {
     const { id } = await openai.beta.threads.create();
     thread_id = id;
     await redisClient.set(
-      `${assistant_id}:telegram:${from_id}:thread_id`,
+      `${assistant_id}:telegram:${chat_id}:thread_id`,
       thread_id,
     );
   }
