@@ -62,6 +62,10 @@ const POST = async (req: NextRequest, { params }: any) => {
           StringValue: "run",
           DataType: "String",
         },
+        from: {
+          StringValue: "telegram",
+          DataType: "String",
+        },
       },
       MessageDeduplicationId: `${thread_id}`,
       MessageGroupId: `${assistant_id}`,
