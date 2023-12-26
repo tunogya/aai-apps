@@ -20,10 +20,7 @@ const POST = async (req: NextRequest, { params }: any) => {
   // Check assistant_id
   const assistant_id = await redisClient.get(`${token}:assistant_id`);
   if (!assistant_id) {
-    return NextResponse.json(
-      { message: "assistant_id not found" },
-      { status: 404 },
-    );
+    return NextResponse.json({});
   }
 
   const openai = new OpenAI();
@@ -43,60 +40,44 @@ const POST = async (req: NextRequest, { params }: any) => {
         `${assistant_id}:telegram:${chat_id}:thread_id`,
         thread_id,
       );
-      return NextResponse.json({});
-    } catch (e) {
-      console.log(e);
-      return NextResponse.json(
-        {
-          error: true,
-        },
-        {
-          status: 500,
-        },
+    } catch (_) {
+      console.log("create thread error, openai.beta.threads.create()");
+    }
+  } else {
+    try {
+      // Add messages to thread
+      await openai.beta.threads.messages.create(thread_id as string, {
+        role: "user",
+        content: JSON.stringify(body),
+      });
+
+      await sqsClient.send(
+        new SendMessageCommand({
+          QueueUrl: process.env.AI_ASST_SQS_FIFO_URL,
+          MessageBody: JSON.stringify({
+            thread_id,
+            assistant_id,
+          }),
+          MessageAttributes: {
+            intent: {
+              StringValue: "threads.runs.create",
+              DataType: "String",
+            },
+            from: {
+              StringValue: "telegram",
+              DataType: "String",
+            },
+          },
+          MessageDeduplicationId: `${assistant_id}-${thread_id}`,
+          MessageGroupId: `${assistant_id}`,
+        }),
+      );
+    } catch (_) {
+      console.log(
+        "Failed to create messages, openai.beta.threads.messages.create()",
       );
     }
   }
-
-  try {
-    // Add messages to thread
-    await openai.beta.threads.messages.create(thread_id as string, {
-      role: "user",
-      content: JSON.stringify(body),
-    });
-
-    await sqsClient.send(
-      new SendMessageCommand({
-        QueueUrl: process.env.AI_ASST_SQS_FIFO_URL,
-        MessageBody: JSON.stringify({
-          thread_id,
-          assistant_id,
-        }),
-        MessageAttributes: {
-          intent: {
-            StringValue: "threads.runs.create",
-            DataType: "String",
-          },
-          from: {
-            StringValue: "telegram",
-            DataType: "String",
-          },
-        },
-        MessageDeduplicationId: `${assistant_id}-${thread_id}`,
-        MessageGroupId: `${assistant_id}`,
-      }),
-    );
-  } catch (e) {
-    console.log(e);
-    return NextResponse.json(
-      {
-        error: true,
-      },
-      {
-        status: 500,
-      },
-    );
-  }
-
   return NextResponse.json({});
 };
 
