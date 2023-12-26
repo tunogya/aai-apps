@@ -117,8 +117,8 @@ const TelegramInfo: FC<{
                 disabled={status === "loading"}
               >
                 {status === "idle" && "Restart"}
-                {status === "loading" && "Sleep..."}
-                {status === "error" && "Shutdown error!"}
+                {status === "loading" && "Sleeping..."}
+                {status === "error" && "Error!"}
               </button>
               {status !== "loading" && (
                 <button
@@ -129,8 +129,8 @@ const TelegramInfo: FC<{
                   disabled={status === "loading"}
                 >
                   {status === "idle" && "Shutdown"}
-                  {status === "loading" && "Sleep..."}
-                  {status === "error" && "Shutdown error!"}
+                  {status === "loading" && "Sleeping..."}
+                  {status === "error" && "Error!"}
                 </button>
               )}
             </>
@@ -145,8 +145,8 @@ const TelegramInfo: FC<{
               disabled={status === "loading"}
             >
               {status === "idle" && "Wake up"}
-              {status === "loading" && "Connect..."}
-              {status === "error" && "Wake up error!"}
+              {status === "loading" && "Initializing..."}
+              {status === "error" && "Error!"}
             </button>
           )}
         </div>
