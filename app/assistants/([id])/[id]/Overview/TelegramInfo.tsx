@@ -153,14 +153,11 @@ const TelegramInfo: FC<{
       )}
       {webhookInfo?.pending_update_count > 0 && (
         <div className={"text-gray-500 text-xs flex gap-1"}>
-          <div>
-            {moment(webhookInfo?.last_error_date * 1000)
-              .startOf("second")
-              .fromNow()}
-            ,
-          </div>
-          <div>{webhookInfo?.last_error_message},</div>
-          <div>pending update count: {webhookInfo?.pending_update_count}</div>
+          {moment(webhookInfo?.last_error_date * 1000)
+            .startOf("second")
+            .fromNow()}
+          ,{webhookInfo?.last_error_message},pending update count:{" "}
+          {webhookInfo?.pending_update_count}
         </div>
       )}
     </div>
