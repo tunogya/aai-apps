@@ -44,33 +44,45 @@ const POST = async (req: NextRequest, { params }: any) => {
     );
   }
 
-  // Add messages to thread
-  await openai.beta.threads.messages.create(thread_id as string, {
-    role: "user",
-    content: JSON.stringify(body),
-  });
+  try {
+    // Add messages to thread
+    await openai.beta.threads.messages.create(thread_id as string, {
+      role: "user",
+      content: JSON.stringify(body),
+    });
 
-  await sqsClient.send(
-    new SendMessageCommand({
-      QueueUrl: process.env.AI_ASST_SQS_FIFO_URL,
-      MessageBody: JSON.stringify({
-        thread_id,
-        assistant_id,
+    await sqsClient.send(
+      new SendMessageCommand({
+        QueueUrl: process.env.AI_ASST_SQS_FIFO_URL,
+        MessageBody: JSON.stringify({
+          thread_id,
+          assistant_id,
+        }),
+        MessageAttributes: {
+          intent: {
+            StringValue: "threads.runs.create",
+            DataType: "String",
+          },
+          from: {
+            StringValue: "telegram",
+            DataType: "String",
+          },
+        },
+        MessageDeduplicationId: `${assistant_id}-${thread_id}`,
+        MessageGroupId: `${assistant_id}`,
       }),
-      MessageAttributes: {
-        intent: {
-          StringValue: "threads.runs.create",
-          DataType: "String",
-        },
-        from: {
-          StringValue: "telegram",
-          DataType: "String",
-        },
+    );
+  } catch (e) {
+    console.log(e);
+    return NextResponse.json(
+      {
+        error: true,
       },
-      MessageDeduplicationId: `${assistant_id}-${thread_id}`,
-      MessageGroupId: `${assistant_id}`,
-    }),
-  );
+      {
+        status: 500,
+      },
+    );
+  }
 
   return NextResponse.json({});
 };
