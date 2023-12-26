@@ -7,7 +7,7 @@ import { SendMessageCommand } from "@aws-sdk/client-sqs";
 const POST = async (req: NextRequest, { params }: any) => {
   const body = await req.json();
   const token = params.id;
-
+  console.log(body);
   // do not process groups, bots and old messages(24h)
   if (
     body?.message?.chat?.id < 0 ||
