@@ -1,5 +1,5 @@
 import { ChatCompletionCreateParams } from "openai/resources/chat";
-import { FunctionCall, Message } from "ai";
+import { FunctionCall } from "ai";
 
 export const eval_code_in_browser: ChatCompletionCreateParams.Function = {
   name: "eval_code_in_browser",
@@ -20,7 +20,6 @@ export const eval_code_in_browser: ChatCompletionCreateParams.Function = {
 };
 
 export const eval_code_in_browser_handler = async (
-  chatMessages: Message[],
   functionCall: FunctionCall,
 ) => {
   if (functionCall.arguments) {

@@ -1,5 +1,5 @@
 import { ChatCompletionCreateParams } from "openai/resources/chat";
-import { FunctionCall, Message } from "ai";
+import { FunctionCall } from "ai";
 
 export const dall_e_images_generate: ChatCompletionCreateParams.Function = {
   name: "dall_e_images_generate",
@@ -32,7 +32,6 @@ export const dall_e_images_generate: ChatCompletionCreateParams.Function = {
 };
 
 export const dall_e_images_generate_handler = async (
-  chatMessages: Message[],
   functionCall: FunctionCall,
 ) => {
   if (functionCall.arguments) {

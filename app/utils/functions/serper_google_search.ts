@@ -1,5 +1,5 @@
 import { ChatCompletionCreateParams } from "openai/resources/chat";
-import { FunctionCall, Message } from "ai";
+import { FunctionCall } from "ai";
 
 export const serper_google_search: ChatCompletionCreateParams.Function = {
   name: "serper_google_search",
@@ -23,7 +23,6 @@ export const serper_google_search: ChatCompletionCreateParams.Function = {
 };
 
 export const serper_google_search_handler = async (
-  chatMessages: Message[],
   functionCall: FunctionCall,
 ) => {
   if (functionCall.arguments) {

@@ -44,7 +44,7 @@ const functionCallHandler: FunctionCallHandler = async (
       ],
     };
   }
-  const content = await handler(chatMessages, functionCall);
+  const content = await handler(functionCall);
   return {
     messages: [
       ...chatMessages,
