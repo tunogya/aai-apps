@@ -43,6 +43,11 @@ const POST = async (req: NextRequest, { params }: any) => {
         `${assistant_id}:telegram:${chat_id}:thread_id`,
         thread_id,
       );
+      return NextResponse.json({
+        thread_id,
+        assistant_id,
+        chat_id,
+      });
     } catch (e) {
       console.log(e);
       return NextResponse.json(
