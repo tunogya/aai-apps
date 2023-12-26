@@ -36,12 +36,24 @@ const POST = async (req: NextRequest, { params }: any) => {
 
   // Create new thread
   if (!thread_id || body?.message?.text?.trim() === "/start") {
-    const { id } = await openai.beta.threads.create();
-    thread_id = id;
-    await redisClient.set(
-      `${assistant_id}:telegram:${chat_id}:thread_id`,
-      thread_id,
-    );
+    try {
+      const { id } = await openai.beta.threads.create();
+      thread_id = id;
+      await redisClient.set(
+        `${assistant_id}:telegram:${chat_id}:thread_id`,
+        thread_id,
+      );
+    } catch (e) {
+      console.log(e);
+      return NextResponse.json(
+        {
+          error: true,
+        },
+        {
+          status: 500,
+        },
+      );
+    }
   }
 
   try {
