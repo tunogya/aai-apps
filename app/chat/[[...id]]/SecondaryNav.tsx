@@ -138,7 +138,7 @@ const SecondaryNav = () => {
                 {isLoading ? "Loading..." : "Load More"}
               </button>
             ) : null}
-            <div className={"h-[180px]"}></div>
+            <div className={"h-[180px] md:hidden"}></div>
           </div>
         </div>
         <div
