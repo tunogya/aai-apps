@@ -43,38 +43,37 @@ const POST = async (req: NextRequest, { params }: any) => {
     } catch (_) {
       console.log("openai.beta.threads.create error");
     }
-  } else {
-    try {
-      // Add messages to thread
-      await openai.beta.threads.messages.create(thread_id as string, {
-        role: "user",
-        content: JSON.stringify(body),
-      });
-      await sqsClient.send(
-        new SendMessageCommand({
-          QueueUrl: process.env.AI_ASST_SQS_FIFO_URL,
-          MessageBody: JSON.stringify({
-            thread_id,
-            assistant_id,
-            update_id,
-          }),
-          MessageAttributes: {
-            intent: {
-              StringValue: "threads.runs.create",
-              DataType: "String",
-            },
-            from: {
-              StringValue: "telegram",
-              DataType: "String",
-            },
-          },
-          MessageDeduplicationId: `${assistant_id}-${thread_id}-${update_id}`,
-          MessageGroupId: `${assistant_id}-${thread_id}`,
+  }
+  try {
+    // Add messages to thread
+    await openai.beta.threads.messages.create(thread_id as string, {
+      role: "user",
+      content: JSON.stringify(body),
+    });
+    await sqsClient.send(
+      new SendMessageCommand({
+        QueueUrl: process.env.AI_ASST_SQS_FIFO_URL,
+        MessageBody: JSON.stringify({
+          thread_id,
+          assistant_id,
+          update_id,
         }),
-      );
-    } catch (_) {
-      console.log("openai.beta.threads.messages.create error");
-    }
+        MessageAttributes: {
+          intent: {
+            StringValue: "threads.runs.create",
+            DataType: "String",
+          },
+          from: {
+            StringValue: "telegram",
+            DataType: "String",
+          },
+        },
+        MessageDeduplicationId: `${assistant_id}-${thread_id}-${update_id}`,
+        MessageGroupId: `${assistant_id}-${thread_id}`,
+      }),
+    );
+  } catch (_) {
+    console.log("openai.beta.threads.messages.create error");
   }
   return NextResponse.json({});
 };
