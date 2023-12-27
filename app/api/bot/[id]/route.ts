@@ -25,6 +25,7 @@ const POST = async (req: NextRequest, { params }: any) => {
 
   const openai = new OpenAI();
   const chat_id = body?.message?.chat?.id;
+  const update_id = body?.update_id;
 
   // Check thread, if not exist, create
   let thread_id = await redisClient.get(
@@ -40,13 +41,11 @@ const POST = async (req: NextRequest, { params }: any) => {
         `${assistant_id}:telegram:${chat_id}:thread_id`,
         thread_id,
       );
-      console.log("threads.create", thread_id, assistant_id);
     } catch (_) {
-      console.log("create thread error, openai.beta.threads.create()");
+      console.log("openai.beta.threads.create error");
     }
   } else {
     try {
-      console.log("Prepare threads.messages.create", thread_id, assistant_id);
       // Add messages to thread
       await openai.beta.threads.messages.create(thread_id as string, {
         role: "user",
@@ -58,6 +57,7 @@ const POST = async (req: NextRequest, { params }: any) => {
           MessageBody: JSON.stringify({
             thread_id,
             assistant_id,
+            update_id,
           }),
           MessageAttributes: {
             intent: {
@@ -69,18 +69,12 @@ const POST = async (req: NextRequest, { params }: any) => {
               DataType: "String",
             },
           },
+          MessageDeduplicationId: `${assistant_id}-${thread_id}-${update_id}`,
           MessageGroupId: `${assistant_id}-${thread_id}`,
         }),
       );
-      console.log(
-        "Send threads.messages.create success!",
-        thread_id,
-        assistant_id,
-      );
     } catch (_) {
-      console.log(
-        "Failed to create messages, openai.beta.threads.messages.create()",
-      );
+      console.log("openai.beta.threads.messages.create error");
     }
   }
   return NextResponse.json({});
