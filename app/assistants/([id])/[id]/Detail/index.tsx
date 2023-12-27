@@ -56,7 +56,11 @@ const CSRPage = () => {
         </div>
         <div>
           <div className={"text-sm text-gray-500"}>Description</div>
-          <div className={"text-sm text-gray-600 break-words"}>
+          <div
+            className={
+              "text-sm text-gray-600 break-words max-h-40 overflow-y-auto"
+            }
+          >
             {isLoading ? (
               <Skeleton count={3} />
             ) : (
@@ -66,7 +70,11 @@ const CSRPage = () => {
         </div>
         <div>
           <div className={"text-sm text-gray-500"}>Instructions</div>
-          <div className={"text-sm text-gray-600 break-words"}>
+          <div
+            className={
+              "text-sm text-gray-600 break-words max-h-40 overflow-y-auto"
+            }
+          >
             {isLoading ? (
               <Skeleton count={3} />
             ) : (
