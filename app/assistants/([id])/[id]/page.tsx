@@ -18,10 +18,14 @@ const CSRPage = () => {
   return (
     <div
       className={
-        "flex px-4 md:px-10 md:pt-2 absolute h-[calc(100vh-60px)] w-full overflow-y-auto space-x-8"
+        "flex px-4 md:px-10 md:pt-2 absolute h-[calc(100vh-60px)] w-full space-x-8"
       }
     >
-      <div className={"space-y-2 py-1 text-gray-800 w-80"}>
+      <div
+        className={
+          "space-y-2 py-1 px-1 text-gray-800 w-80 overflow-y-auto pb-10"
+        }
+      >
         <Link
           href={"/assistants"}
           prefetch
@@ -31,7 +35,9 @@ const CSRPage = () => {
         </Link>
         <Detail />
       </div>
-      <div className={"space-y-6 flex-1 py-1 text-gray-800"}>
+      <div
+        className={"space-y-6 flex-1 py-1 text-gray-800 overflow-y-auto pb-10"}
+      >
         <div className={"border-b flex justify-between"}>
           <div className={"flex gap-8"}>
             <button

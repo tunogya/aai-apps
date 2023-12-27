@@ -16,7 +16,7 @@ const CSRPage = () => {
   );
 
   return (
-    <div className={""}>
+    <div className={"overflow-y-scroll"}>
       <div className={"space-y-1"}>
         <div className={"text-3xl font-medium text-gray-800"}>
           {isLoading ? <Skeleton /> : data?.item?.name || "N/A"}
