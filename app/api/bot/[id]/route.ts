@@ -58,6 +58,7 @@ const POST = async (req: NextRequest, { params }: any) => {
             thread_id,
             assistant_id,
             update_id,
+            token,
           }),
           MessageAttributes: {
             intent: {
