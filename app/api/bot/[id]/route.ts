@@ -40,17 +40,18 @@ const POST = async (req: NextRequest, { params }: any) => {
         `${assistant_id}:telegram:${chat_id}:thread_id`,
         thread_id,
       );
+      console.log("threads.create", thread_id, assistant_id);
     } catch (_) {
       console.log("create thread error, openai.beta.threads.create()");
     }
   } else {
     try {
+      console.log("Prepare threads.messages.create", thread_id, assistant_id);
       // Add messages to thread
       await openai.beta.threads.messages.create(thread_id as string, {
         role: "user",
         content: JSON.stringify(body),
       });
-
       await sqsClient.send(
         new SendMessageCommand({
           QueueUrl: process.env.AI_ASST_SQS_FIFO_URL,
@@ -71,6 +72,11 @@ const POST = async (req: NextRequest, { params }: any) => {
           MessageDeduplicationId: `${assistant_id}-${thread_id}`,
           MessageGroupId: `${assistant_id}`,
         }),
+      );
+      console.log(
+        "Send threads.messages.create success!",
+        thread_id,
+        assistant_id,
       );
     } catch (_) {
       console.log(
