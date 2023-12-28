@@ -1,4 +1,3 @@
-import OpenAI from "openai";
 import s3Client from "@/app/utils/s3Client";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSession } from "@auth0/nextjs-auth0/edge";
@@ -10,6 +9,7 @@ import * as raw from "multiformats/codecs/raw";
 import getRateLimitConfig from "@/app/utils/getRateLimitConfig";
 import ddbDocClient from "@/app/utils/ddbDocClient";
 import { UpdateCommand } from "@aws-sdk/lib-dynamodb";
+import openai from "@/app/utils/openai";
 
 export const runtime = "edge";
 
@@ -47,8 +47,6 @@ export async function POST(req: NextRequest): Promise<Response> {
   let { prompt, size, quality } = await req.json();
 
   quality = "standard";
-
-  const openai = new OpenAI();
 
   try {
     const model = "dall-e-3";

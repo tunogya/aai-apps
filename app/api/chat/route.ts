@@ -4,7 +4,6 @@ import {
   StreamingTextResponse,
   Message,
 } from "ai";
-import OpenAI from "openai";
 import { getSession } from "@auth0/nextjs-auth0/edge";
 import { NextRequest, NextResponse } from "next/server";
 import dysortid from "@/app/utils/dysortid";
@@ -12,6 +11,7 @@ import redisClient from "@/app/utils/redisClient";
 import getRateLimitConfig from "@/app/utils/getRateLimitConfig";
 import ddbDocClient from "@/app/utils/ddbDocClient";
 import { UpdateCommand } from "@aws-sdk/lib-dynamodb";
+import openai from "@/app/utils/openai";
 
 export const runtime = "edge";
 
@@ -85,7 +85,6 @@ export async function POST(req: NextRequest): Promise<Response> {
     );
   }
   max_tokens = content_window;
-  const openai = new OpenAI();
 
   try {
     let res;

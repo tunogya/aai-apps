@@ -1,4 +1,3 @@
-import OpenAI from "openai";
 import s3Client from "@/app/utils/s3Client";
 import { HeadObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
 import { NextRequest, NextResponse } from "next/server";
@@ -9,6 +8,7 @@ import * as json from "multiformats/codecs/json";
 import { sha256 } from "multiformats/hashes/sha2";
 import ddbDocClient from "@/app/utils/ddbDocClient";
 import { UpdateCommand } from "@aws-sdk/lib-dynamodb";
+import openai from "@/app/utils/openai";
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   // @ts-ignore
@@ -54,7 +54,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   }
 
   try {
-    const openai = new OpenAI();
     const response = await openai.audio.speech.create({
       model,
       voice,

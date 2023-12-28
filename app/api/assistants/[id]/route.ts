@@ -6,9 +6,10 @@ import {
   DeleteCommand,
   GetCommand,
 } from "@aws-sdk/lib-dynamodb";
-import OpenAI from "openai";
 import dysortid from "@/app/utils/dysortid";
 import redisClient from "@/app/utils/redisClient";
+import openai from "@/app/utils/openai";
+import OpenAI from "openai";
 
 const GET = async (req: NextRequest, { params }: any) => {
   const session = await getSession();
@@ -98,7 +99,6 @@ const PATCH = async (req: NextRequest, { params }: any) => {
   const { name, description, instructions, metadata, model } = await req.json();
 
   try {
-    const openai = new OpenAI();
     const cache = await redisClient.get(`ASST#${params.id}`);
     const newAssistant = await openai.beta.assistants.update(params.id, {
       name,

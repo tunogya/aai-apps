@@ -2,8 +2,8 @@ import { getSession } from "@auth0/nextjs-auth0";
 import { NextRequest, NextResponse } from "next/server";
 import ddbDocClient from "@/app/utils/ddbDocClient";
 import { PutCommand, QueryCommand } from "@aws-sdk/lib-dynamodb";
-import OpenAI from "openai";
 import redisClient from "@/app/utils/redisClient";
+import openai from "@/app/utils/openai";
 
 // No need to use Redis
 const GET = async (req: NextRequest) => {
@@ -65,7 +65,6 @@ const POST = async (req: NextRequest) => {
   const sub = session?.user.sub;
   const { name, description, instructions, metadata, model } = await req.json();
   try {
-    const openai = new OpenAI();
     const newAssistant = await openai.beta.assistants.create({
       instructions,
       name,
