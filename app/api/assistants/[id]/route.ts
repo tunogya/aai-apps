@@ -23,8 +23,8 @@ const GET = async (req: NextRequest, { params }: any) => {
         // @ts-ignore
         if (cache?.metadata?.telegram) {
           // cache telegram token => assistant id
-          // @ts-ignore
           await redisClient.set(
+            // @ts-ignore
             `ASST_ID#${cache?.metadata?.telegram}`,
             params?.id,
           );
