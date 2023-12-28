@@ -56,7 +56,7 @@ const TelegramInfo: FC<{
   const isWebhookOk =
     webhookInfo &&
     token &&
-    webhookInfo?.url === `https://app.abandon.ai/api/bot/${token}`;
+    webhookInfo?.url === `https://api.abandon.ai/webhook/telegram/${token}`;
 
   return (
     <div className={"space-y-2"}>
@@ -112,7 +112,9 @@ const TelegramInfo: FC<{
                 onClick={async () => {
                   await setWebhook(``);
                   await new Promise((resolve) => setTimeout(resolve, 1000));
-                  await setWebhook(`https://app.abandon.ai/api/bot/${token}`);
+                  await setWebhook(
+                    `https://api.abandon.ai/webhook/telegram/${token}`,
+                  );
                 }}
                 disabled={status === "loading"}
               >
@@ -140,7 +142,7 @@ const TelegramInfo: FC<{
                 "border border-gray-300 rounded-md px-2 py-1 text-xs hover:shadow"
               }
               onClick={() =>
-                setWebhook(`https://app.abandon.ai/api/bot/${token}`)
+                setWebhook(`https://api.abandon.ai/webhook/telegram/${token}`)
               }
               disabled={status === "loading"}
             >

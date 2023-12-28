@@ -18,7 +18,7 @@ const Modal: FC<{
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          url: `https://app.abandon.ai/api/bot/${token}`,
+          url: `https://api.abandon.ai/webhook/telegram/${token}`,
           max_connections: 100,
           drop_pending_updates: true,
         }),
