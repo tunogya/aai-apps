@@ -21,10 +21,13 @@ const GET = async (req: NextRequest, { params }: any) => {
       const cache = await redisClient.get(`ASST#${params.id}`);
       if (cache) {
         // @ts-ignore
-        if (cache?.telegram) {
+        if (cache?.metadata?.telegram) {
           // cache telegram token => assistant id
           // @ts-ignore
-          await redisClient.set(`ASST_ID#${cache?.telegram}`, params?.id);
+          await redisClient.set(
+            `ASST_ID#${cache?.metadata?.telegram}`,
+            params?.id,
+          );
         }
         return NextResponse.json({
           item: cache,
@@ -48,8 +51,11 @@ const GET = async (req: NextRequest, { params }: any) => {
       // Add to Redis
       await redisClient.set(`ASST#${params.id}`, JSON.stringify(Item));
       // If have telegram account, need to update in redis
-      if (Item?.telegram) {
-        await redisClient.set(`ASST_ID#${Item?.telegram}`, params?.id);
+      if (Item?.metadata?.telegram) {
+        await redisClient.set(
+          `ASST_ID#${Item?.metadata?.telegram}`,
+          params?.id,
+        );
       }
       return NextResponse.json(
         {
@@ -174,7 +180,7 @@ const DELETE = async (req: NextRequest, { params }: any) => {
         ),
         redisClient.del(`ASST#${params.id}`),
         // @ts-ignore
-        redisClient.del(`ASST_ID#${cache?.telegram || ""}`),
+        redisClient.del(`ASST_ID#${cache?.metadata?.telegram || ""}`),
       ]);
       return NextResponse.json({
         id: params.id,
