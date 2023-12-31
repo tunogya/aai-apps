@@ -51,7 +51,7 @@ const GET = async (req: NextRequest, { params }: any) => {
     if (Item) {
       // Add to Redis
       await redisClient.set(`ASST#${params.id}`, JSON.stringify(Item));
-      // If have telegram account, need to update in redis
+      // If you have a telegram account, need to update in redis
       if (Item?.metadata?.telegram) {
         await redisClient.set(
           `ASST_ID#${Item?.metadata?.telegram}`,

@@ -19,7 +19,16 @@ export default async function SSRPage() {
           "flex gap-2 w-full py-1 text-gray-800 justify-between items-center"
         }
       >
-        <div className={"text-3xl font-semibold"}>Assistants</div>
+        <div className={"flex items-center gap-4"}>
+          <div className={"text-3xl font-semibold"}>Assistants</div>
+          <div
+            className={
+              "text-xs px-1 py-0.5 rounded bg-green-100 text-green-600 font-bold"
+            }
+          >
+            Beta
+          </div>
+        </div>
         <Link href={"/assistants/create"} prefetch>
           <div
             className={
