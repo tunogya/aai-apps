@@ -32,6 +32,8 @@ const POST = async (req: Request) => {
         id,
         customer_email,
         customer: customerId,
+        amount_subtotal,
+        currency,
       } = checkoutSessionCompleted;
       let customer;
       if (customer_email) {
@@ -75,6 +77,15 @@ const POST = async (req: Request) => {
               "premium_max_expired",
               customer,
             );
+          } else if (
+            price?.id === process.env.NEXT_PUBLIC_AAI_CREDIT_PRICE &&
+            currency &&
+            amount_subtotal
+          ) {
+            await stripeClient.customers.createBalanceTransaction(customer.id, {
+              amount: -1 * amount_subtotal,
+              currency: currency,
+            });
           }
         }
       } else {
