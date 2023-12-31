@@ -1,15 +1,10 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import useSWR from "swr";
-import Link from "next/link";
-import dysortid from "@/app/utils/dysortid";
-import React, { useEffect } from "react";
-import Skeleton from "react-loading-skeleton";
+import React from "react";
 import CheckoutButton from "@/app/components/CheckoutButton";
 
 const CSR = () => {
-  const router = useRouter();
   const { data, isLoading } = useSWR("/api/billing", (url) =>
     fetch(url, {
       method: "POST",
