@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import stripeClient from "@/app/utils/stripeClient";
-import redisClient from "@/app/utils/redisClient";
 import * as process from "process";
 
 const POST = async (req: Request) => {
@@ -51,33 +50,6 @@ const POST = async (req: Request) => {
         for (const lineItem of lineItems.data) {
           const { price } = lineItem;
           if (
-            price?.id === process.env.NEXT_PUBLIC_ONETIME_PREMIUM_STANDARD_PRICE
-          ) {
-            await updateCustomerSubscription(
-              process.env.NEXT_PUBLIC_PREMIUM_STANDARD_PRODUCT!,
-              "AbandonAI Premium Standard",
-              "premium_standard_expired",
-              customer,
-            );
-          } else if (
-            price?.id === process.env.NEXT_PUBLIC_ONETIME_PREMIUM_PRO_PRICE
-          ) {
-            await updateCustomerSubscription(
-              process.env.PREMIUM_PRO_PRODUCT!,
-              "AbandonAI Premium Pro",
-              "premium_pro_expired",
-              customer,
-            );
-          } else if (
-            price?.id === process.env.NEXT_PUBLIC_ONETIME_PREMIUM_MAX_PRICE
-          ) {
-            await updateCustomerSubscription(
-              process.env.NEXT_PUBLIC_PREMIUM_MAX_PRODUCT!,
-              "AbandonAI Premium Max",
-              "premium_max_expired",
-              customer,
-            );
-          } else if (
             price?.id === process.env.NEXT_PUBLIC_AAI_CREDIT_PRICE &&
             currency &&
             amount_subtotal
@@ -94,25 +66,6 @@ const POST = async (req: Request) => {
           { status: 200 },
         );
       }
-    } else if (
-      event.type === "customer.subscription.deleted" ||
-      event.type === "customer.subscription.updated" ||
-      event.type === "customer.subscription.paused" ||
-      event.type === "customer.subscription.created" ||
-      event.type === "customer.subscription.resumed"
-    ) {
-      const { customer: customer_id } = event.data
-        .object as Stripe.Subscription;
-      const customer = await stripeClient.customers.retrieve(
-        customer_id as string,
-      );
-      // @ts-ignore
-      if (customer?.metadata?.id) {
-        // @ts-ignore
-        await redisClient.del(`premium:${customer.metadata.id}`);
-      } else {
-        console.log("customer id not found");
-      }
     }
   } catch (e) {
     console.log(e);
@@ -123,58 +76,5 @@ const POST = async (req: Request) => {
   }
   return NextResponse.json({ message: "Received" }, { status: 200 });
 };
-
-async function updateCustomerSubscription(
-  productId: string,
-  productName: string,
-  metadataKey: string,
-  customer: Stripe.Customer | Stripe.DeletedCustomer,
-) {
-  const oldExpiredDate = new Date(
-    Math.max(
-      // @ts-ignore
-      new Date(customer?.metadata?.[metadataKey] || 0).getTime(),
-      new Date().getTime(),
-    ),
-  );
-
-  const newExpiredDate_str = new Date(
-    oldExpiredDate.setDate(oldExpiredDate.getDate() + 31),
-  ).toISOString();
-
-  await stripeClient.customers.update(customer.id, {
-    metadata: {
-      // @ts-ignore
-      ...(customer?.metadata || {}),
-      [metadataKey]: newExpiredDate_str,
-    },
-  });
-  // @ts-ignore
-  if (customer?.metadata?.id) {
-    await redisClient
-      .set(
-        // @ts-ignore
-        `premium:${customer?.metadata.id}`,
-        JSON.stringify({
-          customer: customer,
-          subscription: {
-            isPremium: true,
-            name: productName,
-            product: productId,
-            current_period_start: new Date().getTime() / 1000,
-            current_period_end: new Date(newExpiredDate_str).getTime() / 1000,
-          },
-        }),
-        {
-          exat: Math.floor(new Date(newExpiredDate_str).getTime() / 1000),
-        },
-      )
-      .catch(() => {
-        console.log("redis error");
-      });
-  } else {
-    console.log("customer id not found");
-  }
-}
 
 export { POST };
