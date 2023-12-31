@@ -64,20 +64,22 @@ const CSR = () => {
           </div>
           <div className={"text-3xl text-gray-800"}>0.00 AAI</div>
           <div className={"flex gap-2"}>
-            <div
+            <button
+              disabled
               className={
-                "px-3 py-1.5 bg-gray-100 text-gray-800 rounded text-sm font-medium flex items-center gap-1"
+                "px-3 py-1.5 bg-gray-100 text-gray-800 rounded text-sm font-medium flex items-center gap-1 disabled:cursor-auto"
               }
             >
               <div>Deposit</div>
-            </div>
-            <div
+            </button>
+            <button
+              disabled
               className={
-                "px-3 py-1.5 bg-gray-100 text-gray-800 rounded text-sm font-medium flex items-center gap-1"
+                "px-3 py-1.5 bg-gray-100 text-gray-800 rounded text-sm font-medium flex items-center gap-1 disabled:cursor-auto"
               }
             >
               <div>Withdraw</div>
-            </div>
+            </button>
           </div>
         </div>
       </div>
