@@ -7,9 +7,9 @@ import { sha256 } from "multiformats/hashes/sha2";
 import { CID } from "multiformats/cid";
 import * as raw from "multiformats/codecs/raw";
 import getRateLimitConfig from "@/app/utils/getRateLimitConfig";
-import ddbDocClient from "@/app/utils/ddbDocClient";
-import { UpdateCommand } from "@aws-sdk/lib-dynamodb";
 import openai from "@/app/utils/openai";
+import Stripe from "stripe";
+import stripeClient from "@/app/utils/stripeClient";
 
 export const runtime = "edge";
 
@@ -19,12 +19,20 @@ export async function POST(req: NextRequest): Promise<Response> {
   const { user } = await getSession();
   const sub = user.sub;
 
-  const cache = await redisClient.get(`premium:${sub}`);
-  // @ts-ignore
-  const product = cache?.subscription?.product || null;
+  const [customer, subscription] = await Promise.all([
+    redisClient.get(`customer:${sub}`),
+    redisClient.get(`subscription:${sub}`),
+  ]);
+
+  if (!customer || !subscription) {
+    return NextResponse.json({
+      error: "customer and subscription required",
+      message: "You need to be a customer and a subscription.",
+    });
+  }
 
   const prefix = "ratelimit:/api/images/generations:dalle3";
-  const { ratelimit } = getRateLimitConfig(prefix, product);
+  const ratelimit = getRateLimitConfig(prefix);
 
   const { success, limit, reset, remaining } = await ratelimit.limit(sub);
   if (!success) {
@@ -77,6 +85,11 @@ export async function POST(req: NextRequest): Promise<Response> {
       }
     }
 
+    const si_id =
+      (subscription as Stripe.Subscription)?.items.data.find((item) => {
+        return item.plan.id === process.env.NEXT_PUBLIC_DALLE_3_PRICE;
+      })?.id || "";
+
     const image = data.data[0].b64_json;
     const revised_prompt = data.data[0].revised_prompt;
     if (image) {
@@ -103,27 +116,9 @@ export async function POST(req: NextRequest): Promise<Response> {
             ContentType: "application/json",
           }),
         ),
-        ddbDocClient.send(
-          new UpdateCommand({
-            TableName: "abandonai-prod",
-            Key: {
-              PK: `CHARGES#${new Date()
-                .toISOString()
-                .slice(0, 8)
-                .replaceAll("-", "")}`,
-              SK: `EMAIL#${user.email}`,
-            },
-            UpdateExpression: `ADD billing :cost, #model_count :count, #model_cost :cost`,
-            ExpressionAttributeValues: {
-              ":cost": cost,
-              ":count": 1,
-            },
-            ExpressionAttributeNames: {
-              "#model_count": `${model}_count`,
-              "#model_cost": `${model}_cost`,
-            },
-          }),
-        ),
+        stripeClient.subscriptionItems.createUsageRecord(si_id as string, {
+          quantity: cost || 0,
+        }),
       ]);
 
       return NextResponse.json(

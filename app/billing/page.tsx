@@ -1,14 +1,14 @@
 "use client";
 
-import useSWR from "swr";
 import React from "react";
 import CheckoutButton from "@/app/components/CheckoutButton";
+import ManageBillingButton from "@/app/components/ManageBillingButton";
+import useSWR from "swr";
+import Skeleton from "react-loading-skeleton";
 
 const CSR = () => {
-  const { data, isLoading } = useSWR("/api/billing", (url) =>
-    fetch(url, {
-      method: "POST",
-    }).then((res) => res.json()),
+  const { data: customer } = useSWR("/api/customer", (url) =>
+    fetch(url).then((res) => res.json()),
   );
 
   return (
@@ -31,7 +31,13 @@ const CSR = () => {
         <div className={"text-lg font-semibold text-gray-800 pb-1"}>
           Pending invoice
         </div>
-        <div className={"text-3xl text-gray-800"}>$0.00</div>
+        {customer?.balance !== undefined ? (
+          <div className={"text-3xl text-gray-800"}>$0.00</div>
+        ) : (
+          <div className={"max-w-[120px] w-full"}>
+            <Skeleton count={1} className={"h-8"} />
+          </div>
+        )}
         <div className={"pb-4 text-gray-500"}>
           You&apos;ll be billed at the end of each calendar month for usage
           during that month.
@@ -44,25 +50,33 @@ const CSR = () => {
               "bg-gray-100 text-gray-800 rounded w-fit px-3 py-1.5 font-medium cursor-pointer text-sm"
             }
           />
-          {data?.session?.url && (
-            <a href={data.session.url} className={""}>
-              <div
-                className={
-                  "bg-gray-100 text-gray-800 rounded w-fit px-3 py-1.5 font-medium cursor-pointer text-sm"
-                }
-              >
-                Manage Billing
-              </div>
-            </a>
-          )}
+          <ManageBillingButton
+            title={"Manage billing"}
+            className={
+              "bg-gray-100 text-gray-800 rounded w-fit px-3 py-1.5 font-medium cursor-pointer text-sm"
+            }
+          />
         </div>
       </div>
       <div className={"pt-8"}>
-        <div className={"p-4 border w-fit min-w-[400px] rounded space-y-2"}>
+        <div className={"p-4 border max-w-xl rounded space-y-2"}>
           <div className={"text-lg font-semibold text-gray-800"}>
-            My balance
+            My credit balance
           </div>
-          <div className={"text-3xl text-gray-800"}>0.00 AAI</div>
+          <div className={"pb-2"}>
+            {customer?.balance !== undefined ? (
+              <div className={"text-3xl text-gray-800"}>
+                {((-1 * customer?.balance) / 100).toFixed(2)} AAI
+              </div>
+            ) : (
+              <div className={"max-w-[160px] w-full"}>
+                <Skeleton count={1} className={"h-8"} />
+              </div>
+            )}
+            <div className={"text-gray-500"}>
+              1 AAI = 1 USD, AAI can be used to offset your bill.
+            </div>
+          </div>
           <div className={"flex gap-2"}>
             <button
               disabled

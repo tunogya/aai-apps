@@ -6,23 +6,24 @@ import redisClient from "@/app/utils/redisClient";
 import { CID } from "multiformats/cid";
 import * as json from "multiformats/codecs/json";
 import { sha256 } from "multiformats/hashes/sha2";
-import ddbDocClient from "@/app/utils/ddbDocClient";
-import { UpdateCommand } from "@aws-sdk/lib-dynamodb";
 import openai from "@/app/utils/openai";
+import stripeClient from "@/app/utils/stripeClient";
+import Stripe from "stripe";
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   // @ts-ignore
   const { user } = await getSession();
   const sub = user.sub;
 
-  const premiumInfo = await redisClient.get(`premium:${sub}`);
-  // @ts-ignore
-  const isPremium = premiumInfo?.subscription?.isPremium || false;
+  const [customer, subscription] = await Promise.all([
+    redisClient.get(`customer:${sub}`),
+    redisClient.get(`subscription:${sub}`),
+  ]);
 
-  if (!isPremium) {
+  if (!customer || !subscription) {
     return NextResponse.json({
-      error: "premium required",
-      message: "Sorry, you need a Premium subscription to use this.",
+      error: "customer and subscription required",
+      message: "You need to be a customer and a subscription.",
     });
   }
 
@@ -62,6 +63,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       speed,
     });
 
+    const si_id =
+      (subscription as Stripe.Subscription)?.items.data.find((item) => {
+        return item.plan.id === process.env.NEXT_PUBLIC_AAI_USAGE_PRICE;
+      })?.id || "";
+
     const buffer = Buffer.from(await response.arrayBuffer());
 
     try {
@@ -100,27 +106,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
             ContentType: "application/json",
           }),
         ),
-        ddbDocClient.send(
-          new UpdateCommand({
-            TableName: "abandonai-prod",
-            Key: {
-              PK: `CHARGES#${new Date()
-                .toISOString()
-                .slice(0, 8)
-                .replaceAll("-", "")}`,
-              SK: `EMAIL#${user.email}`,
-            },
-            UpdateExpression: `ADD billing :cost, #model_count :count, #model_cost :cost`,
-            ExpressionAttributeValues: {
-              ":cost": cost || 0,
-              ":count": 1,
-            },
-            ExpressionAttributeNames: {
-              "#model_count": `${model}_count`,
-              "#model_cost": `${model}_cost`,
-            },
-          }),
-        ),
+        stripeClient.subscriptionItems.createUsageRecord(si_id as string, {
+          quantity: cost || 0,
+        }),
       ]);
     } catch (e) {
       console.log(e);

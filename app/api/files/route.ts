@@ -12,14 +12,15 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const { user } = await getSession();
   const sub = user.sub;
 
-  const cache = await redisClient.get(`premium:${sub}`);
-  // @ts-ignore
-  const isPremium = cache?.subscription?.isPremium || false;
+  const [customer, subscription] = await Promise.all([
+    redisClient.get(`customer:${sub}`),
+    redisClient.get(`subscription:${sub}`),
+  ]);
 
-  if (!isPremium) {
+  if (!customer || !subscription) {
     return NextResponse.json({
-      error: "premium required",
-      message: "Sorry, you need a Premium subscription to use this.",
+      error: "customer and subscription required",
+      message: "You need to be a customer and a subscription.",
     });
   }
 

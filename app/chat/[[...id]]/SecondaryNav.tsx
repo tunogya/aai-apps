@@ -13,7 +13,6 @@ import Skeleton from "react-loading-skeleton";
 import { Transition } from "@headlessui/react";
 import { useHover } from "@uidotdev/usehooks";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import useSWR from "swr";
 import ModelSwitch from "@/app/components/ModelSwitch";
 
 const SecondaryNavItem = dynamic(
@@ -35,11 +34,6 @@ const SecondaryNav = () => {
     {
       refreshInterval: 3_000,
     },
-  );
-
-  const { data: customerData, isLoading: isLoadingCustomer } = useSWR(
-    "/api/customer",
-    (url) => fetch(url).then((res) => res.json()),
   );
 
   const reducedData = useMemo(() => {
@@ -146,32 +140,20 @@ const SecondaryNav = () => {
             "md:hidden bg-white border-t border-r absolute bottom-0 left-0 w-full px-2 py-1 pb-1 space-y-1 shrink-0 overflow-hidden"
           }
         >
-          {isLoadingCustomer ? (
-            <Skeleton className={"h-10"} />
-          ) : (
-            <>
-              {customerData?.subscription?.isPremium && (
-                <div
-                  className={
-                    "border-b flex justify-center items-center pb-1 mb-1"
-                  }
-                >
-                  <ModelSwitch />
-                </div>
-              )}
-              {customerData?.subscription?.isPremium && (
-                <Link href={"/billing"}>
-                  <div
-                    className={
-                      "bg-black px-3 py-2 text-white rounded w-full font-semibold shrink-0 whitespace-nowrap text-center"
-                    }
-                  >
-                    Manage Billing
-                  </div>
-                </Link>
-              )}
-            </>
-          )}
+          <div
+            className={"border-b flex justify-center items-center pb-1 mb-1"}
+          >
+            <ModelSwitch />
+          </div>
+          <Link href={"/billing"}>
+            <div
+              className={
+                "bg-black px-3 py-2 text-white rounded w-full font-semibold shrink-0 whitespace-nowrap text-center"
+              }
+            >
+              Manage Billing
+            </div>
+          </Link>
           <div
             className={
               "flex items-center justify-between space-x-1 border-t pt-1"

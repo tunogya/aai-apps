@@ -9,11 +9,18 @@ const POST = async (req: NextRequest) => {
   const { user } = await getSession();
   const sub = user.sub;
   let customer_id;
-  const premiumInfo = await redisClient.get(`premium:${sub}`);
+  const customer = await redisClient.get(`customer:${sub}`);
+
+  if (!customer) {
+    return NextResponse.json({
+      error: "customer required",
+      message: "You need to be a customer.",
+    });
+  }
   // @ts-ignore
-  if (premiumInfo && premiumInfo?.customer?.id) {
+  if (customer && customer?.id) {
     // @ts-ignore
-    customer_id = premiumInfo?.customer?.id;
+    customer_id = customer?.id;
   } else {
     if (!user.email) {
       return NextResponse.json({

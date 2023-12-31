@@ -2,11 +2,22 @@
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { redirect } from "next/navigation";
 import dysortid from "@/app/utils/dysortid";
+import useSWR from "swr";
 
 export default function Index() {
   const { user, error, isLoading } = useUser();
+  const { data: customer, isLoading: isCustomerLoading } = useSWR(
+    "/api/customer",
+    (url) => fetch(url).then((res) => res.json()),
+  );
+  const { data: subscription, isLoading: isSubscriptionLoading } = useSWR(
+    "/api/subscription",
+    (url) => fetch(url).then((res) => res.json()),
+  );
 
-  if (isLoading)
+  console.log(subscription);
+
+  if (isLoading || isCustomerLoading || isSubscriptionLoading)
     return (
       <div
         className={
@@ -30,7 +41,7 @@ export default function Index() {
 
   if (error) return redirect(`/auth/error?message=${error.message}`);
 
-  if (user) return redirect(`/chat/${dysortid()}`);
+  if (user && customer && subscription) return redirect(`/chat/${dysortid()}`);
 
   return redirect("/auth/login");
 }

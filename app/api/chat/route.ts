@@ -12,6 +12,8 @@ import getRateLimitConfig from "@/app/utils/getRateLimitConfig";
 import ddbDocClient from "@/app/utils/ddbDocClient";
 import { UpdateCommand } from "@aws-sdk/lib-dynamodb";
 import openai from "@/app/utils/openai";
+import stripeClient from "@/app/utils/stripeClient";
+import Stripe from "stripe";
 
 export const runtime = "edge";
 
@@ -20,6 +22,18 @@ export async function POST(req: NextRequest): Promise<Response> {
   // @ts-ignore
   const { user } = await getSession();
   const sub = user.sub;
+
+  const [customer, subscription] = await Promise.all([
+    redisClient.get(`customer:${sub}`),
+    redisClient.get(`subscription:${sub}`),
+  ]);
+
+  if (!customer || !subscription) {
+    return NextResponse.json({
+      error: "customer and subscription required",
+      message: "You need to be a customer and a subscription.",
+    });
+  }
 
   let { messages, model, id, functions } = await req.json();
 
@@ -52,20 +66,31 @@ export async function POST(req: NextRequest): Promise<Response> {
   // only handle the last 4 messages
   messages?.slice(-4);
 
-  let max_tokens;
-
-  const cache = await redisClient.get(`premium:${sub}`);
-
-  // @ts-ignore
-  const product = cache?.subscription?.product || null;
-
-  let prefix;
+  let prefix: string, si_id: string;
   if (model.startsWith("gpt-4")) {
     prefix = "ratelimit:/api/chat:gpt-4";
-  } else {
+    si_id =
+      (subscription as Stripe.Subscription)?.items.data.find((item) => {
+        return item.plan.id === process.env.NEXT_PUBLIC_GPT_4_AAI_PRICE;
+      })?.id || "";
+  } else if (model.startsWith("gpt-3.5")) {
     prefix = "ratelimit:/api/chat:gpt-3.5";
+    si_id =
+      (subscription as Stripe.Subscription)?.items.data.find((item) => {
+        return item.plan.id === process.env.NEXT_PUBLIC_GPT_3_5_AAI_PRICE;
+      })?.id || "";
+  } else {
+    return new Response(
+      JSON.stringify({
+        error: 404,
+        message: "model error",
+      }),
+      {
+        status: 429,
+      },
+    );
   }
-  const { ratelimit, content_window } = getRateLimitConfig(prefix, product);
+  const ratelimit = getRateLimitConfig(prefix);
 
   const { success, limit, reset, remaining } = await ratelimit.limit(sub);
   if (!success) {
@@ -84,51 +109,39 @@ export async function POST(req: NextRequest): Promise<Response> {
       },
     );
   }
-  max_tokens = content_window;
 
   try {
     let res;
     try {
       // Priority model
       if (model === "gpt-3.5") {
-        // 16k tokens
-        model = "gpt-3.5-turbo-1106";
+        model = "gpt-3.5-turbo-1106"; // 16k tokens
       } else if (model === "gpt-4") {
-        // 128k tokens
-        model = "gpt-4-1106-preview";
+        model = "gpt-4-1106-preview"; // 128k tokens
       } else if (model === "gpt-4-vision") {
-        // 128k tokens
-        model = "gpt-4-vision-preview";
+        model = "gpt-4-vision-preview"; // 128k tokens
       }
       res = await openai.chat.completions.create({
         model,
         messages,
         temperature: 0.7,
         stream: true,
-        max_tokens,
         functions,
       });
     } catch (e) {
       // Backup model
       if (model === "gpt-3") {
-        // 4k tokens
-        model = "gpt-3.5-turbo";
-        max_tokens = 1024;
+        model = "gpt-3.5-turbo"; // 4k tokens
       } else if (model === "gpt-4") {
-        // 8k tokens
-        model = "gpt-4";
-        max_tokens = 2048;
+        model = "gpt-4"; // 8k tokens
       } else if (model === "gpt-4-vision") {
-        // 8k tokens
-        model = "gpt-4-vision-preview";
-        max_tokens = 2048;
+        model = "gpt-4-vision-preview"; // 8k tokens
       }
       res = await openai.chat.completions.create({
         model,
         messages,
         temperature: 0.7,
         stream: true,
-        max_tokens,
         functions,
       });
     }
@@ -187,7 +200,7 @@ export async function POST(req: NextRequest): Promise<Response> {
           ),
           redisClient.del(`USER#${sub}:CHAT2#${id}`),
         ]);
-        const { cost, usage } = await fetch("https://api.abandon.ai/tiktoken", {
+        const { cost } = await fetch("https://api.abandon.ai/tiktoken", {
           method: "POST",
           body: JSON.stringify({
             prompt: messages.map((m: any) => m.content).join("\n"),
@@ -199,31 +212,12 @@ export async function POST(req: NextRequest): Promise<Response> {
           .catch((e) => {
             console.log("Unable to create charge", e);
           });
-        if (cost && usage) {
-          await ddbDocClient.send(
-            new UpdateCommand({
-              TableName: "abandonai-prod",
-              Key: {
-                PK: `CHARGES#${new Date()
-                  .toISOString()
-                  .slice(0, 8)
-                  .replaceAll("-", "")}`,
-                SK: `EMAIL#${user.email}`,
-              },
-              UpdateExpression: `ADD billing :cost, #prompt_tokens :prompt_tokens, prompt_tokens :prompt_tokens, #completion_tokens :completion_tokens, completion_tokens :completion_tokens, #model_count :count, #model_cost :cost`,
-              ExpressionAttributeValues: {
-                ":cost": cost?.total_cost || 0,
-                ":prompt_tokens": usage?.prompt_tokens || 0,
-                ":completion_tokens": usage?.completion_tokens || 0,
-                ":count": 1,
-              },
-              ExpressionAttributeNames: {
-                "#model_count": `${model}_count`,
-                "#model_cost": `${model}_cost`,
-                "#prompt_tokens": `${model}_prompt_tokens`,
-                "#completion_tokens": `${model}_completion_tokens`,
-              },
-            }),
+        if (cost) {
+          await stripeClient.subscriptionItems.createUsageRecord(
+            si_id as string,
+            {
+              quantity: cost?.total_cost || 0,
+            },
           );
         }
       },

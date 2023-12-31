@@ -1,8 +1,8 @@
 import { getSession } from "@auth0/nextjs-auth0/edge";
 import { NextRequest, NextResponse } from "next/server";
 import redisClient from "@/app/utils/redisClient";
-import ddbDocClient from "@/app/utils/ddbDocClient";
-import { UpdateCommand } from "@aws-sdk/lib-dynamodb";
+import Stripe from "stripe";
+import stripeClient from "@/app/utils/stripeClient";
 
 export const runtime = "edge";
 
@@ -12,21 +12,22 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const { user } = await getSession();
   const sub = user.sub;
 
-  const cache = await redisClient.get(`premium:${sub}`);
-  // @ts-ignore
-  const isPremium = cache?.subscription?.isPremium || false;
+  const [customer, subscription] = await Promise.all([
+    redisClient.get(`customer:${sub}`),
+    redisClient.get(`subscription:${sub}`),
+  ]);
 
-  if (!isPremium) {
-    return NextResponse.json(
-      {
-        error: "premium required",
-        message: "Sorry, you need a Premium subscription to use this.",
-      },
-      {
-        status: 200,
-      },
-    );
+  if (!customer || !subscription) {
+    return NextResponse.json({
+      error: "customer and subscription required",
+      message: "You need to be a customer and a subscription.",
+    });
   }
+
+  const si_id =
+    (subscription as Stripe.Subscription)?.items.data.find((item) => {
+      return item.plan.id === process.env.NEXT_PUBLIC_AAI_USAGE_PRICE;
+    })?.id || "";
 
   let { q, num = 10 } = await req.json();
 
@@ -51,27 +52,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       cost = 0.001 * baseRatio;
     }
 
-    await ddbDocClient.send(
-      new UpdateCommand({
-        TableName: "abandonai-prod",
-        Key: {
-          PK: `CHARGES#${new Date()
-            .toISOString()
-            .slice(0, 8)
-            .replaceAll("-", "")}`,
-          SK: `EMAIL#${user.email}`,
-        },
-        UpdateExpression: `ADD billing :cost, #model_count :count, #model_cost :cost`,
-        ExpressionAttributeValues: {
-          ":cost": cost,
-          ":count": 1,
-        },
-        ExpressionAttributeNames: {
-          "#model_count": `search_count`,
-          "#model_cost": `search_cost`,
-        },
-      }),
-    );
+    await stripeClient.subscriptionItems.createUsageRecord(si_id as string, {
+      quantity: cost || 0,
+    });
 
     return NextResponse.json(data, {
       headers: {
