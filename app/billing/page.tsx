@@ -4,7 +4,8 @@ import { useRouter } from "next/navigation";
 import useSWR from "swr";
 import Link from "next/link";
 import dysortid from "@/app/utils/dysortid";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
+import Skeleton from "react-loading-skeleton";
 
 const CSR = () => {
   const router = useRouter();
@@ -14,52 +15,52 @@ const CSR = () => {
     }).then((res) => res.json()),
   );
 
-  useEffect(() => {
-    if (data?.session?.url) {
-      router.push(data?.session?.url);
-    }
-    return () => {
-      if (data?.session?.url) {
-        router.push(data?.session?.url);
-      }
-    };
-  }, [data, isLoading]);
-
   return (
     <div
-      className={`w-full h-full flex flex-col items-center justify-center gap-3 ${
-        isLoading ? "animate-pulse" : ""
-      } text-gray-800 relative`}
+      className={
+        "flex flex-col px-4 md:px-10 md:pt-2 absolute h-[calc(100vh-60px)] w-full overflow-y-auto space-y-4"
+      }
     >
-      <svg
-        width="40"
-        height="40"
-        viewBox="0 0 1024 1024"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
+      <div
+        className={
+          "flex gap-2 w-full py-1 text-gray-800 justify-between items-center"
+        }
       >
-        <path
-          d="M68 68V956H956V68H68ZM142 882V142H586V413.333L512 216H438L216 808H290L345.5 660H586V882H142ZM576.791 586H373.209L475 314.667L576.791 586Z"
-          fill="currentColor"
-        />
-      </svg>
-      {isLoading ? (
-        "Prepare your account..."
-      ) : (
-        <div className={""}>
-          {data?.session?.url && (
-            <a href={data.session.url} className={""}>
-              Going to Stripe...
-            </a>
-          )}
+        <div className={"text-3xl font-semibold"}>Billing settings</div>
+      </div>
+      <div>
+        <div className={"text-xl font-bold text-gray-800 pb-4"}>
+          Pay as you go
         </div>
-      )}
-      <Link
-        href={`/chat/${dysortid()}`}
-        className={"underline absolute bottom-4"}
-      >
-        Back to AbandonAI
-      </Link>
+        <div className={"text-lg font-semibold text-gray-800 pb-1"}>
+          Pending invoice
+        </div>
+        <div className={"text-3xl text-gray-800"}>$0.00</div>
+        <div className={"text-gray-500"}>
+          You&apos;ll be billed at the end of each calendar month for usage
+          during that month.
+        </div>
+      </div>
+      <div className={"flex w-full gap-2"}>
+        <div
+          className={
+            "bg-gray-100 text-gray-800 rounded w-fit px-3 py-1.5 font-medium cursor-pointer text-sm"
+          }
+        >
+          Buy AAI
+        </div>
+        {data?.session?.url && (
+          <a href={data.session.url} className={""}>
+            <div
+              className={
+                "bg-gray-100 text-gray-800 rounded w-fit px-3 py-1.5 font-medium cursor-pointer text-sm"
+              }
+            >
+              Manage Billing
+            </div>
+          </a>
+        )}
+      </div>
     </div>
   );
 };
