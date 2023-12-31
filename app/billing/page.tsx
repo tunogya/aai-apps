@@ -3,7 +3,6 @@
 import useSWR from "swr";
 import React from "react";
 import CheckoutButton from "@/app/components/CheckoutButton";
-import { MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
 
 const CSR = () => {
   const { data, isLoading } = useSWR("/api/billing", (url) =>
