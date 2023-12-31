@@ -43,7 +43,9 @@ const GET = async (req: NextRequest) => {
   const customers = await stripeClient.customers.list({
     email: user.email,
   });
-  if (customers.data.length === 0) {
+  if (customers.data.length > 0) {
+    customer = customers.data[0];
+  } else {
     customer = await stripeClient.customers.create({
       email: user.email,
       name: user.nickname,
@@ -51,8 +53,6 @@ const GET = async (req: NextRequest) => {
         id: user.sub,
       },
     });
-  } else {
-    customer = customers.data[0];
   }
 
   const subscriptions = await stripeClient.subscriptions.list({
