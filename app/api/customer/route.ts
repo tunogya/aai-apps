@@ -8,20 +8,6 @@ const GET = async (req: NextRequest) => {
   // @ts-ignore
   const { user } = await getSession();
 
-  // get data from cache, if exists, must be premium user
-  // const cache = await redisClient.get(`customer:${user.sub}`);
-  // @ts-ignore
-  // if (cache) {
-  //   try {
-  //     return NextResponse.json({
-  //       ...cache,
-  //       cache: true,
-  //     });
-  //   } catch (e) {
-  //     console.log("cache error", e);
-  //   }
-  // }
-
   if (!user.email) {
     return NextResponse.json(
       {
