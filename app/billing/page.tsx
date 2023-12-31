@@ -6,6 +6,7 @@ import Link from "next/link";
 import dysortid from "@/app/utils/dysortid";
 import React, { useEffect } from "react";
 import Skeleton from "react-loading-skeleton";
+import CheckoutButton from "@/app/components/CheckoutButton";
 
 const CSR = () => {
   const router = useRouter();
@@ -42,13 +43,13 @@ const CSR = () => {
         </div>
       </div>
       <div className={"flex w-full gap-2"}>
-        <div
+        <CheckoutButton
+          price={process.env.NEXT_PUBLIC_AAI_CREDIT_PRICE!}
+          title={"Buy AAI"}
           className={
             "bg-gray-100 text-gray-800 rounded w-fit px-3 py-1.5 font-medium cursor-pointer text-sm"
           }
-        >
-          Buy AAI
-        </div>
+        />
         {data?.session?.url && (
           <a href={data.session.url} className={""}>
             <div

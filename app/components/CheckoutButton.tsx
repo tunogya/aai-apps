@@ -27,7 +27,6 @@ export const CheckoutButton: FC<{
                 },
               ],
               mode: "payment",
-              allow_promotion_codes: true,
               success_url: `${window.location.origin}/pay/success`,
               cancel_url: `${window.location.origin}/pay/error?error=Canceled`,
             }),
