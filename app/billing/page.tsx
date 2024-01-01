@@ -10,9 +10,6 @@ const CSR = () => {
   const { data: customer } = useSWR("/api/customer", (url) =>
     fetch(url).then((res) => res.json()),
   );
-  const { data: upcomingInvoices } = useSWR("/api/invoices/upcoming", (url) =>
-    fetch(url).then((res) => res.json()),
-  );
 
   return (
     <div
@@ -46,23 +43,7 @@ const CSR = () => {
           </div>
         )}
         <div className={"pb-4 text-gray-500 flex items-center gap-2"}>
-          <div>
-            1 AAI = 1 USD. Pending invoice: $
-            {(upcomingInvoices?.total / 100).toFixed(2)}
-          </div>
-          {upcomingInvoices && (
-            <div className={"text-sm text-gray-600"}>
-              (
-              {new Date(
-                upcomingInvoices?.period_start * 1000,
-              ).toLocaleDateString()}
-              ~
-              {new Date(
-                upcomingInvoices?.period_end * 1000,
-              ).toLocaleDateString()}
-              )
-            </div>
-          )}
+          <div>1 AAI = 1 USD.</div>
         </div>
         <div className={"flex w-full gap-2"}>
           <CheckoutButton
