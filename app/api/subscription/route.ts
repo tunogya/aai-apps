@@ -74,6 +74,10 @@ const GET = async (req: NextRequest) => {
           price: process.env.NEXT_PUBLIC_AAI_USAGE_PRICE,
         },
       ],
+      billing_thresholds: {
+        amount_gte: 2000,
+        reset_billing_cycle_anchor: true,
+      },
     });
   }
   await redisClient.set(

@@ -10,6 +10,9 @@ const CSR = () => {
   const { data: customer } = useSWR("/api/customer", (url) =>
     fetch(url).then((res) => res.json()),
   );
+  const { data: upcomingInvoices } = useSWR("/api/invoices/upcoming", (url) =>
+    fetch(url).then((res) => res.json()),
+  );
 
   return (
     <div
@@ -31,8 +34,10 @@ const CSR = () => {
         <div className={"text-lg font-semibold text-gray-800 pb-1"}>
           Pending invoice
         </div>
-        {customer?.balance !== undefined ? (
-          <div className={"text-3xl text-gray-800"}>$0.00</div>
+        {upcomingInvoices?.amount_due !== undefined ? (
+          <div className={"text-3xl text-gray-800"}>
+            ${upcomingInvoices?.amount_due.toFixed(2)}
+          </div>
         ) : (
           <div className={"max-w-[120px] w-full"}>
             <Skeleton count={1} className={"h-8"} />
