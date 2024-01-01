@@ -13,7 +13,6 @@ import ddbDocClient from "@/app/utils/ddbDocClient";
 import { UpdateCommand } from "@aws-sdk/lib-dynamodb";
 import openai from "@/app/utils/openai";
 import stripeClient from "@/app/utils/stripeClient";
-import Stripe from "stripe";
 
 export const runtime = "edge";
 
