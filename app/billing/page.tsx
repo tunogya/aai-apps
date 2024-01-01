@@ -47,7 +47,8 @@ const CSR = () => {
         )}
         <div className={"pb-4 text-gray-500 flex items-center gap-2"}>
           <div>
-            Pending invoice: ${(upcomingInvoices?.total / 100).toFixed(2)}
+            1 AAI = 1 USD. Pending invoice: $
+            {(upcomingInvoices?.total / 100).toFixed(2)}
           </div>
           {upcomingInvoices && (
             <div className={"text-sm text-gray-600"}>
