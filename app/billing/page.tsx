@@ -42,7 +42,7 @@ const CSR = () => {
             <Skeleton count={1} className={"h-8"} />
           </div>
         )}
-        <div className={"pb-4 text-gray-500 flex items-center gap-2"}>
+        <div className={"pt-1 pb-4 text-gray-500 flex items-center gap-2"}>
           <div>1 AAI = 1 USD.</div>
         </div>
         <div className={"flex w-full gap-2"}>

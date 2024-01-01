@@ -203,7 +203,7 @@ export async function POST(req: NextRequest): Promise<Response> {
           redisClient.del(`USER#${user.sub}:CHAT2#${id}`),
           // @ts-ignore
           stripeClient.customers.createBalanceTransaction(customer.id, {
-            amount: Math.ceil((cost?.total_cost || 0) * 100),
+            amount: Math.floor((cost?.total_cost || 0) * 100),
             currency: "usd",
           }),
         ]);
