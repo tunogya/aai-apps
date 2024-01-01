@@ -4,12 +4,7 @@ import React, { FC } from "react";
 
 const voice_options = ["Alloy", "Echo", "Fable", "Onyx", "Nova", "Shimmer"];
 
-const model_options = [
-  "gpt-4-1106-preview",
-  "gpt-4",
-  "gpt-3.5-turbo-16k",
-  "gpt-3.5-turbo",
-];
+const model_options = ["gpt-4-1106-preview", "gpt-3.5-turbo-1106"];
 
 const CreateForm: FC<{
   createParams: any;
