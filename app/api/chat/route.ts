@@ -179,6 +179,18 @@ export async function POST(req: NextRequest): Promise<Response> {
         }
       },
       async onFinal(completion) {
+        const { usage } = await fetch("https://api.abandon.ai/tiktoken", {
+          method: "POST",
+          body: JSON.stringify({
+            prompt: messages.map((m: any) => m.content).join("\n"),
+            completion: completion,
+            model: model,
+          }),
+        })
+          .then((res) => res.json())
+          .catch((e) => {
+            console.log("Unable to create charge", e);
+          });
         await Promise.all([
           data.close(),
           ddbDocClient.send(
@@ -207,35 +219,13 @@ export async function POST(req: NextRequest): Promise<Response> {
             }),
           ),
           redisClient.del(`USER#${sub}:CHAT2#${id}`),
-        ]);
-        const { usage } = await fetch("https://api.abandon.ai/tiktoken", {
-          method: "POST",
-          body: JSON.stringify({
-            prompt: messages.map((m: any) => m.content).join("\n"),
-            completion: completion,
-            model: model,
+          stripeClient.subscriptionItems.createUsageRecord(i_si_id as string, {
+            quantity: usage?.prompt_tokens || 0,
           }),
-        })
-          .then((res) => res.json())
-          .catch((e) => {
-            console.log("Unable to create charge", e);
-          });
-        if (usage) {
-          await Promise.all([
-            stripeClient.subscriptionItems.createUsageRecord(
-              i_si_id as string,
-              {
-                quantity: usage?.prompt_tokens || 0,
-              },
-            ),
-            stripeClient.subscriptionItems.createUsageRecord(
-              o_si_id as string,
-              {
-                quantity: usage?.completion_tokens || 0,
-              },
-            ),
-          ]);
-        }
+          stripeClient.subscriptionItems.createUsageRecord(o_si_id as string, {
+            quantity: usage?.completion_tokens || 0,
+          }),
+        ]);
       },
       experimental_streamData: true,
     });
