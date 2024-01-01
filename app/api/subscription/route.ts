@@ -49,7 +49,7 @@ const GET = async (req: NextRequest) => {
 
   const filter_subscriptions = subscriptions.data.filter((sub) => {
     return sub.items.data.some(
-      (item) => item.plan.product === process.env.NEXT_PUBLIC_AAI_CREDIT_PRICE,
+      (item) => item.price.id === process.env.NEXT_PUBLIC_GPT_4_AAI_PRICE,
     );
   });
 

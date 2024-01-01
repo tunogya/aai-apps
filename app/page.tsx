@@ -15,8 +15,6 @@ export default function Index() {
     (url) => fetch(url).then((res) => res.json()),
   );
 
-  console.log(subscription);
-
   if (isLoading || isCustomerLoading || isSubscriptionLoading)
     return (
       <div
