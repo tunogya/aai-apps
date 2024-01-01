@@ -31,8 +31,23 @@ const CSR = () => {
         <div className={"text-xl font-bold text-gray-800 pb-4"}>
           Pay as you go
         </div>
-        <div className={"text-lg font-semibold text-gray-800 pb-1"}>
-          Pending invoice
+        <div className={"pb-1 flex items-center gap-2"}>
+          <div className={"text-lg font-semibold text-gray-800"}>
+            Pending invoice
+          </div>
+          {upcomingInvoices && (
+            <div className={"text-sm text-gray-600"}>
+              (
+              {new Date(
+                upcomingInvoices?.period_start * 1000,
+              ).toLocaleDateString()}
+              ~
+              {new Date(
+                upcomingInvoices?.period_end * 1000,
+              ).toLocaleDateString()}
+              )
+            </div>
+          )}
         </div>
         {upcomingInvoices?.amount_due !== undefined ? (
           <div className={"text-3xl text-gray-800"}>
