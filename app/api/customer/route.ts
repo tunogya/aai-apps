@@ -9,19 +9,10 @@ const GET = async (req: NextRequest) => {
   const { user } = await getSession();
 
   if (!user.email) {
-    return NextResponse.json(
-      {
-        error: "email required",
-        message: "Please use email to login.",
-      },
-      {
-        headers: {
-          "Cache-Control": "public, s-maxage=1",
-          "CDN-Cache-Control": "public, s-maxage=60",
-          "Vercel-CDN-Cache-Control": "public, s-maxage=3600",
-        },
-      },
-    );
+    return NextResponse.json({
+      error: "email required",
+      message: "Please use email to login.",
+    });
   }
 
   let customer: Stripe.Customer;

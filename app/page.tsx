@@ -10,9 +10,6 @@ export default function Index() {
     "/api/customer",
     (url) => fetch(url).then((res) => res.json()),
   );
-  const { data: subscription } = useSWR("/api/subscription", (url) =>
-    fetch(url).then((res) => res.json()),
-  );
 
   if (isLoading || isCustomerLoading)
     return (
@@ -38,7 +35,7 @@ export default function Index() {
 
   if (error) return redirect(`/auth/error?message=${error.message}`);
 
-  if (user && customer && subscription) return redirect(`/chat/${dysortid()}`);
+  if (user && customer) return redirect(`/chat/${dysortid()}`);
 
   return redirect("/auth/login");
 }

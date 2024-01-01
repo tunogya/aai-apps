@@ -12,15 +12,12 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // @ts-ignore
   const { user } = await getSession();
 
-  const [customer, subscription] = await Promise.all([
-    redisClient.get(`customer:${user.email}`),
-    redisClient.get(`subscription:${user.email}`),
-  ]);
+  const customer = await redisClient.get(`customer:${user.email}`);
 
-  if (!customer || !subscription) {
+  if (!customer) {
     return NextResponse.json({
-      error: "customer and subscription required",
-      message: "You need to be a customer and a subscription.",
+      error: "customer required",
+      message: "You need to be a customer.",
     });
   }
 
@@ -102,18 +99,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     } catch (e) {
       console.log(e);
     }
-    return NextResponse.json(
-      {
-        url: `https://s3.abandon.ai/audio/${cid}.mp3`,
-      },
-      {
-        headers: {
-          "Cache-Control": "public, s-maxage=1",
-          "CDN-Cache-Control": "public, s-maxage=60",
-          "Vercel-CDN-Cache-Control": "public, s-maxage=3600",
-        },
-      },
-    );
+    return NextResponse.json({
+      url: `https://s3.abandon.ai/audio/${cid}.mp3`,
+    });
   } catch (e) {
     return NextResponse.json(
       {

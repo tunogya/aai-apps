@@ -22,12 +22,9 @@ export async function POST(req: NextRequest): Promise<Response> {
   // @ts-ignore
   const { user } = await getSession();
 
-  const [customer, subscription] = await Promise.all([
-    redisClient.get(`customer:${user.email}`),
-    redisClient.get(`subscription:${user.email}`),
-  ]);
+  const customer = await redisClient.get(`customer:${user.email}`);
 
-  if (!customer || !subscription) {
+  if (!customer) {
     return NextResponse.json({
       error: "customer and subscription required",
       message: "You need to be a customer and a subscription.",
@@ -68,24 +65,8 @@ export async function POST(req: NextRequest): Promise<Response> {
   let prefix: string, i_si_id: string, o_si_id: string;
   if (model.startsWith("gpt-4")) {
     prefix = "ratelimit:/api/chat:gpt-4";
-    i_si_id =
-      (subscription as Stripe.Subscription)?.items.data.find((item) => {
-        return item.plan.id === process.env.NEXT_PUBLIC_GPT_4_INPUT_PRICE;
-      })?.id || "";
-    o_si_id =
-      (subscription as Stripe.Subscription)?.items.data.find((item) => {
-        return item.plan.id === process.env.NEXT_PUBLIC_GPT_4_OUTPUT_PRICE;
-      })?.id || "";
   } else if (model.startsWith("gpt-3.5")) {
     prefix = "ratelimit:/api/chat:gpt-3.5";
-    i_si_id =
-      (subscription as Stripe.Subscription)?.items.data.find((item) => {
-        return item.plan.id === process.env.NEXT_PUBLIC_GPT_3_5_INPUT_PRICE;
-      })?.id || "";
-    o_si_id =
-      (subscription as Stripe.Subscription)?.items.data.find((item) => {
-        return item.plan.id === process.env.NEXT_PUBLIC_GPT_3_5_OUTPUT_PRICE;
-      })?.id || "";
   } else {
     return new Response(
       JSON.stringify({
@@ -220,12 +201,6 @@ export async function POST(req: NextRequest): Promise<Response> {
             }),
           ),
           redisClient.del(`USER#${user.sub}:CHAT2#${id}`),
-          stripeClient.subscriptionItems.createUsageRecord(i_si_id as string, {
-            quantity: usage?.prompt_tokens || 0,
-          }),
-          stripeClient.subscriptionItems.createUsageRecord(o_si_id as string, {
-            quantity: usage?.completion_tokens || 0,
-          }),
         ]);
       },
       experimental_streamData: true,

@@ -8,18 +8,14 @@ export const runtime = "edge";
 export async function POST(req: NextRequest): Promise<NextResponse> {
   // @ts-ignore
   const { user } = await getSession();
-  const [customer, subscription] = await Promise.all([
-    redisClient.get(`customer:${user.email}`),
-    redisClient.get(`subscription:${user.email}`),
-  ]);
+  const customer = await redisClient.get(`customer:${user.email}`);
 
-  if (!customer || !subscription) {
+  if (!customer) {
     return NextResponse.json({
-      error: "customer and subscription required",
-      message: "You need to be a customer and a subscription.",
+      error: "customer required",
+      message: "You need to be a customer.",
     });
   }
-
   let { q, num = 10 } = await req.json();
 
   try {
@@ -35,13 +31,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       }),
     }).then((res) => res.json());
 
-    return NextResponse.json(data, {
-      headers: {
-        "Cache-Control": "public, s-maxage=1",
-        "CDN-Cache-Control": "public, s-maxage=60",
-        "Vercel-CDN-Cache-Control": "public, s-maxage=3600",
-      },
-    });
+    return NextResponse.json(data);
   } catch (e) {
     console.log(e);
     return NextResponse.json(

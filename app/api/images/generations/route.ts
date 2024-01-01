@@ -18,15 +18,12 @@ export async function POST(req: NextRequest): Promise<Response> {
   // @ts-ignore
   const { user } = await getSession();
 
-  const [customer, subscription] = await Promise.all([
-    redisClient.get(`customer:${user.email}`),
-    redisClient.get(`subscription:${user.email}`),
-  ]);
+  const customer = await redisClient.get(`customer:${user.email}`);
 
-  if (!customer || !subscription) {
+  if (!customer) {
     return NextResponse.json({
-      error: "customer and subscription required",
-      message: "You need to be a customer and a subscription.",
+      error: "customer required",
+      message: "You need to be a customer.",
     });
   }
 
@@ -69,11 +66,6 @@ export async function POST(req: NextRequest): Promise<Response> {
       response_format: "b64_json",
     });
 
-    const si_id =
-      (subscription as Stripe.Subscription)?.items.data.find((item) => {
-        return item.plan.id === process.env.NEXT_PUBLIC_DALLE_3_PRICE;
-      })?.id || "";
-
     const image = data.data[0].b64_json;
     const revised_prompt = data.data[0].revised_prompt;
     if (image) {
@@ -100,9 +92,6 @@ export async function POST(req: NextRequest): Promise<Response> {
             ContentType: "application/json",
           }),
         ),
-        stripeClient.subscriptionItems.createUsageRecord(si_id as string, {
-          quantity: 1,
-        }),
       ]);
 
       return NextResponse.json(
