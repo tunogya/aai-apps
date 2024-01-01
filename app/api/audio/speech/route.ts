@@ -11,11 +11,10 @@ import openai from "@/app/utils/openai";
 export async function POST(req: NextRequest): Promise<NextResponse> {
   // @ts-ignore
   const { user } = await getSession();
-  const sub = user.sub;
 
   const [customer, subscription] = await Promise.all([
-    redisClient.get(`customer:${sub}`),
-    redisClient.get(`subscription:${sub}`),
+    redisClient.get(`customer:${user.email}`),
+    redisClient.get(`subscription:${user.email}`),
   ]);
 
   if (!customer || !subscription) {

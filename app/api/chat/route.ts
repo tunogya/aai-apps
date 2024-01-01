@@ -21,11 +21,10 @@ export const runtime = "edge";
 export async function POST(req: NextRequest): Promise<Response> {
   // @ts-ignore
   const { user } = await getSession();
-  const sub = user.sub;
 
   const [customer, subscription] = await Promise.all([
-    redisClient.get(`customer:${sub}`),
-    redisClient.get(`subscription:${sub}`),
+    redisClient.get(`customer:${user.email}`),
+    redisClient.get(`subscription:${user.email}`),
   ]);
 
   if (!customer || !subscription) {
@@ -100,7 +99,9 @@ export async function POST(req: NextRequest): Promise<Response> {
   }
   const ratelimit = getRateLimitConfig(prefix);
 
-  const { success, limit, reset, remaining } = await ratelimit.limit(sub);
+  const { success, limit, reset, remaining } = await ratelimit.limit(
+    user.email,
+  );
   if (!success) {
     return new Response(
       JSON.stringify({
@@ -197,7 +198,7 @@ export async function POST(req: NextRequest): Promise<Response> {
             new UpdateCommand({
               TableName: "abandonai-prod",
               Key: {
-                PK: `USER#${sub}`,
+                PK: `USER#${user.sub}`,
                 SK: `CHAT2#${id}`,
               },
               ExpressionAttributeNames: {
@@ -218,7 +219,7 @@ export async function POST(req: NextRequest): Promise<Response> {
                 "SET #messages = list_append(if_not_exists(#messages, :empty_list), :messages), #updated = :updated, #title = :title",
             }),
           ),
-          redisClient.del(`USER#${sub}:CHAT2#${id}`),
+          redisClient.del(`USER#${user.sub}:CHAT2#${id}`),
           stripeClient.subscriptionItems.createUsageRecord(i_si_id as string, {
             quantity: usage?.prompt_tokens || 0,
           }),

@@ -17,11 +17,10 @@ export const runtime = "edge";
 export async function POST(req: NextRequest): Promise<Response> {
   // @ts-ignore
   const { user } = await getSession();
-  const sub = user.sub;
 
   const [customer, subscription] = await Promise.all([
-    redisClient.get(`customer:${sub}`),
-    redisClient.get(`subscription:${sub}`),
+    redisClient.get(`customer:${user.email}`),
+    redisClient.get(`subscription:${user.email}`),
   ]);
 
   if (!customer || !subscription) {
@@ -34,7 +33,9 @@ export async function POST(req: NextRequest): Promise<Response> {
   const prefix = "ratelimit:/api/images/generations:dalle3";
   const ratelimit = getRateLimitConfig(prefix);
 
-  const { success, limit, reset, remaining } = await ratelimit.limit(sub);
+  const { success, limit, reset, remaining } = await ratelimit.limit(
+    user.email,
+  );
   if (!success) {
     return new Response(
       JSON.stringify({
@@ -63,7 +64,7 @@ export async function POST(req: NextRequest): Promise<Response> {
       n: 1,
       size,
       model,
-      user: sub,
+      user: user.email,
       quality,
       response_format: "b64_json",
     });

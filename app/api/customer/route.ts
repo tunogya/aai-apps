@@ -39,7 +39,7 @@ const GET = async (req: NextRequest) => {
       },
     });
   }
-  await redisClient.set(`customer:${user.sub}`, JSON.stringify(customer));
+  await redisClient.set(`customer:${user.email}`, JSON.stringify(customer));
   return NextResponse.json(customer);
 };
 

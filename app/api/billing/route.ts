@@ -7,9 +7,8 @@ import redisClient from "@/app/utils/redisClient";
 const POST = async (req: NextRequest) => {
   // @ts-ignore
   const { user } = await getSession();
-  const sub = user.sub;
   let customer_id;
-  const customer = await redisClient.get(`customer:${sub}`);
+  const customer = await redisClient.get(`customer:${user.email}`);
 
   if (!customer) {
     return NextResponse.json({

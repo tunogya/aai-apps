@@ -9,7 +9,7 @@ const GET = async (req: NextRequest) => {
   const { user } = await getSession();
 
   // get data from cache, if exists, must be premium user
-  const customer = await redisClient.get(`customer:${user.sub}`);
+  const customer = await redisClient.get(`customer:${user.email}`);
   // @ts-ignore
   if (!customer || !customer?.id) {
     return NextResponse.json(
@@ -30,22 +30,11 @@ const GET = async (req: NextRequest) => {
     });
   }
 
-  let subscription: Stripe.Subscription;
+  let subscription: Stripe.Subscription | null;
 
-  const subscriptions = await stripeClient.subscriptions.list({
-    // @ts-ignore
-    customer: customer.id,
-    status: "active",
-  });
+  subscription = await redisClient.get(`subscription:${user.email}`);
 
-  const filter_subscriptions = subscriptions.data.filter((sub) => {
-    return sub.items.data.some(
-      (item) => item.price.id === process.env.NEXT_PUBLIC_GPT_4_INPUT_PRICE,
-    );
-  });
-
-  if (filter_subscriptions.length > 0) {
-    subscription = filter_subscriptions[0];
+  if (subscription) {
     if (
       !subscription.items.data.some(
         (item) => item.price.id === process.env.NEXT_PUBLIC_GPT_4_INPUT_PRICE,
@@ -97,36 +86,9 @@ const GET = async (req: NextRequest) => {
         price: process.env.NEXT_PUBLIC_DALLE_3_PRICE,
       });
     }
-  } else {
-    subscription = await stripeClient.subscriptions.create({
-      // @ts-ignore
-      customer: customer.id,
-      description: "Pay as you go",
-      items: [
-        {
-          price: process.env.NEXT_PUBLIC_GPT_4_INPUT_PRICE,
-        },
-        {
-          price: process.env.NEXT_PUBLIC_GPT_4_OUTPUT_PRICE,
-        },
-        {
-          price: process.env.NEXT_PUBLIC_GPT_3_5_INPUT_PRICE,
-        },
-        {
-          price: process.env.NEXT_PUBLIC_GPT_3_5_OUTPUT_PRICE,
-        },
-        {
-          price: process.env.NEXT_PUBLIC_DALLE_3_PRICE,
-        },
-      ],
-      billing_thresholds: {
-        amount_gte: 2000,
-        reset_billing_cycle_anchor: true,
-      },
-    });
   }
   await redisClient.set(
-    `subscription:${user.sub}`,
+    `subscription:${user.email}`,
     JSON.stringify(subscription),
   );
   return NextResponse.json(subscription);

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import stripeClient from "@/app/utils/stripeClient";
 import * as process from "process";
+import redisClient from "@/app/utils/redisClient";
 
 const POST = async (req: Request) => {
   let event: Stripe.Event;
@@ -65,6 +66,11 @@ const POST = async (req: Request) => {
           { message: "404 customer not found" },
           { status: 200 },
         );
+      }
+    } else if (event.type === "customer.subscription.deleted") {
+      const { customer: customerId } = event.data.object as Stripe.Subscription;
+      if (customerId) {
+        await redisClient.del(`subscription:${customerId}`);
       }
     }
   } catch (e) {
