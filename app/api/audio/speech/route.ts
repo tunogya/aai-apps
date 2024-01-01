@@ -79,7 +79,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         cost = (0.015 * input.length * baseRatio) / 1000;
       }
 
-      await Promise.all([
+      const pendingPromise = [
         s3Client.send(
           new PutObjectCommand({
             Bucket: "abandonai-prod",
@@ -96,12 +96,17 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
             ContentType: "application/json",
           }),
         ),
-        // @ts-ignore
-        stripeClient.customers.createBalanceTransaction(customer.id, {
-          amount: Math.floor((cost || 0) * 100),
-          currency: "usd",
-        }),
-      ]);
+      ];
+      if (cost > 0) {
+        pendingPromise.push(
+          // @ts-ignore
+          stripeClient.customers.createBalanceTransaction(customer.id, {
+            amount: Math.floor((cost || 0) * 100),
+            currency: "usd",
+          }),
+        );
+      }
+      await Promise.all(pendingPromise);
     } catch (e) {
       console.log(e);
     }

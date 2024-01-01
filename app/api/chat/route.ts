@@ -186,7 +186,7 @@ export async function POST(req: NextRequest): Promise<Response> {
           .catch((e) => {
             console.log("Unable to create charge", e);
           });
-        await Promise.all([
+        const pendingPromise = [
           data.close(),
           ddbDocClient.send(
             new UpdateCommand({
@@ -214,12 +214,17 @@ export async function POST(req: NextRequest): Promise<Response> {
             }),
           ),
           redisClient.del(`USER#${user.sub}:CHAT2#${id}`),
-          // @ts-ignore
-          stripeClient.customers.createBalanceTransaction(customer.id, {
-            amount: Math.floor((cost?.total_cost || 0) * 100),
-            currency: "usd",
-          }),
-        ]);
+        ];
+        if (cost?.total_cost > 0) {
+          pendingPromise.push(
+            // @ts-ignore
+            stripeClient.customers.createBalanceTransaction(customer.id, {
+              amount: Math.floor((cost?.total_cost || 0) * 100),
+              currency: "usd",
+            }),
+          );
+        }
+        await Promise.all(pendingPromise);
       },
       experimental_streamData: true,
     });
