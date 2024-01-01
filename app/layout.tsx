@@ -7,7 +7,6 @@ import "./styles/globals.css";
 import "./styles/katex.min.css";
 import "react-loading-skeleton/dist/skeleton.css";
 import dynamic from "next/dynamic";
-import SubscriptionCheck from "@/app/components/SubscriptionCheck";
 
 const TailwindIndicator = dynamic(
   () => import("@/app/components/TailwindIndicator"),
@@ -66,7 +65,6 @@ export default function RootLayout(props: { children: ReactNode }) {
               `}
           </Script>
           <TailwindIndicator />
-          <SubscriptionCheck />
           {props.children}
         </body>
       </UserProvider>

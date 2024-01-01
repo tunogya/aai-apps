@@ -86,44 +86,8 @@ const GET = async (req: NextRequest) => {
         price: process.env.NEXT_PUBLIC_DALLE_3_PRICE,
       });
     }
-  }
-  await redisClient.set(
-    `subscription:${user.email}`,
-    JSON.stringify(subscription),
-  );
-  return NextResponse.json(subscription);
-};
-
-const POST = async (req: NextRequest) => {
-  // @ts-ignore
-  const { user } = await getSession();
-  // get data from cache, if exists, must be premium user
-  const customer = await redisClient.get(`customer:${user.email}`);
-  // @ts-ignore
-  if (!customer || !customer?.id) {
-    return NextResponse.json(
-      {
-        error: "customer not found",
-        message: "Please use email to login.",
-      },
-      {
-        status: 404,
-      },
-    );
-  }
-  if (!user.email) {
-    return NextResponse.json({
-      error: "email required",
-      message: "Please use email to login.",
-    });
-  }
-
-  const cache = await redisClient.get(`subscription:${user.email}`);
-
-  if (cache) {
-    return NextResponse.json(cache);
   } else {
-    const subscription = await stripeClient.subscriptions.create({
+    subscription = await stripeClient.subscriptions.create({
       // @ts-ignore
       customer: customer.id,
       description: "Pay as you go",
@@ -149,9 +113,12 @@ const POST = async (req: NextRequest) => {
         reset_billing_cycle_anchor: true,
       },
     });
-    await redisClient.set(`subscription:${user.email}`, subscription);
-    return NextResponse.json(subscription);
   }
+  await redisClient.set(
+    `subscription:${user.email}`,
+    JSON.stringify(subscription),
+  );
+  return NextResponse.json(subscription);
 };
 
-export { GET, POST };
+export { GET };

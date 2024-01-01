@@ -67,11 +67,6 @@ const POST = async (req: Request) => {
           { status: 200 },
         );
       }
-    } else if (event.type === "customer.subscription.deleted") {
-      const { customer: customerId } = event.data.object as Stripe.Subscription;
-      if (customerId) {
-        await redisClient.del(`subscription:${customerId}`);
-      }
     }
   } catch (e) {
     console.log(e);

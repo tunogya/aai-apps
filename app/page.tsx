@@ -10,12 +10,11 @@ export default function Index() {
     "/api/customer",
     (url) => fetch(url).then((res) => res.json()),
   );
-  const { data: subscription, isLoading: isSubscriptionLoading } = useSWR(
-    "/api/subscription",
-    (url) => fetch(url).then((res) => res.json()),
+  const { data: subscription } = useSWR("/api/subscription", (url) =>
+    fetch(url).then((res) => res.json()),
   );
 
-  if (isLoading || isCustomerLoading || isSubscriptionLoading)
+  if (isLoading || isCustomerLoading)
     return (
       <div
         className={
