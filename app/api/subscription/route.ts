@@ -48,28 +48,64 @@ const GET = async (req: NextRequest) => {
   });
 
   const filter_subscriptions = subscriptions.data.filter((sub) => {
-    return (
-      sub.items.data.some(
-        (item) => item.price.id === process.env.NEXT_PUBLIC_GPT_4_INPUT_PRICE,
-      ) &&
-      sub.items.data.some(
-        (item) => item.price.id === process.env.NEXT_PUBLIC_GPT_4_OUTPUT_PRICE,
-      ) &&
-      sub.items.data.some(
-        (item) => item.price.id === process.env.NEXT_PUBLIC_GPT_3_5_INPUT_PRICE,
-      ) &&
-      sub.items.data.some(
-        (item) =>
-          item.price.id === process.env.NEXT_PUBLIC_GPT_3_5_OUTPUT_PRICE,
-      ) &&
-      sub.items.data.some(
-        (item) => item.price.id === process.env.NEXT_PUBLIC_DALLE_3_PRICE,
-      )
+    return sub.items.data.some(
+      (item) => item.price.id === process.env.NEXT_PUBLIC_GPT_4_INPUT_PRICE,
     );
   });
 
   if (filter_subscriptions.length > 0) {
     subscription = filter_subscriptions[0];
+    if (
+      !subscription.items.data.some(
+        (item) => item.price.id === process.env.NEXT_PUBLIC_GPT_4_INPUT_PRICE,
+      )
+    ) {
+      await stripeClient.subscriptionItems.create({
+        subscription: subscription.id,
+        price: process.env.NEXT_PUBLIC_GPT_4_INPUT_PRICE,
+      });
+    }
+    if (
+      !subscription.items.data.some(
+        (item) => item.price.id === process.env.NEXT_PUBLIC_GPT_4_OUTPUT_PRICE,
+      )
+    ) {
+      await stripeClient.subscriptionItems.create({
+        subscription: subscription.id,
+        price: process.env.NEXT_PUBLIC_GPT_4_OUTPUT_PRICE,
+      });
+    }
+    if (
+      !subscription.items.data.some(
+        (item) => item.price.id === process.env.NEXT_PUBLIC_GPT_3_5_INPUT_PRICE,
+      )
+    ) {
+      await stripeClient.subscriptionItems.create({
+        subscription: subscription.id,
+        price: process.env.NEXT_PUBLIC_GPT_3_5_INPUT_PRICE,
+      });
+    }
+    if (
+      !subscription.items.data.some(
+        (item) =>
+          item.price.id === process.env.NEXT_PUBLIC_GPT_3_5_OUTPUT_PRICE,
+      )
+    ) {
+      await stripeClient.subscriptionItems.create({
+        subscription: subscription.id,
+        price: process.env.NEXT_PUBLIC_GPT_3_5_OUTPUT_PRICE,
+      });
+    }
+    if (
+      !subscription.items.data.some(
+        (item) => item.price.id === process.env.NEXT_PUBLIC_DALLE_3_PRICE,
+      )
+    ) {
+      await stripeClient.subscriptionItems.create({
+        subscription: subscription.id,
+        price: process.env.NEXT_PUBLIC_DALLE_3_PRICE,
+      });
+    }
   } else {
     subscription = await stripeClient.subscriptions.create({
       // @ts-ignore
