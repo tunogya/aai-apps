@@ -66,18 +66,26 @@ export async function POST(req: NextRequest): Promise<Response> {
   // only handle the last 4 messages
   messages?.slice(-4);
 
-  let prefix: string, si_id: string;
+  let prefix: string, i_si_id: string, o_si_id: string;
   if (model.startsWith("gpt-4")) {
     prefix = "ratelimit:/api/chat:gpt-4";
-    si_id =
+    i_si_id =
       (subscription as Stripe.Subscription)?.items.data.find((item) => {
-        return item.plan.id === process.env.NEXT_PUBLIC_GPT_4_AAI_PRICE;
+        return item.plan.id === process.env.NEXT_PUBLIC_GPT_4_INPUT_PRICE;
+      })?.id || "";
+    o_si_id =
+      (subscription as Stripe.Subscription)?.items.data.find((item) => {
+        return item.plan.id === process.env.NEXT_PUBLIC_GPT_4_OUTPUT_PRICE;
       })?.id || "";
   } else if (model.startsWith("gpt-3.5")) {
     prefix = "ratelimit:/api/chat:gpt-3.5";
-    si_id =
+    i_si_id =
       (subscription as Stripe.Subscription)?.items.data.find((item) => {
-        return item.plan.id === process.env.NEXT_PUBLIC_GPT_3_5_AAI_PRICE;
+        return item.plan.id === process.env.NEXT_PUBLIC_GPT_3_5_INPUT_PRICE;
+      })?.id || "";
+    o_si_id =
+      (subscription as Stripe.Subscription)?.items.data.find((item) => {
+        return item.plan.id === process.env.NEXT_PUBLIC_GPT_3_5_OUTPUT_PRICE;
       })?.id || "";
   } else {
     return new Response(
@@ -200,7 +208,7 @@ export async function POST(req: NextRequest): Promise<Response> {
           ),
           redisClient.del(`USER#${sub}:CHAT2#${id}`),
         ]);
-        const { cost } = await fetch("https://api.abandon.ai/tiktoken", {
+        const { usage } = await fetch("https://api.abandon.ai/tiktoken", {
           method: "POST",
           body: JSON.stringify({
             prompt: messages.map((m: any) => m.content).join("\n"),
@@ -212,13 +220,21 @@ export async function POST(req: NextRequest): Promise<Response> {
           .catch((e) => {
             console.log("Unable to create charge", e);
           });
-        if (cost) {
-          await stripeClient.subscriptionItems.createUsageRecord(
-            si_id as string,
-            {
-              quantity: cost?.total_cost || 0,
-            },
-          );
+        if (usage) {
+          await Promise.all([
+            stripeClient.subscriptionItems.createUsageRecord(
+              i_si_id as string,
+              {
+                quantity: usage?.prompt_tokens || 0,
+              },
+            ),
+            stripeClient.subscriptionItems.createUsageRecord(
+              o_si_id as string,
+              {
+                quantity: usage?.completion_tokens || 0,
+              },
+            ),
+          ]);
         }
       },
       experimental_streamData: true,

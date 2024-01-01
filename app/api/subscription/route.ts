@@ -48,8 +48,23 @@ const GET = async (req: NextRequest) => {
   });
 
   const filter_subscriptions = subscriptions.data.filter((sub) => {
-    return sub.items.data.some(
-      (item) => item.price.id === process.env.NEXT_PUBLIC_GPT_4_AAI_PRICE,
+    return (
+      sub.items.data.some(
+        (item) => item.price.id === process.env.NEXT_PUBLIC_GPT_4_INPUT_PRICE,
+      ) &&
+      sub.items.data.some(
+        (item) => item.price.id === process.env.NEXT_PUBLIC_GPT_4_OUTPUT_PRICE,
+      ) &&
+      sub.items.data.some(
+        (item) => item.price.id === process.env.NEXT_PUBLIC_GPT_3_5_INPUT_PRICE,
+      ) &&
+      sub.items.data.some(
+        (item) =>
+          item.price.id === process.env.NEXT_PUBLIC_GPT_3_5_OUTPUT_PRICE,
+      ) &&
+      sub.items.data.some(
+        (item) => item.price.id === process.env.NEXT_PUBLIC_DALLE_3_PRICE,
+      )
     );
   });
 
@@ -62,16 +77,19 @@ const GET = async (req: NextRequest) => {
       description: "Pay as you go",
       items: [
         {
-          price: process.env.NEXT_PUBLIC_GPT_4_AAI_PRICE,
+          price: process.env.NEXT_PUBLIC_GPT_4_INPUT_PRICE,
         },
         {
-          price: process.env.NEXT_PUBLIC_GPT_3_5_AAI_PRICE,
+          price: process.env.NEXT_PUBLIC_GPT_4_OUTPUT_PRICE,
         },
         {
-          price: process.env.NEXT_PUBLIC_DALLE_3_AAI_PRICE,
+          price: process.env.NEXT_PUBLIC_GPT_3_5_INPUT_PRICE,
         },
         {
-          price: process.env.NEXT_PUBLIC_AAI_USAGE_PRICE,
+          price: process.env.NEXT_PUBLIC_GPT_3_5_OUTPUT_PRICE,
+        },
+        {
+          price: process.env.NEXT_PUBLIC_DALLE_3_PRICE,
         },
       ],
       billing_thresholds: {

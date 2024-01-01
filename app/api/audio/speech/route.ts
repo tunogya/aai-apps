@@ -7,8 +7,6 @@ import { CID } from "multiformats/cid";
 import * as json from "multiformats/codecs/json";
 import { sha256 } from "multiformats/hashes/sha2";
 import openai from "@/app/utils/openai";
-import stripeClient from "@/app/utils/stripeClient";
-import Stripe from "stripe";
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   // @ts-ignore
@@ -63,11 +61,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       speed,
     });
 
-    const si_id =
-      (subscription as Stripe.Subscription)?.items.data.find((item) => {
-        return item.plan.id === process.env.NEXT_PUBLIC_AAI_USAGE_PRICE;
-      })?.id || "";
-
     const buffer = Buffer.from(await response.arrayBuffer());
 
     try {
@@ -106,9 +99,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
             ContentType: "application/json",
           }),
         ),
-        stripeClient.subscriptionItems.createUsageRecord(si_id as string, {
-          quantity: cost || 0,
-        }),
       ]);
     } catch (e) {
       console.log(e);

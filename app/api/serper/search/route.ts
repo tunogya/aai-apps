@@ -1,8 +1,6 @@
 import { getSession } from "@auth0/nextjs-auth0/edge";
 import { NextRequest, NextResponse } from "next/server";
 import redisClient from "@/app/utils/redisClient";
-import Stripe from "stripe";
-import stripeClient from "@/app/utils/stripeClient";
 
 export const runtime = "edge";
 
@@ -24,11 +22,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     });
   }
 
-  const si_id =
-    (subscription as Stripe.Subscription)?.items.data.find((item) => {
-      return item.plan.id === process.env.NEXT_PUBLIC_AAI_USAGE_PRICE;
-    })?.id || "";
-
   let { q, num = 10 } = await req.json();
 
   try {
@@ -43,18 +36,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         num,
       }),
     }).then((res) => res.json());
-
-    let cost,
-      baseRatio = 2;
-    if (num > 10) {
-      cost = 0.001 * 2 * baseRatio;
-    } else {
-      cost = 0.001 * baseRatio;
-    }
-
-    await stripeClient.subscriptionItems.createUsageRecord(si_id as string, {
-      quantity: cost || 0,
-    });
 
     return NextResponse.json(data, {
       headers: {

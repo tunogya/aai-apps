@@ -68,26 +68,9 @@ export async function POST(req: NextRequest): Promise<Response> {
       response_format: "b64_json",
     });
 
-    let cost;
-    let baseRatio = 2;
-
-    if (quality === "hd") {
-      if (size === "1792x1024" || size === "1024x1792") {
-        cost = 0.12 * baseRatio;
-      } else {
-        cost = 0.08 * baseRatio;
-      }
-    } else {
-      if (size === "1792x1024" || size === "1024x1792") {
-        cost = 0.08 * baseRatio;
-      } else {
-        cost = 0.04 * baseRatio;
-      }
-    }
-
     const si_id =
       (subscription as Stripe.Subscription)?.items.data.find((item) => {
-        return item.plan.id === process.env.NEXT_PUBLIC_DALLE_3_AAI_PRICE;
+        return item.plan.id === process.env.NEXT_PUBLIC_DALLE_3_PRICE;
       })?.id || "";
 
     const image = data.data[0].b64_json;
@@ -117,7 +100,7 @@ export async function POST(req: NextRequest): Promise<Response> {
           }),
         ),
         stripeClient.subscriptionItems.createUsageRecord(si_id as string, {
-          quantity: cost || 0,
+          quantity: 1,
         }),
       ]);
 
