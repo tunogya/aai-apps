@@ -4,11 +4,37 @@ import * as json from "multiformats/codecs/json";
 import { sha256 } from "multiformats/hashes/sha2";
 import { CID } from "multiformats/cid";
 import redisClient from "@/app/utils/redisClient";
+import { getSession } from "@auth0/nextjs-auth0/edge";
 
 export const runtime = "edge";
 
 // @ts-ignore
 export async function POST(req: NextRequest): Promise<Response> {
+  // @ts-ignore
+  const { user } = await getSession();
+
+  const customer = await redisClient.get(`customer:${user.email}`);
+
+  if (!customer) {
+    return NextResponse.json({
+      error: "customer required",
+      message: "You need to be a customer.",
+    });
+  }
+
+  // @ts-ignore
+  if (customer?.balance > 50) {
+    return NextResponse.json(
+      {
+        error: "Insufficient balance",
+        message: "You need to recharge before using it.",
+      },
+      {
+        status: 402,
+      },
+    );
+  }
+
   const { history } = await req.json();
 
   const bytes = json.encode(history);

@@ -17,6 +17,20 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       message: "You need to be a customer.",
     });
   }
+
+  // @ts-ignore
+  if (customer?.balance > 50) {
+    return NextResponse.json(
+      {
+        error: "Insufficient balance",
+        message: "You need to recharge before using it.",
+      },
+      {
+        status: 402,
+      },
+    );
+  }
+
   let { q, num = 10 } = await req.json();
 
   try {

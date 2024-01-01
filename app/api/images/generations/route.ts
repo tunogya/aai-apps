@@ -26,6 +26,19 @@ export async function POST(req: NextRequest): Promise<Response> {
     });
   }
 
+  // @ts-ignore
+  if (customer?.balance > 50) {
+    return NextResponse.json(
+      {
+        error: "Insufficient balance",
+        message: "You need to recharge before using it.",
+      },
+      {
+        status: 402,
+      },
+    );
+  }
+
   const prefix = "ratelimit:/api/images/generations:dalle3";
   const ratelimit = getRateLimitConfig(prefix);
 

@@ -26,9 +26,22 @@ export async function POST(req: NextRequest): Promise<Response> {
 
   if (!customer) {
     return NextResponse.json({
-      error: "customer and subscription required",
-      message: "You need to be a customer and a subscription.",
+      error: "customer required",
+      message: "You need to be a customer.",
     });
+  }
+
+  // @ts-ignore
+  if (customer?.balance > 50) {
+    return NextResponse.json(
+      {
+        error: "Insufficient balance",
+        message: "You need to recharge before using it.",
+      },
+      {
+        status: 402,
+      },
+    );
   }
 
   let { messages, model, id, functions } = await req.json();
