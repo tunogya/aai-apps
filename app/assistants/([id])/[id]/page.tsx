@@ -7,6 +7,7 @@ import { useParams } from "next/navigation";
 const Detail = dynamic(() => import("@/app/assistants/([id])/[id]/Detail"));
 const Overview = dynamic(() => import("@/app/assistants/([id])/[id]/Overview"));
 const Events = dynamic(() => import("@/app/assistants/([id])/[id]/Events"));
+const Logs = dynamic(() => import("@/app/assistants/([id])/[id]/Logs"));
 const MorePopover = dynamic(
   () => import("@/app/assistants/([id])/[id]/Overview/MorePopover"),
 );
@@ -18,14 +19,10 @@ const CSRPage = () => {
   return (
     <div
       className={
-        "flex px-4 md:px-10 md:pt-2 absolute h-[calc(100vh-60px)] w-full space-x-8"
+        "flex px-4 md:px-10 md:pt-2 absolute h-[calc(100vh-60px)] w-full space-x-8 overflow-y-auto"
       }
     >
-      <div
-        className={
-          "space-y-2 py-1 px-1 text-gray-800 w-80 overflow-y-auto pb-10"
-        }
-      >
+      <div className={"space-y-2 py-1 px-1 text-gray-800 w-80 pb-10"}>
         <Link
           href={"/assistants"}
           prefetch
@@ -35,9 +32,7 @@ const CSRPage = () => {
         </Link>
         <Detail />
       </div>
-      <div
-        className={"space-y-6 flex-1 py-1 text-gray-800 overflow-y-auto pb-10"}
-      >
+      <div className={"space-y-6 flex-1 py-1 text-gray-800 pb-10"}>
         <div className={"border-b flex justify-between"}>
           <div className={"flex gap-8"}>
             <button
@@ -70,7 +65,10 @@ const CSRPage = () => {
         {type === "overview" ? (
           <Overview assistantId={params?.id as string} />
         ) : (
-          <Events />
+          <div className={"pb-20 space-y-12"}>
+            <Logs />
+            <Events />
+          </div>
         )}
       </div>
     </div>
