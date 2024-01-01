@@ -68,7 +68,7 @@ const GET = async (req: NextRequest) => {
           price: process.env.NEXT_PUBLIC_GPT_3_5_AAI_PRICE,
         },
         {
-          price: process.env.NEXT_PUBLIC_DALLE_3_PRICE,
+          price: process.env.NEXT_PUBLIC_DALLE_3_AAI_PRICE,
         },
         {
           price: process.env.NEXT_PUBLIC_AAI_USAGE_PRICE,

@@ -87,7 +87,7 @@ export async function POST(req: NextRequest): Promise<Response> {
 
     const si_id =
       (subscription as Stripe.Subscription)?.items.data.find((item) => {
-        return item.plan.id === process.env.NEXT_PUBLIC_DALLE_3_PRICE;
+        return item.plan.id === process.env.NEXT_PUBLIC_DALLE_3_AAI_PRICE;
       })?.id || "";
 
     const image = data.data[0].b64_json;
