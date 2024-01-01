@@ -46,7 +46,7 @@ const CSRPage = () => {
         </div>
         <div>
           <div className={"text-sm text-gray-500"}>Assistant ID</div>
-          <div className={"text-sm text-gray-600"}>
+          <div className={"text-sm text-gray-600 text-[13px]"}>
             {isLoading ? (
               <Skeleton />
             ) : (
@@ -58,7 +58,7 @@ const CSRPage = () => {
           <div className={"text-sm text-gray-500"}>Description</div>
           <div
             className={
-              "text-sm text-gray-600 break-words max-h-40 overflow-y-auto"
+              "text-sm text-gray-600 break-words max-h-40 overflow-y-auto text-[13px]"
             }
           >
             {isLoading ? (
@@ -72,7 +72,7 @@ const CSRPage = () => {
           <div className={"text-sm text-gray-500"}>Instructions</div>
           <div
             className={
-              "text-sm text-gray-600 break-words max-h-40 overflow-y-auto"
+              "text-sm text-gray-600 break-words max-h-40 overflow-y-auto text-[13px]"
             }
           >
             {isLoading ? (
@@ -84,13 +84,13 @@ const CSRPage = () => {
         </div>
         <div>
           <div className={"text-sm text-gray-500"}>Voice</div>
-          <div className={"text-sm text-gray-600"}>
+          <div className={"text-sm text-gray-600 text-[13px]"}>
             {isLoading ? <Skeleton /> : data?.item?.metadata?.voice || "N/A"}
           </div>
         </div>
         <div>
           <div className={"text-sm text-gray-500"}>Create at</div>
-          <div className={"text-sm text-gray-600"}>
+          <div className={"text-sm text-gray-600 text-[13px]"}>
             {isLoading ? (
               <Skeleton />
             ) : data?.item?.created_at ? (

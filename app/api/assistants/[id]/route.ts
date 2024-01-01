@@ -58,18 +58,9 @@ const GET = async (req: NextRequest, { params }: any) => {
           params?.id,
         );
       }
-      return NextResponse.json(
-        {
-          item: Item,
-        },
-        {
-          headers: {
-            "Cache-Control": "public, s-maxage=1",
-            "CDN-Cache-Control": "public, s-maxage=60",
-            "Vercel-CDN-Cache-Control": "public, s-maxage=3600",
-          },
-        },
-      );
+      return NextResponse.json({
+        item: Item,
+      });
     } else {
       return NextResponse.json(
         {
@@ -134,6 +125,7 @@ const PATCH = async (req: NextRequest, { params }: any) => {
                     SK: `EVENT#${uniqueId}`,
                     data: item,
                     type: "assistant.put",
+                    updated: Math.floor(Date.now() / 1000),
                   },
                 },
               },

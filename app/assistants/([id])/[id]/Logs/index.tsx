@@ -24,11 +24,13 @@ const CSRPage = () => {
             <div
               key={item.SK}
               className={
-                "text-sm text-gray-500 flex justify-between font-light h-10 hover:bg-gray-50 items-center px-1 cursor-pointer border-b"
+                "text-sm text-gray-500 flex justify-between h-10 hover:bg-gray-50 items-center px-1 cursor-pointer border-b"
               }
             >
               <div>New thread: {item.SK.split("#")[1]}</div>
-              <div>{new Date(item.updated * 1000).toLocaleString()}</div>
+              <div className={"text-[13px]"}>
+                {new Date(item.updated * 1000).toLocaleString()}
+              </div>
             </div>
           ))
         ) : (
