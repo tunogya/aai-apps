@@ -1,6 +1,7 @@
 import { getSession } from "@auth0/nextjs-auth0/edge";
 import { NextRequest, NextResponse } from "next/server";
 import redisClient from "@/app/utils/redisClient";
+import stripeClient from "@/app/utils/stripeClient";
 
 export const runtime = "edge";
 
@@ -30,6 +31,19 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         num,
       }),
     }).then((res) => res.json());
+
+    let cost,
+      baseRatio = 2;
+    if (num > 10) {
+      cost = 0.005 * 2 * baseRatio;
+    } else {
+      cost = 0.005 * baseRatio;
+    }
+    // @ts-ignore
+    await stripeClient.customers.createBalanceTransaction(customer.id, {
+      amount: Math.ceil((cost || 0) * 100),
+      currency: "usd",
+    });
 
     return NextResponse.json(data);
   } catch (e) {

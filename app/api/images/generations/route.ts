@@ -8,7 +8,6 @@ import { CID } from "multiformats/cid";
 import * as raw from "multiformats/codecs/raw";
 import getRateLimitConfig from "@/app/utils/getRateLimitConfig";
 import openai from "@/app/utils/openai";
-import Stripe from "stripe";
 import stripeClient from "@/app/utils/stripeClient";
 
 export const runtime = "edge";
@@ -54,6 +53,23 @@ export async function POST(req: NextRequest): Promise<Response> {
 
   quality = "standard";
 
+  let cost;
+  let baseRatio = 2;
+
+  if (quality === "hd") {
+    if (size === "1792x1024" || size === "1024x1792") {
+      cost = 0.12 * baseRatio;
+    } else {
+      cost = 0.08 * baseRatio;
+    }
+  } else {
+    if (size === "1792x1024" || size === "1024x1792") {
+      cost = 0.08 * baseRatio;
+    } else {
+      cost = 0.04 * baseRatio;
+    }
+  }
+
   try {
     const model = "dall-e-3";
     const data = await openai.images.generate({
@@ -92,6 +108,11 @@ export async function POST(req: NextRequest): Promise<Response> {
             ContentType: "application/json",
           }),
         ),
+        // @ts-ignore
+        stripeClient.customers.createBalanceTransaction(customer.id, {
+          amount: Math.ceil((cost || 0) * 100),
+          currency: "usd",
+        }),
       ]);
 
       return NextResponse.json(

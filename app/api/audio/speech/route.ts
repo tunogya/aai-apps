@@ -7,6 +7,7 @@ import { CID } from "multiformats/cid";
 import * as json from "multiformats/codecs/json";
 import { sha256 } from "multiformats/hashes/sha2";
 import openai from "@/app/utils/openai";
+import stripeClient from "@/app/utils/stripeClient";
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   // @ts-ignore
@@ -95,6 +96,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
             ContentType: "application/json",
           }),
         ),
+        // @ts-ignore
+        stripeClient.customers.createBalanceTransaction(customer.id, {
+          amount: Math.ceil((cost || 0) * 100),
+          currency: "usd",
+        }),
       ]);
     } catch (e) {
       console.log(e);

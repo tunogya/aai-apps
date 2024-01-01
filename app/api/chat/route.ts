@@ -161,7 +161,7 @@ export async function POST(req: NextRequest): Promise<Response> {
         }
       },
       async onFinal(completion) {
-        const { usage } = await fetch("https://api.abandon.ai/tiktoken", {
+        const { cost } = await fetch("https://api.abandon.ai/tiktoken", {
           method: "POST",
           body: JSON.stringify({
             prompt: messages.map((m: any) => m.content).join("\n"),
@@ -201,6 +201,11 @@ export async function POST(req: NextRequest): Promise<Response> {
             }),
           ),
           redisClient.del(`USER#${user.sub}:CHAT2#${id}`),
+          // @ts-ignore
+          stripeClient.customers.createBalanceTransaction(customer.id, {
+            amount: Math.ceil((cost?.total_cost || 0) * 100),
+            currency: "usd",
+          }),
         ]);
       },
       experimental_streamData: true,
