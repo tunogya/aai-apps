@@ -5,7 +5,6 @@ export const config = {
   matcher: [
     "/api/assistants/:path*",
     "/api/audio/:path*",
-    "/api/billing",
     "/api/chat/:path*",
     "/api/checkout",
     "/api/conversation/:path*",

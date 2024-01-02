@@ -2,7 +2,6 @@
 
 import React from "react";
 import CheckoutButton from "@/app/components/CheckoutButton";
-import ManageBillingButton from "@/app/components/ManageBillingButton";
 import useSWR from "swr";
 import Skeleton from "react-loading-skeleton";
 
@@ -49,12 +48,6 @@ const CSR = () => {
           <CheckoutButton
             price={process.env.NEXT_PUBLIC_AAI_CREDIT_PRICE!}
             title={"Buy AAI credit"}
-            className={
-              "bg-gray-100 text-gray-800 rounded w-fit px-3 py-1.5 font-medium cursor-pointer text-sm"
-            }
-          />
-          <ManageBillingButton
-            title={"Manage billing"}
             className={
               "bg-gray-100 text-gray-800 rounded w-fit px-3 py-1.5 font-medium cursor-pointer text-sm"
             }
