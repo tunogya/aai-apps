@@ -55,7 +55,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     }
     // @ts-ignore
     await stripeClient.customers.createBalanceTransaction(customer.id, {
-      amount: Math.floor((cost || 0) * 100),
+      amount: Math.round((cost || 0) * 100),
       currency: "usd",
     });
 

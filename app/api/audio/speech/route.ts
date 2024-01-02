@@ -97,11 +97,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
           }),
         ),
       ];
-      if (cost > 0) {
+      if (Math.round((cost || 0) * 100) > 0) {
         pendingPromise.push(
           // @ts-ignore
           stripeClient.customers.createBalanceTransaction(customer.id, {
-            amount: Math.floor((cost || 0) * 100),
+            amount: Math.round((cost || 0) * 100),
             currency: "usd",
           }),
         );

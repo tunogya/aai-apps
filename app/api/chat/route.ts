@@ -214,11 +214,11 @@ export async function POST(req: NextRequest): Promise<Response> {
           ),
           redisClient.del(`USER#${user.sub}:CHAT2#${id}`),
         ];
-        if (cost?.total_cost > 0) {
+        if (Math.round((cost?.total_cost || 0) * 100) > 0) {
           pendingPromise.push(
             // @ts-ignore
             stripeClient.customers.createBalanceTransaction(customer.id, {
-              amount: Math.floor((cost?.total_cost || 0) * 100),
+              amount: Math.round((cost?.total_cost || 0) * 100),
               currency: "usd",
             }),
           );
