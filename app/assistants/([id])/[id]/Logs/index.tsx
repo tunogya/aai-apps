@@ -27,7 +27,7 @@ const CSRPage = () => {
                 "text-sm text-gray-500 flex justify-between h-10 hover:bg-gray-50 items-center px-1 cursor-pointer border-b"
               }
             >
-              <div>New thread: {item.SK.split("#")[1]}</div>
+              <div>Run: {item.SK.split("#")[1]}</div>
               <div className={"text-[13px]"}>
                 {new Date(item.updated * 1000).toLocaleString()}
               </div>
