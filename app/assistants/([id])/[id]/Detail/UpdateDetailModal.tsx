@@ -24,13 +24,19 @@ const Modal: FC<{
   const [status, setStatus] = useState("idle");
   const [updateParams, setUpdateParams] = useState<{
     name: string;
-    description: string | null;
-    instructions: string | null;
+    description: string;
+    instructions: string;
     model: string;
     metadata: {
       voice: string;
     };
   }>(item);
+
+  useEffect(() => {
+    if (item) {
+      setUpdateParams(item);
+    }
+  }, [item]);
 
   const update = async () => {
     setStatus("loading");
@@ -41,11 +47,11 @@ const Modal: FC<{
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: updateParams?.name?.trim() || null,
-          description: updateParams?.description?.trim() || null,
-          instructions: updateParams?.instructions?.trim() || null,
-          model: updateParams?.model?.toLowerCase() || null,
-          metadata: updateParams?.metadata || {},
+          name: updateParams?.name?.trim() || "N/A",
+          description: updateParams?.description?.trim() || "N/A",
+          instructions: updateParams?.instructions?.trim() || "N/A",
+          model: updateParams?.model?.toLowerCase(),
+          metadata: updateParams?.metadata,
         }),
       }).then((res) => res.json());
       setStatus("idle");
