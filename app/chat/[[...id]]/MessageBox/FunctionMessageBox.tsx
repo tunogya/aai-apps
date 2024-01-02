@@ -9,6 +9,7 @@ import {
 import { Disclosure } from "@headlessui/react";
 import dynamic from "next/dynamic";
 import Skeleton from "react-loading-skeleton";
+import moment from "moment";
 
 const Markdown = dynamic(
   () => import("@/app/chat/[[...id]]/MessageBox/Markdown"),
@@ -47,6 +48,11 @@ const MessageBox: FC<{
           </div>
         </div>
         <div className={"space-y-2 w-full overflow-x-hidden"}>
+          <div className={"text-xs text-gray-500"}>
+            {moment(message?.createdAt)
+              .startOf("second")
+              .fromNow()}
+          </div>
           <Disclosure>
             {({ open }) => (
               <>

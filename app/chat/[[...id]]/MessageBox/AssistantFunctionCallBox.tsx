@@ -2,12 +2,23 @@
 import React, { FC, useMemo } from "react";
 import { Message } from "ai";
 import {
+  ArrowPathIcon,
+  CheckIcon,
   ChevronDownIcon,
+  ClipboardIcon,
+  CloudArrowDownIcon,
+  ExclamationTriangleIcon,
+  MusicalNoteIcon,
+  PauseCircleIcon,
   PhoneArrowUpRightIcon,
+  TrashIcon,
 } from "@heroicons/react/24/outline";
 import { Disclosure } from "@headlessui/react";
 import dynamic from "next/dynamic";
 import Skeleton from "react-loading-skeleton";
+import moment from "moment/moment";
+import Link from "next/link";
+import copy from "copy-to-clipboard";
 
 const Markdown = dynamic(
   () => import("@/app/chat/[[...id]]/MessageBox/Markdown"),
@@ -54,6 +65,11 @@ const MessageBox: FC<{
           </div>
         </div>
         <div className={"space-y-2 w-full overflow-x-hidden"}>
+          <div className={"text-xs text-gray-500"}>
+            {moment(message?.createdAt)
+              .startOf("second")
+              .fromNow()}
+          </div>
           <Disclosure>
             {({ open }) => (
               <>
