@@ -1,5 +1,6 @@
 import { Dialog, Transition } from "@headlessui/react";
 import React, { FC, Fragment, useState } from "react";
+import Link from "next/link";
 
 const Modal: FC<{
   assistantId: string;
@@ -90,12 +91,12 @@ const Modal: FC<{
                   >
                     <div>Add Telegram Bot</div>
                   </Dialog.Title>
-
                   <div className={"space-y-4 h-fit mt-4"}>
                     <div className={"space-y-2 text-gray-800"}>
                       <div className={"font-semibold text-sm"}>Token</div>
                       <input
-                        maxLength={256}
+                        maxLength={50}
+                        type={"password"}
                         value={token}
                         onChange={(e) => setToken(e.target.value)}
                         placeholder={"Enter telegram bot token"}
@@ -104,6 +105,17 @@ const Modal: FC<{
                         }
                       />
                     </div>
+                  </div>
+                  <div className={"text-xs text-gray-500 pt-2"}>
+                    To get started, message{" "}
+                    <Link
+                      className={"text-blue-400 underline"}
+                      href={"https://t.me/BotFather"}
+                    >
+                      @BotFather
+                    </Link>{" "}
+                    on Telegram to register your bot and receive its
+                    authentication token.
                   </div>
                   <div className={"mt-10 flex justify-end gap-2"}>
                     <button
