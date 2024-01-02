@@ -48,7 +48,7 @@ const CSRPage = () => {
           <div className={"text-sm text-gray-500"}>Assistant ID</div>
           <div
             className={
-              "text-gray-600 text-[13px] bg-gray-100 border w-fit px-1 rounded"
+              "text-gray-600 text-[13px] bg-gray-100 border w-fit px-1 rounded min-w-[240px]"
             }
           >
             {isLoading ? (
