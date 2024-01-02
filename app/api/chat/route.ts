@@ -71,9 +71,6 @@ export async function POST(req: NextRequest): Promise<Response> {
     functions = undefined;
   }
 
-  // only handle the last 8 messages
-  messages?.slice(-8);
-
   let prefix: string;
   if (model.startsWith("gpt-4")) {
     prefix = "ratelimit:/api/chat:gpt-4";
