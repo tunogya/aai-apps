@@ -12,6 +12,12 @@ const ModelSwitch = () => {
 
   return (
     <div className={"gap-1 flex items-center"}>
+      {useVision && (
+        <div className={"text-xs font-light px-1"}>
+          (GPT-4 Vision is open, you can&apos;t use other functions in this
+          mode)
+        </div>
+      )}
       {useGPT4 && (
         <div className={"border rounded-lg px-2 h-6 md:h-8 flex items-center"}>
           <button
@@ -31,7 +37,6 @@ const ModelSwitch = () => {
             ) : (
               <EyeSlashIcon className={"w-4 h-4 stroke-1.5"} />
             )}
-            Vision
           </button>
         </div>
       )}
