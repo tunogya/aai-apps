@@ -36,7 +36,7 @@ const ModelSwitch = () => {
         </div>
       )}
       <div
-        className={`text-sm md:font-semibold md:hover:bg-gray-100 rounded-lg flex items-center gap-2 px-2 py-1 md:py-1.5 select-none justify-between`}
+        className={`text-sm md:font-semibold md:hover:bg-gray-100 rounded-lg flex items-center gap-2 px-2 py-1 md:py-1.5 select-none justify-between cursor-pointer`}
         onClick={() => {
           if (useGPT4) {
             setModel("gpt-3.5");

@@ -1,7 +1,6 @@
 import { Dialog, Listbox, Transition } from "@headlessui/react";
 import React, { FC, Fragment, useEffect, useState } from "react";
 import { ChevronUpDownIcon } from "@heroicons/react/24/solid";
-import { ArrowUturnLeftIcon } from "@heroicons/react/24/outline";
 
 const voice_options = ["Alloy", "Echo", "Fable", "Onyx", "Nova", "Shimmer"];
 
@@ -33,9 +32,7 @@ const Modal: FC<{
   }>(item);
 
   useEffect(() => {
-    if (item) {
-      setUpdateParams(item);
-    }
+    setUpdateParams(item);
   }, [item]);
 
   const update = async () => {
@@ -64,10 +61,6 @@ const Modal: FC<{
       }, 3000);
     }
   };
-
-  useEffect(() => {
-    setUpdateParams(item);
-  }, []);
 
   return (
     <>
@@ -113,14 +106,6 @@ const Modal: FC<{
                     className="text-lg font-medium leading-6 text-gray-900 flex justify-between items-center"
                   >
                     <div>Update assistant</div>
-                    <button
-                      onClick={() => setUpdateParams(item)}
-                      className={
-                        "text-gray-400 hover:text-gray-800 rounded px-3 py-1.5 text-sm flex items-center space-x-1"
-                      }
-                    >
-                      <ArrowUturnLeftIcon className={"w-4 h-4"} />
-                    </button>
                   </Dialog.Title>
 
                   <div className={"space-y-4 h-fit mt-4"}>
