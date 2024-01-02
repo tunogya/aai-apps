@@ -71,10 +71,10 @@ export async function POST(req: NextRequest): Promise<Response> {
     functions = undefined;
   }
 
-  // only handle the last 4 messages
-  messages?.slice(-4);
+  // only handle the last 8 messages
+  messages?.slice(-8);
 
-  let prefix: string, i_si_id: string, o_si_id: string;
+  let prefix: string;
   if (model.startsWith("gpt-4")) {
     prefix = "ratelimit:/api/chat:gpt-4";
   } else if (model.startsWith("gpt-3.5")) {
