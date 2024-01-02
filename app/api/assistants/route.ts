@@ -1,9 +1,14 @@
 import { getSession } from "@auth0/nextjs-auth0";
 import { NextRequest, NextResponse } from "next/server";
 import ddbDocClient from "@/app/utils/ddbDocClient";
-import { PutCommand, QueryCommand } from "@aws-sdk/lib-dynamodb";
+import {
+  BatchWriteCommand,
+  PutCommand,
+  QueryCommand,
+} from "@aws-sdk/lib-dynamodb";
 import redisClient from "@/app/utils/redisClient";
 import openai from "@/app/utils/openai";
+import dysortid from "@/app/utils/dysortid";
 
 // No need to use Redis
 const GET = async (req: NextRequest) => {
@@ -80,7 +85,31 @@ const POST = async (req: NextRequest) => {
 
     // Add to Redis
     await redisClient.set(`ASST#${newAssistant.id}`, JSON.stringify(item));
-
+    const uniqueId = dysortid();
+    await ddbDocClient.send(
+      new BatchWriteCommand({
+        RequestItems: {
+          "abandonai-prod": [
+            {
+              PutRequest: {
+                Item: item,
+              },
+            },
+            {
+              PutRequest: {
+                Item: {
+                  PK: `ASST#${newAssistant.id}`,
+                  SK: `EVENT#${uniqueId}`,
+                  data: item,
+                  type: "assistant.post",
+                  updated: Math.floor(Date.now() / 1000),
+                },
+              },
+            },
+          ],
+        },
+      }),
+    );
     await ddbDocClient.send(
       new PutCommand({
         TableName: "abandonai-prod",
