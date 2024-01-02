@@ -33,8 +33,11 @@ const CSR = () => {
           </div>
         </div>
         {customer?.balance !== undefined ? (
-          <div className={"text-3xl text-gray-800"}>
-            {((-1 * customer?.balance) / 100).toFixed(2)} AAI
+          <div className={"flex items-end gap-3"}>
+            <div className={"text-3xl text-gray-800"}>
+              {((-1 * customer?.balance) / 100).toFixed(2)} AAI
+            </div>
+            <div className={"text-sm text-gray-400"}>(1 AAI = 1 USD)</div>
           </div>
         ) : (
           <div className={"max-w-[160px] w-full"}>
@@ -42,7 +45,6 @@ const CSR = () => {
           </div>
         )}
         <div className={"pt-1 pb-4 text-gray-500 gap-2"}>
-          <div>1 AAI = 1 USD</div>
           <div>
             GPT-3.5 offers 2,500 free input tokens, while GPT-4 provides 500
             free input tokens.
