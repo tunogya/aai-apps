@@ -10,7 +10,7 @@ const CSR = () => {
   const { data } = useSWR(`/api/assistants/threads/${id}`, (url) =>
     fetch(url).then((res) => res.json()),
   );
-
+  console.log(data);
   return (
     <div
       className={
@@ -50,6 +50,15 @@ const CSR = () => {
               <div className={"text-gray-600 break-all"}>
                 {message?.content?.[0]?.text?.value}
               </div>
+              {message?.run_id && (
+                <div
+                  className={
+                    "text-xs border px-2 py-1 text-gray-800 w-fit rounded mt-2 bg-gray-100"
+                  }
+                >
+                  {message?.run_id}
+                </div>
+              )}
             </div>
           ))
           .reverse()}
