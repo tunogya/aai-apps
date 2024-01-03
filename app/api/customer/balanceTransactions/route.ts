@@ -17,8 +17,8 @@ const GET = async (req: NextRequest) => {
     });
   }
 
-  // @ts-ignore
   const balanceTransactions =
+    // @ts-ignore
     await stripeClient.customers.listBalanceTransactions(customer.id, {
       limit: 20,
     });
