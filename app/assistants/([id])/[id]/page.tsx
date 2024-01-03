@@ -1,8 +1,8 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
 import dynamic from "next/dynamic";
 import { useParams } from "next/navigation";
+import { useSessionStorage } from "@uidotdev/usehooks";
 
 const Detail = dynamic(() => import("@/app/assistants/([id])/[id]/Detail"));
 const Overview = dynamic(() => import("@/app/assistants/([id])/[id]/Overview"));
@@ -14,7 +14,7 @@ const MorePopover = dynamic(
 
 const CSRPage = () => {
   const params = useParams();
-  const [type, setType] = useState("overview");
+  const [type, setType] = useSessionStorage("assistants:type", "overview");
 
   return (
     <div
@@ -38,6 +38,8 @@ const CSRPage = () => {
             <button
               onClick={() => {
                 setType("overview");
+                // router.push(`/assistants/asst_KDToprTbQw510YzF3ICpfH3q?type=overview`);
+                // searchParams;
               }}
               className={`font-medium border-b-2 ${
                 type === "overview"
