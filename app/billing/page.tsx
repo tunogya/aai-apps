@@ -46,8 +46,8 @@ const CSR = () => {
         )}
         <div className={"pt-1 pb-4 text-gray-500 gap-2"}>
           <div>
-            GPT-3.5 offers 2,500 free input tokens, while GPT-4 provides 500
-            free input tokens.
+            GPT-3.5 offers 2,500 free tokens per chat, while GPT-4 provides 500
+            free tokens per chat.
           </div>
         </div>
         <div className={"flex w-full gap-2"}>
