@@ -47,7 +47,7 @@ const CSR = () => {
                     .fromNow()}
                 </div>
               </div>
-              <div className={"text-gray-800 break-all"}>
+              <div className={"text-gray-600 break-all"}>
                 {message?.content?.[0]?.text?.value}
               </div>
             </div>
