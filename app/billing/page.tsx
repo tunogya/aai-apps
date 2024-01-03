@@ -4,11 +4,18 @@ import React from "react";
 import CheckoutButton from "@/app/components/CheckoutButton";
 import useSWR from "swr";
 import Skeleton from "react-loading-skeleton";
+import moment from "moment/moment";
 
 const CSR = () => {
   const { data: customer } = useSWR("/api/customer", (url) =>
     fetch(url).then((res) => res.json()),
   );
+  const { data: balanceTransaction } = useSWR(
+    "/api/customer/balanceTransactions",
+    (url) => fetch(url).then((res) => res.json()),
+  );
+
+  console.log(balanceTransaction);
 
   return (
     <div
@@ -55,9 +62,39 @@ const CSR = () => {
             price={process.env.NEXT_PUBLIC_AAI_CREDIT_PRICE!}
             title={"Buy AAI credit"}
             className={
-              "bg-gray-100 text-gray-800 rounded w-fit px-3 py-1.5 font-medium cursor-pointer text-sm"
+              "bg-gray-100 text-gray-800 rounded w-fit px-3 py-1.5 font-medium cursor-pointer text-sm hover:bg-gray-200"
             }
           />
+        </div>
+      </div>
+      <div className={"pt-10 max-w-2xl"}>
+        <div className={"py-2 pb-4 text-xl font-bold text-gray-800"}>
+          Recent transactions
+        </div>
+        <div className={"w-full border rounded-lg h-[240px] overflow-y-auto"}>
+          {balanceTransaction ? (
+            balanceTransaction?.map((item: any, index: number) => (
+              <div
+                key={index}
+                className={
+                  "flex text-sm h-9 items-center border-b justify-between hover:bg-gray-50 px-4"
+                }
+              >
+                <div className={"text-gray-600 font-semibold"}>
+                  {item.amount < 0
+                    ? `+${(item.amount / 100) * -1} AAI`
+                    : `${(item.amount / 100) * -1} AAI`}
+                </div>
+                <div className={"text-gray-400 text-[13px]"}>
+                  {moment(item.created * 1000)
+                    .startOf("second")
+                    .fromNow()}
+                </div>
+              </div>
+            ))
+          ) : (
+            <Skeleton count={4} className={"h-9"} />
+          )}
         </div>
       </div>
     </div>
