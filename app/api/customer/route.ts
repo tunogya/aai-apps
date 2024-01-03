@@ -21,6 +21,29 @@ const GET = async (req: NextRequest) => {
   });
   if (customers.data.length > 0) {
     customer = customers.data[0];
+    if (customer.currency !== "usd") {
+      const balanceTransactions =
+        await stripeClient.customers.listBalanceTransactions(customer.id, {
+          limit: 5,
+        });
+      const usdTransactions = balanceTransactions.data.filter(
+        (item) => item.currency === "usd",
+      );
+      if (usdTransactions.length > 0) {
+        const usdBalance = usdTransactions[0].ending_balance;
+        customer = {
+          ...customer,
+          balance: usdBalance,
+          currency: "usd",
+        };
+      } else {
+        customer = {
+          ...customer,
+          balance: 0,
+          currency: "usd",
+        };
+      }
+    }
   } else {
     customer = await stripeClient.customers.create({
       email: user.email,
@@ -29,6 +52,11 @@ const GET = async (req: NextRequest) => {
         id: user.sub,
       },
     });
+    customer = {
+      ...customer,
+      balance: 0,
+      currency: "usd",
+    };
   }
   await redisClient.set(`customer:${user.email}`, JSON.stringify(customer));
   return NextResponse.json(customer);
