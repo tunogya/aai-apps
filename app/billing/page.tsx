@@ -15,8 +15,6 @@ const CSR = () => {
     (url) => fetch(url).then((res) => res.json()),
   );
 
-  console.log(balanceTransaction);
-
   return (
     <div
       className={
