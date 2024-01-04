@@ -7,7 +7,6 @@ export const config = {
     "/api/audio/:path*",
     "/api/chat/:path*",
     "/api/checkout",
-    "/api/conversation/:path*",
     "/api/customer",
     "/api/files",
     "/api/images/:path*",
