@@ -59,13 +59,15 @@ const ModelSwitch = () => {
         </div>
         <Switch
           checked={useGPT4}
-          className={`${useGPT4 ? "bg-[#AB68FF]" : "bg-gray-200"}
+          className={`${useGPT4 ? "bg-[#AB68FF]" : "bg-gray-200"} drop-shadow-sm
           relative flex h-[18px] w-[33px] shrink-0 cursor-pointer rounded-full shadow-sm transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}
         >
           <span className="sr-only">GPT-4</span>
           <span
             aria-hidden="true"
-            className={`${useGPT4 ? "translate-x-4" : "translate-x-0"}
+            className={`${
+              useGPT4 ? "translate-x-4" : "translate-x-0"
+            } drop-shadow-sm
             pointer-events-none inline-block h-[18px] w-[18px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}
           />
         </Switch>
