@@ -91,7 +91,9 @@ const CSR = () => {
               </div>
             ))
           ) : (
-            <Skeleton count={4} className={"h-9"} />
+            <div className={"px-1"}>
+              <Skeleton count={5} className={"h-9"} />
+            </div>
           )}
         </div>
       </div>
