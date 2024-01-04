@@ -145,7 +145,7 @@ const SecondaryNav = () => {
           >
             <ModelSwitch />
           </div>
-          <Link href={"/billing"}>
+          <Link href={"/billing"} target={"_blank"}>
             <div
               className={
                 "bg-black px-3 py-2 text-white rounded w-full font-semibold shrink-0 whitespace-nowrap text-center"
