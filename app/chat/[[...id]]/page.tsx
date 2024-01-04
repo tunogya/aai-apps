@@ -460,6 +460,7 @@ export default function Chat() {
                   ))}
               </div>
             </Transition>
+            {!choices && <div className={"min-h-[218px] w-full"}></div>}
           </div>
         )}
       </div>

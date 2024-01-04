@@ -3,6 +3,7 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 import { redirect } from "next/navigation";
 import dysortid from "@/app/utils/dysortid";
 import useSWR from "swr";
+import React from "react";
 
 export default function Index() {
   const { user, error, isLoading } = useUser();
@@ -30,6 +31,7 @@ export default function Index() {
             fill="currentColor"
           />
         </svg>
+        <div className={"min-h-[218px] w-full"}></div>
       </div>
     );
 
