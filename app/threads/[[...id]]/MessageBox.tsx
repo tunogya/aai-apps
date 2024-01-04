@@ -6,12 +6,7 @@ const MessageBox: FC<{
   message: any;
 }> = ({ message }) => {
   const isTelegram = useMemo(() => {
-    return (
-      // @ts-ignore
-      message.metadata?.["Content-Type"] === "application/json" &&
-      // @ts-ignore
-      message.metadata?.Type === "telegram/update"
-    );
+    return message.metadata?.object === "telegram.update";
   }, [message]);
 
   const username = useMemo(() => {
