@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import useSWR from "swr";
 import MessageBox from "@/app/threads/[[...id]]/MessageBox";
 import Skeleton from "react-loading-skeleton";
@@ -12,6 +12,7 @@ const CSR = () => {
   const { data } = useSWR(`/api/assistants/threads/${id}`, (url) =>
     fetch(url).then((res) => res.json()),
   );
+  const router = useRouter();
 
   return (
     <div
@@ -25,7 +26,13 @@ const CSR = () => {
             "flex gap-2 w-full py-1 text-gray-800 justify-between items-center"
           }
         >
-          <div className={"text-sm font-semibold text-[#0066FF]"}>Logs</div>
+          <button
+            onClick={() => router.back()}
+            className={"text-sm font-semibold text-[#0066FF] group"}
+          >
+            <div className={"group-hover:hidden"}>Logs</div>
+            <div className={"hidden group-hover:block underline"}>Back</div>
+          </button>
         </div>
         <div className={"text-3xl font-semibold text-gray-800"}>{id}</div>
       </div>
