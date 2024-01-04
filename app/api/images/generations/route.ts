@@ -18,6 +18,10 @@ export async function POST(req: NextRequest): Promise<Response> {
   const { user } = await getSession();
 
   const customer = await redisClient.get(`customer:${user.email}`);
+  let balance = await redisClient.get(`customer:balance:${user.email}`);
+  if (!balance) {
+    balance = 0;
+  }
 
   if (!customer) {
     return NextResponse.json({
@@ -26,8 +30,7 @@ export async function POST(req: NextRequest): Promise<Response> {
     });
   }
 
-  // @ts-ignore
-  if (customer?.balance > 50) {
+  if ((balance as number) > 50) {
     return NextResponse.json(
       {
         error: "Insufficient balance",
@@ -126,6 +129,10 @@ export async function POST(req: NextRequest): Promise<Response> {
           amount: Math.round((cost || 0) * 100),
           currency: "usd",
         }),
+        redisClient.incrbyfloat(
+          `customer:balance:${user.email}`,
+          Math.round((cost || 0) * 100),
+        ),
       ]);
 
       return NextResponse.json(

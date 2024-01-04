@@ -14,12 +14,28 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const { user } = await getSession();
 
   const customer = await redisClient.get(`customer:${user.email}`);
+  let balance = await redisClient.get(`customer:balance:${user.email}`);
+  if (!balance) {
+    balance = 0;
+  }
 
   if (!customer) {
     return NextResponse.json({
       error: "customer required",
       message: "You need to be a customer.",
     });
+  }
+
+  if ((balance as number) > 50) {
+    return NextResponse.json(
+      {
+        error: "Insufficient balance",
+        message: "You need to recharge before using it.",
+      },
+      {
+        status: 402,
+      },
+    );
   }
 
   let { model, input, voice, response_format, speed } = await req.json();
@@ -104,6 +120,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
             amount: Math.round((cost || 0) * 100),
             currency: "usd",
           }),
+          redisClient.incrbyfloat(
+            `customer:balance:${user.email}`,
+            Math.round((cost || 0) * 100),
+          ),
         );
       }
       await Promise.all(pendingPromise);
