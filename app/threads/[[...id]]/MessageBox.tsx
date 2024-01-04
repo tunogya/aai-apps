@@ -6,9 +6,10 @@ const MessageBox: FC<{
   message: ThreadMessage;
 }> = ({ message }) => {
   const isTelegram = useMemo(() => {
-    // @ts-ignore
     return (
+      // @ts-ignore
       message.metadata?.["Content-Type"] === "application/json" &&
+      // @ts-ignore
       message.metadata?.Type === "telegram/update"
     );
   }, [message]);
