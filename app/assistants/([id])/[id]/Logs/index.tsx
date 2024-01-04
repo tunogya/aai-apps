@@ -19,7 +19,7 @@ const CSRPage = () => {
       </div>
       <div>
         {isLoading ? (
-          <Skeleton count={3} className={"h-10"} />
+          <Skeleton count={5} className={"h-10"} />
         ) : data?.items?.length > 0 ? (
           data.items.map((item: any) => (
             <Link

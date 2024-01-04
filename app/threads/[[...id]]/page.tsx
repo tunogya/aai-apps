@@ -3,14 +3,14 @@
 import React from "react";
 import { useParams } from "next/navigation";
 import useSWR from "swr";
-import moment from "moment/moment";
+import MessageBox from "@/app/threads/[[...id]]/MessageBox";
 
 const CSR = () => {
   const { id } = useParams();
   const { data } = useSWR(`/api/assistants/threads/${id}`, (url) =>
     fetch(url).then((res) => res.json()),
   );
-  console.log(data);
+
   return (
     <div
       className={
@@ -31,35 +31,7 @@ const CSR = () => {
         <div className={"text-gray-800 font-semibold mb-2"}>Messages:</div>
         {data?.messages.data
           .map((message: any, index: number) => (
-            <div
-              key={index}
-              className={`border-b p-5 flex flex-col ${
-                message?.role === "user" ? "bg-gray-50" : ""
-              }`}
-            >
-              <div
-                className={"text-sm text-gray-500 flex justify-between mb-1"}
-              >
-                <div>{message?.role}</div>
-                <div className={"text-gray-400 text-[13px]"}>
-                  {moment(message?.created_at * 1000)
-                    .startOf("second")
-                    .fromNow()}
-                </div>
-              </div>
-              <div className={"text-gray-600 break-all"}>
-                {message?.content?.[0]?.text?.value}
-              </div>
-              {message?.run_id && (
-                <div
-                  className={
-                    "text-xs border px-2 py-1 text-gray-800 w-fit rounded mt-2 bg-gray-100"
-                  }
-                >
-                  {message?.run_id}
-                </div>
-              )}
-            </div>
+            <MessageBox message={message} key={index} />
           ))
           .reverse()}
       </div>
