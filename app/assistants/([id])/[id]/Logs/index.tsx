@@ -37,7 +37,7 @@ const CSRPage = () => {
             </Link>
           ))
         ) : (
-          <div className={"text-sm text-gray-500 h-10 flex items-center"}>
+          <div className={"text-sm text-gray-400 h-10 flex items-center"}>
             No Logs
           </div>
         )}

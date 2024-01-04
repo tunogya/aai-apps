@@ -47,7 +47,7 @@ const CSRPage = () => {
             </div>
           ))
         ) : (
-          <div className={"text-sm text-gray-500 h-10 flex items-center"}>
+          <div className={"text-sm text-gray-400 h-10 flex items-center"}>
             No Events
           </div>
         )}
