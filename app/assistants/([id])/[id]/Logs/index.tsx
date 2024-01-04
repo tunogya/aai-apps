@@ -23,14 +23,16 @@ const CSRPage = () => {
         ) : data?.items?.length > 0 ? (
           data.items.map((item: any) => (
             <Link
-              href={`/threads/${item.SK.split("#")[1]}`}
+              href={`/threads/${item?.thread_id}`}
               prefetch={true}
               key={item.SK}
               className={
                 "text-sm text-gray-500 flex justify-between h-10 hover:bg-gray-50 items-center px-1 cursor-pointer border-b"
               }
             >
-              <div>Run: {item.SK.split("#")[1]}</div>
+              <div>
+                {item.SK.split("#")[1]} on {item.thread_id}
+              </div>
               <div className={"text-[13px]"}>
                 {new Date(item.updated * 1000).toLocaleString()}
               </div>
