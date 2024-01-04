@@ -30,8 +30,8 @@ const CSR = () => {
       </div>
       <div className={"py-4"}>
         <div className={"text-gray-800 font-semibold mb-2"}>Messages:</div>
-        {data ? (
-          data?.messages.data.map((message: any, index: number) => (
+        {data?.messages?.data ? (
+          data?.messages?.data?.map((message: any, index: number) => (
             <MessageBox message={message} key={index} />
           ))
         ) : (
