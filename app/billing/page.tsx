@@ -40,7 +40,7 @@ const CSR = () => {
         {customer?.balance !== undefined ? (
           <div className={"flex items-end gap-3"}>
             <div className={"text-3xl text-gray-800"}>
-              {((-1 * customer?.balance) / 100).toFixed(2)} AAI
+              {(-1 * customer?.balance) / 100} AAI
             </div>
             <div className={"text-sm text-gray-400"}>(1 AAI = 1 USD)</div>
           </div>
