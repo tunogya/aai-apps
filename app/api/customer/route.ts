@@ -58,10 +58,9 @@ const GET = async (req: NextRequest) => {
       currency: "usd",
     };
   }
-  redisClient
-    .pipeline()
-    .set(`customer:balance:${user.email}`, customer.balance)
-    .set(`customer:${user.email}`, JSON.stringify(customer));
+  await redisClient.set(`customer:balance:${user.email}`, customer.balance);
+  await redisClient.set(`customer:${user.email}`, JSON.stringify(customer));
+
   return NextResponse.json(customer);
 };
 
