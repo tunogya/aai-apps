@@ -4,6 +4,7 @@ import React from "react";
 import { useParams } from "next/navigation";
 import useSWR from "swr";
 import MessageBox from "@/app/threads/[[...id]]/MessageBox";
+import Skeleton from "react-loading-skeleton";
 
 const CSR = () => {
   const { id } = useParams();
@@ -29,11 +30,13 @@ const CSR = () => {
       </div>
       <div className={"py-4"}>
         <div className={"text-gray-800 font-semibold mb-2"}>Messages:</div>
-        {data?.messages.data
-          .map((message: any, index: number) => (
+        {data ? (
+          data?.messages.data.map((message: any, index: number) => (
             <MessageBox message={message} key={index} />
           ))
-          .reverse()}
+        ) : (
+          <Skeleton count={5} className={"h-[120px]"} />
+        )}
       </div>
     </div>
   );
