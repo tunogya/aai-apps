@@ -15,14 +15,14 @@ const GET = async (req: NextRequest, { params }: any) => {
       },
       ExpressionAttributeValues: {
         ":pk": `ASST#${params.id}`,
-        ":sk": "RUN#",
+        ":sk": "THREAD_LOG#",
       },
       Limit: limit,
       ScanIndexForward: false,
       ExclusiveStartKey: cursor
         ? {
             PK: `ASST#${params.id}`,
-            SK: `RUN#${cursor}`,
+            SK: `THREAD_LOG#${cursor}`,
           }
         : undefined,
     }),
@@ -30,7 +30,7 @@ const GET = async (req: NextRequest, { params }: any) => {
   return NextResponse.json({
     items: Items,
     count: Count,
-    nextCursor: LastEvaluatedKey?.SK.replace("RUN#", "") || undefined,
+    nextCursor: LastEvaluatedKey?.SK.replace("THREAD_LOG#", "") || undefined,
   });
 };
 
