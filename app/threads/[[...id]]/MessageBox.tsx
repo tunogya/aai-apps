@@ -1,6 +1,7 @@
 import React, { FC, useMemo } from "react";
 import { ThreadMessage } from "openai/src/resources/beta/threads/messages/messages";
 import Link from "next/link";
+import { CheckIcon } from "@heroicons/react/24/outline";
 
 const MessageBox: FC<{
   message: ThreadMessage;
@@ -31,13 +32,18 @@ const MessageBox: FC<{
     >
       <div className={"flex flex-col w-full max-w-3xl"}>
         <div className={"text-sm text-gray-500 flex justify-between mb-1"}>
-          {isTelegram ? (
-            <Link href={`https://t.me/${username}`} target={"_blank"}>
-              @{username}
-            </Link>
-          ) : (
-            <div>{message?.role}</div>
-          )}
+          <div className={"flex items-center justify-center"}>
+            {isTelegram ? (
+              <Link href={`https://t.me/${username}`} target={"_blank"}>
+                @{username}
+              </Link>
+            ) : (
+              <div>{message?.role}</div>
+            )}
+            {message?.run_id && (
+              <CheckIcon className={"w-4 h-4 mx-2 stroke-2 text-green-500"} />
+            )}
+          </div>
           <div className={"text-gray-400 text-[13px]"}>
             {new Date(message?.created_at * 1000).toLocaleString()}
           </div>
@@ -57,15 +63,6 @@ const MessageBox: FC<{
         {message.content?.[0].type === "image_file" && (
           <div className={"text-gray-600 break-words"}>
             file_id: {message.content[0].image_file.file_id}
-          </div>
-        )}
-        {message?.run_id && (
-          <div
-            className={
-              "text-xs border px-2 py-1 text-gray-800 w-fit rounded mt-2 bg-gray-100"
-            }
-          >
-            run_id: {message.run_id}
           </div>
         )}
       </div>
