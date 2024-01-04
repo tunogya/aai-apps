@@ -1,10 +1,9 @@
 import React, { FC, useMemo } from "react";
-import { ThreadMessage } from "openai/src/resources/beta/threads/messages/messages";
 import Link from "next/link";
 import { CheckIcon } from "@heroicons/react/24/outline";
 
 const MessageBox: FC<{
-  message: ThreadMessage;
+  message: any;
 }> = ({ message }) => {
   const isTelegram = useMemo(() => {
     return (

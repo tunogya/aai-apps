@@ -5,7 +5,6 @@ import { useParams, useRouter } from "next/navigation";
 import useSWR from "swr";
 import MessageBox from "@/app/threads/[[...id]]/MessageBox";
 import Skeleton from "react-loading-skeleton";
-import { ThreadMessage } from "openai/src/resources/beta/threads/messages/messages";
 
 const CSR = () => {
   const { id } = useParams();
@@ -39,7 +38,7 @@ const CSR = () => {
       <div className={"py-4"}>
         <div className={"text-gray-800 font-semibold mb-2"}>Messages:</div>
         {data?.messages?.data ? (
-          data?.messages?.data?.map((message: ThreadMessage, index: number) => (
+          data?.messages?.data?.map((message: any, index: number) => (
             <MessageBox message={message} key={index} />
           ))
         ) : (
