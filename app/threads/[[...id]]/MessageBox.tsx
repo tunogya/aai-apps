@@ -33,7 +33,11 @@ const MessageBox: FC<{
         <div className={"text-sm text-gray-500 flex justify-between mb-1"}>
           <div className={"flex items-center justify-center"}>
             {isTelegram ? (
-              <Link href={`https://t.me/${username}`} target={"_blank"}>
+              <Link
+                href={`https://t.me/${username}`}
+                target={"_blank"}
+                className={"hover:underline"}
+              >
                 @{username}
               </Link>
             ) : (
