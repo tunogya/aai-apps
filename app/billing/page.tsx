@@ -60,7 +60,7 @@ const CSR = () => {
             price={process.env.NEXT_PUBLIC_AAI_CREDIT_PRICE!}
             title={"Buy AAI credit"}
             className={
-              "bg-gray-100 text-gray-800 rounded w-fit px-3 py-1.5 font-medium cursor-pointer text-sm hover:bg-gray-200"
+              "bg-gray-100 text-gray-800 rounded-lg w-fit px-3 py-1.5 font-medium cursor-pointer text-sm hover:bg-gray-200"
             }
           />
         </div>
