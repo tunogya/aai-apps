@@ -30,7 +30,16 @@ const CSRPage = () => {
                 "text-sm text-gray-500 flex justify-between h-10 hover:bg-gray-50 items-center px-1 cursor-pointer border-b"
               }
             >
-              <div>Run: {item.SK.split("#")[1]}</div>
+              <div className={"flex gap-2 items-center"}>
+                <div
+                  className={
+                    "text-xs px-1 py-0.5 bg-green-500 text-white rounded"
+                  }
+                >
+                  Active
+                </div>
+                {item.SK.split("#")[1]}
+              </div>
               <div className={"text-[13px]"}>
                 {new Date(item.updated * 1000).toLocaleString()}
               </div>
