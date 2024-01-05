@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import useSWR from "swr";
 import Skeleton from "react-loading-skeleton";
 import Link from "next/link";
+import LogItem from "@/app/assistants/([id])/[id]/Logs/LogItem";
 
 const CSRPage = () => {
   const params = useParams();
@@ -21,28 +22,8 @@ const CSRPage = () => {
         {isLoading ? (
           <Skeleton count={5} className={"h-10"} />
         ) : data?.items?.length > 0 ? (
-          data.items.map((item: any) => (
-            <Link
-              href={`/threads/${item.SK.split("#")[1]}`}
-              prefetch={true}
-              key={item.SK}
-              className={
-                "text-sm text-gray-500 flex justify-between h-10 hover:bg-gray-50 items-center px-1 cursor-pointer border-b"
-              }
-            >
-              <div className={"flex gap-2 items-center"}>
-                <div
-                  className={`text-xs px-1 py-0.5 bg-gray-100 text-gray-800 rounded`}
-                >
-                  {JSON.parse(item?.message)?.message?.chat?.type}
-                </div>
-                @{JSON.parse(item?.message)?.message?.chat?.username || "NaN"}:{" "}
-                {JSON.parse(item?.message)?.message?.text || "NaN"}
-              </div>
-              <div className={"text-[13px]"}>
-                {new Date(item.updated * 1000).toLocaleString()}
-              </div>
-            </Link>
+          data.items.map((item: any, index: number) => (
+            <LogItem log={item} key={index} />
           ))
         ) : (
           <div className={"text-sm text-gray-400 h-10 flex items-center"}>
