@@ -2,12 +2,6 @@ import { Metadata } from "next";
 import React, { ReactNode } from "react";
 import Toolbar from "@/app/components/Toolbar";
 import PrimaryNav from "@/app/components/Nav/PrimaryNav";
-import SecondaryNav from "@/app/chat/[[...id]]/SecondaryNav";
-import dynamic from "next/dynamic";
-import Skeleton from "react-loading-skeleton";
-const ModelSwitch = dynamic(() => import("@/app/components/ModelSwitch"), {
-  loading: () => <Skeleton width={"90px"} height={"20px"} className={"p-1"} />,
-});
 
 export const runtime = "edge";
 

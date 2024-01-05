@@ -12,8 +12,6 @@ const CSRPage = () => {
     (url) => fetch(url).then((res) => res.json()),
   );
 
-  console.log(data);
-
   return (
     <div className={"pt-4"}>
       <div className={"flex justify-between pb-3 border-b"}>
@@ -34,11 +32,9 @@ const CSRPage = () => {
             >
               <div className={"flex gap-2 items-center"}>
                 <div
-                  className={`text-xs px-1 py-0.5 ${
-                    item.status === "completed" ? "bg-green-500" : ""
-                  } text-white rounded`}
+                  className={`text-xs px-1 py-0.5 bg-gray-100 text-gray-800 rounded`}
                 >
-                  {item?.status}
+                  {JSON.parse(item?.message)?.message?.chat?.type}
                 </div>
                 @{JSON.parse(item?.message)?.message?.chat?.username || "NaN"}:{" "}
                 {JSON.parse(item?.message)?.message?.text || "NaN"}
