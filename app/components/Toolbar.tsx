@@ -9,8 +9,12 @@ import Skeleton from "react-loading-skeleton";
 const Toolbar: FC<{ border?: boolean; children?: React.ReactNode }> = (
   props,
 ) => {
-  const { data } = useSWR("/api/customer", (url) =>
-    fetch(url).then((res) => res.json()),
+  const { data } = useSWR(
+    "/api/customer",
+    (url) => fetch(url).then((res) => res.json()),
+    {
+      refreshInterval: 30_000,
+    },
   );
 
   return (
