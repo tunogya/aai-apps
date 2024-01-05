@@ -58,9 +58,9 @@ const CSR = () => {
         <div className={"flex w-full gap-2"}>
           <CheckoutButton
             price={process.env.NEXT_PUBLIC_AAI_CREDIT_PRICE!}
-            title={"Buy AAI credit"}
+            title={"Buy credit"}
             className={
-              "bg-gray-100 text-gray-800 rounded-lg w-fit px-3 py-1.5 font-medium cursor-pointer text-sm hover:bg-gray-200"
+              "bg-[#0066FF] text-white rounded-lg w-fit px-3 py-1.5 font-medium cursor-pointer text-sm hover:bg-gray-200"
             }
           />
         </div>
