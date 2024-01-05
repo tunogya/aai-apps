@@ -30,7 +30,7 @@ const CSR = () => {
             className={"text-sm font-semibold text-[#0066FF] group"}
           >
             <div className={"group-hover:hidden"}>Logs</div>
-            <div className={"hidden group-hover:block underline"}>Back</div>
+            <div className={"hidden group-hover:block"}>Back</div>
           </button>
         </div>
         <div className={"text-3xl font-semibold text-gray-800"}>{id}</div>
