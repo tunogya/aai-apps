@@ -6,7 +6,7 @@ const LogItem: FC<{
   log: any;
 }> = ({ log }) => {
   const thread_id = log.SK.split("#")[1];
-  const chat_username = JSON.parse(log?.message)?.message?.chat?.username;
+  const chat_title = JSON.parse(log?.message)?.message?.chat?.title;
   const chat_type = JSON.parse(log?.message)?.message?.chat?.type;
   const from_username = JSON.parse(log?.message)?.message?.from?.username;
   const text = JSON.parse(log?.message)?.message?.text || "NaN";
@@ -21,15 +21,13 @@ const LogItem: FC<{
       }
     >
       <div className={"flex gap-2 items-center"}>
-        <div
-          className={`text-xs px-1 py-0.5 ${
-            chat_type === "private"
-              ? "bg-gray-200 text-gray-500"
-              : "bg-green-500 text-white"
-          } rounded`}
-        >
-          {chat_username}
-        </div>
+        {chat_type === "group" && (
+          <div
+            className={`text-xs px-1 py-0.5 bg-green-500 text-white rounded`}
+          >
+            {chat_title}
+          </div>
+        )}
         {from_username ? `@${from_username}` : "NaN"}: {text}
       </div>
       <div className={"text-[13px]"}>{updated}</div>
