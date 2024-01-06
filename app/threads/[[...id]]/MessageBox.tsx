@@ -18,6 +18,10 @@ const MessageBox: FC<{
     }
   }, [isTelegram, message.content]);
 
+  if (isTelegram && !JSON.parse(message.content[0].text.value)?.message?.text) {
+    return <></>;
+  }
+
   return (
     <div
       className={`border-b p-5 flex justify-center ${

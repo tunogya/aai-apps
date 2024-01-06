@@ -42,7 +42,7 @@ const CSR = () => {
             <MessageBox message={message} key={index} />
           ))
         ) : (
-          <Skeleton count={5} className={"h-[120px]"} />
+          <Skeleton count={3} className={"h-[120px]"} />
         )}
       </div>
     </div>
