@@ -12,6 +12,10 @@ const LogItem: FC<{
   const text = JSON.parse(log?.message)?.message?.text || "NaN";
   const updated = new Date(log.updated * 1000).toLocaleString();
 
+  if (!text) {
+    return <></>;
+  }
+
   return (
     <Link
       href={`/threads/${thread_id}`}
