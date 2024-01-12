@@ -48,6 +48,7 @@ export async function POST(req: NextRequest): Promise<Response> {
 
   let { messages, model, id, functions } = await req.json();
 
+  let max_tokens = undefined;
   // get title before json parse messages content
   let title = messages[0]?.content.slice(0, 40);
   const useVision = model === "gpt-4-vision";
@@ -60,6 +61,7 @@ export async function POST(req: NextRequest): Promise<Response> {
   });
   // json parse messages content, if (useVision === true)
   if (useVision) {
+    max_tokens = 1024;
     for (let i = 0; i < messages.length; i++) {
       const item = messages[i];
       try {
@@ -132,6 +134,7 @@ export async function POST(req: NextRequest): Promise<Response> {
         temperature: 0.7,
         stream: true,
         functions,
+        max_tokens,
       });
     } catch (e) {
       // Backup model
