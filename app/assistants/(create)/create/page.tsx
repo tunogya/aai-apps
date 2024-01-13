@@ -46,9 +46,7 @@ export default function CSRPage() {
         }),
       }).then((res) => res.json());
       setStatus("success");
-      if (result?.success) {
-        router.push("/assistants");
-      }
+      router.push("/assistants");
     } catch (e) {
       setStatus("error");
       setTimeout(() => {
