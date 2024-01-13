@@ -32,7 +32,7 @@ export default function CSRPage() {
   const create = async () => {
     setStatus("loading");
     try {
-      const result = await fetch(`/api/assistants`, {
+      await fetch(`/api/assistants`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
