@@ -30,7 +30,7 @@ export async function POST(req: NextRequest): Promise<Response> {
     });
   }
 
-  if ((balance as number) > 50) {
+  if ((balance as number) > 5) {
     return NextResponse.json(
       {
         error: "Insufficient balance",

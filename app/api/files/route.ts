@@ -21,7 +21,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   }
 
   // @ts-ignore
-  if (customer?.balance > 50) {
+  if (customer?.balance > 5) {
     return NextResponse.json(
       {
         error: "Insufficient balance",
