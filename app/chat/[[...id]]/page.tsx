@@ -151,7 +151,9 @@ export default function Chat() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          history: history.items.map((item: any) => item.title),
+          history: history?.items?.map(
+            (item: any) => item?.title || "No title",
+          ),
         }),
       }).then((res) => res.json()),
     {
