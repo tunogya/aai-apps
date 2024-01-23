@@ -16,23 +16,12 @@ export async function POST(req: NextRequest): Promise<Response> {
   const customer = await redisClient.get(`customer:${user.email}`);
 
   if (!customer) {
-    return NextResponse.json({
-      error: "customer required",
-      message: "You need to be a customer.",
-    });
+    return NextResponse.json([]);
   }
 
   // @ts-ignore
   if (customer?.balance > 5) {
-    return NextResponse.json(
-      {
-        error: "Insufficient balance",
-        message: "You need to recharge before using it.",
-      },
-      {
-        status: 402,
-      },
-    );
+    return NextResponse.json([]);
   }
 
   const { history } = await req.json();
