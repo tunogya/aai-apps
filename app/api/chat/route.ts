@@ -124,7 +124,7 @@ export async function POST(req: NextRequest): Promise<Response> {
       if (model === "gpt-3.5") {
         model = "gpt-3.5-turbo-1106"; // 16k tokens
       } else if (model === "gpt-4") {
-        model = "gpt-4-1106-preview"; // 128k tokens
+        model = "gpt-4-0125-preview"; // 128k tokens
       } else if (model === "gpt-4-vision") {
         model = "gpt-4-vision-preview"; // 128k tokens
       }
