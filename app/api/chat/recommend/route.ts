@@ -40,7 +40,7 @@ export async function POST(req: NextRequest): Promise<Response> {
     try {
       const openai = new OpenAI();
       const res = await openai.chat.completions.create({
-        model: "gpt-3.5-turbo-1106",
+        model: "gpt-3.5-turbo-0125",
         messages: [
           {
             role: "system",
