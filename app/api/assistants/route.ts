@@ -1,11 +1,7 @@
 import { getSession } from "@auth0/nextjs-auth0";
 import { NextRequest, NextResponse } from "next/server";
 import ddbDocClient from "@/app/utils/ddbDocClient";
-import {
-  BatchWriteCommand,
-  PutCommand,
-  QueryCommand,
-} from "@aws-sdk/lib-dynamodb";
+import { BatchWriteCommand, QueryCommand } from "@aws-sdk/lib-dynamodb";
 import redisClient from "@/app/utils/redisClient";
 import openai from "@/app/utils/openai";
 import dysortid from "@/app/utils/dysortid";
@@ -100,14 +96,6 @@ const POST = async (req: NextRequest) => {
             },
           ],
         },
-      }),
-    );
-    await ddbDocClient.send(
-      new PutCommand({
-        TableName: "abandonai-prod",
-        Item: item,
-        ConditionExpression:
-          "attribute_not_exists(PK) AND attribute_not_exists(SK)",
       }),
     );
     return NextResponse.json({
