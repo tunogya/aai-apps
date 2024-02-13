@@ -18,10 +18,6 @@ const AssistantList = () => {
     fetch(url).then((res) => res.json()),
   );
 
-  if (isLoading) {
-    return <Skeleton count={3} height={"33px"} />;
-  }
-
   if (data?.[0]?.count === 0) {
     return (
       <div className={"flex flex-col items-center justify-center flex-1 gap-2"}>
@@ -107,7 +103,7 @@ const TableRow: FC<{
   id: string;
 }> = ({ id }) => {
   const router = useRouter();
-  const { data } = useSWR(
+  const { data, isLoading } = useSWR(
     id ? `/api/assistants/${id}` : undefined,
     (url: string) => fetch(url).then((res) => res.json()),
   );
@@ -126,22 +122,26 @@ const TableRow: FC<{
           "py-2 pr-6 pl-2 text-gray-700 font-semibold truncate max-w-[240px]"
         }
       >
-        {data?.item?.name}
+        {isLoading ? <Skeleton /> : data?.item?.name}
       </td>
       <td className={"py-2 pr-6 truncate max-w-[240px]"}>
-        {data?.item?.description}
+        {isLoading ? <Skeleton /> : data?.item?.description}
       </td>
       <td className={"py-2 pr-6 truncate max-w-[240px]"}>
-        {data?.item?.instructions}
+        {isLoading ? <Skeleton /> : data?.item?.instructions}
       </td>
       <td className={"py-2 pr-6 truncate max-w-[240px]"}>
-        {data?.item?.metadata?.voice || "-"}
+        {isLoading ? <Skeleton /> : data?.item?.metadata?.voice || "-"}
       </td>
       <td className={"py-2 pr-6 truncate max-w-[240px]"}>
-        {data?.item?.model}
+        {isLoading ? <Skeleton /> : data?.item?.model}
       </td>
       <td className={"py-2 pr-6 truncate max-w-[240px]"}>
-        {new Date(data?.item?.created_at * 1000).toLocaleDateString()}
+        {isLoading ? (
+          <Skeleton />
+        ) : (
+          new Date(data?.item?.created_at * 1000).toLocaleDateString()
+        )}
       </td>
     </tr>
   );
