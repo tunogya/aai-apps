@@ -13,6 +13,7 @@ const Modal: FC<{
     description: string;
     instructions: string;
     model: string;
+    image: string;
     metadata: {
       voice: string;
     };
@@ -26,6 +27,7 @@ const Modal: FC<{
     description: string;
     instructions: string;
     model: string;
+    image: string;
     metadata: {
       voice: string;
     };
@@ -48,6 +50,7 @@ const Modal: FC<{
           description: updateParams?.description?.trim() || "N/A",
           instructions: updateParams?.instructions?.trim() || "N/A",
           model: updateParams?.model?.toLowerCase(),
+          image: updateParams?.image?.trim() || "",
           metadata: updateParams?.metadata,
         }),
       }).then((res) => res.json());
@@ -247,6 +250,23 @@ const Modal: FC<{
                         placeholder={"You are a helpful assistant."}
                         className={
                           "border text-sm overflow-x-scroll  w-full h-7 px-2 py-1 rounded focus:outline-[#0066FF] min-h-[80px] max-h-[240px]"
+                        }
+                      />
+                    </div>
+                    <div className={"space-y-2 text-gray-800"}>
+                      <div className={"font-semibold text-sm"}>Image</div>
+                      <input
+                        maxLength={256}
+                        value={updateParams?.image || ""}
+                        onChange={(e) =>
+                          setUpdateParams({
+                            ...updateParams,
+                            image: e.target.value,
+                          })
+                        }
+                        placeholder={"Enter a image uri."}
+                        className={
+                          "border text-sm overflow-x-scroll  w-full h-7 px-2 py-1 rounded focus:outline-[#0066FF]"
                         }
                       />
                     </div>
