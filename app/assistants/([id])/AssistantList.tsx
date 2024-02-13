@@ -5,9 +5,10 @@ import Link from "next/link";
 import useSWRInfinite from "swr/infinite";
 import { useRouter } from "next/navigation";
 import Skeleton from "react-loading-skeleton";
+import { FC } from "react";
+import useSWR from "swr";
 
 const AssistantList = () => {
-  const router = useRouter();
   const getKey = (pageIndex: number, previousPageData: any) => {
     if (previousPageData && !previousPageData.nextCursor) return null;
     if (pageIndex === 0) return `/api/assistants?limit=20`;
@@ -57,38 +58,7 @@ const AssistantList = () => {
             {data?.[size - 1]?.items
               ?.sort((a: any, b: any) => a.created_at - b.created_at)
               ?.map((item: any, index: number) => (
-                <tr
-                  key={index}
-                  onClick={() => {
-                    router.push(`/assistants/${item.SK.replace("ASST#", "")}`);
-                  }}
-                  className={
-                    "border-b text-sm text-gray-500 hover:bg-gray-50 cursor-pointer"
-                  }
-                >
-                  <td
-                    className={
-                      "py-2 pr-6 pl-2 text-gray-700 font-semibold truncate max-w-[240px]"
-                    }
-                  >
-                    {item.name}
-                  </td>
-                  <td className={"py-2 pr-6 truncate max-w-[240px]"}>
-                    {item.description}
-                  </td>
-                  <td className={"py-2 pr-6 truncate max-w-[240px]"}>
-                    {item.instructions}
-                  </td>
-                  <td className={"py-2 pr-6 truncate max-w-[240px]"}>
-                    {item.metadata?.voice || "-"}
-                  </td>
-                  <td className={"py-2 pr-6 truncate max-w-[240px]"}>
-                    {item.model}
-                  </td>
-                  <td className={"py-2 pr-6 truncate max-w-[240px]"}>
-                    {new Date(item.created_at * 1000).toLocaleDateString()}
-                  </td>
-                </tr>
+                <TableRow id={item.id} key={index} />
               ))}
           </tbody>
         </table>
@@ -130,6 +100,50 @@ const AssistantList = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+const TableRow: FC<{
+  id: string;
+}> = ({ id }) => {
+  const router = useRouter();
+  const { data } = useSWR(
+    id ? `/api/assistants/${id}` : undefined,
+    (url: string) => fetch(url).then((res) => res.json()),
+  );
+
+  return (
+    <tr
+      onClick={() => {
+        router.push(`/assistants/${id}`);
+      }}
+      className={
+        "border-b text-sm text-gray-500 hover:bg-gray-50 cursor-pointer"
+      }
+    >
+      <td
+        className={
+          "py-2 pr-6 pl-2 text-gray-700 font-semibold truncate max-w-[240px]"
+        }
+      >
+        {data?.item?.name}
+      </td>
+      <td className={"py-2 pr-6 truncate max-w-[240px]"}>
+        {data?.item?.description}
+      </td>
+      <td className={"py-2 pr-6 truncate max-w-[240px]"}>
+        {data?.item?.instructions}
+      </td>
+      <td className={"py-2 pr-6 truncate max-w-[240px]"}>
+        {data?.item?.metadata?.voice || "-"}
+      </td>
+      <td className={"py-2 pr-6 truncate max-w-[240px]"}>
+        {data?.item?.model}
+      </td>
+      <td className={"py-2 pr-6 truncate max-w-[240px]"}>
+        {new Date(data?.item?.created_at * 1000).toLocaleDateString()}
+      </td>
+    </tr>
   );
 };
 
