@@ -52,9 +52,14 @@ const GET = async (req: NextRequest) => {
 
 const POST = async (req: NextRequest) => {
   const session = await getSession();
+  const { messages, metadata } = await req.json();
+
   const sub = session?.user.sub;
   try {
-    const newThread = await openai.beta.threads.create();
+    const newThread = await openai.beta.threads.create({
+      messages,
+      metadata,
+    });
     const item = {
       ...newThread,
       PK: `USER#${sub}`,
