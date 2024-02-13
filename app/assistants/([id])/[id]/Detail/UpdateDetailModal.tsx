@@ -13,9 +13,9 @@ const Modal: FC<{
     description: string;
     instructions: string;
     model: string;
-    image: string;
     metadata: {
       voice: string;
+      image: string;
     };
   };
   callback: () => void;
@@ -27,9 +27,9 @@ const Modal: FC<{
     description: string;
     instructions: string;
     model: string;
-    image: string;
     metadata: {
       voice: string;
+      image: string;
     };
   }>(item);
 
@@ -50,7 +50,6 @@ const Modal: FC<{
           description: updateParams?.description?.trim() || "N/A",
           instructions: updateParams?.instructions?.trim() || "N/A",
           model: updateParams?.model?.toLowerCase(),
-          image: updateParams?.image?.trim() || "",
           metadata: updateParams?.metadata,
         }),
       }).then((res) => res.json());
@@ -257,11 +256,14 @@ const Modal: FC<{
                       <div className={"font-semibold text-sm"}>Image</div>
                       <input
                         maxLength={256}
-                        value={updateParams?.image || ""}
+                        value={updateParams?.metadata.image || ""}
                         onChange={(e) =>
                           setUpdateParams({
                             ...updateParams,
-                            image: e.target.value,
+                            metadata: {
+                              ...(updateParams?.metadata || {}),
+                              image: e.target.value,
+                            },
                           })
                         }
                         placeholder={"Enter a image uri."}

@@ -23,9 +23,9 @@ export default function CSRPage() {
     description: "",
     instructions: "",
     model: "gpt-4-1106-preview",
-    image: "",
     metadata: {
       voice: "Alloy",
+      image: "",
     },
   });
   const [status, setStatus] = useState("idle");

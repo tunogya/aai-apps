@@ -38,9 +38,9 @@ const CSRPage = () => {
                 description: data?.item?.description || "",
                 instructions: data?.item?.instructions || "",
                 model: data?.item?.model || "",
-                image: data?.item?.image || "",
                 metadata: {
                   voice: data?.item?.metadata.voice || "",
+                  image: data?.item?.metadata.image || "",
                 },
               }}
             />

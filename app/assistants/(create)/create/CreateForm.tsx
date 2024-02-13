@@ -151,11 +151,14 @@ const CreateForm: FC<{
         <div className={"text-xl font-medium"}>Image</div>
         <input
           maxLength={256}
-          value={createParams?.image || ""}
+          value={createParams?.metadata.image || ""}
           onChange={(e) =>
             setCreateParams({
               ...createParams,
-              image: e.target.value,
+              metadata: {
+                ...(createParams?.metadata || {}),
+                image: e.target.value,
+              },
             })
           }
           placeholder={"Enter a image uri."}
