@@ -147,6 +147,23 @@ const CreateForm: FC<{
           </div>
         </Listbox>
       </div>
+      <div className={"space-y-4 text-gray-800"}>
+        <div className={"text-xl font-medium"}>Image</div>
+        <input
+          maxLength={256}
+          value={createParams?.image || ""}
+          onChange={(e) =>
+            setCreateParams({
+              ...createParams,
+              image: e.target.value,
+            })
+          }
+          placeholder={"Enter a image uri."}
+          className={
+            "border text-sm overflow-x-scroll max-w-[360px] w-full h-7 px-2 py-1 rounded focus:outline-[#0066FF]"
+          }
+        />
+      </div>
     </div>
   );
 };

@@ -23,6 +23,7 @@ export default function CSRPage() {
     description: "",
     instructions: "",
     model: "gpt-4-1106-preview",
+    image: "",
     metadata: {
       voice: "Alloy",
     },
@@ -42,6 +43,7 @@ export default function CSRPage() {
           description: createParams?.description?.trim() || undefined,
           instructions: createParams?.instructions?.trim() || undefined,
           model: createParams?.model?.toLowerCase() || undefined,
+          image: createParams?.image?.trim() || undefined,
           metadata: createParams?.metadata || {},
         }),
       }).then((res) => res.json());
