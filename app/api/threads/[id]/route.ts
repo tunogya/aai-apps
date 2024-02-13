@@ -5,11 +5,9 @@ import openai from "@/app/utils/openai";
 const GET = async (req: NextRequest, { params }: any) => {
   const session = await getSession();
 
-  const messages = await openai.beta.threads.messages.list(params.id);
+  const thread = await openai.beta.threads.retrieve(params.id);
 
-  return NextResponse.json({
-    messages,
-  });
+  return NextResponse.json(thread);
 };
 
 export { GET };
