@@ -28,7 +28,7 @@ const GET = async (req: NextRequest) => {
     sub = decodedToken.sub;
   }
 
-  const cache = await redisClient.get("ASST_LATEST");
+  const cache = await redisClient.get("ASST_RECOMMEND");
   if (cache) {
     return NextResponse.json(cache);
   }
@@ -43,7 +43,7 @@ const GET = async (req: NextRequest) => {
     ids.map((id) => openai.beta.assistants.retrieve(id)),
   );
 
-  await redisClient.set("ASST_LATEST", JSON.stringify(res), {
+  await redisClient.set("ASST_RECOMMEND", JSON.stringify(res), {
     ex: 7 * 24 * 60 * 60,
   });
 
