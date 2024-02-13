@@ -60,24 +60,23 @@ const POST = async (req: NextRequest) => {
       messages,
       metadata,
     });
-    const item = {
-      ...newThread,
-      PK: `USER#${sub}`,
-      SK: `THREAD#${newThread.id}`,
-    };
 
-    await redisClient.set(`THREAD#${newThread.id}`, JSON.stringify(item));
+    await redisClient.set(`THREAD#${newThread.id}`, JSON.stringify(newThread));
     await ddbDocClient.send(
       new PutCommand({
         TableName: "abandonai-prod",
-        Item: item,
+        Item: {
+          ...newThread,
+          PK: `USER#${sub}`,
+          SK: `THREAD#${newThread.id}`,
+        },
         ConditionExpression:
           "attribute_not_exists(PK) AND attribute_not_exists(SK)",
       }),
     );
     return NextResponse.json({
       success: true,
-      item,
+      item: newThread,
     });
   } catch (e) {
     return NextResponse.json({
