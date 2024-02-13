@@ -69,9 +69,10 @@ const POST = async (req: NextRequest) => {
       metadata,
     });
     const item = {
-      ...newAssistant,
       PK: `USER#${sub}`,
       SK: `ASST#${newAssistant.id}`,
+      id: newAssistant.id,
+      created_at: newAssistant.created_at,
     };
 
     // Add to Redis
@@ -91,9 +92,9 @@ const POST = async (req: NextRequest) => {
                 Item: {
                   PK: `ASST#${newAssistant.id}`,
                   SK: `EVENT#${uniqueId}`,
-                  data: item,
                   type: "assistant.post",
                   updated: Math.floor(Date.now() / 1000),
+                  TTL: Math.floor(Date.now() / 1000) + 24 * 60 * 60 * 365,
                 },
               },
             },
