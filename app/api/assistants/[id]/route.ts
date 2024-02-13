@@ -1,11 +1,7 @@
 import { getSession } from "@auth0/nextjs-auth0";
 import { NextRequest, NextResponse } from "next/server";
 import ddbDocClient from "@/app/utils/ddbDocClient";
-import {
-  BatchWriteCommand,
-  DeleteCommand,
-  GetCommand,
-} from "@aws-sdk/lib-dynamodb";
+import { BatchWriteCommand, DeleteCommand } from "@aws-sdk/lib-dynamodb";
 import dysortid from "@/app/utils/dysortid";
 import redisClient from "@/app/utils/redisClient";
 import openai from "@/app/utils/openai";
@@ -16,72 +12,24 @@ const GET = async (req: NextRequest, { params }: any) => {
   const sub = session?.user.sub;
 
   try {
-    // Check Redis
-    try {
-      // get asst info by assistant id
-      const cache = await redisClient.get(`ASST#${params.id}`);
-      if (cache) {
-        // @ts-ignore
-        if (cache?.metadata?.telegram) {
-          // cache telegram token => assistant id
-          await redisClient.set(
-            // @ts-ignore
-            `ASST_ID#${cache?.metadata?.telegram}`,
-            params?.id,
-          );
-        }
-        return NextResponse.json({
-          item: cache,
-          cache: true,
-        });
-      }
-    } catch (e) {
-      console.log(e);
-    }
-    // Check DynamoDB
-    const { Item } = await ddbDocClient.send(
-      new GetCommand({
-        TableName: "abandonai-prod",
-        Key: {
-          PK: `USER#${sub}`,
-          SK: `ASST#${params?.id}`,
-        },
-      }),
-    );
-    if (Item) {
-      // Add to Redis
-      await redisClient.set(`ASST#${params.id}`, JSON.stringify(Item));
-      // If you have a telegram account, need to update in redis
-      if (Item?.metadata?.telegram) {
-        await redisClient.set(
-          `ASST_ID#${Item?.metadata?.telegram}`,
-          params?.id,
-        );
-      }
-      return NextResponse.json({
-        item: Item,
-      });
-    } else {
-      return NextResponse.json(
-        {
-          item: null,
-        },
-        {
-          status: 404,
-        },
-      );
-    }
+    // get asst info by assistant id
+    const cache = await redisClient.get(`ASST#${params.id}`);
+    return NextResponse.json({
+      item: cache,
+      cache: true,
+    });
   } catch (e) {
-    return NextResponse.json(
-      {
-        error: "something went wrong",
-        message: e,
-      },
-      {
-        status: 500,
-      },
-    );
+    console.log(e);
   }
+
+  const openai = new OpenAI();
+  const assistant = await openai.beta.assistants.retrieve(params.id);
+
+  await redisClient.set(`ASST#${params.id}`, JSON.stringify(assistant));
+
+  return NextResponse.json({
+    item: assistant,
+  });
 };
 
 const PATCH = async (req: NextRequest, { params }: any) => {
@@ -115,17 +63,12 @@ const PATCH = async (req: NextRequest, { params }: any) => {
             "abandonai-prod": [
               {
                 PutRequest: {
-                  Item: item,
-                },
-              },
-              {
-                PutRequest: {
                   Item: {
                     PK: `ASST#${params.id}`,
                     SK: `EVENT#${uniqueId}`,
-                    data: item,
                     type: "assistant.put",
                     updated: Math.floor(Date.now() / 1000),
+                    TTL: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 365,
                   },
                 },
               },
