@@ -3,6 +3,7 @@ import { getSession } from "@auth0/nextjs-auth0";
 import OpenAI from "openai";
 import jwt from "jsonwebtoken";
 import AUTH0_CERT from "@/app/utils/cert";
+import redisClient from "@/app/utils/redisClient";
 
 const GET = async (req: NextRequest) => {
   const session = await getSession();
@@ -27,12 +28,26 @@ const GET = async (req: NextRequest) => {
     sub = decodedToken.sub;
   }
 
+  const cache = await redisClient.get("ASST_LATEST");
+  if (cache) {
+    return NextResponse.json(cache);
+  }
+
   const openai = new OpenAI();
-  const list = await openai.beta.assistants.list({
-    limit: 10,
-    order: "desc",
+  const ids = [
+    "asst_brkj4MSf9jfqjtXwpGAOBQWu",
+    "asst_wsD0ZreDzksbDfe8VI1IaxpR",
+  ];
+
+  const res = await Promise.all(
+    ids.map((id) => openai.beta.assistants.retrieve(id)),
+  );
+
+  await redisClient.set("ASST_LATEST", JSON.stringify(res), {
+    ex: 7 * 24 * 60 * 60,
   });
-  return NextResponse.json(list.data);
+
+  return NextResponse.json(res);
 };
 
 export { GET };
