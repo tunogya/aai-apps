@@ -4,6 +4,7 @@ import useSWR from "swr";
 import { useParams } from "next/navigation";
 import Skeleton from "react-loading-skeleton";
 import dynamic from "next/dynamic";
+import Image from "next/image";
 const UpdateDetailModal = dynamic(
   () => import("@/app/assistants/([id])/[id]/Detail/UpdateDetailModal"),
 );
@@ -37,6 +38,7 @@ const CSRPage = () => {
                 description: data?.item?.description || "",
                 instructions: data?.item?.instructions || "",
                 model: data?.item?.model || "",
+                image: data?.item?.image || "",
                 metadata: {
                   voice: data?.item?.metadata.voice || "",
                 },
@@ -103,6 +105,19 @@ const CSRPage = () => {
               "N/A"
             )}
           </div>
+        </div>
+        <div>
+          <div className={"text-sm text-gray-500"}>Image</div>
+          {data?.item?.metadata?.image ? (
+            <Image
+              alt={""}
+              src={data.item.metadata.image}
+              width={200}
+              height={200}
+            />
+          ) : (
+            <div className={"text-gray-600 text-[13px]"}>N/A</div>
+          )}
         </div>
       </div>
     </div>
