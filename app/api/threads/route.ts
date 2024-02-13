@@ -11,7 +11,6 @@ const GET = async (req: NextRequest) => {
   const session = await getSession();
   let sub = session?.user.sub;
   if (!sub) {
-    // get from header Authorization
     let token = req.headers.get("Authorization");
     if (!token) {
       return NextResponse.json(
@@ -76,7 +75,27 @@ const POST = async (req: NextRequest) => {
   const session = await getSession();
   const { messages, metadata } = await req.json();
 
-  const sub = session?.user.sub;
+  let sub = session?.user.sub;
+  if (!sub) {
+    // get from header Authorization
+    let token = req.headers.get("Authorization");
+    if (!token) {
+      return NextResponse.json(
+        {
+          error: "auth error",
+        },
+        {
+          status: 500,
+        },
+      );
+    }
+    token = token.split(" ")[1];
+    const decodedToken = jwt.verify(token, AUTH0_CERT, {
+      algorithms: ["RS256"],
+    });
+    sub = decodedToken.sub;
+  }
+
   try {
     const newThread = await openai.beta.threads.create({
       messages,

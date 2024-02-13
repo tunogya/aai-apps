@@ -8,9 +8,6 @@ import openai from "@/app/utils/openai";
 import OpenAI from "openai";
 
 const GET = async (req: NextRequest, { params }: any) => {
-  const session = await getSession();
-  const sub = session?.user.sub;
-
   try {
     // get asst info by assistant id
     const cache = await redisClient.get(`ASST#${params.id}`);

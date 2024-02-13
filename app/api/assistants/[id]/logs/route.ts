@@ -5,6 +5,7 @@ import { QueryCommand } from "@aws-sdk/lib-dynamodb";
 const GET = async (req: NextRequest, { params }: any) => {
   const limit = Number(req?.nextUrl?.searchParams?.get("limit") || 20);
   const cursor = req?.nextUrl?.searchParams?.get("cursor") || undefined;
+
   const { Items, Count, LastEvaluatedKey } = await ddbDocClient.send(
     new QueryCommand({
       TableName: "abandonai-prod",
