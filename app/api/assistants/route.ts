@@ -4,7 +4,6 @@ import ddbDocClient from "@/app/utils/ddbDocClient";
 import { BatchWriteCommand, QueryCommand } from "@aws-sdk/lib-dynamodb";
 import redisClient from "@/app/utils/redisClient";
 import openai from "@/app/utils/openai";
-import dysortid from "@/app/utils/dysortid";
 
 // No need to use Redis
 const GET = async (req: NextRequest) => {
@@ -71,9 +70,7 @@ const POST = async (req: NextRequest) => {
       created_at: newAssistant.created_at,
     };
 
-    // Add to Redis
     await redisClient.set(`ASST#${newAssistant.id}`, JSON.stringify(item));
-    const uniqueId = dysortid();
     await ddbDocClient.send(
       new BatchWriteCommand({
         RequestItems: {
@@ -81,17 +78,6 @@ const POST = async (req: NextRequest) => {
             {
               PutRequest: {
                 Item: item,
-              },
-            },
-            {
-              PutRequest: {
-                Item: {
-                  PK: `ASST#${newAssistant.id}`,
-                  SK: `EVENT#${uniqueId}`,
-                  type: "assistant.post",
-                  updated: Math.floor(Date.now() / 1000),
-                  TTL: Math.floor(Date.now() / 1000) + 24 * 60 * 60 * 365,
-                },
               },
             },
           ],

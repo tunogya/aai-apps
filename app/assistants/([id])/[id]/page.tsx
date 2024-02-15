@@ -6,8 +6,6 @@ import { useSessionStorage } from "@uidotdev/usehooks";
 
 const Detail = dynamic(() => import("@/app/assistants/([id])/[id]/Detail"));
 const Overview = dynamic(() => import("@/app/assistants/([id])/[id]/Overview"));
-const Events = dynamic(() => import("@/app/assistants/([id])/[id]/Events"));
-const Logs = dynamic(() => import("@/app/assistants/([id])/[id]/Logs"));
 const MorePopover = dynamic(
   () => import("@/app/assistants/([id])/[id]/Overview/MorePopover"),
 );
@@ -49,29 +47,10 @@ const CSRPage = () => {
             >
               Overview
             </button>
-            <button
-              onClick={() => {
-                setType("events");
-              }}
-              className={`font-medium border-b-2 ${
-                type === "events"
-                  ? "text-[#0066FF] border-[#0066FF]"
-                  : "border-transparent text-gray-500"
-              } pb-3`}
-            >
-              Events & Logs
-            </button>
           </div>
           <MorePopover />
         </div>
-        {type === "overview" ? (
-          <Overview assistantId={params?.id as string} />
-        ) : (
-          <div className={"pb-20 space-y-12"}>
-            <Logs />
-            <Events />
-          </div>
-        )}
+        {type === "overview" && <Overview assistantId={params?.id as string} />}
       </div>
     </div>
   );

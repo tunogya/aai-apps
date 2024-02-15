@@ -2,23 +2,13 @@
 import React, { FC, useMemo } from "react";
 import { Message } from "ai";
 import {
-  ArrowPathIcon,
-  CheckIcon,
   ChevronDownIcon,
-  ClipboardIcon,
-  CloudArrowDownIcon,
-  ExclamationTriangleIcon,
-  MusicalNoteIcon,
-  PauseCircleIcon,
   PhoneArrowUpRightIcon,
-  TrashIcon,
 } from "@heroicons/react/24/outline";
 import { Disclosure } from "@headlessui/react";
 import dynamic from "next/dynamic";
 import Skeleton from "react-loading-skeleton";
 import moment from "moment/moment";
-import Link from "next/link";
-import copy from "copy-to-clipboard";
 
 const Markdown = dynamic(
   () => import("@/app/chat/[[...id]]/MessageBox/Markdown"),

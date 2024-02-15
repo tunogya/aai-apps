@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import stripeClient from "@/app/utils/stripeClient";
 import * as process from "process";
-import redisClient from "@/app/utils/redisClient";
 
 const POST = async (req: Request) => {
   let event: Stripe.Event;

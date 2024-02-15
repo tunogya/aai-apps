@@ -1,8 +1,7 @@
 import { getSession } from "@auth0/nextjs-auth0";
 import { NextRequest, NextResponse } from "next/server";
 import ddbDocClient from "@/app/utils/ddbDocClient";
-import { BatchWriteCommand, DeleteCommand } from "@aws-sdk/lib-dynamodb";
-import dysortid from "@/app/utils/dysortid";
+import { DeleteCommand } from "@aws-sdk/lib-dynamodb";
 import redisClient from "@/app/utils/redisClient";
 import openai from "@/app/utils/openai";
 import OpenAI from "openai";
@@ -52,29 +51,6 @@ const PATCH = async (req: NextRequest, { params }: any) => {
       PK: `USER#${sub}`,
       SK: `ASST#${params.id}`,
     };
-    const uniqueId = dysortid();
-    await Promise.all([
-      ddbDocClient.send(
-        new BatchWriteCommand({
-          RequestItems: {
-            "abandonai-prod": [
-              {
-                PutRequest: {
-                  Item: {
-                    PK: `ASST#${params.id}`,
-                    SK: `EVENT#${uniqueId}`,
-                    type: "assistant.put",
-                    updated: Math.floor(Date.now() / 1000),
-                    TTL: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 365,
-                  },
-                },
-              },
-            ],
-          },
-        }),
-      ),
-      redisClient.set(`ASST#${params.id}`, JSON.stringify(item)),
-    ]);
     return NextResponse.json({
       updated: true,
       item,
