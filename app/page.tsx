@@ -1,43 +1,73 @@
 "use client";
-import { useUser } from "@auth0/nextjs-auth0/client";
-import { redirect } from "next/navigation";
-import dysortid from "@/app/utils/dysortid";
-import useSWR from "swr";
 import React from "react";
+import Link from "next/link";
+import { OpenAI } from "@lobehub/icons";
 
 export default function Index() {
-  const { user, error, isLoading } = useUser();
-  const { data: customer, isLoading: isCustomerLoading } = useSWR(
-    "/api/customer",
-    (url) => fetch(url).then((res) => res.json()),
-  );
-
-  if (isLoading || isCustomerLoading)
-    return (
+  return (
+    <div
+      className={
+        "flex flex-col w-full h-full items-center justify-center flex-1 bg-[#121212] gap-24 relative pb-24"
+      }
+    >
+      <div className={"text-2xl text-white font-semibold"}>
+        Applications of abandon.ai
+      </div>
       <div
         className={
-          "w-full h-full flex flex-col items-center justify-center gap-3 animate-pulse text-gray-800"
+          "flex flex-col md:flex-row gap-8 w-full p-4 items-center justify-center"
         }
       >
-        <svg
-          width="40"
-          height="40"
-          viewBox="0 0 1024 1024"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M68 68V956H956V68H68ZM142 882V142H586V413.333L512 216H438L216 808H290L345.5 660H586V882H142ZM576.791 586H373.209L475 314.667L576.791 586Z"
-            fill="currentColor"
-          />
-        </svg>
-        <div className={"min-h-[218px] w-full"}></div>
+        <Link href={"https://chat.abandon.ai"} target={"_blank"}>
+          <div
+            className={
+              "flex flex-row items-center md:flex-col bg-[#181818] p-4 rounded-lg gap-4 md:gap-2 overflow-hidden ring-white hover:ring group"
+            }
+          >
+            <div
+              className={
+                "w-28 h-28 md:w-52 md:h-52 bg-green-500 p-1 md:p-3 cursor-pointer rounded-lg relative overflow-hidden"
+              }
+            >
+              <div className={"text-md md:text-2xl font-semibold text-white"}>
+                AbandonAI
+              </div>
+              <div
+                className={
+                  "absolute right-[-40px] bottom-[-40px] group-hover:animate-pulse"
+                }
+              >
+                <OpenAI
+                  className={"w-28 h-28 md:w-40 md:h-40"}
+                  color={"white"}
+                />
+              </div>
+            </div>
+            <div className={"flex flex-col flex-1 md:w-52 gap-2"}>
+              <div className={"text-white font-semibold"}>chat.abandon.ai</div>
+              <div className={"text-[#a7a7a7] text-sm"}>
+                Chat with OpenAI ChatGPT.
+                <br />
+                Pay as you go.
+              </div>
+            </div>
+          </div>
+        </Link>
       </div>
-    );
-
-  if (error) return redirect(`/auth/error?message=${error.message}`);
-
-  if (user && customer) return redirect(`/chat/${dysortid()}`);
-
-  return redirect("/auth/login");
+      <div className={"absolute bottom-8 text-center text-white text-xs"}>
+        <Link href={"https://www.abandon.ai"}>
+          © {new Date().getFullYear()} Abandon Inc., All rights reserved.
+        </Link>
+        <div>
+          8 The Green, STE R Dover DE 19901 USA.{" "}
+          <Link
+            href={"mailto:tom@abandon.ai"}
+            className={"text-green-500 underline"}
+          >
+            tom@abandon.ai
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
 }

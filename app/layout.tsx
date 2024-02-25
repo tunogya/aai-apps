@@ -1,20 +1,11 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { UserProvider } from "@auth0/nextjs-auth0/client";
 import { ReactNode } from "react";
-import Link from "next/link";
-import "./styles/globals.css";
-import "./styles/katex.min.css";
-import "react-loading-skeleton/dist/skeleton.css";
-import dynamic from "next/dynamic";
+import "tailwindcss/tailwind.css";
+import { UserProvider } from "@auth0/nextjs-auth0/client";
 
-const TailwindIndicator = dynamic(
-  () => import("@/app/components/TailwindIndicator"),
-);
-
-const title = "abandon.ai";
-const description =
-  "AbandonAI is a free-to-use AI system. It can help you with coding, drawing and more. All in one place.";
+const title = "app.abandon.ai";
+const description = "AbandonAI Applications";
 
 export const metadata: Metadata = {
   title,
@@ -45,12 +36,7 @@ export default function RootLayout(props: { children: ReactNode }) {
   return (
     <html lang="en">
       <UserProvider>
-        <body className={`h-full w-full`}>
-          <Link
-            rel="stylesheet"
-            prefetch
-            href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css"
-          />
+        <body style={{ height: "100vh" }}>
           <Script
             src={"https://www.googletagmanager.com/gtag/js?id=G-HT9Q8GW970"}
           />
@@ -64,7 +50,6 @@ export default function RootLayout(props: { children: ReactNode }) {
                 gtag('config', 'G-HT9Q8GW970');
               `}
           </Script>
-          <TailwindIndicator />
           {props.children}
         </body>
       </UserProvider>
