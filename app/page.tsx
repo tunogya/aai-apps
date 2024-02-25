@@ -8,7 +8,7 @@ export default function Index() {
   return (
     <div
       className={
-        "flex flex-col w-full h-full items-center justify-center flex-1 gap-24 relative pb-24"
+        "flex flex-col w-full h-full items-center justify-center flex-1 gap-24 relative"
       }
     >
       <div className={"text-2xl text-white font-semibold"}>

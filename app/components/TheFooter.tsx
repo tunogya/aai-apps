@@ -3,7 +3,7 @@ import React from "react";
 
 const TheFooter = () => {
   return (
-    <div className={"absolute bottom-8 text-center text-[#A7A7A7] text-[11px]"}>
+    <div className={"absolute bottom-2 text-center text-[#A7A7A7] text-[11px]"}>
       <Link href={"https://www.abandon.ai"}>
         © {new Date().getFullYear()} Abandon Inc., All rights reserved.
       </Link>
