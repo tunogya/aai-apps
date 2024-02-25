@@ -16,7 +16,7 @@ const AbandonAI = () => {
           }
         >
           <div className={"text-md md:text-2xl font-semibold text-white"}>
-            AbandonAI
+            ChatGPT
           </div>
           <div
             className={
@@ -29,7 +29,7 @@ const AbandonAI = () => {
         <div className={"flex flex-col flex-1 md:w-52 gap-2"}>
           <div className={"text-white font-semibold"}>chat.abandon.ai</div>
           <div className={"text-[#a7a7a7] text-sm"}>
-            Chat with OpenAI ChatGPT.
+            Chat with OpenAI‘s ChatGPT.
             <br />
             Pay as you go.
           </div>
