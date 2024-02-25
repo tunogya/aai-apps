@@ -3,7 +3,7 @@ import React from "react";
 import BalanceCard from "@/app/wallet/BalanceCard";
 import Txns from "@/app/wallet/Txns";
 import Link from "next/link";
-import TheFooter from "@/app/components/TheFooter";
+import CheckoutButton from "@/app/components/CheckoutButton";
 
 export const runtime = "edge";
 
@@ -62,27 +62,13 @@ const NormalView = async () => {
         </div>
       </div>
       <div className={"flex flex-row text-white gap-4"}>
-        <div
+        <CheckoutButton
+          price={process.env.NEXT_PUBLIC_AAI_CREDIT_PRICE!}
+          title={"Buy AAI"}
           className={
             "px-3 py-1.5 bg-[#0066FF] rounded-lg text-sm font-semibold cursor-pointer flex flex-row items-center space-x-1"
           }
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            className="w-4 h-4"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z"
-            />
-          </svg>
-          <div>Buy AAI</div>
-        </div>
+        />
         {/*<div className={"px-3 py-1.5 bg-[#2c2c2c] rounded-lg text-sm font-semibold cursor-pointer flex flex-row items-center space-x-1"}>*/}
         {/*  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5"*/}
         {/*       stroke="currentColor" className="w-4 h-4">*/}

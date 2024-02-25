@@ -14,14 +14,10 @@ export default function CSRPage({ params }: any) {
       }
     >
       <div className={"text-[120px]"}>😫</div>
-      <div className="text-center text-2xl md:text-3xl font-serif">
+      <div className="text-center text-2xl md:text-3xl font-serif text-white">
         &quot;{error}&quot;
       </div>
-      <Link
-        href={"/"}
-        prefetch
-        className={"text-gray-500 hover:text-gray-800 text-sm underline"}
-      >
+      <Link href={"/"} prefetch className={"text-white text-sm underline"}>
         Back
       </Link>
     </div>

@@ -1,11 +1,9 @@
 import React from "react";
-import { getSession } from "@auth0/nextjs-auth0/edge";
 import Link from "next/link";
 
 export const runtime = "edge";
 
 export default async function SSRPage() {
-  const session = await getSession();
   return (
     <div
       className={
@@ -13,7 +11,7 @@ export default async function SSRPage() {
       }
     >
       <div className={"text-[120px]"}>🎉</div>
-      <div className="text-center text-2xl md:text-3xl font-serif">
+      <div className="text-center text-2xl md:text-3xl font-serif text-white">
         &quot;All Done!&quot;
       </div>
       <Link
