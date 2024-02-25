@@ -3,11 +3,9 @@ import React from "react";
 import useSWR from "swr";
 
 const BalanceCard = () => {
-  const { data: customer } = useSWR("/api/customer", (url) =>
+  const { data } = useSWR("/api/customer", (url) =>
     fetch(url).then((res) => res.json()),
   );
-
-  console.log(customer);
 
   return (
     <div
@@ -31,7 +29,7 @@ const BalanceCard = () => {
         <div className={"text-xl"}>AbandonAI</div>
       </div>
       <div className={"text-lg"}>
-        {customer ? ((customer?.balance * -1) / 100).toFixed(2) : 0} AAI
+        {data ? ((data?.balance * -1) / 100).toFixed(2) : 0} AAI
       </div>
     </div>
   );

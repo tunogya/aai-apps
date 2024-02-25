@@ -4,9 +4,14 @@ import useSWR from "swr";
 import moment from "moment/moment";
 
 const Txns = () => {
-  const { data } = useSWR("/api/customer/balanceTransactions", (url) =>
-    fetch(url).then((res) => res.json()),
+  const { data, isLoading } = useSWR(
+    "/api/customer/balanceTransactions",
+    (url) => fetch(url).then((res) => res.json()),
   );
+
+  if (isLoading) {
+    return <div className={"text-[#A7A7A7] text-xs"}>loading...</div>;
+  }
 
   return (
     <div>
