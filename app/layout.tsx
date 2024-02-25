@@ -36,7 +36,7 @@ export default function RootLayout(props: { children: ReactNode }) {
   return (
     <html lang="en">
       <UserProvider>
-        <body style={{ height: "100vh", backgroundColor: "#121212" }}>
+        <body style={{ backgroundColor: "#121212" }}>
           <Script
             src={"https://www.googletagmanager.com/gtag/js?id=G-HT9Q8GW970"}
           />
@@ -50,7 +50,7 @@ export default function RootLayout(props: { children: ReactNode }) {
                 gtag('config', 'G-HT9Q8GW970');
               `}
           </Script>
-          {props.children}
+          <div className={"h-screen"}>{props.children}</div>
         </body>
       </UserProvider>
     </html>
