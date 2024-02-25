@@ -4,7 +4,11 @@ import React from "react";
 
 const AbandonAI = () => {
   return (
-    <Link href={"https://chat.abandon.ai"} target={"_blank"}>
+    <Link
+      href={"https://chat.abandon.ai"}
+      target={"_blank"}
+      className={"w-full md:w-fit"}
+    >
       <div
         className={
           "flex flex-row items-center md:flex-col bg-[#181818] p-4 rounded-lg gap-4 md:gap-2 overflow-hidden ring-white hover:ring group"

@@ -3,7 +3,7 @@ import React from "react";
 
 const AAI = () => {
   return (
-    <Link href={"/wallet"} prefetch>
+    <Link href={"/wallet"} prefetch className={"w-full md:w-fit"}>
       <div
         className={
           "flex flex-row items-center md:flex-col bg-[#181818] p-4 rounded-lg gap-4 md:gap-2 overflow-hidden ring-white hover:ring group"
