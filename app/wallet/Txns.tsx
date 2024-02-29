@@ -4,8 +4,11 @@ import useSWR from "swr";
 import moment from "moment/moment";
 
 const Txns = () => {
+  const { data: customer } = useSWR("/api/customer", (url) =>
+    fetch(url).then((res) => res.json()),
+  );
   const { data, isLoading } = useSWR(
-    "/api/customer/balanceTransactions",
+    customer?.id ? `/api/customer/${customer.id}/txs` : undefined,
     (url) => fetch(url).then((res) => res.json()),
   );
 

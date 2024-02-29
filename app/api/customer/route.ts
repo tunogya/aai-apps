@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSession } from "@auth0/nextjs-auth0";
 import stripeClient from "@/app/utils/stripeClient";
-import redisClient from "@/app/utils/redisClient";
 import Stripe from "stripe";
 
 const GET = async (req: NextRequest) => {
@@ -58,8 +57,6 @@ const GET = async (req: NextRequest) => {
       currency: "usd",
     };
   }
-  await redisClient.set(`customer:balance:${user.email}`, customer.balance);
-  await redisClient.set(`customer:${user.email}`, JSON.stringify(customer));
 
   return NextResponse.json(customer);
 };
