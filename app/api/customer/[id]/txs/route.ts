@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import stripeClient from "@/app/utils/stripeClient";
 
-const GET = async (req: NextRequest, { id }: any) => {
+const GET = async (req: NextRequest, { params }: any) => {
   const balanceTransactions =
     // @ts-ignore
-    await stripeClient.customers.listBalanceTransactions(id, {
+    await stripeClient.customers.listBalanceTransactions(params.id, {
       limit: 20,
     });
 
