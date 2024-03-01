@@ -15,7 +15,7 @@ const AAI = () => {
           }
         >
           <div className={"text-md md:text-2xl font-semibold text-white"}>
-            AAI Coin
+            AAI credit
           </div>
           <div
             className={
@@ -44,7 +44,7 @@ const AAI = () => {
         <div className={"flex flex-col flex-1 md:w-52 gap-2"}>
           <div className={"text-white font-semibold"}>1 AAI = 1 USD</div>
           <div className={"text-[#a7a7a7] text-sm"}>
-            Deposit, withdraw, and trade AAI Coins on AbandonAI.
+            Deposit, withdraw, and trade $AAI on AbandonAI.
           </div>
         </div>
       </div>
