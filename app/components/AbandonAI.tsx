@@ -20,7 +20,7 @@ const AbandonAI = () => {
           }
         >
           <div className={"text-md md:text-2xl font-semibold text-white"}>
-            ChatGPT
+            AI chat
           </div>
           <div
             className={
