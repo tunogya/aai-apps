@@ -1,6 +1,8 @@
 import { getSession } from "@auth0/nextjs-auth0/edge";
-import LoginView from "@/app/wallet/LoginView";
-import NormalView from "@/app/wallet/NormalView";
+import dynamic from "next/dynamic";
+
+const LoginView = dynamic(() => import("@/app/wallet/LoginView"));
+const NormalView = dynamic(() => import("@/app/wallet/WalletView"));
 
 export const runtime = "edge";
 

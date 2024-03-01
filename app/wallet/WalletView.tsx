@@ -7,7 +7,7 @@ import CheckoutButton from "@/app/components/CheckoutButton";
 
 export const runtime = "edge";
 
-const NormalView = async () => {
+const WalletView = async () => {
   // @ts-ignore
   const session = await getSession();
 
@@ -100,4 +100,4 @@ const NormalView = async () => {
   );
 };
 
-export default NormalView;
+export default WalletView;
