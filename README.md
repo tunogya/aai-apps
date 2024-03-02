@@ -1,29 +1,12 @@
-This is an AI Web app, built with [NextJS](https://nextjs.org/) and [Tailwindcss](https://tailwindcss.com/).
+# Apps of abandon.ai
 
-Other service providers: [OpenAI](https://openai.com/), [Auth0](https://auth0.com/), [Stripe](https://stripe.com/), [Upstash Redis](https://upstash.com/)
+## AI chat
 
-![Chat](https://nftstorage.link/ipfs/bafybeigp46v7upbttqkakx6ksw7tdjz52nepblo4jqv6cvjeowfb5tlgpq)
+Redirect to [chat.abandon.ai](https://chat.abandon.ai).
 
-## Getting Started
+## AAI credits
 
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-
-## Other Framework
-
-- [AWS Lambda Workers](https://github.com/abandon-ai/abandonai-lambda)
+- [x] Query AAI balance
+- [x] Buy AAI via Stripe
+- [ ] Deposit $AAI coins from blockchain
+- [ ] Withdraw $AAI coins to blockchain
