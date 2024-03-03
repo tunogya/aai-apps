@@ -4,7 +4,7 @@ const {ManagementClient} = require("auth0");
 dotenv.config();
 
 const management = new ManagementClient({
-  domain: process.env.AUTH0_ISSUER_BASE_URL.replace('https://', ''),
+  domain: process.env.AUTH0_ISSUER_BASE_URL?.replace('https://', ''),
   clientId: process.env.AUTH0_M_CLIENT_ID,
   clientSecret: process.env.AUTH0_M_CLIENT_SECRET,
 });
