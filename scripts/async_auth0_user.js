@@ -1,6 +1,6 @@
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const {MongoClient, ServerApiVersion} = require('mongodb');
 const dotenv = require('dotenv');
-const { ManagementClient } = require("auth0");
+const {ManagementClient} = require("auth0");
 dotenv.config();
 
 const management = new ManagementClient({
@@ -23,8 +23,6 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     await client.connect();
-    await client.db("core").collection("auth0_users").createIndex({ user_id: 1 }, { unique: true })
-    console.log("Check auth0_users index success!")
     
     let page = 0;
     const per_page = 100;
@@ -34,15 +32,20 @@ async function run() {
         per_page: per_page,
         sort: 'created_at:1',
       }).then((res) => res.status === 200 ? res.data : [])
-
+      
       await client.db("core").collection("auth0_users").bulkWrite(
-        users.map((user) => ({
-          updateOne: {
-            filter: { user_id: user.user_id },
-            update: { $set: user },
-            upsert: true
-          }
-        }))
+          users.map((user) => ({
+            updateOne: {
+              filter: {_id: user.user_id},
+              update: {
+                $set: {
+                  ...user,
+                  _id: user.user_id,
+                }
+              },
+              upsert: true
+            }
+          }))
       )
       console.log("Insert auth0_users success! page: ", page)
       
@@ -58,4 +61,5 @@ async function run() {
     await client.close();
   }
 }
+
 run().catch(console.dir);

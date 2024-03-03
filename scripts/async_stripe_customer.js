@@ -1,4 +1,4 @@
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const {MongoClient, ServerApiVersion} = require('mongodb');
 const dotenv = require('dotenv');
 const Stripe = require('stripe');
 
@@ -26,9 +26,6 @@ async function run() {
     let starting_after = undefined;
     const limit = 100;
     
-    await client.db("core").collection("stripe_customers").createIndex({ id: 1 }, { unique: true })
-    console.log("Check stripe_customers index success!")
-    
     while (true) {
       const customers = await stripeClient.customers.list({
         limit: limit,
@@ -38,8 +35,13 @@ async function run() {
       await client.db("core").collection("stripe_customers").bulkWrite(
           customers.data.map((customer) => ({
             updateOne: {
-              filter: { id: customer.id },
-              update: { $set: customer },
+              filter: {_id: customer.id},
+              update: {
+                $set: {
+                  ...customer,
+                  _id: customer.id,
+                }
+              },
               upsert: true
             }
           }))
@@ -59,4 +61,5 @@ async function run() {
     await client.close();
   }
 }
+
 run().catch(console.dir);
