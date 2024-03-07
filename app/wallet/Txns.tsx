@@ -12,7 +12,7 @@ const Txns = () => {
     (url) => fetch(url).then((res) => res.json()),
   );
 
-  if (isLoading) {
+  if (!customer || isLoading) {
     return <div className={"text-[#A7A7A7] text-xs"}>loading...</div>;
   }
 
