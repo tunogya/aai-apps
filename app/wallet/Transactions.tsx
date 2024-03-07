@@ -61,13 +61,24 @@ const Transactions = () => {
                     </svg>
                   )}
                 </div>
-                <div className={"text-sm text-[#A7A7A7]"}>
-                  {moment(item.created * 1000)
-                    .startOf("second")
-                    .fromNow()}
+                <div className={"flex flex-col justify-start gap-1"}>
+                  {item.description && (
+                    <div
+                      className={
+                        "text-sm text-[#FFFFFF] font-bold line-clamp-2"
+                      }
+                    >
+                      {item.description}
+                    </div>
+                  )}
+                  <div className={"text-sm text-[#A7A7A7]"}>
+                    {moment(item.created * 1000)
+                      .startOf("second")
+                      .fromNow()}
+                  </div>
                 </div>
               </div>
-              <div className={"text-end"}>
+              <div className={"flex flex-col text-end gap-2 shrink-0"}>
                 <div className={"font-semibold"}>
                   {(-1 * item.amount) / 100} AAI
                 </div>
