@@ -18,6 +18,7 @@
   "dependencies": {
     "@auth0/nextjs-auth0": "^3.3.0",
     "@lobehub/icons": "^1.11.2",
+    "@upstash/redis": "^1.28.4",
     "auth0": "^4.3.1",
     "autoprefixer": "10.4.15",
     "dotenv": "^16.3.1",

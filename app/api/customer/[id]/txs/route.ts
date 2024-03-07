@@ -6,6 +6,8 @@ const GET = async (req: NextRequest, { params }: any) => {
     // @ts-ignore
     await stripeClient.customers.listBalanceTransactions(params.id, {
       limit: 20,
+      starting_after:
+        req.nextUrl.searchParams.get("starting_after") || undefined,
     });
 
   return NextResponse.json(
