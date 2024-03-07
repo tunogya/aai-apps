@@ -65,7 +65,7 @@ const Transactions = () => {
                   {item.description && (
                     <div
                       className={
-                        "text-sm text-[#FFFFFF] font-bold line-clamp-2"
+                        "text-sm text-[#FFFFFF] font-semibold line-clamp-2"
                       }
                     >
                       {item.description}
@@ -78,7 +78,7 @@ const Transactions = () => {
                   </div>
                 </div>
               </div>
-              <div className={"flex flex-col text-end gap-2 shrink-0"}>
+              <div className={"flex flex-col text-end gap-1 shrink-0"}>
                 <div className={"font-semibold"}>
                   {(-1 * item.amount) / 100} AAI
                 </div>
