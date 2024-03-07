@@ -3,7 +3,7 @@ import React from "react";
 import useSWR from "swr";
 import moment from "moment/moment";
 
-const Txns = () => {
+const Transactions = () => {
   const { data: customer } = useSWR("/api/customer", (url) =>
     fetch(url).then((res) => res.json()),
   );
@@ -79,10 +79,10 @@ const Txns = () => {
           ))}
         </div>
       ) : (
-        <div className={"text-white text-xs"}>404</div>
+        <div className={"text-white text-xs"}>No transactions.</div>
       )}
     </div>
   );
 };
 
-export default Txns;
+export default Transactions;

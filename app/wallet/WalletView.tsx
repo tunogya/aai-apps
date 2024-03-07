@@ -1,7 +1,7 @@
 import { getSession } from "@auth0/nextjs-auth0/edge";
 import React from "react";
 import BalanceCard from "@/app/wallet/BalanceCard";
-import Txns from "@/app/wallet/Txns";
+import Transactions from "@/app/wallet/Transactions";
 import Link from "next/link";
 import CheckoutButton from "@/app/components/CheckoutButton";
 
@@ -94,7 +94,7 @@ const WalletView = async () => {
         <div className={"text-white font-semibold text-2xl py-4"}>
           Transaction
         </div>
-        <Txns />
+        <Transactions />
       </div>
     </div>
   );
