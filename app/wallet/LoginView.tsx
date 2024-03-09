@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import TheFooter from "@/app/components/TheFooter";
 
 const LoginView = () => {
   return (
