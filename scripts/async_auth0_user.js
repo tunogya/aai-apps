@@ -24,6 +24,8 @@ async function run() {
   try {
     await client.connect();
     
+    await client.db("core").collection("auth0_users").createIndex({user_id: 1}, {unique: true})
+    
     let page = 0;
     const per_page = 100;
     while (true) {
@@ -36,12 +38,9 @@ async function run() {
       await client.db("core").collection("auth0_users").bulkWrite(
           users.map((user) => ({
             updateOne: {
-              filter: {_id: user.user_id},
+              filter: {user_id: user.user_id},
               update: {
-                $set: {
-                  ...user,
-                  _id: user.user_id,
-                }
+                $set: user
               },
               upsert: true
             }

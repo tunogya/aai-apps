@@ -26,6 +26,8 @@ async function run() {
     let starting_after = undefined;
     const limit = 100;
     
+    await client.db("core").collection("stripe_customers").createIndex({id: 1}, {unique: true})
+    
     while (true) {
       const customers = await stripeClient.customers.list({
         limit: limit,
@@ -35,12 +37,9 @@ async function run() {
       await client.db("core").collection("stripe_customers").bulkWrite(
           customers.data.map((customer) => ({
             updateOne: {
-              filter: {_id: customer.id},
+              filter: {id: customer.id},
               update: {
-                $set: {
-                  ...customer,
-                  _id: customer.id,
-                }
+                $set: customer
               },
               upsert: true
             }
