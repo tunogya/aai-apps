@@ -29,6 +29,7 @@ async function run() {
     let page = 0;
     const per_page = 100;
     while (true) {
+       management.users.getAll();
       const users = await management.users.getAll({
         page: page,
         per_page: per_page,
