@@ -26,7 +26,7 @@ async function run() {
     const findResult = await client.db('core').collection('stripe_customers').find()
     
     for await (const doc of findResult) {
-      await asyncCBTXN(doc._id)
+      await asyncCBTXN(doc.id)
     }
   } finally {
     await client.close()
@@ -56,7 +56,7 @@ async function asyncCBTXN(customerId) {
           amount: txn.amount / 100,
           timestamp: new Date(txn.created * 1000),
           metadata: {
-            customer: txn.customer,
+            customer: txn.customer.id,
           },
           txn: txn.id
         })
