@@ -4,9 +4,9 @@
 
 Redirect to [chat.abandon.ai](https://chat.abandon.ai).
 
-## AAI credits
+## Tripiz credits
 
-- [x] Query AAI balance
-- [x] Buy AAI via Stripe
-- [ ] Deposit $AAI coins from blockchain
-- [ ] Withdraw $AAI coins to blockchain
+- [x] Query Tripiz balance
+- [x] Buy Tripiz via Stripe
+- [ ] Deposit $Tripiz coins from blockchain
+- [ ] Withdraw $Tripiz coins to blockchain

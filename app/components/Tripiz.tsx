@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 
-const AAI = () => {
+const Tripiz = () => {
   return (
     <Link href={"/wallet"} prefetch className={"w-full md:w-fit"}>
       <div
@@ -15,7 +15,7 @@ const AAI = () => {
           }
         >
           <div className={"text-md md:text-2xl font-semibold text-white"}>
-            AAI credit
+            Tripiz
           </div>
           <div
             className={
@@ -42,14 +42,12 @@ const AAI = () => {
           </div>
         </div>
         <div className={"flex flex-col flex-1 md:w-52 gap-2"}>
-          <div className={"text-white font-semibold"}>1 AAI = 1 USD</div>
-          <div className={"text-[#a7a7a7] text-sm"}>
-            Deposit, withdraw, and trade $AAI on AbandonAI.
-          </div>
+          <div className={"text-white font-semibold"}>Tripiz</div>
+          <div className={"text-[#a7a7a7] text-sm"}>An NFT storage service</div>
         </div>
       </div>
     </Link>
   );
 };
 
-export default AAI;
+export default Tripiz;

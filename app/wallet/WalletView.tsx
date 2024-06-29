@@ -64,7 +64,7 @@ const WalletView = async () => {
       <div className={"flex flex-row text-white gap-4"}>
         <CheckoutButton
           price={process.env.NEXT_PUBLIC_AAI_CREDIT_PRICE!}
-          title={"Buy AAI"}
+          title={"Buy Tripiz"}
           className={
             "px-3 py-1.5 bg-[#0066FF] rounded-lg text-sm font-semibold cursor-pointer flex flex-row items-center space-x-1"
           }

@@ -2,7 +2,7 @@
 import React from "react";
 import AbandonAI from "@/app/components/AbandonAI";
 import TheFooter from "@/app/components/TheFooter";
-import AAI from "@/app/components/AAI";
+import Tripiz from "@/app/components/Tripiz";
 
 export default function Index() {
   return (
@@ -20,7 +20,6 @@ export default function Index() {
         }
       >
         <AbandonAI />
-        <AAI />
       </div>
       <TheFooter />
     </div>

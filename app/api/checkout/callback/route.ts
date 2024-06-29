@@ -57,7 +57,7 @@ const POST = async (req: Request) => {
             await stripeClient.customers.createBalanceTransaction(customer.id, {
               amount: -1 * amount_subtotal,
               currency: currency,
-              description: "Buy AAI credit",
+              description: "Buy Tripiz credit",
             });
           }
         }
