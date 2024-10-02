@@ -1,5 +1,5 @@
 {
-  "name": "aai-app",
+  "name": "aai-apps",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -8,9 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "prepare": "husky install",
-    "prettier": "prettier . --write",
-    "async-auth0-users": "node scripts/async_auth0_user.js",
-    "async-stripe-customer": "node scripts/async_stripe_customer.js"
+    "prettier": "prettier . --write"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"

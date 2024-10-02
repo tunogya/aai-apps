@@ -9,8 +9,6 @@ const description = "AbandonAI Applications";
 export const metadata: Metadata = {
   title,
   description,
-  viewport:
-    "width=device-width, viewport-fit=cover, initial-scale=1, shrink-to-fit=no,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no",
   applicationName: "abandon.ai",
   themeColor: "#fff",
   openGraph: {
@@ -24,10 +22,18 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     creator: "@abandonai",
   },
+  metadataBase: new URL("https://apps.abandon.ai"),
   manifest: "/manifest.json",
   appleWebApp: {
     title: "abandon.ai",
   },
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export default function RootLayout(props: { children: ReactNode }) {
