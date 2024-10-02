@@ -3,8 +3,8 @@ import Script from "next/script";
 import { ReactNode } from "react";
 import "tailwindcss/tailwind.css";
 
-const title = "app.abandon.ai";
-const description = "AbandonAI Applications";
+const title = "AbandonAI";
+const description = "Powered by Abandon Inc.";
 
 export const metadata: Metadata = {
   title,
