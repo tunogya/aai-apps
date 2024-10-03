@@ -120,6 +120,9 @@ const Page = () => {
   }, [pk]);
 
   const sendMessage = async () => {
+    if (!decodedPubkey || !pk) {
+      return;
+    }
     const event = {
       id: uuidv4(),
       kind: 14,
