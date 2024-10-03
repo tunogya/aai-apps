@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from "uuid";
 
 const Page = () => {
   const [input, setInput] = useState<string>("");
-  const [chat, setChat] = useState<any[]>([]);
+  const [events, setEvents] = useState<any[]>([]);
   const { pubkey } = useParams();
   const [pk, setPk] = useState<string>("");
   const decodedPubkey = decodeKey(pubkey as string);
@@ -79,22 +79,6 @@ const Page = () => {
   );
 
   useEffect(() => {
-    if (ws.current?.readyState === WebSocket.OPEN) {
-      ws.current.send(
-        JSON.stringify([
-          "REQ",
-          uuidv4,
-          {
-            kinds: [0],
-            authors: [decodedPubkey],
-            limit: 1,
-          },
-        ]),
-      );
-    }
-  }, [decodedPubkey, ws.current?.readyState]);
-
-  useEffect(() => {
     if (pk) {
       connectWebSocket();
       loadChatFromSessionStorage();
@@ -112,6 +96,7 @@ const Page = () => {
       tags: [
         ["p", pubkey],
         ["role", "user"],
+        ["history", ...events.map((e) => e.content)],
       ] as string[][],
       created_at: Math.floor(Date.now() / 1000),
       sig: decodedPubkey,
@@ -140,7 +125,7 @@ const Page = () => {
     const events = JSON.parse(sessionStorage.getItem("events") || "[]").filter(
       (event: any) => event.sig === decodedPubkey && event.kind === 14,
     );
-    setChat(events);
+    setEvents(events);
   };
 
   useEffect(() => {
@@ -169,7 +154,7 @@ const Page = () => {
         <div className={"text-[#B3B3B3] text-[14px] text-center pb-3"}>
           Powered by AbandonAI.
         </div>
-        {chat.map((event, index) => {
+        {events.map((event, index) => {
           if (event.pubkey === pk) {
             return <UserChat content={event.content} key={index} />;
           } else {
