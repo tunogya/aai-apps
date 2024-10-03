@@ -5,6 +5,7 @@ import { decodeKey } from "@/utils/nostrUtils";
 import { generateSecretKey, getPublicKey } from "nostr-tools";
 import { bytesToHex, hexToBytes } from "@noble/hashes/utils";
 import { v4 as uuidv4 } from "uuid";
+import Image from "next/image";
 
 const Page = () => {
   const [input, setInput] = useState<string>("");
@@ -173,6 +174,33 @@ const Page = () => {
           "max-w-xl w-full h-full items-center justify-center p-3 overflow-y-scroll pb-60"
         }
       >
+        <div className={"flex items-center justify-start space-x-3"}>
+          {profile?.picture ? (
+            <div className={"w-12 h-12 rounded-full overflow-hidden"}>
+              <Image
+                width={48}
+                height={48}
+                src={profile?.picture}
+                alt={profile?.name || "Profile"}
+                className={"w-12 h-12 object-cover"}
+              />
+            </div>
+          ) : (
+            <div className={"w-12 h-12 rounded-full overflow-hidden"}>
+              <div className={"w-12 h-12 bg-[#3B3B3B] rounded-full"}></div>
+            </div>
+          )}
+          <div className={"flex flex-col"}>
+            <div className={"text-[14px] font-medium text-white"}>
+              {profile?.name || "Anonymous"}
+            </div>
+            {profile?.about && (
+              <div className={"text-[12px] leading-[18px] text-[#B3B3B3]"}>
+                {profile.about}
+              </div>
+            )}
+          </div>
+        </div>
         {events.map((event, index) => {
           if (event.pubkey === pk) {
             return <UserChat content={event.content} key={index} />;
