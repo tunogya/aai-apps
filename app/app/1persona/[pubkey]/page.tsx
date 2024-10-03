@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams } from "next/navigation";
 import { decodeKey } from "@/utils/nostrUtils";
 import { generateSecretKey, finalizeEvent, verifyEvent } from "nostr-tools";
@@ -15,8 +15,59 @@ const Page = () => {
   const [sk, setSk] = useState<Uint8Array>();
   const [pk, setPk] = useState<string>("");
   const decodedPubkey = decodeKey(pubkey as string);
+  const ws = useRef<WebSocket | null>(null);
+  const [connected, setConnected] = useState<boolean>(false);
 
-  // ws://relay.abandon.ai/
+  const connectWebSocket = () => {
+    const url = `wss://relay.abandon.ai?pubkey=${decodedPubkey}`;
+    ws.current = new WebSocket(url);
+
+    ws.current.onopen = () => {
+      setConnected(true);
+      console.log("WebSocket connection opened.");
+    };
+
+    ws.current.onclose = (e) => {
+      setConnected(false);
+      console.log("WebSocket closed, attempting to reconnect...");
+      connectWebSocket();
+    };
+
+    ws.current.onerror = (e) => {
+      setConnected(false);
+      console.log(`WebSocket error: ${e}, attempting to reconnect...`);
+      connectWebSocket();
+    };
+
+    ws.current.onmessage = (e) => {
+      const data = JSON.parse(e.data);
+      if (data?.[0] === "EVENT") {
+        const _e = data[2];
+        try {
+          console.log(_e);
+        } catch (e) {
+          console.log(e);
+        }
+      }
+    };
+  };
+
+  const send = (message: string) => {
+    if (ws.current && connected) {
+      ws.current.send(message);
+    } else {
+      console.log("WebSocket connection not open");
+    }
+  };
+
+  useEffect(() => {
+    if (decodedPubkey) {
+      setConnected(false);
+      connectWebSocket();
+    }
+    return () => ws.current?.close();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [decodedPubkey]);
 
   const sendMessage = async () => {
     setChat([...chat, { role: "user", content: input }]);
