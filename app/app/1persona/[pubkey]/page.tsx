@@ -14,6 +14,7 @@ const Page = () => {
   const decodedPubkey = decodeKey(pubkey as string);
   const ws = useRef<WebSocket | null>(null);
   const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [profile, setProfile] = useState<any>(null);
 
   const connectWebSocket = useCallback(() => {
     if (ws.current?.readyState === WebSocket.OPEN) {
@@ -29,6 +30,8 @@ const Page = () => {
         clearTimeout(reconnectTimeoutRef.current);
         reconnectTimeoutRef.current = null;
       }
+      // 请求聊天对象的 profile
+      requestProfile();
     };
 
     ws.current.onclose = () => {
@@ -49,6 +52,9 @@ const Page = () => {
           if (_e.kind === 14 && _e.sig === decodedPubkey) {
             saveEventToSessionStorage(_e);
             loadChatFromSessionStorage();
+          } else if (_e.kind === 0 && _e.pubkey === decodedPubkey) {
+            // 处理接收到的 profile 数据
+            setProfile(JSON.parse(_e.content));
           }
         } catch (e) {
           console.log(e);
@@ -56,7 +62,23 @@ const Page = () => {
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pk]);
+  }, [pk, decodedPubkey]);
+
+  const requestProfile = useCallback(() => {
+    if (ws.current?.readyState === WebSocket.OPEN) {
+      const subscriptionId = uuidv4();
+      const request = JSON.stringify([
+        "REQ",
+        subscriptionId,
+        {
+          kinds: [0],
+          authors: [decodedPubkey],
+          limit: 1,
+        },
+      ]);
+      ws.current.send(request);
+    }
+  }, [decodedPubkey]);
 
   const reconnectWithBackoff = useCallback(() => {
     if (reconnectTimeoutRef.current) {
@@ -151,9 +173,6 @@ const Page = () => {
           "max-w-xl w-full h-full items-center justify-center p-3 overflow-y-scroll"
         }
       >
-        <div className={"text-[#B3B3B3] text-[14px] text-center pb-3"}>
-          Powered by AbandonAI.
-        </div>
         {events.map((event, index) => {
           if (event.pubkey === pk) {
             return <UserChat content={event.content} key={index} />;
@@ -161,15 +180,20 @@ const Page = () => {
             return <AssistantChat content={event.content} key={index} />;
           }
         })}
+        {events.length > 0 && events[events.length - 1].pubkey === pk && (
+          <div className="flex justify-start items-center my-2">
+            <div className="animate-spin h-5 w-5 bg-white"></div>
+          </div>
+        )}
       </div>
       <div
         className={
-          "max-w-xl w-full flex items-center justify-center absolute bottom-0"
+          "max-w-xl w-full flex flex-col items-center justify-center absolute bottom-0"
         }
       >
         <div
           className={
-            "w-full flex items-center justify-center bg-[#3B3B3B] rounded-[18px] mx-3 my-2"
+            "w-full flex items-center justify-center bg-[#3B3B3B] rounded-[18px] mx-3 my-1.5"
           }
         >
           <input
@@ -206,6 +230,10 @@ const Page = () => {
               />
             </svg>
           </button>
+        </div>
+        <div className={"text-[#B3B3B3] text-[10px] text-center pb-2"}>
+          Copyright © {new Date().getFullYear()} Abandon Inc. All rights
+          reserved.
         </div>
       </div>
     </div>
