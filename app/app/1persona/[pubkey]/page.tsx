@@ -163,6 +163,11 @@ const Page = () => {
     }
   }, []);
 
+  const clearChat = () => {
+    sessionStorage.removeItem("events");
+    setEvents([]);
+  };
+
   return (
     <div
       className={
@@ -171,59 +176,75 @@ const Page = () => {
     >
       <div
         className={
-          "max-w-xl w-full h-full items-center justify-center p-3 overflow-y-scroll pb-60"
+          "max-w-xl w-full h-full items-center justify-center overflow-y-scroll pb-60"
         }
       >
-        <div className={"flex items-center justify-start space-x-3"}>
-          {profile?.picture ? (
-            <div className={"w-7 h-7 rounded-full overflow-hidden"}>
-              <Image
-                width={28}
-                height={28}
-                src={profile?.picture}
-                alt={profile?.name || "Profile"}
-                className={"w-7 h-7 object-cover"}
-              />
-            </div>
-          ) : (
-            <div className={"w-7 h-7 rounded-full overflow-hidden"}>
-              <div className={"w-7 h-7 bg-[#3B3B3B] rounded-full"}></div>
-            </div>
-          )}
-          <div className={"flex flex-col"}>
-            <div className={"text-[14px] font-medium text-white"}>
-              {profile?.name || "Anonymous"}
-            </div>
-            {profile?.about && (
-              <div className={"text-[12px] leading-[18px] text-[#B3B3B3]"}>
-                {profile.about}
+        <div className={"p-3 sticky top-0 flex items-center justify-between"}>
+          <div
+            className={"flex items-center justify-start space-x-3 bg-[#121212]"}
+          >
+            {profile?.picture ? (
+              <div className={"w-7 h-7 rounded-full overflow-hidden"}>
+                <Image
+                  width={28}
+                  height={28}
+                  src={profile?.picture}
+                  alt={profile?.name || "Profile"}
+                  className={"w-7 h-7 object-cover"}
+                />
+              </div>
+            ) : (
+              <div className={"w-7 h-7 rounded-full overflow-hidden"}>
+                <div className={"w-7 h-7 bg-[#3B3B3B] rounded-full"}></div>
               </div>
             )}
+            <div className={"flex flex-col"}>
+              <div className={"text-[14px] font-medium text-white"}>
+                {profile?.name || "Anonymous"}
+              </div>
+              {profile?.about && (
+                <div className={"text-[12px] leading-[18px] text-[#B3B3B3]"}>
+                  {profile.about}
+                </div>
+              )}
+            </div>
           </div>
+          <button
+            className={`text-[12px] leading-[18px] text-red-500 text-center ${
+              events.length > 0 ? "opacity-100" : "opacity-50"
+            }`}
+            disabled={events.length === 0}
+            onClick={clearChat}
+          >
+            清空
+          </button>
         </div>
         <div
           className={
-            "text-[12px] leading-[18px] text-[#B3B3B3] text-center pt-20 pb-4"
+            "text-[12px] leading-[18px] text-[#B3B3B3] text-center pt-20 pb-4 px-3"
           }
         >
           Talk with {profile?.name || "Anonymous"}, powered by AI.
         </div>
-        {events.map((event, index) => {
-          if (event.pubkey === pk) {
-            return <UserChat content={event.content} key={index} />;
-          } else {
-            return <AssistantChat content={event.content} key={index} />;
-          }
-        })}
+        <div className={"px-3"}>
+          {events.map((event, index) => {
+            if (event.pubkey === pk) {
+              return <UserChat content={event.content} key={index} />;
+            } else {
+              return <AssistantChat content={event.content} key={index} />;
+            }
+          })}
+        </div>
+
         {events.length > 0 && events[events.length - 1].pubkey === pk && (
-          <div className="flex justify-start items-center my-2">
+          <div className="flex justify-start items-center my-2 px-3">
             <div className="animate-spin h-5 w-5 bg-white"></div>
           </div>
         )}
       </div>
       <div
         className={
-          "max-w-xl w-full flex flex-col items-center justify-center absolute bottom-0 bg-[#121212]"
+          "max-w-xl w-full flex flex-col items-center justify-center absolute bottom-0 bg-[#121212] px-3"
         }
       >
         <div
