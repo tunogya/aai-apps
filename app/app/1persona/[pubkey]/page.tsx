@@ -75,6 +75,9 @@ const Page = () => {
   }, [pk, decodedPubkey]);
 
   const requestProfile = useCallback(() => {
+    if (!decodedPubkey) {
+      return;
+    }
     if (ws.current?.readyState === WebSocket.OPEN) {
       const subscriptionId = uuidv4();
       const request = JSON.stringify([
