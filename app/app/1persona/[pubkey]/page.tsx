@@ -209,40 +209,20 @@ const Page = () => {
                 "flex items-center justify-start space-x-3 bg-[#121212]"
               }
             >
-              {profile?.picture ? (
-                <div className={"w-7 h-7 rounded-full overflow-hidden"}>
-                  <Image
-                    width={28}
-                    height={28}
-                    src={profile?.picture}
-                    alt={profile?.name || "Profile"}
-                    className={"w-7 h-7 object-cover"}
-                  />
-                </div>
-              ) : (
-                <div className={"w-7 h-7 rounded-full overflow-hidden"}>
-                  <div className={"w-7 h-7 bg-[#3B3B3B] rounded-full"}></div>
-                </div>
-              )}
               <div className={"flex flex-col"}>
                 <div className={"text-[14px] font-medium text-white"}>
                   {profile?.name || "Anonymous"}
                 </div>
-                {profile?.about && (
-                  <div className={"text-[12px] leading-[18px] text-[#B3B3B3]"}>
-                    {profile.about}
-                  </div>
-                )}
               </div>
             </div>
             <button
-              className={`text-[12px] leading-[18px] text-red-500 text-center ${
+              className={`text-[12px] leading-[18px] text-red-500 text-center whitespace-nowrap px-3 ${
                 events.length > 0 ? "opacity-100" : "opacity-50"
               }`}
               disabled={events.length === 0}
               onClick={clearChat}
             >
-              清空
+              Clear
             </button>
           </div>
           <div
