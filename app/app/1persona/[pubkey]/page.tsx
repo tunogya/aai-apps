@@ -7,6 +7,7 @@ import { bytesToHex, hexToBytes } from "@noble/hashes/utils";
 import { v4 as uuidv4 } from "uuid";
 import Image from "next/image";
 import Head from "next/head";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
   const [input, setInput] = useState<string>("");
@@ -17,6 +18,13 @@ const Page = () => {
   const ws = useRef<WebSocket | null>(null);
   const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [profile, setProfile] = useState<any>(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!decodedPubkey) {
+      router.push("/app/1persona?error=invalid_pubkey");
+    }
+  }, [decodedPubkey, router]);
 
   const connectWebSocket = useCallback(() => {
     if (ws.current?.readyState === WebSocket.OPEN) {
@@ -299,7 +307,7 @@ const Page = () => {
               </svg>
             </button>
           </div>
-          <div className={"text-[#B3B3B3] text-[10px] text-center pb-2"}>
+          <div className={"text-[#B3B3B3] text-[10px] text-center pb-3"}>
             Copyright © {new Date().getFullYear()} Abandon Inc. All rights
             reserved.
           </div>
