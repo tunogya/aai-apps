@@ -12,3 +12,14 @@ body {
   height: var(--app-height);
   background-color: #121212;
 }
+
+/* Hide scrollbars for all elements */
+* {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+/* WebKit and Chromium browsers */
+*::-webkit-scrollbar {
+  display: none;
+}
