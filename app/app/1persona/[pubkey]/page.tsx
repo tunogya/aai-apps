@@ -9,23 +9,17 @@ import { v4 as uuidv4 } from "uuid";
 
 const Page = () => {
   const [input, setInput] = useState<string>("");
-  const [chat, setChat] = useState<
-    { role: "user" | "assistant"; content: string }[]
-  >([]);
-  // target nostr pubkey
+  const [chat, setChat] = useState<any[]>([]);
   const { pubkey } = useParams();
-  // my secret key
   const [sk, setSk] = useState<Uint8Array>();
-  // my pubkey
   const [pk, setPk] = useState<string>("");
-  // target pubkey
   const decodedPubkey = decodeKey(pubkey as string);
   const ws = useRef<WebSocket | null>(null);
   const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const connectWebSocket = useCallback(() => {
     if (ws.current?.readyState === WebSocket.OPEN) {
-      return; // Already connected
+      return;
     }
 
     const url = `wss://relay.abandon.ai?pubkey=${pk}`;
@@ -55,7 +49,8 @@ const Page = () => {
         const _e = data[2];
         try {
           console.log(_e);
-          setChat([...chat, { role: "assistant", content: _e.content }]);
+          saveEventToSessionStorage(_e);
+          loadChatFromSessionStorage();
         } catch (e) {
           console.log(e);
         }
@@ -70,7 +65,7 @@ const Page = () => {
     }
     reconnectTimeoutRef.current = setTimeout(() => {
       connectWebSocket();
-    }, 5000); // 5 seconds delay before reconnecting
+    }, 5000);
   }, [connectWebSocket]);
 
   const send = useCallback(
@@ -87,30 +82,51 @@ const Page = () => {
   useEffect(() => {
     if (pk) {
       connectWebSocket();
+      loadChatFromSessionStorage();
     }
     return () => ws.current?.close();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pk]);
 
   const sendMessage = async () => {
-    setChat([...chat, { role: "user", content: input }]);
+    const event = {
+      id: uuidv4(),
+      kind: 14,
+      content: input,
+      pubkey: pk,
+      tags: [
+        ["p", pubkey],
+        ["role", "user"],
+      ] as string[][],
+      created_at: Math.floor(Date.now() / 1000),
+      sig: decodedPubkey,
+    };
+    console.log(event);
+    await saveEventToSessionStorage(event);
     setInput("");
-    const chatHistoryArray = chat.map((item) => item.content);
-    send(
-      JSON.stringify({
-        id: uuidv4(),
-        kind: 14, // 14 is the kind for chat message
-        content: input,
-        pubkey: pk,
-        tags: [
-          ["p", pubkey],
-          ["role", "user"],
-          ["history", ...chatHistoryArray],
-        ],
-        created_at: Math.floor(Date.now() / 1000),
-        sig: decodedPubkey,
-      }),
+    send(JSON.stringify(["EVENT", event]));
+    loadChatFromSessionStorage();
+  };
+
+  const saveEventToSessionStorage = (event: {
+    id: string;
+    kind: number;
+    content: string;
+    pubkey: string;
+    tags: string[][];
+    created_at: number;
+    sig: string;
+  }) => {
+    const events = JSON.parse(sessionStorage.getItem("events") || "[]");
+    events.push(event);
+    sessionStorage.setItem("events", JSON.stringify(events));
+  };
+
+  const loadChatFromSessionStorage = () => {
+    const events = JSON.parse(sessionStorage.getItem("events") || "[]").filter(
+      (event) => event.sig === decodedPubkey && event.kind === 14,
     );
+    setChat(events);
   };
 
   useEffect(() => {
@@ -141,11 +157,11 @@ const Page = () => {
         <div className={"text-[#B3B3B3] text-[14px] text-center pb-3"}>
           Talk with Tom, powered by AI.
         </div>
-        {chat.map((chat, index) => {
-          if (chat.role === "user") {
-            return <UserChat content={chat.content} key={index} />;
+        {chat.map((event, index) => {
+          if (event.pubkey === pk) {
+            return <UserChat content={event.content} key={index} />;
           } else {
-            return <AssistantChat content={chat.content} key={index} />;
+            return <AssistantChat content={event.content} key={index} />;
           }
         })}
       </div>
