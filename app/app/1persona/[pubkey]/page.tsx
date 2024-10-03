@@ -5,15 +5,20 @@ import { decodeKey } from "@/utils/nostrUtils";
 import { generateSecretKey, finalizeEvent, verifyEvent } from "nostr-tools";
 import { bytesToHex, hexToBytes } from "@noble/hashes/utils";
 import { getPublicKey } from "nostr-tools";
+import { v4 as uuidv4 } from "uuid";
 
 const Page = () => {
   const [input, setInput] = useState<string>("");
   const [chat, setChat] = useState<
     { role: "user" | "assistant"; content: string }[]
   >([]);
+  // target nostr pubkey
   const { pubkey } = useParams();
+  // my secret key
   const [sk, setSk] = useState<Uint8Array>();
+  // my pubkey
   const [pk, setPk] = useState<string>("");
+  // target pubkey
   const decodedPubkey = decodeKey(pubkey as string);
   const ws = useRef<WebSocket | null>(null);
   const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -23,7 +28,7 @@ const Page = () => {
       return; // Already connected
     }
 
-    const url = `wss://relay.abandon.ai?pubkey=${decodedPubkey}`;
+    const url = `wss://relay.abandon.ai?pubkey=${pk}`;
     ws.current = new WebSocket(url);
 
     ws.current.onopen = () => {
@@ -50,13 +55,14 @@ const Page = () => {
         const _e = data[2];
         try {
           console.log(_e);
+          setChat([...chat, { role: "assistant", content: _e.content }]);
         } catch (e) {
           console.log(e);
         }
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [decodedPubkey]);
+  }, [pk]);
 
   const reconnectWithBackoff = useCallback(() => {
     if (reconnectTimeoutRef.current) {
@@ -79,16 +85,32 @@ const Page = () => {
   );
 
   useEffect(() => {
-    if (decodedPubkey) {
+    if (pk) {
       connectWebSocket();
     }
     return () => ws.current?.close();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [decodedPubkey]);
+  }, [pk]);
 
   const sendMessage = async () => {
     setChat([...chat, { role: "user", content: input }]);
     setInput("");
+    const chatHistoryArray = chat.map((item) => item.content);
+    send(
+      JSON.stringify({
+        id: uuidv4(),
+        kind: 14, // 14 is the kind for chat message
+        content: input,
+        pubkey: pk,
+        tags: [
+          ["p", pubkey],
+          ["role", "user"],
+          ["history", ...chatHistoryArray],
+        ],
+        created_at: Math.floor(Date.now() / 1000),
+        sig: decodedPubkey,
+      }),
+    );
   };
 
   useEffect(() => {
