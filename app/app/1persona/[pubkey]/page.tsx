@@ -40,7 +40,7 @@ const Page = () => {
   return (
     <div
       className={
-        "flex flex-col w-full h-full items-center justify-center text-white"
+        "flex flex-col w-full h-full items-center justify-center text-white relative"
       }
     >
       <div
@@ -48,7 +48,7 @@ const Page = () => {
           "max-w-xl w-full h-full items-center justify-center p-4 overflow-y-scroll"
         }
       >
-        <div className={"text-[#B3B3B3] text-[14px] text-center p-4"}>
+        <div className={"text-[#B3B3B3] text-[14px] text-center pb-4"}>
           Talk with Tom, powered by AI.
         </div>
         {chat.map((chat, index) => {
@@ -59,7 +59,11 @@ const Page = () => {
           }
         })}
       </div>
-      <div className={"max-w-xl w-full flex items-center justify-center"}>
+      <div
+        className={
+          "max-w-xl w-full flex items-center justify-center absolute bottom-0"
+        }
+      >
         <div
           className={
             "w-full flex items-center justify-center bg-[#3B3B3B] rounded-[18px] mx-4 my-4"
