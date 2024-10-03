@@ -2,16 +2,14 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useParams } from "next/navigation";
 import { decodeKey } from "@/utils/nostrUtils";
-import { generateSecretKey, finalizeEvent, verifyEvent } from "nostr-tools";
+import { generateSecretKey, getPublicKey } from "nostr-tools";
 import { bytesToHex, hexToBytes } from "@noble/hashes/utils";
-import { getPublicKey } from "nostr-tools";
 import { v4 as uuidv4 } from "uuid";
 
 const Page = () => {
   const [input, setInput] = useState<string>("");
   const [chat, setChat] = useState<any[]>([]);
   const { pubkey } = useParams();
-  const [sk, setSk] = useState<Uint8Array>();
   const [pk, setPk] = useState<string>("");
   const decodedPubkey = decodeKey(pubkey as string);
   const ws = useRef<WebSocket | null>(null);
@@ -48,9 +46,10 @@ const Page = () => {
       if (data?.[0] === "EVENT") {
         const _e = data[2];
         try {
-          console.log(_e);
-          saveEventToSessionStorage(_e);
-          loadChatFromSessionStorage();
+          if (_e.kind === 14 && _e.sig === decodedPubkey) {
+            saveEventToSessionStorage(_e);
+            loadChatFromSessionStorage();
+          }
         } catch (e) {
           console.log(e);
         }
@@ -80,6 +79,22 @@ const Page = () => {
   );
 
   useEffect(() => {
+    if (ws.current?.readyState === WebSocket.OPEN) {
+      ws.current.send(
+        JSON.stringify([
+          "REQ",
+          uuidv4,
+          {
+            kinds: [0],
+            authors: [decodedPubkey],
+            limit: 1,
+          },
+        ]),
+      );
+    }
+  }, [decodedPubkey, ws.current?.readyState]);
+
+  useEffect(() => {
     if (pk) {
       connectWebSocket();
       loadChatFromSessionStorage();
@@ -101,7 +116,6 @@ const Page = () => {
       created_at: Math.floor(Date.now() / 1000),
       sig: decodedPubkey,
     };
-    console.log(event);
     await saveEventToSessionStorage(event);
     setInput("");
     send(JSON.stringify(["EVENT", event]));
@@ -124,7 +138,7 @@ const Page = () => {
 
   const loadChatFromSessionStorage = () => {
     const events = JSON.parse(sessionStorage.getItem("events") || "[]").filter(
-      (event) => event.sig === decodedPubkey && event.kind === 14,
+      (event: any) => event.sig === decodedPubkey && event.kind === 14,
     );
     setChat(events);
   };
@@ -132,11 +146,9 @@ const Page = () => {
   useEffect(() => {
     const _skHex = localStorage.getItem("skHex");
     if (_skHex) {
-      setSk(hexToBytes(_skHex));
       setPk(getPublicKey(hexToBytes(_skHex)));
     } else {
       let sk = generateSecretKey();
-      setSk(sk);
       setPk(getPublicKey(sk));
       const skHex = bytesToHex(sk);
       localStorage.setItem("skHex", skHex);
@@ -155,7 +167,7 @@ const Page = () => {
         }
       >
         <div className={"text-[#B3B3B3] text-[14px] text-center pb-3"}>
-          Talk with Tom, powered by AI.
+          Powered by AbandonAI.
         </div>
         {chat.map((event, index) => {
           if (event.pubkey === pk) {
