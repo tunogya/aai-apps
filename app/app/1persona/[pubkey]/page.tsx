@@ -244,7 +244,7 @@ const Page = () => {
       </div>
       <div
         className={
-          "max-w-xl w-full flex flex-col items-center justify-center absolute bottom-0 bg-[#121212] px-3"
+          "max-w-xl w-full flex flex-col items-center justify-center absolute bottom-0 bg-[#121212] px-3 pb-safe"
         }
       >
         <div
