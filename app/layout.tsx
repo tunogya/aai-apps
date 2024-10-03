@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import { ReactNode } from "react";
 import "tailwindcss/tailwind.css";
-
+import "@/styles/global.css";
 const title = "AbandonAI";
 const description = "Powered by Abandon Inc.";
 
@@ -39,7 +39,7 @@ export const viewport = {
 export default function RootLayout(props: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body style={{ backgroundColor: "#121212" }}>
+      <body>
         <Script
           src={"https://www.googletagmanager.com/gtag/js?id=G-HT9Q8GW970"}
         />
@@ -53,7 +53,17 @@ export default function RootLayout(props: { children: ReactNode }) {
                 gtag('config', 'G-HT9Q8GW970');
               `}
         </Script>
-        <div className={"h-screen"}>{props.children}</div>
+        <Script id="app-height-script" strategy="afterInteractive">
+          {`
+            const appHeight = () => {
+              const doc = document.documentElement
+              doc.style.setProperty('--app-height', \`\${window.innerHeight}px\`)
+            }
+            window.addEventListener('resize', appHeight)
+            appHeight()
+          `}
+        </Script>
+        {props.children}
       </body>
     </html>
   );
