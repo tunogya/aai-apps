@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { useParams } from "next/navigation";
 import { decodeKey } from "@/utils/nostrUtils";
 import { generateSecretKey, finalizeEvent, verifyEvent } from "nostr-tools";
@@ -16,27 +16,32 @@ const Page = () => {
   const [pk, setPk] = useState<string>("");
   const decodedPubkey = decodeKey(pubkey as string);
   const ws = useRef<WebSocket | null>(null);
-  const [connected, setConnected] = useState<boolean>(false);
+  const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const connectWebSocket = () => {
+  const connectWebSocket = useCallback(() => {
+    if (ws.current?.readyState === WebSocket.OPEN) {
+      return; // Already connected
+    }
+
     const url = `wss://relay.abandon.ai?pubkey=${decodedPubkey}`;
     ws.current = new WebSocket(url);
 
     ws.current.onopen = () => {
-      setConnected(true);
       console.log("WebSocket connection opened.");
+      if (reconnectTimeoutRef.current) {
+        clearTimeout(reconnectTimeoutRef.current);
+        reconnectTimeoutRef.current = null;
+      }
     };
 
-    ws.current.onclose = (e) => {
-      setConnected(false);
+    ws.current.onclose = () => {
       console.log("WebSocket closed, attempting to reconnect...");
-      connectWebSocket();
+      reconnectWithBackoff();
     };
 
     ws.current.onerror = (e) => {
-      setConnected(false);
       console.log(`WebSocket error: ${e}, attempting to reconnect...`);
-      connectWebSocket();
+      reconnectWithBackoff();
     };
 
     ws.current.onmessage = (e) => {
@@ -50,19 +55,31 @@ const Page = () => {
         }
       }
     };
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [decodedPubkey]);
 
-  const send = (message: string) => {
-    if (ws.current && connected) {
-      ws.current.send(message);
-    } else {
-      console.log("WebSocket connection not open");
+  const reconnectWithBackoff = useCallback(() => {
+    if (reconnectTimeoutRef.current) {
+      clearTimeout(reconnectTimeoutRef.current);
     }
-  };
+    reconnectTimeoutRef.current = setTimeout(() => {
+      connectWebSocket();
+    }, 5000); // 5 seconds delay before reconnecting
+  }, [connectWebSocket]);
+
+  const send = useCallback(
+    (message: string) => {
+      if (ws.current?.readyState === WebSocket.OPEN) {
+        ws.current.send(message);
+      } else {
+        console.log("WebSocket connection not open");
+      }
+    },
+    [ws],
+  );
 
   useEffect(() => {
     if (decodedPubkey) {
-      setConnected(false);
       connectWebSocket();
     }
     return () => ws.current?.close();
