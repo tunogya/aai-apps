@@ -176,18 +176,18 @@ const Page = () => {
       >
         <div className={"flex items-center justify-start space-x-3"}>
           {profile?.picture ? (
-            <div className={"w-12 h-12 rounded-full overflow-hidden"}>
+            <div className={"w-7 h-7 rounded-full overflow-hidden"}>
               <Image
-                width={48}
-                height={48}
+                width={28}
+                height={28}
                 src={profile?.picture}
                 alt={profile?.name || "Profile"}
-                className={"w-12 h-12 object-cover"}
+                className={"w-7 h-7 object-cover"}
               />
             </div>
           ) : (
-            <div className={"w-12 h-12 rounded-full overflow-hidden"}>
-              <div className={"w-12 h-12 bg-[#3B3B3B] rounded-full"}></div>
+            <div className={"w-7 h-7 rounded-full overflow-hidden"}>
+              <div className={"w-7 h-7 bg-[#3B3B3B] rounded-full"}></div>
             </div>
           )}
           <div className={"flex flex-col"}>
@@ -200,6 +200,13 @@ const Page = () => {
               </div>
             )}
           </div>
+        </div>
+        <div
+          className={
+            "text-[12px] leading-[18px] text-[#B3B3B3] text-center pt-20 pb-4"
+          }
+        >
+          Talk with {profile?.name || "Anonymous"}, powered by AI.
         </div>
         {events.map((event, index) => {
           if (event.pubkey === pk) {
