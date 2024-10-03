@@ -45,10 +45,10 @@ const Page = () => {
     >
       <div
         className={
-          "max-w-xl w-full h-full items-center justify-center p-4 overflow-y-scroll"
+          "max-w-xl w-full h-full items-center justify-center p-3 overflow-y-scroll"
         }
       >
-        <div className={"text-[#B3B3B3] text-[14px] text-center pb-4"}>
+        <div className={"text-[#B3B3B3] text-[14px] text-center pb-3"}>
           Talk with Tom, powered by AI.
         </div>
         {chat.map((chat, index) => {
@@ -66,7 +66,7 @@ const Page = () => {
       >
         <div
           className={
-            "w-full flex items-center justify-center bg-[#3B3B3B] rounded-[18px] mx-4 my-4"
+            "w-full flex items-center justify-center bg-[#3B3B3B] rounded-[18px] mx-3 my-2"
           }
         >
           <input
