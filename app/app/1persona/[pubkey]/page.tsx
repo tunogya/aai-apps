@@ -170,7 +170,7 @@ const Page = () => {
     >
       <div
         className={
-          "max-w-xl w-full h-full items-center justify-center p-3 overflow-y-scroll"
+          "max-w-xl w-full h-full items-center justify-center p-3 overflow-y-scroll pb-60"
         }
       >
         {events.map((event, index) => {
@@ -188,7 +188,7 @@ const Page = () => {
       </div>
       <div
         className={
-          "max-w-xl w-full flex flex-col items-center justify-center absolute bottom-0"
+          "max-w-xl w-full flex flex-col items-center justify-center absolute bottom-0 bg-[#121212]"
         }
       >
         <div
