@@ -6,6 +6,7 @@ import { generateSecretKey, getPublicKey } from "nostr-tools";
 import { bytesToHex, hexToBytes } from "@noble/hashes/utils";
 import { v4 as uuidv4 } from "uuid";
 import Image from "next/image";
+import Head from "next/head";
 
 const Page = () => {
   const [input, setInput] = useState<string>("");
@@ -168,131 +169,143 @@ const Page = () => {
     setEvents([]);
   };
 
+  const pageTitle = profile?.name
+    ? `Talk with ${profile.name}`
+    : "1Persona Chat";
+
   return (
-    <div
-      className={
-        "flex flex-col w-full h-full items-center justify-center text-white relative"
-      }
-    >
+    <>
+      <Head>
+        <title>{pageTitle}</title>
+        <meta name="apple-itunes-app" content="app-id=6484276400" />
+      </Head>
       <div
         className={
-          "max-w-xl w-full h-full items-center justify-center overflow-y-scroll pb-60"
+          "flex flex-col w-full h-full items-center justify-center text-white relative"
         }
       >
-        <div className={"p-3 sticky top-0 flex items-center justify-between"}>
-          <div
-            className={"flex items-center justify-start space-x-3 bg-[#121212]"}
-          >
-            {profile?.picture ? (
-              <div className={"w-7 h-7 rounded-full overflow-hidden"}>
-                <Image
-                  width={28}
-                  height={28}
-                  src={profile?.picture}
-                  alt={profile?.name || "Profile"}
-                  className={"w-7 h-7 object-cover"}
-                />
-              </div>
-            ) : (
-              <div className={"w-7 h-7 rounded-full overflow-hidden"}>
-                <div className={"w-7 h-7 bg-[#3B3B3B] rounded-full"}></div>
-              </div>
-            )}
-            <div className={"flex flex-col"}>
-              <div className={"text-[14px] font-medium text-white"}>
-                {profile?.name || "Anonymous"}
-              </div>
-              {profile?.about && (
-                <div className={"text-[12px] leading-[18px] text-[#B3B3B3]"}>
-                  {profile.about}
+        <div
+          className={
+            "max-w-xl w-full h-full items-center justify-center overflow-y-scroll pb-60"
+          }
+        >
+          <div className={"p-3 sticky top-0 flex items-center justify-between"}>
+            <div
+              className={
+                "flex items-center justify-start space-x-3 bg-[#121212]"
+              }
+            >
+              {profile?.picture ? (
+                <div className={"w-7 h-7 rounded-full overflow-hidden"}>
+                  <Image
+                    width={28}
+                    height={28}
+                    src={profile?.picture}
+                    alt={profile?.name || "Profile"}
+                    className={"w-7 h-7 object-cover"}
+                  />
+                </div>
+              ) : (
+                <div className={"w-7 h-7 rounded-full overflow-hidden"}>
+                  <div className={"w-7 h-7 bg-[#3B3B3B] rounded-full"}></div>
                 </div>
               )}
+              <div className={"flex flex-col"}>
+                <div className={"text-[14px] font-medium text-white"}>
+                  {profile?.name || "Anonymous"}
+                </div>
+                {profile?.about && (
+                  <div className={"text-[12px] leading-[18px] text-[#B3B3B3]"}>
+                    {profile.about}
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-          <button
-            className={`text-[12px] leading-[18px] text-red-500 text-center ${
-              events.length > 0 ? "opacity-100" : "opacity-50"
-            }`}
-            disabled={events.length === 0}
-            onClick={clearChat}
-          >
-            清空
-          </button>
-        </div>
-        <div
-          className={
-            "text-[12px] leading-[18px] text-[#B3B3B3] text-center pt-20 pb-4 px-3"
-          }
-        >
-          Talk with {profile?.name || "Anonymous"}, powered by AI.
-        </div>
-        <div className={"px-3"}>
-          {events.map((event, index) => {
-            if (event.pubkey === pk) {
-              return <UserChat content={event.content} key={index} />;
-            } else {
-              return <AssistantChat content={event.content} key={index} />;
-            }
-          })}
-        </div>
-
-        {events.length > 0 && events[events.length - 1].pubkey === pk && (
-          <div className="flex justify-start items-center my-2 px-3">
-            <div className="animate-spin h-5 w-5 bg-white"></div>
-          </div>
-        )}
-      </div>
-      <div
-        className={
-          "max-w-xl w-full flex flex-col items-center justify-center absolute bottom-0 bg-[#121212] px-3 pb-safe"
-        }
-      >
-        <div
-          className={
-            "w-full flex items-center justify-center bg-[#3B3B3B] rounded-[18px] mx-3 my-1.5"
-          }
-        >
-          <input
-            value={input}
-            placeholder={"Ask me anything..."}
-            className={
-              "bg-transparent outline-none flex-1 px-3 py-1.5 text-[16px] leading-[24px]"
-            }
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                sendMessage();
-              }
-            }}
-          />
-          <button
-            onClick={sendMessage}
-            className={
-              "py-1.5 rounded-full text-black mx-1 bg-green-500 h-7 w-7 flex items-center justify-center"
-            }
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="2"
-              stroke="currentColor"
-              className="size-4"
+            <button
+              className={`text-[12px] leading-[18px] text-red-500 text-center ${
+                events.length > 0 ? "opacity-100" : "opacity-50"
+              }`}
+              disabled={events.length === 0}
+              onClick={clearChat}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18"
-              />
-            </svg>
-          </button>
+              清空
+            </button>
+          </div>
+          <div
+            className={
+              "text-[12px] leading-[18px] text-[#B3B3B3] text-center pt-20 pb-4 px-3"
+            }
+          >
+            Talk with {profile?.name || "Anonymous"}, powered by AI.
+          </div>
+          <div className={"px-3"}>
+            {events.map((event, index) => {
+              if (event.pubkey === pk) {
+                return <UserChat content={event.content} key={index} />;
+              } else {
+                return <AssistantChat content={event.content} key={index} />;
+              }
+            })}
+          </div>
+
+          {events.length > 0 && events[events.length - 1].pubkey === pk && (
+            <div className="flex justify-start items-center my-2 px-3">
+              <div className="animate-spin h-5 w-5 bg-white"></div>
+            </div>
+          )}
         </div>
-        <div className={"text-[#B3B3B3] text-[10px] text-center pb-2"}>
-          Copyright © {new Date().getFullYear()} Abandon Inc. All rights
-          reserved.
+        <div
+          className={
+            "max-w-xl w-full flex flex-col items-center justify-center absolute bottom-0 bg-[#121212] px-3 pb-safe"
+          }
+        >
+          <div
+            className={
+              "w-full flex items-center justify-center bg-[#3B3B3B] rounded-[18px] mx-3 my-1.5"
+            }
+          >
+            <input
+              value={input}
+              placeholder={"Ask me anything..."}
+              className={
+                "bg-transparent outline-none flex-1 px-3 py-1.5 text-[16px] leading-[24px]"
+              }
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  sendMessage();
+                }
+              }}
+            />
+            <button
+              onClick={sendMessage}
+              className={
+                "py-1.5 rounded-full text-black mx-1 bg-green-500 h-7 w-7 flex items-center justify-center"
+              }
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="2"
+                stroke="currentColor"
+                className="size-4"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18"
+                />
+              </svg>
+            </button>
+          </div>
+          <div className={"text-[#B3B3B3] text-[10px] text-center pb-2"}>
+            Copyright © {new Date().getFullYear()} Abandon Inc. All rights
+            reserved.
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
