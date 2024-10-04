@@ -216,7 +216,7 @@ const Page = () => {
               </div>
             </div>
             <button
-              className={`text-[12px] leading-[18px] text-red-500 text-center whitespace-nowrap px-3 ${
+              className={`text-[16px] leading-[18px] text-red-500 text-center whitespace-nowrap px-3 ${
                 events.length > 0 ? "opacity-100" : "opacity-50"
               }`}
               disabled={events.length === 0}
