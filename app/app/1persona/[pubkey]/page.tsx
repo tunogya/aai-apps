@@ -210,7 +210,7 @@ const Page = () => {
               }
             >
               <div className={"flex flex-col"}>
-                <div className={"text-[14px] font-medium text-white"}>
+                <div className={"text-[16px] font-medium text-white"}>
                   {profile?.name || "Anonymous"}
                 </div>
               </div>
@@ -241,10 +241,9 @@ const Page = () => {
               }
             })}
           </div>
-
           {events.length > 0 && events[events.length - 1].pubkey === pk && (
-            <div className="flex justify-start items-center my-2 px-3">
-              <div className="animate-spin h-5 w-5 bg-white"></div>
+            <div className="flex justify-start items-center px-3">
+              <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-white"></div>
             </div>
           )}
         </div>
