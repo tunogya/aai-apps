@@ -8,7 +8,6 @@ import { v4 as uuidv4 } from "uuid";
 import Head from "next/head";
 import { useRouter } from "next/navigation";
 import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
 
 const Page = () => {
   const [input, setInput] = useState<string>("");
