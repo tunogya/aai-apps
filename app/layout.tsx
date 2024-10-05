@@ -3,6 +3,8 @@ import Script from "next/script";
 import { ReactNode } from "react";
 import "tailwindcss/tailwind.css";
 import "@/styles/global.css";
+import "react-loading-skeleton/dist/skeleton.css";
+
 const title = "AbandonAI";
 const description = "Powered by Abandon Inc.";
 

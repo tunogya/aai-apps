@@ -5,9 +5,10 @@ import { decodeKey } from "@/utils/nostrUtils";
 import { generateSecretKey, getPublicKey } from "nostr-tools";
 import { bytesToHex, hexToBytes } from "@noble/hashes/utils";
 import { v4 as uuidv4 } from "uuid";
-import Image from "next/image";
 import Head from "next/head";
 import { useRouter } from "next/navigation";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const Page = () => {
   const [input, setInput] = useState<string>("");
@@ -242,8 +243,13 @@ const Page = () => {
             })}
           </div>
           {events.length > 0 && events[events.length - 1].pubkey === pk && (
-            <div className="flex justify-start items-center px-3">
-              <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-white"></div>
+            <div className="px-4">
+              <Skeleton
+                count={3}
+                baseColor="#3B3B3B"
+                highlightColor="#FFFFFF"
+                duration={1}
+              />
             </div>
           )}
         </div>
