@@ -203,12 +203,12 @@ const Page = () => {
             "max-w-xl w-full h-full items-center justify-center overflow-y-scroll pb-60"
           }
         >
-          <div className={"p-3 sticky top-0 flex items-center justify-between"}>
-            <div
-              className={
-                "flex items-center justify-start space-x-3 bg-[#121212]"
-              }
-            >
+          <div
+            className={
+              "p-3 sticky top-0 flex items-center justify-between bg-[#121212]"
+            }
+          >
+            <div className={"flex items-center justify-start space-x-3"}>
               <div className={"flex flex-col"}>
                 <div className={"text-[16px] font-medium text-white"}>
                   {profile?.name || "Anonymous"}
